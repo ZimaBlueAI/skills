@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mingjing 项目 Q3 投资决议 — Board Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg-elev:#141414;--bg-hover:#1c1c1c;--border:#2a2a2a;--border-strong:#3a3a3a;--fg:#e8e8e8;--fg-dim:#888;--fg-faint:#555;--accent:#d4ff00;--accent-dim:#8a9e0a;--danger:#ff4444;--warn:#ffaa00;--ok:#44dd88;--font-mono:'JetBrains Mono','SF Mono','Menlo','Consolas',monospace;--font-sans:'Inter Tight','PingFang SC','Source Han Sans SC',system-ui,sans-serif;--font-serif:'Newsreader','Source Serif 4',Georgia,serif;--gap-xs:4px;--gap-sm:8px;--gap-md:16px;--gap-lg:24px;--gap-xl:48px;--max-width:1200px;--content-width:880px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--font-sans);font-size:14px;line-height:1.6;padding:var(--gap-xl) var(--gap-lg)}
+.report-header{max-width:var(--max-width);margin:0 auto var(--gap-xl);border-bottom:1px solid var(--border-strong);padding-bottom:var(--gap-lg)}
+.report-header .meta{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;gap:var(--gap-lg);margin-bottom:var(--gap-md);flex-wrap:wrap}
+.report-header h1{font-family:var(--font-serif);font-size:40px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.report-header .subtitle{color:var(--fg-dim);margin-top:var(--gap-sm);font-size:15px}
+main{max-width:var(--max-width);margin:0 auto}
+section{margin-bottom:var(--gap-xl)}
+h2{font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);padding-bottom:var(--gap-sm);border-bottom:1px solid var(--border);margin-bottom:var(--gap-md)}
+h3{font-size:18px;font-weight:600;margin-bottom:var(--gap-sm)}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px}
+th{text-align:left;padding:var(--gap-sm);border-bottom:1px solid var(--border-strong);font-weight:500;color:var(--fg-dim);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+td{padding:var(--gap-sm);border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg-hover)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:2px 6px;border:1px solid var(--border-strong);text-transform:uppercase;letter-spacing:.05em}
+.tag.ok{color:var(--ok);border-color:var(--ok)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.danger{color:var(--danger);border-color:var(--danger)}
+.tag.accent{color:var(--accent);border-color:var(--accent)}
+.kpi{font-family:var(--font-mono);font-size:36px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi.up{color:var(--ok)}.kpi.down{color:var(--danger)}
+.kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-xs)}
+.kpi-delta{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);margin-top:var(--gap-xs)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-md)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap-md)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md)}
+.card{border:1px solid var(--border);padding:var(--gap-md);background:var(--bg-elev)}
+.card:hover{border-color:var(--border-strong)}
+blockquote{font-family:var(--font-serif);font-size:19px;font-style:italic;line-height:1.5;color:var(--fg);padding:var(--gap-md) 0 var(--gap-md) var(--gap-md);border-left:2px solid var(--accent);margin:var(--gap-lg) 0;max-width:var(--content-width)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim)}
+a:hover{background:var(--accent);color:var(--bg)}
+.risk-matrix{display:grid;grid-template-columns:80px repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.risk-matrix > div{background:var(--bg-elev);padding:var(--gap-sm);font-family:var(--font-mono);font-size:11px;min-height:60px}
+.risk-matrix .axis{color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;justify-content:center}
+.risk-matrix .cell-high{background:rgba(255,68,68,.08)}
+.risk-matrix .cell-mid{background:rgba(255,170,0,.06)}
+.risk-matrix .cell-low{background:rgba(68,221,136,.04)}
+.resolution{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:60px 1fr 200px 100px;gap:var(--gap-md);align-items:start}
+.resolution .id{font-family:var(--font-mono);color:var(--fg-dim);font-size:11px}
+.resolution .desc strong{display:block;margin-bottom:var(--gap-xs)}
+.resolution .desc small{color:var(--fg-dim);font-family:var(--font-mono);font-size:11px}
+@media print{body{background:#fff;color:#000;padding:0}:root{--bg:#fff;--bg-elev:#fff;--fg:#000;--fg-dim:#555;--border:#ccc}}
+</style>
+</head>
+<body>
+<header class="report-header">
+  <div class="meta">
+    <span>REPORT // BOARD BRIEF</span>
+    <span>2026-05-10</span>
+    <span>PREPARED BY B.M. (CEO)</span>
+    <span>REV 1.2</span>
+    <span>CONFIDENTIAL</span>
+  </div>
+  <h1>Mingjing 项目 Q3 投资决议</h1>
+  <p class="subtitle">修仙主题 AI 人生导师 · 追加预算与里程碑批准 · 4Humanity.ai 旗下</p>
+</header>
+
+<main>
+
+<section>
+  <h2>Executive Summary // 摘要</h2>
+  <blockquote>建议批准 Mingjing 项目 Q3 追加预算 ¥3.2M（vs 原计划 ¥2.0M），主因飞书原生集成深度超出原 spec。当前 13 境进阶 + 心性 veto 双系统已完成 70%，预计 7 月底 Alpha，9 月初 GA。前置条件：CTO 9 月底前签署 Volcano Engine 三年框架协议。</blockquote>
+</section>
+
+<section>
+  <h2>KPI Dashboard // 关键指标</h2>
+  <div class="grid-4">
+    <div class="card">
+      <div class="kpi-label">BURN RATE (¥/月)</div>
+      <div class="kpi down">1.06M</div>
+      <div class="kpi-delta">+12% vs Q2</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">RUNWAY (月)</div>
+      <div class="kpi ">14.2</div>
+      <div class="kpi-delta">-1.8 vs last update</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">PRE-ORDER ARR</div>
+      <div class="kpi up">¥4.8M</div>
+      <div class="kpi-delta">+47% MoM</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">WAITLIST</div>
+      <div class="kpi up">12.4K</div>
+      <div class="kpi-delta">+3.1K this week</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Financial Snapshot // 财务快照</h2>
+  <table>
+    <thead>
+      <tr><th>Item</th><th>Period</th><th>Actual</th><th>Plan</th><th>Δ</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      
+      <tr><td>Engineering payroll</td><td>Q2-2026</td><td class="num">¥2.4M</td><td class="num">¥2.2M</td><td class="num">+9%</td><td>临时招聘 1 名飞书 SDK 专家</td></tr>
+      <tr><td>Volcano API spend</td><td>Q2-2026</td><td class="num">¥0.31M</td><td class="num">¥0.20M</td><td class="num">+55%</td><td>压测期 token 消耗超预期</td></tr>
+      <tr><td>Marketing</td><td>Q2-2026</td><td class="num">¥0.12M</td><td class="num">¥0.30M</td><td class="num">-60%</td><td>延期到 Alpha 启动</td></tr>
+      <tr><td>Pre-order revenue</td><td>Q2-2026</td><td class="num">¥0.40M</td><td class="num">¥0.10M</td><td class="num">+300%</td><td>口碑驱动，无投放</td></tr>
+    
+      <!-- 每行格式：
+      <tr><td>Revenue</td><td>Q2-2026</td><td class="num">¥X.XM</td><td class="num">¥X.XM</td><td class="num">+X%</td><td>...</td></tr>
+      -->
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Risk Matrix // 风险矩阵 (Impact × Likelihood)</h2>
+  <div class="risk-matrix">
+    <div class="axis"></div>
+    <div class="axis">LOW LIKELIHOOD</div>
+    <div class="axis">MED LIKELIHOOD</div>
+    <div class="axis">HIGH LIKELIHOOD</div>
+
+    <div class="axis">HIGH<br>IMPACT</div>
+    <div class="cell-mid">Volcano 配额突变</div>
+    <div class="cell-high">飞书审核策略收紧 · 修仙叙事被判敏感</div>
+    <div class="cell-high">— </div>
+
+    <div class="axis">MED<br>IMPACT</div>
+    <div class="cell-low">关键工程师离职</div>
+    <div class="cell-mid">Coze/智谱推出竞品</div>
+    <div class="cell-high">API 价格年内上调</div>
+
+    <div class="axis">LOW<br>IMPACT</div>
+    <div class="cell-low">UI 库版本断档</div>
+    <div class="cell-low">客户付费率低于预期</div>
+    <div class="cell-mid">阶段性带宽紧张</div>
+  </div>
+</section>
+
+<section>
+  <h2>Resolutions for Vote // 待决议事项</h2>
+  
+      <div class="resolution">
+        <div class="id">R-001</div>
+        <div class="desc"><strong>批准 Mingjing 追加预算 ¥1.2M（Q3）</strong><small>详见附件 A · 投票要求 2/3 多数 · 用于飞书集成 + Volcano 三年合约预付</small></div>
+        <div><span class="tag accent">CAPEX</span> <span class="tag warn">URGENT</span></div>
+        <div><span class="tag">PENDING</span></div>
+      </div>
+      <div class="resolution">
+        <div class="id">R-002</div>
+        <div class="desc"><strong>授权 CEO 与 Volcano 签署三年框架协议</strong><small>条件：单价不高于 ¥0.012/1K token · 总额不超过 ¥6M</small></div>
+        <div><span class="tag accent">CONTRACT</span></div>
+        <div><span class="tag">PENDING</span></div>
+      </div>
+      <div class="resolution">
+        <div class="id">R-003</div>
+        <div class="desc"><strong>追认 Q2 临时招聘 1 名飞书 SDK 专家</strong><small>已入职 6 周 · 月薪 ¥45K · 试用期顺延至 8 月</small></div>
+        <div><span class="tag">HR</span></div>
+        <div><span class="tag ok">RATIFY</span></div>
+      </div>
+    
+  <!-- 每项格式：
+  <div class="resolution">
+    <div class="id">R-001</div>
+    <div class="desc"><strong>批准 Mingjing 项目追加预算 ¥XXM</strong><small>详见附件 A · 投票要求 2/3 多数</small></div>
+    <div><span class="tag accent">CAPEX</span> <span class="tag warn">URGENT</span></div>
+    <div><span class="tag">PENDING</span></div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Strategic Bets // 战略下注</h2>
+  <table>
+    <thead><tr><th>Initiative</th><th>Stage</th><th>Owner</th><th>Investment</th><th>Expected Return</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Mingjing AI 人生导师</td><td><span class="tag">VALIDATING</span></td><td>CEO+CTO</td><td class="num">¥3.2M</td><td>Q4 GA · ¥2M ARR</td><td><span class="tag accent">ON TRACK</span></td></tr>
+      <tr><td>finance-intel skill 群</td><td><span class="tag">EXPLORING</span></td><td>CTO</td><td class="num">¥0.6M</td><td>2027 内变现</td><td><span class="tag">EARLY</span></td></tr>
+      <tr><td>ArkClaw e-comm 自动化</td><td><span class="tag ok">SHIPPING</span></td><td>PM</td><td class="num">¥0.8M</td><td>Q3 续约 · ¥1.5M ARR</td><td><span class="tag ok">DELIVERED</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Asks // 我们需要董事会的什么</h2>
+  <ol style="padding-left:20px;font-family:var(--font-mono);font-size:13px;line-height:2">
+    
+      <li>批准 R-001 追加预算 · @board · 2026-05-15</li>
+      <li>批准 R-002 Volcano 框架授权 · @board · 2026-05-15</li>
+      <li>追认 R-003 招聘决议 · @board · 2026-05-15</li>
+      <li>建议引入战略 LP 协助 Volcano 议价 · @lead-investor · 2026-05-30</li>
+    
+    <!-- 每项格式：<li>批准 X · @person · YYYY-MM-DD</li> -->
+  </ol>
+</section>
+
+<section>
+  <h2>Appendix Pointers // 附件索引</h2>
+  <p style="color:var(--fg-dim);font-family:var(--font-mono);font-size:12px">A. Q3 详细预算表  ·  B. Volcano 协议草案  ·  C. 飞书审核风险评估报告  ·  D. 工程团队 Q2 KPI 自评  ·  E. 13 境进阶产品截图集</p>
+</section>
+
+</main>
+</body>
+</html>

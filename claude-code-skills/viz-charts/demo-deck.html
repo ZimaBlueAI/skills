@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>viz-charts demo · Deck Theme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #030711; --bg-elev: rgba(12, 26, 46, 0.72); --bg-hover: rgba(16, 36, 62, 0.92);
+  --border: rgba(151, 209, 255, 0.16); --border-strong: rgba(151, 209, 255, 0.34);
+  --fg: #edf7ff; --fg-dim: #a8bdd5; --fg-faint: #688096;
+  --accent: #42e8ff; --danger: #ff8c8c; --warn: #ffd987; --ok: #78f7c5;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: Inter, system-ui, 'PingFang SC', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background:
+    radial-gradient(circle at 18% 5%, rgba(66, 232, 255, 0.2), transparent 32rem),
+    radial-gradient(circle at 84% 12%, rgba(255, 217, 135, 0.12), transparent 30rem),
+    linear-gradient(180deg, #02050c 0%, #06111f 48%, #02050c 100%); color: var(--fg);
+  font-family: var(--font-sans); font-size: 14px; line-height: 1.6;
+  padding: 48px 24px; min-height: 100vh;
+}
+.container { max-width: 1200px; margin: 0 auto; }
+header { border-bottom: 1px solid var(--border-strong); padding-bottom: 24px; margin-bottom: 48px; }
+header .meta {
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  display: flex; gap: 24px; margin-bottom: 16px; flex-wrap: wrap;
+}
+h1 { font-family: var(--font-serif); font-size: 40px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; }
+.subtitle { color: var(--fg-dim); margin-top: 8px; font-size: 15px; }
+section { margin-bottom: 48px; }
+h2 {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: var(--accent); padding-bottom: 8px;
+  border-bottom: 1px solid var(--border); margin-bottom: 16px;
+}
+.note { font-size: 13px; color: var(--fg-dim); font-family: var(--font-mono); margin-bottom: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+figure { border: 1px solid var(--border); padding: 16px; background: var(--bg-elev); border-radius: 16px; backdrop-filter: blur(12px); }
+figcaption {
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+}
+.chart-mermaid pre.mermaid-source { display: none; }
+.chart-mermaid .mermaid-output svg { max-width: 100%; height: auto; }
+[data-echarts-option] { width: 100%; }
+.cdn-status {
+  font-family: var(--font-mono); font-size: 10px; color: var(--fg-faint);
+  padding: 8px 12px; border: 1px dashed var(--border-strong); margin-top: 24px;
+}
+
+/* Components inline (5) */
+.kpi-card { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border: 1px solid var(--border); background: var(--bg-elev); font-family: var(--font-mono); }
+.kpi-card .kpi-label { font-size: 10px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 500; }
+.kpi-card .kpi-value { font-size: 32px; font-weight: 500; color: var(--fg); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.05; }
+.kpi-card .kpi-value.up { color: var(--ok); }
+.kpi-card .kpi-value.down { color: var(--danger); }
+.kpi-card .kpi-delta { font-size: 11px; color: var(--fg-dim); }
+.kpi-card .kpi-spark { margin-top: 4px; height: 28px; }
+.kpi-card .kpi-spark svg { width: 100%; height: 100%; display: block; }
+
+.sparkline { display: inline-block; vertical-align: middle; line-height: 1; }
+.sparkline svg { display: block; overflow: visible; }
+
+.mini-gauge { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px; border: 1px solid var(--border); background: var(--bg-elev); font-family: var(--font-mono); }
+.mini-gauge .gauge-value { font-size: 22px; font-weight: 600; color: var(--fg); font-variant-numeric: tabular-nums; margin-top: -28px; }
+.mini-gauge .gauge-label { font-size: 10px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.12em; }
+
+.progress-group { display: flex; flex-direction: column; gap: 10px; }
+.progress-bar { display: grid; grid-template-columns: 140px 1fr 80px; gap: 12px; align-items: center; font-family: var(--font-mono); font-size: 12px; }
+.progress-bar .pb-label { color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+.progress-bar .pb-track { height: 6px; background: var(--border); position: relative; overflow: hidden; }
+.progress-bar .pb-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
+.progress-bar.warn .pb-fill { background: var(--warn); }
+.progress-bar.danger .pb-fill { background: var(--danger); }
+.progress-bar.ok .pb-fill { background: var(--ok); }
+.progress-bar .pb-right { text-align: right; color: var(--fg); font-variant-numeric: tabular-nums; }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 6px 8px; padding: 16px; border: 1px solid var(--border); background: var(--bg-elev); font-family: var(--font-mono); align-items: baseline; line-height: 1.6; }
+.tag-cloud .vt { display: inline-block; padding: 2px 8px; border: 1px solid var(--border-strong); color: var(--fg); text-transform: uppercase; letter-spacing: 0.05em; }
+.tag-cloud .vt-cat { width: 100%; border: none; padding: 0; font-size: 10px; color: var(--fg-dim); letter-spacing: 0.15em; margin-top: 8px; margin-bottom: 4px; }
+.tag-cloud .vt-cat:first-child { margin-top: 0; }
+.tag-cloud .vt[data-w="1"], .tag-cloud .vt[data-w="2"], .tag-cloud .vt[data-w="3"] { font-size: 10px; }
+.tag-cloud .vt[data-w="4"], .tag-cloud .vt[data-w="5"], .tag-cloud .vt[data-w="6"] { font-size: 11px; color: #fff; }
+.tag-cloud .vt[data-w="7"], .tag-cloud .vt[data-w="8"] { font-size: 13px; color: #fff; border-color: var(--accent); }
+.tag-cloud .vt[data-w="9"], .tag-cloud .vt[data-w="10"] { font-size: 15px; color: var(--accent); border-color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="meta">
+    <span>VIZ-CHARTS DEMO</span><span>DECK THEME</span>
+    <span>2026-05-10</span><span>viz-deck integration</span>
+  </div>
+  <h1>viz-charts: 讲演风图表演示</h1>
+  <p class="subtitle">玻璃拟态 + 微动效 + 深空配色 · 适合客户演示 / 投资人路演</p>
+</header>
+
+<section>
+  <h2>关键 KPI · KPI Cards</h2>
+  <p class="note">data-kpi JSON 驱动，含内嵌 sparkline</p>
+  <div class="grid-4">
+    <div class="kpi-card" data-kpi='{"label":"BURN RATE","value":"¥1.06M","delta":"+12% vs Q2","direction":"down","sparkline":[1.0,0.9,1.1,1.05,1.15,1.06]}'></div>
+    <div class="kpi-card" data-kpi='{"label":"RUNWAY (mo)","value":"14.2","delta":"-1.8 vs last","direction":"","sparkline":[18,17,16.5,15.8,14.8,14.2]}'></div>
+    <div class="kpi-card" data-kpi='{"label":"PRE-ORDER ARR","value":"¥4.8M","delta":"+47% MoM","direction":"up","sparkline":[1.2,1.5,2.1,2.8,3.4,4.8]}'></div>
+    <div class="kpi-card" data-kpi='{"label":"WAITLIST","value":"12.4K","delta":"+3.1K wk","direction":"up","sparkline":[6,7.2,8.5,9.3,11,12.4]}'></div>
+  </div>
+</section>
+
+<section>
+  <h2>Sparkline 内联</h2>
+  <p>本月营收呈上升趋势 <span class="sparkline" data-spark='{"data":[2,3,4,5,6,8],"width":80}'></span> 月环比 +47%。
+  &nbsp;&nbsp;客户流失率 <span class="sparkline" data-spark='{"data":[5,4,3,2,1.5,1.2],"width":80}'></span> 持续下降至 1.2%。
+  &nbsp;&nbsp;系统延迟 <span class="sparkline" data-spark='{"data":[100,120,80,60,90,70],"width":80,"color":"down"}'></span> 出现波动后修复。</p>
+</section>
+
+<section>
+  <h2>Mini Gauge · 半圆仪表</h2>
+  <p class="note">轻量自研，不引 ECharts</p>
+  <div class="grid-4">
+    <div class="mini-gauge" data-gauge='{"value":78,"max":100,"label":"Sprint","unit":"%"}'></div>
+    <div class="mini-gauge" data-gauge='{"value":92,"max":100,"label":"Coverage","unit":"%"}'></div>
+    <div class="mini-gauge" data-gauge='{"value":34,"max":100,"label":"Risk Score","unit":""}'></div>
+    <div class="mini-gauge" data-gauge='{"value":105,"max":150,"label":"Velocity","unit":"pt"}'></div>
+  </div>
+</section>
+
+<section>
+  <h2>Progress Bars · 多项进度</h2>
+  <figure style="padding: 24px;">
+    <div class="progress-group">
+      <div class="progress-bar ok"     data-progress='{"label":"M0 prompt eng","value":100,"rightLabel":"GA"}'></div>
+      <div class="progress-bar ok"     data-progress='{"label":"M1 vibe coding","value":100,"rightLabel":"GA"}'></div>
+      <div class="progress-bar"        data-progress='{"label":"M2 IDE agent","value":85,"rightLabel":"85% · α"}'></div>
+      <div class="progress-bar warn"   data-progress='{"label":"M3 SDLC","value":62,"rightLabel":"62% · 风险"}'></div>
+      <div class="progress-bar danger" data-progress='{"label":"M4 evals","value":18,"rightLabel":"18% · 阻塞"}'></div>
+    </div>
+  </figure>
+</section>
+
+<section>
+  <h2>Tag Cloud · 技术栈展示</h2>
+  <div class="tag-cloud" data-tags='[
+    {"label":"Go","weight":10,"category":"主语言"},
+    {"label":"Rust","weight":9,"category":"主语言"},
+    {"label":"TypeScript","weight":7,"category":"主语言"},
+    {"label":"PostgreSQL","weight":8,"category":"数据"},
+    {"label":"Redis","weight":6,"category":"数据"},
+    {"label":"DuckDB","weight":4,"category":"数据"},
+    {"label":"Volcano LLM","weight":9,"category":"AI"},
+    {"label":"Claude","weight":7,"category":"AI"}
+  ]'></div>
+</section>
+
+<section>
+  <h2>Mermaid · 系统架构</h2>
+  <p class="note">CDN 加载 mermaid@10 · jsdelivr→unpkg fallback</p>
+  <figure class="chart-mermaid">
+    <pre class="mermaid-source">
+flowchart LR
+    A[用户请求] --> B{Risk Gate}
+    B -->|approved| C[Agent Core]
+    B -->|denied| D[Audit Log]
+    C --> E[(Memory)]
+    C --> F[Volcano LLM]
+    F --> C
+    E --> G[Bitable]
+    classDef warn stroke:#ffaa00,stroke-width:2px;
+    class B warn;
+    </pre>
+    <div class="mermaid-output"></div>
+    <figcaption>图 1 · 主流程：从请求到记忆持久化</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Mermaid · Gantt 项目排期</h2>
+  <figure class="chart-mermaid">
+    <pre class="mermaid-source">
+gantt
+    title v2.0 Memory Spine 排期
+    dateFormat YYYY-MM-DD
+    axisFormat %m-%d
+    section Phase 1 — Plan
+    需求评审       :done,    p1-1, 2026-04-15, 5d
+    架构定稿       :done,    p1-2, after p1-1, 4d
+    section Phase 2 — Build
+    Memory 接线    :active,  p2-1, 2026-04-25, 14d
+    Risk Gate      :         p2-2, after p2-1, 7d
+    集成测试       :crit,    p2-3, after p2-1, 10d
+    section Phase 3 — Launch
+    Alpha          :         p3-1, after p2-3, 5d
+    GA             :milestone, gm, after p3-1, 0d
+    </pre>
+    <div class="mermaid-output"></div>
+    <figcaption>图 2 · 关键路径含 Memory 接线 → 集成测试</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>ECharts · 数据图表</h2>
+  <div class="grid-2">
+    <figure>
+      <div data-echarts-option='{"tooltip":{"trigger":"axis"},"legend":{"top":0,"right":0},"grid":{"left":50,"right":20,"top":30,"bottom":30},"xAxis":{"type":"category","boundaryGap":false,"data":["W1","W2","W3","W4","W5","W6","W7","W8"]},"yAxis":{"type":"value"},"series":[{"name":"Revenue","type":"line","data":[3.2,4.1,5.0,6.2,5.8,7.1,8.0,9.4],"areaStyle":{"opacity":0.18}},{"name":"Cost","type":"line","data":[2.0,2.4,2.8,3.4,3.5,3.9,4.4,5.0]}]}' style="width:100%;height:280px"></div>
+      <figcaption>图 3 · 8 周营收 vs 成本</figcaption>
+    </figure>
+    <figure>
+      <div data-echarts-option='{"tooltip":{"trigger":"item","formatter":"{b}: {c} ({d}%)"},"legend":{"orient":"vertical","left":"right","top":"middle"},"series":[{"type":"pie","radius":["48%","72%"],"center":["38%","50%"],"data":[{"name":"订阅","value":1248},{"name":"企业","value":735},{"name":"广告","value":310},{"name":"咨询","value":484}]}]}' style="width:100%;height:280px"></div>
+      <figcaption>图 4 · 收入构成（环图）</figcaption>
+    </figure>
+  </div>
+
+  <figure style="margin-top: 16px;">
+    <div data-echarts-option='{"tooltip":{},"legend":{"top":0},"radar":{"indicator":[{"name":"性能","max":100},{"name":"易用性","max":100},{"name":"扩展性","max":100},{"name":"安全","max":100},{"name":"生态","max":100},{"name":"成本","max":100}],"radius":"65%"},"series":[{"type":"radar","data":[{"name":"Ours","value":[85,80,90,88,60,75],"areaStyle":{"opacity":0.25}},{"name":"Competitor","value":[70,90,75,65,85,70],"areaStyle":{"opacity":0.15}}]}]}' style="width:100%;height:360px"></div>
+    <figcaption>图 5 · 竞品能力雷达对比</figcaption>
+  </figure>
+
+  <figure style="margin-top: 16px;">
+    <div data-echarts-option='{"tooltip":{"trigger":"axis","axisPointer":{"type":"shadow"}},"grid":{"left":120,"right":30,"top":10,"bottom":30},"xAxis":{"type":"value"},"yAxis":{"type":"category","inverse":true,"data":["认证服务","订单中心","风控","推荐引擎","通知","支付网关","数据湖","导出"]},"series":[{"type":"bar","data":[4200,3800,2900,2400,1900,1500,1200,600],"label":{"show":true,"position":"right","fontFamily":"monospace"}}]}' style="width:100%;height:320px"></div>
+    <figcaption>图 6 · 各服务月调用量（横向 bar）</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>渲染状态</h2>
+  <div id="cdn-status" class="cdn-status">CDN 加载状态 · 检查中…</div>
+</section>
+
+</div>
+
+<!-- 内联组件渲染脚本（5 个组件合一） -->
+<script>
+// KPI Card
+(function(){function r(){document.querySelectorAll('.kpi-card[data-kpi]:not([data-rendered])').forEach(c=>{try{var d=JSON.parse(c.getAttribute('data-kpi'));var sc='#42e8ff',sf='rgba(66, 232, 255, 0.18)';var s='';if(Array.isArray(d.sparkline)&&d.sparkline.length>=2){var w=200,h=28;var mn=Math.min.apply(null,d.sparkline);var mx=Math.max.apply(null,d.sparkline);var rg=mx-mn||1;var st=w/(d.sparkline.length-1);var pts=d.sparkline.map(function(v,i){return[i*st,h-((v-mn)/rg)*(h-4)-2]});var lp=pts.map(function(p,i){return(i===0?'M':'L')+' '+p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' ');s='<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none"><path d="'+lp+' L '+w+' '+h+' L 0 '+h+' Z" fill="'+sf+'"/><path d="'+lp+'" fill="none" stroke="'+sc+'" stroke-width="1.5"/><circle cx="'+pts[pts.length-1][0].toFixed(1)+'" cy="'+pts[pts.length-1][1].toFixed(1)+'" r="2.5" fill="'+sc+'"/></svg>'}c.innerHTML='<div class="kpi-label">'+(d.label||'')+'</div><div class="kpi-value '+(d.direction||'')+'">'+(d.value||'')+'</div><div class="kpi-delta">'+(d.delta||'')+'</div>'+(s?'<div class="kpi-spark">'+s+'</div>':'');c.setAttribute('data-rendered','1')}catch(e){console.error(e)}})}r()})();
+
+// Sparkline
+(function(){function r(){document.querySelectorAll('.sparkline[data-spark]:not([data-rendered])').forEach(function(el){try{var c=JSON.parse(el.getAttribute('data-spark'));var d=c.data||[];if(d.length<2){el.textContent='─';return}var w=c.width||80,h=c.height||20;var cl=c.color||'auto';if(cl==='auto')cl=d[d.length-1]>=d[0]?'#44dd88':'#ff4444';else if(cl==='up')cl='#44dd88';else if(cl==='down')cl='#ff4444';var mn=Math.min.apply(null,d),mx=Math.max.apply(null,d),rg=mx-mn||1,st=w/(d.length-1);var pts=d.map(function(v,i){return[i*st,h-((v-mn)/rg)*(h-2)-1]});var lp=pts.map(function(p,i){return(i===0?'M':'L')+' '+p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' ');var lt=pts[pts.length-1];el.innerHTML='<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><path d="'+lp+' L '+w+' '+h+' L 0 '+h+' Z" fill="'+cl+'" fill-opacity="0.18"/><path d="'+lp+'" fill="none" stroke="'+cl+'" stroke-width="1.5"/><circle cx="'+lt[0].toFixed(1)+'" cy="'+lt[1].toFixed(1)+'" r="2" fill="'+cl+'"/></svg>';el.setAttribute('data-rendered','1')}catch(e){el.textContent='⚠'}})}r()})();
+
+// Mini Gauge
+(function(){function r(){document.querySelectorAll('.mini-gauge[data-gauge]:not([data-rendered])').forEach(function(el){try{var c=JSON.parse(el.getAttribute('data-gauge'));var mx=c.max||100,v=Math.min(Math.max(c.value||0,0),mx),pct=v/mx;var W=140,H=80,cx=W/2,cy=H-10,rd=60;var ea=Math.PI-pct*Math.PI;var x2=cx+rd*Math.cos(ea),y2=cy-rd*Math.sin(ea);var la=pct>0.5?1:0;var tp='M '+(cx-rd)+' '+cy+' A '+rd+' '+rd+' 0 0 1 '+(cx+rd)+' '+cy;var fp=pct>0?'M '+(cx-rd)+' '+cy+' A '+rd+' '+rd+' 0 '+la+' 1 '+x2.toFixed(2)+' '+y2.toFixed(2):'';var tc='rgba(151, 209, 255, 0.16)',fc='#42e8ff';el.innerHTML='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'"><path d="'+tp+'" fill="none" stroke="'+tc+'" stroke-width="10" stroke-linecap="round"/>'+(fp?'<path d="'+fp+'" fill="none" stroke="'+fc+'" stroke-width="10" stroke-linecap="round"/>':'')+'</svg><div class="gauge-value">'+v+(c.unit||'')+'</div><div class="gauge-label">'+(c.label||'')+'</div>';el.setAttribute('data-rendered','1')}catch(e){console.error(e)}})}r()})();
+
+// Progress Bar
+(function(){function r(){document.querySelectorAll('.progress-bar[data-progress]:not([data-rendered])').forEach(function(b){try{var c=JSON.parse(b.getAttribute('data-progress'));var mx=c.max||100,v=Math.min(Math.max(c.value||0,0),mx),pct=(v/mx*100).toFixed(1);b.innerHTML='<div class="pb-label">'+(c.label||'')+'</div><div class="pb-track"><div class="pb-fill" style="width:'+pct+'%"></div></div><div class="pb-right">'+(c.rightLabel||(pct+'%'))+'</div>';b.setAttribute('data-rendered','1')}catch(e){console.error(e)}})}r()})();
+
+// Tag Cloud
+(function(){function r(){document.querySelectorAll('.tag-cloud[data-tags]:not([data-rendered])').forEach(function(c){try{var ts=JSON.parse(c.getAttribute('data-tags'));var groups={};var order=[];ts.forEach(function(t){var ct=t.category||'';if(!groups[ct]){groups[ct]=[];order.push(ct)}groups[ct].push(t)});var html='';order.forEach(function(ct){if(ct)html+='<div class="vt-cat">'+ct+'</div>';groups[ct].forEach(function(t){var w=Math.min(Math.max(parseInt(t.weight)||5,1),10);html+='<span class="vt" data-w="'+w+'">'+t.label+'</span> '})});c.innerHTML=html;c.setAttribute('data-rendered','1')}catch(e){console.error(e)}})}r()})();
+
+// CDN Loader (mermaid + echarts) — terminal theme
+(function(){
+  var status=document.getElementById('cdn-status');
+  var loaded={};
+  var TIERS=[
+    {n:'jsdelivr',ec:'https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js',mm:'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs'},
+    {n:'unpkg',   ec:'https://unpkg.com/echarts@5.5.1/dist/echarts.min.js',           mm:'https://unpkg.com/mermaid@10.9.1/dist/mermaid.esm.min.mjs'}
+  ];
+  var DECK_MERMAID={theme:'base',themeVariables:{darkMode:true,background:'#030711',primaryColor:'#07111f',primaryTextColor:'#edf7ff',primaryBorderColor:'rgba(151, 209, 255, 0.34)',lineColor:'#a8bdd5',mainBkg:'rgba(12, 26, 46, 0.92)',nodeBorder:'rgba(151, 209, 255, 0.34)',clusterBkg:'rgba(7, 17, 31, 0.6)',clusterBorder:'rgba(151, 209, 255, 0.16)',edgeLabelBackground:'#030711',fontFamily:'Inter, sans-serif',fontSize:'13px',taskBkgColor:'#42e8ff',taskTextColor:'#030711',activeTaskBkgColor:'#42e8ff',doneTaskBkgColor:'#78f7c5',critBkgColor:'#ff8c8c',todayLineColor:'#ffd987'}};
+  var DECK_ECHARTS={color:['#42e8ff','#6ca5ff','#ffd987','#78f7c5','#b893ff','#ff8c8c','#d8e8f4','#a8bdd5'],backgroundColor:'transparent',textStyle:{color:'#edf7ff',fontFamily:'Inter, system-ui, sans-serif'},categoryAxis:{axisLine:{lineStyle:{color:'rgba(151, 209, 255, 0.34)'}},axisLabel:{color:'#a8bdd5',fontSize:11},splitLine:{show:false}},valueAxis:{axisLine:{show:false},axisLabel:{color:'#a8bdd5',fontSize:11},splitLine:{lineStyle:{color:'rgba(151, 209, 255, 0.16)',type:'dashed'}}},legend:{textStyle:{color:'#edf7ff',fontSize:12},icon:'roundRect',itemWidth:10,itemHeight:10},tooltip:{backgroundColor:'#141414',borderColor:'#3a3a3a',textStyle:{color:'#edf7ff',fontFamily:'Inter, system-ui, sans-serif'}},radar:{axisLine:{lineStyle:{color:'#3a3a3a'}},splitLine:{lineStyle:{color:'#2a2a2a'}},splitArea:{areaStyle:{color:['transparent']}},axisName:{color:'#888'}}};
+
+  function loadScript(url){return new Promise(function(res,rej){var s=document.createElement('script');s.src=url;s.async=true;s.crossOrigin='anonymous';s.onload=function(){res(url)};s.onerror=function(){rej(new Error('load failed: '+url))};document.head.appendChild(s)})}
+  function loadModule(url){return import(url)}
+
+  async function loadEC(){
+    if(loaded.ec)return loaded.ec;if(window.echarts){loaded.ec=window.echarts;return loaded.ec}
+    for(var i=0;i<TIERS.length;i++){try{await loadScript(TIERS[i].ec);if(window.echarts){loaded.ec=window.echarts;loaded.ecTier=TIERS[i].n;return loaded.ec}}catch(e){}}
+    throw new Error('All CDNs failed for echarts');
+  }
+  async function loadMM(){
+    if(loaded.mm)return loaded.mm;
+    for(var i=0;i<TIERS.length;i++){try{var mod=await loadModule(TIERS[i].mm);loaded.mm=mod.default||mod;loaded.mmTier=TIERS[i].n;loaded.mm.initialize(Object.assign({startOnLoad:false},DECK_MERMAID));return loaded.mm}catch(e){}}
+    throw new Error('All CDNs failed for mermaid');
+  }
+
+  async function renderMM(){
+    var sources=document.querySelectorAll('.mermaid-source');
+    if(sources.length===0)return;
+    var m=await loadMM();
+    for(var i=0;i<sources.length;i++){
+      var node=sources[i];var code=node.textContent.trim();var id='mmd-'+i+'-'+Math.random().toString(36).slice(2,7);
+      try{var r=await m.render(id,code);var out=node.nextElementSibling;if(out&&out.classList.contains('mermaid-output'))out.innerHTML=r.svg;}catch(e){console.error('mermaid render:',e);node.style.display='block';}
+    }
+  }
+
+  async function renderEC(){
+    var targets=document.querySelectorAll('[data-echarts-option]');
+    if(targets.length===0)return;
+    var ec=await loadEC();
+    ec.registerTheme('deck',DECK_ECHARTS);
+    targets.forEach(function(el){
+      try{var opt=JSON.parse(el.getAttribute('data-echarts-option'));delete opt._meta;var inst=ec.init(el,'deck',{renderer:'svg'});inst.setOption(opt);new ResizeObserver(function(){inst.resize()}).observe(el);}
+      catch(e){console.error('echarts:',e);el.innerHTML='<pre style="color:#ff4444">'+e.message+'</pre>';}
+    });
+  }
+
+  Promise.allSettled([renderMM(),renderEC()]).then(function(rs){
+    var ok=rs.filter(function(r){return r.status==='fulfilled'}).length;
+    var fail=rs.length-ok;
+    var msg='✓ Rendered · mermaid['+(loaded.mmTier||'-')+'] · echarts['+(loaded.ecTier||'-')+']';
+    if(fail>0)msg+=' · '+fail+' failed (检查网络)';
+    status.textContent=msg;status.style.color=fail?'#ffaa00':'#44dd88';status.style.borderColor=fail?'#ffaa00':'#44dd88';
+  });
+})();
+</script>
+</body>
+</html>

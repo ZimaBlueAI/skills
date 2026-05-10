@@ -1,0 +1,51 @@
+ZimaBlueAI Agent Skills
+Copyright 2026 ZimaBlueAI (https://github.com/ZimaBlueAI)
+
+This product includes software developed by ZimaBlueAI and contributors.
+
+Licensed under the Apache License, Version 2.0 (the "License").
+You may obtain a copy of the License in the LICENSE file in the root of
+this repository, or at http://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------------------
+Trademark & Brand Notice
+------------------------------------------------------------------------
+
+"ZimaBlueAI", the ZimaBlueAI logo, and the names of individual skill
+suites distributed in this repository — including but not limited to
+"biz-decision-stack", "viz-deck", and "viz-charts" — are trademarks of
+ZimaBlueAI when used to identify the original suite as published in
+this repository.
+
+The Apache License 2.0 grants you broad rights to use, modify, and
+redistribute the source under its terms, BUT it does NOT grant you a
+license to use ZimaBlueAI's trademarks, trade names, or branding for
+your derivative works in a way that suggests endorsement or origin
+from ZimaBlueAI. If you fork and modify, please rename your derivative
+distribution.
+
+------------------------------------------------------------------------
+Third-Party Acknowledgements
+------------------------------------------------------------------------
+
+Conceptual inspiration (no source code reused, all implementations
+original):
+
+  * garrytan/gstack — multi-agent orchestration pattern
+    https://github.com/garrytan/gstack
+
+  * Lum1104/Understand-Anything — knowledge-graph visualization pattern
+    https://github.com/Lum1104/Understand-Anything
+
+Runtime / rendering dependencies (loaded via CDN at view time, not
+bundled):
+
+  * Mermaid           — MIT License — https://mermaid.js.org/
+  * Apache ECharts    — Apache 2.0  — https://echarts.apache.org/
+  * 3d-force-graph    — MIT License — https://github.com/vasturiano/3d-force-graph
+  * three.js          — MIT License — https://threejs.org/
+
+Each upstream project retains its own copyright and license. Users
+loading these libraries via the rendered HTML are subject to those
+upstream licenses. ZimaBlueAI does not redistribute these libraries
+within this repository.
