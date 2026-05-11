@@ -1,791 +1,808 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Skill 套件 · 安装与使用</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ZimaBlueAI Agent Skills · 安装与使用 v2.0</title>
+<meta name="description" content="biz-decision-stack · viz-deck · viz-charts 三件套的端到端安装、配置、使用与 huashu-design 桥接手册。" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0a0a0a; --bg-elev: #141414; --bg-hover: #1c1c1c;
-  --border: #2a2a2a; --border-strong: #3a3a3a;
-  --fg: #e8e8e8; --fg-dim: #888; --fg-faint: #555;
-  --accent: #d4ff00; --danger: #ff4444; --warn: #ffaa00; --ok: #44dd88;
-  --font-mono: 'JetBrains Mono', monospace;
-  --font-sans: 'Inter Tight', system-ui, sans-serif;
-  --font-serif: 'Newsreader', Georgia, serif;
+:root{
+  --bg:#030711;--bg-2:#07111f;
+  --panel:rgba(12,26,46,0.72);--panel-strong:rgba(16,36,62,0.92);
+  --line:rgba(151,209,255,0.16);--line-strong:rgba(151,209,255,0.34);
+  --text:#edf7ff;--muted:#a8bdd5;--faint:#688096;
+  --cyan:#42e8ff;--blue:#6ca5ff;--silver:#d8e8f4;--gold:#ffd987;
+  --green:#78f7c5;--red:#ff8c8c;--violet:#b893ff;
+  --shadow:0 28px 90px rgba(0,0,0,0.48);
+  --radius-xl:34px;--radius-lg:24px;--radius-md:16px;
+  --max:1200px;color-scheme:dark;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg); color: var(--fg);
-  font-family: var(--font-sans); font-size: 14px; line-height: 1.65;
-  padding: 56px 24px; min-height: 100vh;
-}
-.container { max-width: 920px; margin: 0 auto; }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;line-height:1.62;background:radial-gradient(circle at 18% 5%,rgba(66,232,255,0.2),transparent 32rem),radial-gradient(circle at 84% 12%,rgba(255,217,135,0.12),transparent 30rem),radial-gradient(circle at 45% 52%,rgba(108,165,255,0.12),transparent 36rem),linear-gradient(180deg,#02050c 0%,#06111f 48%,#02050c 100%);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-3;opacity:0.35;background-image:linear-gradient(rgba(151,209,255,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(151,209,255,0.045) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.25) 35%,rgba(0,0,0,0.1))}
+body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(120deg,transparent 0 20%,rgba(66,232,255,0.045) 38%,transparent 56% 100%),radial-gradient(circle at 50% 0%,rgba(255,255,255,0.06),transparent 38rem);animation:atmosphericSweep 18s linear infinite}
+@keyframes atmosphericSweep{from{transform:translate3d(-8%,0,0)}to{transform:translate3d(8%,0,0)}}
+a{color:inherit;text-decoration:none}
+a.inline-link{color:var(--cyan);border-bottom:1px solid rgba(66,232,255,0.3);transition:border-color 0.2s ease}
+a.inline-link:hover{border-bottom-color:var(--cyan)}
 
-header { border-bottom: 1px solid var(--border-strong); padding-bottom: 32px; margin-bottom: 56px; }
-header .meta {
-  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
-  text-transform: uppercase; letter-spacing: 0.12em;
-  display: flex; gap: 24px; margin-bottom: 20px; flex-wrap: wrap;
-}
-h1 {
-  font-family: var(--font-serif); font-size: 44px; font-weight: 600;
-  line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px;
-}
-.lead {
-  font-family: var(--font-serif); font-size: 19px; line-height: 1.55;
-  color: var(--fg); font-weight: 400; max-width: 700px;
-}
-.lead em { font-style: italic; color: var(--accent); font-weight: 600; }
+.skip-link{position:fixed;left:18px;top:18px;z-index:100;transform:translateY(-140%);padding:10px 14px;border-radius:999px;background:var(--cyan);color:#00121d;font-weight:700;transition:transform 0.2s ease}
+.skip-link:focus{transform:translateY(0)}
 
-section { margin-bottom: 56px; }
+.progress-line{position:fixed;top:0;left:0;z-index:80;width:100%;height:3px;background:rgba(255,255,255,0.08)}
+.progress-line span{display:block;width:0%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--gold));box-shadow:0 0 24px rgba(66,232,255,0.75);transition:width 0.1s ease}
 
-h2 {
-  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.18em;
-  color: var(--accent); padding-bottom: 8px;
-  border-bottom: 1px solid var(--border); margin-bottom: 20px;
-}
-h3 {
-  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--fg); margin: 32px 0 12px;
-}
-h4 {
-  font-size: 14px; font-weight: 600; color: var(--fg);
-  margin: 20px 0 8px;
-}
-p { margin-bottom: 12px; }
-p + p { margin-top: -4px; }
+.deck-nav{position:fixed;top:18px;left:50%;z-index:60;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:999px;border:1px solid var(--line);background:rgba(7,17,31,0.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:0.78rem;max-width:calc(100vw - 36px);overflow-x:auto}
+.deck-nav a{padding:6px 14px;border-radius:999px;color:var(--muted);transition:color 0.2s ease,background 0.2s ease;letter-spacing:0.05em;white-space:nowrap}
+.deck-nav a:hover{color:var(--text);background:rgba(66,232,255,0.08)}
+.deck-nav a.active{color:#00121d;background:var(--cyan);font-weight:600}
 
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+.section{width:min(var(--max),calc(100vw - 40px));margin:0 auto;padding:8rem 0 5rem;position:relative}
+.section-intro{max-width:780px;margin-bottom:3rem}
+.eyebrow{font-size:0.78rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:0.6rem}
+.kicker-num{font-size:3rem;font-weight:700;background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1;margin-bottom:0.4rem}
 
-code, kbd {
-  font-family: var(--font-mono); font-size: 0.88em;
-  background: var(--bg-elev); padding: 1px 6px;
-  border: 1px solid var(--border); color: var(--accent);
-}
-pre {
-  font-family: var(--font-mono); font-size: 12px;
-  background: var(--bg-elev); border: 1px solid var(--border);
-  padding: 14px 16px; margin: 12px 0;
-  overflow-x: auto; line-height: 1.55;
-  color: var(--fg);
-}
-pre code { background: none; border: none; padding: 0; color: var(--fg); }
-pre .c { color: var(--fg-dim); }
-pre .k { color: var(--accent); }
-pre .s { color: var(--ok); }
+h1{font-size:clamp(2.6rem,5vw,4rem);font-weight:800;line-height:1.06;letter-spacing:-0.01em;margin:0.4rem 0 1.2rem}
+h2{font-size:clamp(1.9rem,3vw,2.4rem);font-weight:700;line-height:1.18;letter-spacing:-0.005em;margin:0.4rem 0 0.8rem}
+h3{font-size:1.25rem;font-weight:600;margin:0 0 0.6rem;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:1.2rem 0 0.4rem;color:var(--text);letter-spacing:0.02em}
+p{margin:0 0 0.8rem;color:var(--muted)}
+.lead{font-size:1.05rem;color:var(--muted);max-width:720px}
+.headline-gradient{background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+strong{color:var(--text);font-weight:600}
+em{color:var(--gold);font-style:normal;font-weight:500}
+blockquote{margin:1.4rem 0;padding:1.2rem 1.6rem;border-left:3px solid var(--cyan);border-radius:0 var(--radius-md) var(--radius-md) 0;background:linear-gradient(90deg,rgba(66,232,255,0.08),transparent);color:var(--silver);font-size:1.05rem}
 
-ul, ol { padding-left: 22px; margin-bottom: 12px; }
-ul li, ol li { margin-bottom: 4px; }
+.panel{border:1px solid var(--line);border-radius:var(--radius-xl);background:linear-gradient(180deg,var(--panel-strong),var(--panel));box-shadow:var(--shadow);padding:2rem 2.2rem;position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,var(--line-strong),transparent 50%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.panel-sm{padding:1.4rem 1.6rem;border-radius:var(--radius-lg)}
+.panel h3{margin-top:0}
 
-table {
-  width: 100%; border-collapse: collapse; margin: 16px 0;
-  font-size: 13px;
-}
-th, td {
-  padding: 10px 14px; text-align: left;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-}
-th {
-  font-family: var(--font-mono); font-size: 10px;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--fg-dim); font-weight: 600;
-  border-bottom: 1px solid var(--border-strong);
-}
+.tag,.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--line-strong);background:rgba(12,26,46,0.6);font-size:0.78rem;color:var(--silver);margin:2px 4px 2px 0}
+.tag-gold{color:var(--gold);border-color:rgba(255,217,135,0.4)}
+.tag-cyan{color:var(--cyan);border-color:rgba(66,232,255,0.4)}
+.tag-violet{color:var(--violet);border-color:rgba(184,147,255,0.4)}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.8rem}
 
-.callout {
-  background: var(--bg-elev); border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  padding: 14px 18px; margin: 16px 0;
-  font-size: 13px;
-}
-.callout.warn { border-left-color: var(--warn); }
-.callout.danger { border-left-color: var(--danger); }
-.callout strong { color: var(--accent); }
-.callout.warn strong { color: var(--warn); }
-.callout.danger strong { color: var(--danger); }
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.status-done{background:var(--green);box-shadow:0 0 12px var(--green)}
+.status-new{background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.status-plan{background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.status-risk{background:var(--red);box-shadow:0 0 12px var(--red)}
 
-.skill-card {
-  background: var(--bg-elev); border: 1px solid var(--border);
-  padding: 18px 22px; margin-bottom: 12px;
-}
-.skill-card h4 {
-  font-family: var(--font-mono); font-size: 13px;
-  margin: 0 0 4px; color: var(--accent);
-}
-.skill-card .desc { color: var(--fg-dim); font-size: 13px; }
-.skill-card .stats {
-  font-family: var(--font-mono); font-size: 11px; color: var(--fg-faint);
-  margin-top: 10px; padding-top: 10px;
-  border-top: 1px dashed var(--border);
-  display: flex; gap: 18px; flex-wrap: wrap;
-}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.4rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
 
-.tree {
-  font-family: var(--font-mono); font-size: 12px;
-  background: var(--bg-elev); border: 1px solid var(--border);
-  padding: 16px 18px; line-height: 1.6;
-  white-space: pre; overflow-x: auto;
-  color: var(--fg-dim);
-}
-.tree b { color: var(--accent); font-weight: 500; }
-.tree i { color: var(--fg); font-style: normal; }
+.metric{display:flex;flex-direction:column;gap:0.4rem;padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
+.metric .label{font-size:0.78rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.12em}
+.metric .val{font-size:2.2rem;font-weight:700;line-height:1;background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.metric .delta{font-size:0.85rem;color:var(--muted)}
 
-.step {
-  display: grid; grid-template-columns: 36px 1fr;
-  gap: 16px; margin-bottom: 24px;
-  align-items: start;
-}
-.step-num {
-  font-family: var(--font-mono); font-size: 14px; font-weight: 700;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  width: 36px; height: 36px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.step-body h3 { margin-top: 0; }
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}body::after{animation:none}}
 
-.toc {
-  background: var(--bg-elev); border: 1px solid var(--border);
-  padding: 18px 22px; margin-bottom: 40px;
-}
-.toc h3 {
-  font-size: 11px; margin: 0 0 12px;
-  color: var(--fg-dim);
-}
-.toc ol {
-  list-style: none; padding: 0; margin: 0;
-  font-family: var(--font-mono); font-size: 12px;
-}
-.toc ol li { margin-bottom: 6px; }
-.toc ol li a { color: var(--fg); }
-.toc ol li a:hover { color: var(--accent); }
-.toc ol li::before {
-  content: attr(data-num);
-  color: var(--accent);
-  font-weight: 700;
-  margin-right: 12px;
-  font-variant-numeric: tabular-nums;
-}
+table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:0.92rem}
+th,td{text-align:left;padding:0.85rem 0.9rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:0.74rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--cyan);border-bottom:1px solid var(--line-strong)}
+td{color:var(--muted)}
+td strong{color:var(--text)}
+td code{font-size:0.85rem}
 
-.kbd {
-  display: inline-block;
-  font-family: var(--font-mono); font-size: 11px;
-  border: 1px solid var(--border-strong);
-  background: var(--bg);
-  padding: 1px 6px;
-  color: var(--fg);
-  text-transform: none;
-}
+ol,ul{padding-left:1.2rem;color:var(--muted)}
+li{margin-bottom:0.4rem}
+li strong{color:var(--text)}
 
-footer {
-  margin-top: 80px; padding-top: 24px;
-  border-top: 1px solid var(--border-strong);
-  color: var(--fg-faint); font-size: 12px;
-  font-family: var(--font-mono);
-  text-transform: uppercase; letter-spacing: 0.1em;
+code,pre{font-family:"JetBrains Mono","SF Mono","Consolas",monospace;font-size:0.86rem;color:var(--silver)}
+pre{padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-md);background:rgba(2,7,18,0.65);overflow-x:auto;line-height:1.55;white-space:pre;margin:1rem 0}
+code:not(pre code){padding:1px 7px;border-radius:5px;background:rgba(66,232,255,0.1);color:var(--cyan);font-size:0.85em}
+
+.spine{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;margin-top:1.4rem;background:var(--panel)}
+.spine-step{padding:1.4rem 1.2rem;border-right:1px solid var(--line);position:relative}
+.spine-step:last-child{border-right:none}
+.spine-step::after{content:"→";position:absolute;right:-0.6rem;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:1.4rem;font-weight:700;background:var(--bg);padding:0 0.3rem;z-index:2}
+.spine-step:last-child::after{display:none}
+.spine-step h3{margin-bottom:0.4rem;font-size:1.05rem}
+.spine-step .step-num{font-family:"JetBrains Mono",monospace;font-size:0.74rem;color:var(--cyan);letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:0.3rem}
+.spine-step p{font-size:0.88rem;margin:0;color:var(--muted)}
+@media (max-width:880px){.spine-step{border-right:none;border-bottom:1px solid var(--line)}.spine-step::after{content:"↓";right:50%;top:auto;bottom:-0.6rem;transform:translateX(50%)}.spine-step:last-child{border-bottom:none}}
+
+.mode-card{padding:1.6rem 1.8rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);position:relative;overflow:hidden}
+.mode-card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:var(--cyan)}
+.mode-card.prototype::before{background:var(--violet)}
+.mode-card.slide::before{background:var(--gold)}
+.mode-card.motion::before{background:var(--green)}
+.mode-card h3{margin-top:0;display:flex;align-items:center;gap:0.6rem;justify-content:space-between}
+.mode-card .mode-num{font-family:"JetBrains Mono",monospace;font-size:0.74rem;color:var(--faint);letter-spacing:0.12em}
+.mode-card ul{margin-top:0.8rem}
+.mode-card .triggers{margin-top:0.8rem;font-size:0.88rem;color:var(--silver);padding:0.7rem 0.9rem;background:rgba(66,232,255,0.05);border:1px solid var(--line);border-radius:var(--radius-md)}
+.mode-card .triggers code{color:var(--gold);background:transparent;padding:0}
+
+.callout{padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-md);background:rgba(255,217,135,0.05);border-left:3px solid var(--gold);margin:1.4rem 0}
+.callout.info{background:rgba(66,232,255,0.05);border-left-color:var(--cyan)}
+.callout.warn{background:rgba(255,140,140,0.05);border-left-color:var(--red)}
+.callout h4{margin-top:0;color:var(--gold);font-size:0.95rem;letter-spacing:0.04em}
+.callout.info h4{color:var(--cyan)}
+.callout.warn h4{color:var(--red)}
+.callout p:last-child,.callout ul:last-child{margin-bottom:0}
+
+.sample-card{display:grid;grid-template-columns:1fr;gap:0.8rem;padding:1.4rem 1.6rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);transition:border-color 0.2s ease,transform 0.2s ease}
+.sample-card:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+.sample-card .sample-meta{display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:0.74rem;color:var(--faint);letter-spacing:0.1em;text-transform:uppercase}
+.sample-card .sample-meta b{color:var(--cyan);font-weight:600}
+.sample-card h3{margin:0;font-size:1.05rem}
+.sample-card p{margin:0;font-size:0.9rem}
+.sample-card .sample-files{display:flex;gap:8px;flex-wrap:wrap;margin-top:0.4rem}
+.sample-card .sample-files a{padding:4px 10px;border-radius:6px;background:rgba(66,232,255,0.1);color:var(--cyan);font-size:0.8rem;font-family:"JetBrains Mono",monospace;border:1px solid rgba(66,232,255,0.2);transition:background 0.2s ease}
+.sample-card .sample-files a:hover{background:rgba(66,232,255,0.2)}
+
+.section-end{margin-top:5rem;padding-top:2rem;border-top:1px solid var(--line);color:var(--faint);font-size:0.85rem}
+footer{padding:5rem 0 4rem;text-align:center;color:var(--faint);font-size:0.85rem}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--cyan)}
+
+@media (max-width:720px){
+  .section{padding:5rem 0 3rem}
+  .deck-nav{display:none}
+  .kicker-num{font-size:2.2rem}
+  h1{font-size:2.2rem}
+  h2{font-size:1.6rem}
+  .panel{padding:1.4rem 1.4rem;border-radius:var(--radius-lg)}
+  pre{font-size:0.78rem;padding:1rem}
 }
 </style>
 </head>
 <body>
-<div class="container">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="progress-line" aria-hidden="true"><span id="progress"></span></div>
 
-<header>
-  <div class="meta">
-    <span>SKILL SUITE</span>
-    <span>INSTALL · CONFIG · USAGE</span>
-    <span>2026-05-10</span>
-    <span>REV 1.0</span>
-  </div>
-  <h1>商业决策报告 + 可视化 + 3D 知识图谱</h1>
-  <p class="lead">三个 Claude Code skill：<em>biz-decision-stack</em> 把商业问题拆成 6 个角色 6 份报告，<em>viz-deck</em> 产出讲演风深度报告，<em>viz-charts</em> 提供图表与 3D KG 能力。本文档讲清楚怎么装、怎么配、怎么用。</p>
-</header>
-
-<nav class="toc">
-  <h3>本文档目录</h3>
-  <ol>
-    <li data-num="01"><a href="#overview">三个 skill 是什么、谁负责什么</a></li>
-    <li data-num="02"><a href="#prereq">前置要求</a></li>
-    <li data-num="03"><a href="#install">安装</a></li>
-    <li data-num="04"><a href="#config">配置</a></li>
-    <li data-num="05"><a href="#usage-biz">使用 biz-decision-stack</a></li>
-    <li data-num="06"><a href="#usage-deck">使用 viz-deck</a></li>
-    <li data-num="07"><a href="#usage-charts">使用 viz-charts（图表 + 3D KG）</a></li>
-    <li data-num="08"><a href="#workflow">三 skill 协同工作流</a></li>
-    <li data-num="09"><a href="#troubleshoot">疑难排查</a></li>
-    <li data-num="10"><a href="#maint">升级与维护</a></li>
-  </ol>
+<nav class="deck-nav" aria-label="章节导航">
+  <a href="#opening">Overview</a>
+  <a href="#system">三 skill 体系</a>
+  <a href="#install">安装</a>
+  <a href="#matrix">依赖矩阵</a>
+  <a href="#modes">v2 四模产出</a>
+  <a href="#bridge">huashu 桥接</a>
+  <a href="#samples">样例</a>
+  <a href="#workflow">协同工作流</a>
+  <a href="#troubleshoot">疑难排查</a>
 </nav>
 
-<!-- ==================== 01 概览 ==================== -->
-<section id="overview">
-<h2>01 · 三个 skill 是什么、谁负责什么</h2>
+<main id="main">
 
-<div class="skill-card">
-  <h4>biz-decision-stack</h4>
-  <div class="desc">商业决策角色思考链 + 终端风 HTML 报告生成器。6 个 subagent（Board / CEO / Chief Architect / PM / Dev-Test / Acceptance-Retro）+ 1 个 skill（biz-html-viz）。任何商业问题，6 个角色各产一份立场报告。</div>
-  <div class="stats">
-    <span>6 subagents</span><span>7 HTML 模板</span><span>终端风（黑底酸黄）</span><span>57KB zip</span>
+<section class="section" id="opening">
+  <div class="reveal" style="padding-top:5rem">
+    <span class="eyebrow">Install Guide · v2.0 · 2026-05-11</span>
+    <h1><span class="headline-gradient">ZimaBlueAI Agent Skills</span><br/>从安装到上手，30 分钟把决策链 / 讲演 / 视频跑通</h1>
+    <p class="lead" style="margin-top:1.4rem;font-size:1.15rem">三个 Claude Code skill 的统一手册——<strong>biz-decision-stack</strong> 决策链、<strong>viz-deck</strong> 四模讲演产出、<strong>viz-charts</strong> 图表与 3D 知识图谱，配合可选的 <strong>huashu-design</strong> 软桥接解锁 MP4/PPTX 导出与 5 维专家评审。</p>
   </div>
-</div>
-
-<div class="skill-card">
-  <h4>viz-deck</h4>
-  <div class="desc">讲演风深度报告 skill。3 通用模板（阶段汇报 / 架构深度 / 竞品景观）。深空玻璃拟态、青蓝金配色、Inter 字体、含微动效。适合客户演示、投资人路演。</div>
-  <div class="stats">
-    <span>3 deck 模板</span><span>1 design system</span><span>讲演风（深空青蓝金）</span><span>35KB zip</span>
+  <div class="grid-4 reveal" style="margin-top:3.2rem">
+    <div class="metric"><span class="label">SKILLS</span><span class="val">3</span><span class="delta">+ 1 软桥接</span></div>
+    <div class="metric"><span class="label">SUBAGENTS</span><span class="val">7</span><span class="delta">v2 新增 design-critic</span></div>
+    <div class="metric"><span class="label">输出模式</span><span class="val">8</span><span class="delta">HTML / PPTX / MP4 / GIF / PDF / SVG / 3D KG / 评审</span></div>
+    <div class="metric"><span class="label">总包体</span><span class="val">280<span style="font-size:1rem">KB</span></span><span class="delta">三 zip 合计</span></div>
   </div>
-</div>
-
-<div class="skill-card">
-  <h4>viz-charts</h4>
-  <div class="desc">图表 + 3D 知识图谱能力 skill。被前两个 skill 调用。覆盖 11 Mermaid + 25 ECharts + 5 自研轻量组件（KPI / sparkline / gauge / progress / tag-cloud）+ 3 个 3D KG viewer + 2 个 builder（代码 KG / 文档 KG）。双模（inline + offline）+ 双主题（terminal + deck）。</div>
-  <div class="stats">
-    <span>63 文件</span><span>4 demo</span><span>双模双主题</span><span>150KB zip</span>
-  </div>
-</div>
-
-<h3>三者的依赖关系</h3>
-<pre>┌──────────────────────┐  ┌──────────────────┐
-│  biz-decision-stack  │  │     viz-deck     │       ← 报告生产 skill
-│  (终端风 · 决策套件)   │  │  (讲演风 · 演示)  │
-└──────────┬───────────┘  └────────┬─────────┘
-           │                       │
-           │   need 图表/KG?       │
-           ▼                       ▼
-        ┌─────────────────────────────┐
-        │        viz-charts            │           ← 能力 skill（被调用）
-        │  (图表 + 3D KG · 双主题)     │
-        └─────────────────────────────┘</pre>
-
-<div class="callout">
-  <strong>关键判断：</strong> 三个 skill <em>相互独立</em> — 你可以只装其中任意一个或两个。但 <code>biz-decision-stack</code> 和 <code>viz-deck</code> 在需要嵌图表时会调用 <code>viz-charts</code>。如果只装报告 skill 不装 viz-charts，报告里需要图的地方会用纯文字或 ASCII 占位。
-</div>
 </section>
 
-<!-- ==================== 02 前置要求 ==================== -->
-<section id="prereq">
-<h2>02 · 前置要求</h2>
-
-<table>
-  <thead>
-    <tr><th>组件</th><th>最低版本</th><th>用途</th><th>必装？</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>Claude Code CLI</td><td>最新版</td><td>跑 skill 的载体</td><td>✓ 必装</td></tr>
-    <tr><td>Node.js</td><td>18.0+</td><td>viz-charts 离线渲染、3D KG builders</td><td>仅 viz-charts 需要</td></tr>
-    <tr><td>npm</td><td>9.0+</td><td>装 echarts / mermaid 离线包</td><td>仅 viz-charts 离线模式</td></tr>
-    <tr><td>Chromium</td><td>—</td><td>Mermaid 离线 SVG 渲染</td><td>仅 Mermaid 离线模式（首次 <code>npx playwright install chromium</code>）</td></tr>
-    <tr><td>Python 3</td><td>3.8+</td><td>3D KG 数据填充脚本（可选）</td><td>用模板替换辅助脚本时</td></tr>
-    <tr><td>现代浏览器</td><td>Chrome 90+ / Safari 14+ / Firefox 90+</td><td>预览报告、3D KG 交互</td><td>用户端（看报告时）</td></tr>
-  </tbody>
-</table>
-
-<h3>各模式的依赖矩阵</h3>
-<table>
-  <thead><tr><th>使用模式</th><th>需要</th><th>不需要</th></tr></thead>
-  <tbody>
-    <tr><td>biz-decision-stack 生成报告</td><td>Claude Code</td><td>Node.js 不需</td></tr>
-    <tr><td>viz-deck 生成报告</td><td>Claude Code</td><td>Node.js 不需</td></tr>
-    <tr><td>viz-charts inline 模式</td><td>用户浏览器联网（CDN）</td><td>Node.js 不需</td></tr>
-    <tr><td>viz-charts 离线 ECharts SVG</td><td>Node 18+ <kbd class="kbd">npm i echarts</kbd></td><td>Chromium 不需</td></tr>
-    <tr><td>viz-charts 离线 Mermaid SVG</td><td>Node + Chromium</td><td>—</td></tr>
-    <tr><td>3D KG builder 跑数据</td><td>Node 18+（无外部依赖）</td><td>—</td></tr>
-    <tr><td>3D KG 浏览器渲染</td><td>WebGL + 联网（CDN）</td><td>—</td></tr>
-  </tbody>
-</table>
-</section>
-
-<!-- ==================== 03 安装 ==================== -->
-<section id="install">
-<h2>03 · 安装</h2>
-
-<div class="step">
-  <div class="step-num">1</div>
-  <div class="step-body">
-    <h3>解压三个 zip 到项目根</h3>
-    <p>每个 zip 内部都是 <code>.claude/</code> 结构，直接合并到你的项目根目录。</p>
-<pre><span class="c"># 假设三个 zip 都在 ~/Downloads</span>
-<span class="k">cd</span> /path/to/your/project
-
-<span class="c"># biz-decision-stack 含 6 subagents + 1 skill</span>
-<span class="k">unzip</span> -o ~/Downloads/biz-decision-stack.zip
-
-<span class="c"># viz-deck（讲演风报告 skill）</span>
-<span class="k">unzip</span> -o ~/Downloads/viz-deck.zip
-
-<span class="c"># viz-charts（图表 + 3D KG 能力 skill）</span>
-<span class="k">unzip</span> -o ~/Downloads/viz-charts.zip</pre>
-    <p>解压后目录结构应该长这样：</p>
-<pre class="tree"><b>.claude/</b>
-├── <b>agents/</b>
-│   ├── <i>00-all-hands-orchestrator.md</i>
-│   ├── <i>01-board-advisor.md</i>
-│   ├── <i>02-ceo-decision.md</i>
-│   ├── <i>03-chief-architect.md</i>
-│   ├── <i>04-product-manager.md</i>
-│   ├── <i>05-dev-test-lead.md</i>
-│   └── <i>06-acceptance-retro.md</i>
-└── <b>skills/</b>
-    ├── <b>biz-html-viz/</b>      <span class="c"># biz-decision-stack 的 HTML 输出能力</span>
-    ├── <b>viz-deck/</b>           <span class="c"># 讲演风报告</span>
-    └── <b>viz-charts/</b>         <span class="c"># 图表 + 3D KG（被前两个调用）</span></pre>
+<section class="section" id="system">
+  <div class="section-intro reveal">
+    <span class="kicker-num">01</span>
+    <span class="eyebrow">System</span>
+    <h2>三个 skill，各自独立，按需取用</h2>
+    <p class="lead">每个 skill 是一份 .zip 归档，解开放到 <code>.claude/</code> 目录后即被 Claude Code 识别。skill 之间无强依赖——可只装一个、两个、或三个。</p>
   </div>
-</div>
 
-<div class="step">
-  <div class="step-num">2</div>
-  <div class="step-body">
-    <h3>验证 skill 能被 Claude Code 看见</h3>
-<pre><span class="k">claude</span> /skills</pre>
-    <p>应该看到列表里有：<code>biz-html-viz</code>、<code>viz-deck</code>、<code>viz-charts</code>。subagents 用 <code>/agents</code> 命令查看（如果你的 Claude Code 版本支持 subagent 命令）。</p>
-  </div>
-</div>
+  <div class="grid-3">
+    <div class="panel reveal">
+      <h3><span class="status-dot status-done"></span> biz-decision-stack</h3>
+      <p style="font-size:0.92rem">7 subagents（投资人 → CEO → 架构 → MRD → 交付 → 验收 → <strong style="color:var(--gold)">评审 v2</strong>）+ 1 skill。<strong>终端风</strong>：黑底 + 酸黄 + 等宽 + 零动效。</p>
+      <h4>输出模板</h4>
+      <ul style="font-size:0.9rem">
+        <li><code>board-brief</code> · <code>ceo-canvas</code> · <code>tech-roadmap</code></li>
+        <li><code>mrd-report</code> · <code>project-board</code> · <code>dev-report</code></li>
+        <li><code>retro-report</code> · <code>index</code></li>
+        <li><strong style="color:var(--gold)">design-critique · v2</strong></li>
+      </ul>
+      <div class="tag-row"><span class="tag tag-cyan">62 KB</span><span class="tag">terminal 主题</span><span class="tag">零动效</span></div>
+    </div>
 
-<div class="step">
-  <div class="step-num">3</div>
-  <div class="step-body">
-    <h3>（可选）装 viz-charts 离线渲染依赖</h3>
-    <p>如果你需要把 Mermaid / ECharts 渲染成静态 SVG（用于打印归档、邮件附件、完全离线展示），需要装 Node 依赖：</p>
-<pre><span class="k">cd</span> .claude/skills/viz-charts/renderers/node
-<span class="k">npm</span> install --silent
+    <div class="panel reveal">
+      <h3><span class="status-dot status-done"></span> viz-deck</h3>
+      <p style="font-size:0.92rem"><strong style="color:var(--gold)">v2 从 1 模产出扩展到 4 模产出</strong>。<strong>讲演风</strong>：深空蓝紫青 + Inter + 微动效，支持 prefers-reduced-motion 降级。</p>
+      <h4>4 模产出</h4>
+      <ul style="font-size:0.9rem">
+        <li><strong>keynote-report</strong> · 阶段 / 架构 / 竞品</li>
+        <li><strong style="color:var(--violet)">prototype · v2</strong> · iOS / 安卓 / macOS / 浏览器原型</li>
+        <li><strong style="color:var(--gold)">slide-deck · v2</strong> · 幻灯片 + 可编辑 PPTX</li>
+        <li><strong style="color:var(--green)">motion-stage · v2</strong> · 动画 + MP4/GIF/BGM</li>
+      </ul>
+      <div class="tag-row"><span class="tag tag-cyan">65 KB</span><span class="tag">deck 主题</span><span class="tag tag-gold">软桥 huashu</span></div>
+    </div>
 
-<span class="c"># Mermaid 离线渲染需要 chromium（仅首次）</span>
-<span class="k">npx</span> playwright install chromium</pre>
-    <div class="callout warn">
-      <strong>说明：</strong> 如果跳过 chromium 安装，Mermaid 离线渲染会自动走 placeholder SVG（含错误提示），不会报错中断。ECharts 离线渲染不需要浏览器（用 SSR）。
+    <div class="panel reveal">
+      <h3><span class="status-dot status-done"></span> viz-charts</h3>
+      <p style="font-size:0.92rem">被前两个 skill 调用的能力 skill。<strong>v2 从 4 类扩展到 5 类视觉表达</strong>，新增 motion 模式。双主题：terminal / deck。</p>
+      <h4>5 类视觉</h4>
+      <ul style="font-size:0.9rem">
+        <li>Mermaid 11 种流程/关系图</li>
+        <li>ECharts 25+ 种数据图表</li>
+        <li>SVG 轻量组件 · KPI / sparkline / gauge / progress / tag-cloud</li>
+        <li>3D 知识图谱 · code-kg / doc-kg</li>
+        <li><strong style="color:var(--green)">Motion 视频 · v2</strong> · ECharts reveal / 时间扫过 / KG 轨道</li>
+      </ul>
+      <div class="tag-row"><span class="tag tag-cyan">153 KB</span><span class="tag">双主题</span></div>
     </div>
   </div>
-</div>
 
-<div class="step">
-  <div class="step-num">4</div>
-  <div class="step-body">
-    <h3>（可选）跑通 4 个 demo 验证</h3>
-    <p>双击打开任意一个 demo HTML：</p>
-    <ul>
-      <li><code>demo-terminal.html</code> — 终端风全组件演示</li>
-      <li><code>demo-deck.html</code> — 讲演风全组件演示</li>
-      <li><code>demo-3d-doc-kg.html</code> — 3D 文档 KG（92 节点）</li>
-      <li><code>demo-3d-code-kg.html</code> — 3D 代码 KG（80 节点）</li>
-    </ul>
-    <p>能看到图表渲染、3D KG 可拖动旋转点击高亮，则全部装好。</p>
+  <h4 style="margin-top:3rem">依赖关系</h4>
+  <div class="spine reveal">
+    <div class="spine-step">
+      <span class="step-num">报告类</span>
+      <h3>biz-decision-stack</h3>
+      <p>决策链终端风报告</p>
+    </div>
+    <div class="spine-step">
+      <span class="step-num">报告类</span>
+      <h3>viz-deck</h3>
+      <p>讲演风四模产出</p>
+    </div>
+    <div class="spine-step">
+      <span class="step-num">能力类</span>
+      <h3>viz-charts</h3>
+      <p>被前两者按需调用</p>
+    </div>
+    <div class="spine-step">
+      <span class="step-num">软桥接</span>
+      <h3>huashu-design</h3>
+      <p>可选 · 解锁 v2 高级模式</p>
+    </div>
   </div>
-</div>
 </section>
 
-<!-- ==================== 04 配置 ==================== -->
-<section id="config">
-<h2>04 · 配置</h2>
-
-<h3>无需配置即可用</h3>
-<p>三个 skill 都是<em>开箱即用</em>，不需要环境变量、不需要 API key、不需要数据库。Claude Code 装好、skill 解压到位，就能用。</p>
-
-<h3>可选配置：CDN self-host</h3>
-<p>viz-charts 默认从 jsdelivr → unpkg 加载 mermaid / echarts / 3d-force-graph。如果你的环境断外网，可以 self-host 这几个库：</p>
-<pre><span class="c"># 1. 下载需要的库到本地</span>
-<span class="k">mkdir</span> -p .claude/skills/viz-charts/vendor/cdn-mirror
-<span class="k">cd</span> .claude/skills/viz-charts/vendor/cdn-mirror
-
-<span class="k">wget</span> https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js
-<span class="k">wget</span> https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs
-<span class="k">wget</span> https://cdn.jsdelivr.net/npm/3d-force-graph@1.74.0/dist/3d-force-graph.min.js
-
-<span class="c"># 2. 在生成的报告 HTML 里设全局变量指向本地路径</span>
-<span class="c"># 在 cdn-loader 加载之前加：</span>
-&lt;script&gt;window.VIZ_CHARTS_SELFHOST_BASE = './vendor/cdn-mirror';&lt;/script&gt;</pre>
-<p>cdn-loader 会优先尝试 self-host 路径，失败再走 jsdelivr/unpkg。</p>
-
-<h3>可选配置：默认主题</h3>
-<p>每个 skill 有自己的固定主题（biz-html-viz → terminal · viz-deck → deck），不需要改。如果想强制让某个 deck 报告用 terminal 主题：直接在 viz-deck 模板的 head 里替换 CSS 变量值即可，但<em>不建议</em>这么做——主题与排版语言是配套的。</p>
-</section>
-
-<!-- ==================== 05 使用 biz-decision-stack ==================== -->
-<section id="usage-biz">
-<h2>05 · 使用 biz-decision-stack</h2>
-
-<h3>触发方式</h3>
-<p>三种方式之一：</p>
-<ol>
-  <li><strong>显式调用 orchestrator</strong>：让 Claude 跑 <code>00-all-hands-orchestrator</code> subagent，自动按顺序调度其他 6 个角色。</li>
-  <li><strong>单点调用某角色</strong>：例如直接说"用 ceo-decision 视角分析这个问题"，只跑一个角色。</li>
-  <li><strong>关键词触发</strong>：说"做一份董事会简报 / CEO 决策画布 / 技术路线图 / MRD / 项目看板 / 验收复盘"，对应模板会被触发。</li>
-</ol>
-
-<h3>典型用法 — 完整决策流</h3>
-<pre><span class="c"># 在 Claude Code 会话里：</span>
-我要决策是否上线 Mingjing 的修仙境界系统。请用 all-hands 流程
-完整跑一遍：Board → CEO → Architect → PM → Dev-Test → Acceptance。
-每个角色独立写一份 HTML 报告。</pre>
-<p>Claude 会按顺序：</p>
-<ol>
-  <li>Board Advisor 写战略立场（董事会简报，3 个备选 + 推荐 + 风险）</li>
-  <li>CEO Decision 写决策画布（CEO 视角拍板 + 资源/时间/优先级）</li>
-  <li>Chief Architect 写技术路线图（合并 CTO/CAIO/CAO 三视角）</li>
-  <li>Product Manager 写 MRD + 交付路径</li>
-  <li>Dev-Test Lead 写 SD（系统设计）+ TD（测试设计）</li>
-  <li>Acceptance-Retro 写验收清单 + 复盘框架</li>
-</ol>
-<p>每份报告是独立 HTML，终端风（黑底酸黄）。文件名形如 <code>report-board-brief-20260510.html</code>。</p>
-
-<h3>典型用法 — 单角色快速产出</h3>
-<pre>用 board-advisor 视角，给我写一份关于"是否引入第二个云厂商"的董事会简报。</pre>
-<p>只产一份 HTML，比完整流程快 6 倍。</p>
-
-<h3>7 个 HTML 模板速查</h3>
-<table>
-  <thead><tr><th>模板</th><th>用于</th><th>关键章节</th></tr></thead>
-  <tbody>
-    <tr><td><code>board-brief.html</code></td><td>董事会简报</td><td>立场 + 3 备选 + 推荐 + 风险表</td></tr>
-    <tr><td><code>ceo-canvas.html</code></td><td>CEO 决策画布</td><td>问题 + 假设 + 决策 + 资源 + KPI</td></tr>
-    <tr><td><code>tech-roadmap.html</code></td><td>技术路线图</td><td>3 季度路线 + 架构演进 + 风险</td></tr>
-    <tr><td><code>mrd-report.html</code></td><td>MRD（市场需求文档）</td><td>痛点 + 用户画像 + 功能清单 + 验收</td></tr>
-    <tr><td><code>project-board.html</code></td><td>项目看板</td><td>里程碑 + 任务 + 状态 + 阻塞</td></tr>
-    <tr><td><code>dev-report.html</code></td><td>开发/测试报告</td><td>SD + TD + 覆盖率 + 风险评级</td></tr>
-    <tr><td><code>retro-report.html</code></td><td>验收复盘</td><td>事实 + 教训 + 行动项 + 制度沉淀</td></tr>
-  </tbody>
-</table>
-
-<h3>样本预览</h3>
-<p>已交付的 <code>sample-board-brief.html</code> 是用 Mingjing 项目真实数据做的样本。</p>
-</section>
-
-<!-- ==================== 06 使用 viz-deck ==================== -->
-<section id="usage-deck">
-<h2>06 · 使用 viz-deck</h2>
-
-<h3>触发方式</h3>
-<ol>
-  <li>关键词触发："做一份 deck / 讲演 / 演示 / 阶段汇报 / 架构深度报告 / 竞品景观分析"</li>
-  <li>显式指定模板：<code>用 viz-deck 的 stage-report 模板写 ...</code></li>
-</ol>
-
-<h3>3 个模板</h3>
-<table>
-  <thead><tr><th>模板</th><th>适合场景</th><th>关键能力</th></tr></thead>
-  <tbody>
-    <tr>
-      <td><code>stage-report.html</code></td>
-      <td>项目阶段汇报、季度成果展示</td>
-      <td>章节四件套（eyebrow + kicker-num + h2 + lead）+ KPI 网格 + 时间线 + 风险象限</td>
-    </tr>
-    <tr>
-      <td><code>architecture-deep.html</code></td>
-      <td>技术架构深度讲解、客户技术方案</td>
-      <td>架构图 + 模块卡片 + 数据流 + 决策日志（ADR）+ 性能/可用性指标</td>
-    </tr>
-    <tr>
-      <td><code>competitive-landscape.html</code></td>
-      <td>竞品分析、市场地图、投融对话</td>
-      <td>2x2 象限 + 雷达 + 能力对比表 + Tier 1/2/3 调研流程指引</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3>典型用法</h3>
-<pre><span class="c"># 阶段汇报</span>
-用 viz-deck 的 stage-report 模板，给 Mingjing 项目写一份 v0.3
-里程碑汇报。包含三个核心 KPI（用户数、留存、核心功能完成度）、
-关键决策时间线、下季度风险。
-
-<span class="c"># 架构深度</span>
-用 architecture-deep 模板写 OpenClaw 的 Memory Spine 架构详解，
-包含模块图、数据流、3 个 ADR、性能基线。
-
-<span class="c"># 竞品景观</span>
-用 competitive-landscape 模板分析 AI 编程助手赛道。先按 research-playbook
-跑 Tier 1 调研（公开渠道穷尽），再生成报告。</pre>
-
-<h3>research-playbook 是什么</h3>
-<p><code>references/research-playbook.md</code> 是竞品调研的<em>方法论指引</em>：</p>
-<ul>
-  <li><strong>Tier 1</strong>：用户没给名单 → AI 从赛道全景挖掘 + 公开渠道扫描</li>
-  <li><strong>Tier 2</strong>：用户给了名单 → 按名单深挖每家</li>
-  <li><strong>Tier 3</strong>：用户给了 git URL → 直接读代码 + 文档分析</li>
-</ul>
-<p>Claude 会自动判断 Tier 并按方法论执行。</p>
-
-<h3>design-system-deck.md 是什么</h3>
-<p>从 Octarus 真实样本提炼的设计系统：CSS 变量、版面网格、字号阶、动效曲线、章节结构。是讲演风的<em>权威定义</em>，模板的所有视觉风格都基于它。</p>
-</section>
-
-<!-- ==================== 07 使用 viz-charts ==================== -->
-<section id="usage-charts">
-<h2>07 · 使用 viz-charts（图表 + 3D KG）</h2>
-
-<h3>四类视觉表达</h3>
-<table>
-  <thead><tr><th>类型</th><th>数量</th><th>用什么</th><th>何时用</th></tr></thead>
-  <tbody>
-    <tr><td>Mermaid 流程/关系图</td><td>11</td><td><code>templates/mermaid/*.mmd</code></td><td>架构图、时序、状态机、Gantt、Mindmap…</td></tr>
-    <tr><td>ECharts 数据图表</td><td>25</td><td><code>templates/echarts/*.json</code></td><td>折线、柱、饼、雷达、热力、桑基、漏斗…</td></tr>
-    <tr><td>自研轻量组件</td><td>5</td><td><code>components/*</code></td><td>KPI 大数字、sparkline、gauge、progress、tag-cloud</td></tr>
-    <tr><td>3D 知识图谱</td><td>3 viewer</td><td><code>templates/kg3d/*.html</code></td><td>代码结构、文档概念、通用关系网络</td></tr>
-  </tbody>
-</table>
-
-<h3>三步选图</h3>
-<ol>
-  <li>读 <code>references/decision-tree.md</code> 选类型（数据形态 → 图表类型）</li>
-  <li>读 <code>references/chart-cookbook.md</code> 拿数据契约（每种图的 JSON 怎么填）</li>
-  <li>选主题（biz-decision-stack 报告 → terminal · viz-deck 报告 → deck）</li>
-</ol>
-
-<h3>用法 1 · 让 Claude 直接嵌入图表</h3>
-<pre>报告里有 Q1-Q4 的营收数据，用 ECharts line-trend 模板嵌一张趋势图，
-深空主题。同时旁边放 3 个 KPI 大数字（YTD 总营收、MoM 增速、毛利率）。</pre>
-<p>Claude 会读 chart-cookbook 找模板，按数据契约填 <code>data-echarts-option</code>，并在报告 head 内联 cdn-loader。</p>
-
-<h3>用法 2 · 离线渲染图表为 SVG（用于打印归档）</h3>
-<pre><span class="k">cd</span> .claude/skills/viz-charts/renderers/node
-
-<span class="c"># 单图</span>
-<span class="k">node</span> render-mermaid.mjs --input arch.mmd --output arch.svg --theme terminal
-<span class="k">node</span> render-echarts.mjs --input trend.json --output trend.svg --theme deck
-
-<span class="c"># 批量（按扩展名自动分发）</span>
-<span class="k">node</span> batch.mjs \
-  --input-dir ../../../report-charts \
-  --output-dir ../../../report-svgs \
-  --theme terminal</pre>
-
-<h3>用法 3 · 生成 3D 代码知识图谱</h3>
-<p>把任意 git repo 抽成可交互 3D 图。支持 JS/TS/Go/Python/Rust。</p>
-<pre><span class="c"># 1. 跑 builder 抽数据</span>
-<span class="k">node</span> .claude/skills/viz-charts/builders/code-kg.mjs \
-  --repo /path/to/your/project \
-  --output project-kg.json \
-  --group-by dir              <span class="c"># 或 language / depth</span>
-
-<span class="c"># 2. 把数据填进 viewer 模板（用 Python 一键脚本）</span>
-<span class="k">python3</span> -c "
-import json
-viewer = open('.claude/skills/viz-charts/templates/kg3d/code-graph.html').read()
-data   = json.dumps(json.load(open('project-kg.json')), ensure_ascii=False, indent=2)
-out = (viewer
-  .replace('{{TITLE}}', 'My Project')
-  .replace('{{SUBTITLE}}', 'Code structure KG')
-  .replace('{{REPORT_TYPE}}', 'CODE KG')
-  .replace('{{KG_DATA_JSON}}', data)
-  .replace('{{THEME}}', 'terminal'))
-open('project-kg.html', 'w').write(out)
-print('done: project-kg.html')
-"
-
-<span class="c"># 3. 浏览器打开 project-kg.html</span></pre>
-
-<h3>用法 4 · 生成 3D 文档知识图谱</h3>
-<p>把整个 markdown 文档目录抽成概念图（章节 + 概念 + 引用关系）。</p>
-<pre><span class="k">node</span> .claude/skills/viz-charts/builders/doc-kg.mjs \
-  --input ./docs \
-  --output docs-kg.json \
-  --min-mentions 2
-
-<span class="c"># 渲染脚本同上，把 viewer 换成 doc-graph.html</span></pre>
-
-<h3>3D KG 交互</h3>
-<ul>
-  <li>鼠标拖动 — 旋转视角</li>
-  <li>滚轮 — 缩放</li>
-  <li>点击节点 — 高亮邻居 + 详情面板（左下）</li>
-  <li>右下角搜索框 — 按 name/id 搜节点</li>
-  <li>左下 legend — 点分组隐藏/显示</li>
-  <li>FIT / PAUSE / RESET — 视图控制</li>
-</ul>
-
-<h3>主题选择</h3>
-<table>
-  <thead><tr><th>报告类型</th><th>用主题</th><th>调用方</th></tr></thead>
-  <tbody>
-    <tr><td>biz-decision-stack 决策报告</td><td><code>terminal</code></td><td>biz-html-viz</td></tr>
-    <tr><td>viz-deck 讲演报告</td><td><code>deck</code></td><td>viz-deck</td></tr>
-    <tr><td>独立的 KG/图表（不嵌报告）</td><td>看场景</td><td>—</td></tr>
-  </tbody>
-</table>
-<div class="callout danger">
-  <strong>纪律：</strong> 同一份报告内<em>所有图表用同一主题</em>。terminal 报告里出现 deck 配色的图，看起来错位且不专业。
-</div>
-</section>
-
-<!-- ==================== 08 协同工作流 ==================== -->
-<section id="workflow">
-<h2>08 · 三 skill 协同工作流</h2>
-
-<h3>场景：完整的项目阶段评审</h3>
-<p>以 Mingjing 项目 v0.3 为例：</p>
-
-<div class="step">
-  <div class="step-num">1</div>
-  <div class="step-body">
-    <h3>用 biz-decision-stack 跑决策流</h3>
-    <pre>用 all-hands 流程评审 Mingjing v0.3 是否进入 GA 准备期。
-6 个角色各产一份终端风 HTML。</pre>
-    <p>产出：6 份 board / ceo / arch / pm / dev / retro 报告。</p>
+<section class="section" id="install">
+  <div class="section-intro reveal">
+    <span class="kicker-num">02</span>
+    <span class="eyebrow">Installation</span>
+    <h2>5 分钟跑通最小可用</h2>
+    <p class="lead">两种安装模式：单项目（验证用）或全局（所有项目共享）。建议先在单项目里跑通，再决定是否全局化。</p>
   </div>
-</div>
 
-<div class="step">
-  <div class="step-num">2</div>
-  <div class="step-body">
-    <h3>用 viz-deck 做对外汇报版</h3>
-    <pre>把上一步的决策内容压缩成一份 stage-report 讲演风 deck，
-适合发给投资人和合作伙伴看。</pre>
-    <p>产出：1 份 deck.html，深空玻璃拟态。</p>
+  <div class="grid-2">
+    <div class="panel reveal">
+      <span class="eyebrow">Path A · 推荐</span>
+      <h3>单项目安装</h3>
+      <p>把三个 zip 解到目标项目根目录（与 <code>.git</code> 同级）。</p>
+      <pre>git clone --depth=1 \
+  https://github.com/ZimaBlueAI/skills.git
+cd skills/claude-code-skills
+
+# 解压到你的项目根
+unzip -o biz-decision-stack/biz-decision-stack.zip \
+      -d /path/to/your-project/
+unzip -o viz-deck/viz-deck.zip \
+      -d /path/to/your-project/
+unzip -o viz-charts/viz-charts.zip \
+      -d /path/to/your-project/</pre>
+      <p style="margin-top:1rem;font-size:0.88rem">解压后会有 <code>.claude/agents/</code> 与 <code>.claude/skills/</code> 两个目录。</p>
+    </div>
+
+    <div class="panel reveal">
+      <span class="eyebrow">Path B</span>
+      <h3>全局安装</h3>
+      <p>装到 <code>~/.claude/</code>，所有项目共享。</p>
+      <pre>unzip -o biz-decision-stack/biz-decision-stack.zip \
+      -d ~/
+unzip -o viz-deck/viz-deck.zip -d ~/
+unzip -o viz-charts/viz-charts.zip -d ~/</pre>
+      <p style="margin-top:1rem;font-size:0.88rem">三个 skill 会落在 <code>~/.claude/skills/{biz-html-viz,viz-deck,viz-charts}/</code>，agents 在 <code>~/.claude/agents/</code>。</p>
+      <div class="callout info" style="margin-top:1rem">
+        <p style="font-size:0.88rem"><strong>提示</strong>：全局装的优势是不用每个项目重复解压；劣势是版本升级要谨慎，会一次性影响所有项目。</p>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="step">
-  <div class="step-num">3</div>
-  <div class="step-body">
-    <h3>用 viz-charts 做项目结构展示</h3>
-    <pre>跑 code-kg builder 抽 Mingjing 代码结构，生成 deck 主题的 3D 代码 KG。
-作为 deck 报告里"附录·项目结构"章节的链接。</pre>
-    <p>产出：1 份 mingjing-code-kg.html。</p>
+  <h4 style="margin-top:3rem">验证安装</h4>
+  <div class="panel reveal panel-sm">
+    <p style="margin-bottom:0.8rem">在 Claude Code 里运行：</p>
+    <pre>&gt; /skills</pre>
+    <p style="margin:1rem 0 0.4rem">应能看到列表里有：</p>
+    <div class="tag-row">
+      <span class="tag tag-cyan"><span class="status-dot status-done"></span> biz-html-viz</span>
+      <span class="tag tag-cyan"><span class="status-dot status-done"></span> viz-deck</span>
+      <span class="tag tag-cyan"><span class="status-dot status-done"></span> viz-charts</span>
+    </div>
   </div>
-</div>
 
-<div class="step">
-  <div class="step-num">4</div>
-  <div class="step-body">
-    <h3>统一发布</h3>
-    <p>把所有产物放到一个静态目录：</p>
-    <pre>mingjing-v03-review/
-├── 01-board-brief.html        <span class="c"># 内部用 · 终端风</span>
-├── 02-ceo-canvas.html         <span class="c"># 内部用 · 终端风</span>
-├── 03-tech-roadmap.html       <span class="c"># 内部用 · 终端风</span>
-├── 04-mrd.html                <span class="c"># 内部用 · 终端风</span>
-├── 05-dev-report.html         <span class="c"># 内部用 · 终端风</span>
-├── 06-retro.html              <span class="c"># 内部用 · 终端风</span>
-├── public-deck.html           <span class="c"># 对外用 · 讲演风</span>
-└── code-kg.html               <span class="c"># 项目代码 3D KG · 讲演风</span></pre>
+  <h4 style="margin-top:2.5rem">可选：装 huashu-design 启用 v2 高级模式</h4>
+  <div class="panel reveal">
+    <p>v2 的 prototype / slide-deck / motion-stage 三个模式需要 huashu-design 提供工具链。<strong>不装也能用</strong>——只是会降级到 v1 能力。</p>
+    <pre>git clone --depth=1 https://github.com/alchaincyf/huashu-design.git \
+  ~/.claude/skills/huashu-design
+cd ~/.claude/skills/huashu-design
+
+# huashu 自身不附带 package.json，用本仓库推荐清单
+cat &gt; package.json &lt;&lt;'JSON'
+{
+  "name": "huashu-design-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "playwright": "^1.48.0",
+    "sharp": "^0.33.5",
+    "pptxgenjs": "^3.12.0",
+    "pdf-lib": "^1.17.1"
+  }
+}
+JSON
+
+npm install
+npx playwright install chromium
+
+# ffmpeg 必须在 PATH
+ffmpeg -version</pre>
+    <div class="callout warn">
+      <h4>注意</h4>
+      <p style="font-size:0.9rem">不要给 huashu 的 package.json 加 <code>"type": "module"</code>——会破坏它内部的 CommonJS 脚本（如 render-video.js）。脚本扩展名约定：<code>.js</code> = CJS，<code>.mjs</code> = ESM，混用即可。</p>
+    </div>
   </div>
-</div>
-
-<h3>常见组合</h3>
-<table>
-  <thead><tr><th>需求</th><th>用哪些 skill</th><th>产出</th></tr></thead>
-  <tbody>
-    <tr><td>内部决策评审</td><td>biz-decision-stack</td><td>6 份角色报告（终端风）</td></tr>
-    <tr><td>对外阶段汇报</td><td>viz-deck</td><td>1 份 deck（讲演风）</td></tr>
-    <tr><td>客户技术方案</td><td>viz-deck + viz-charts</td><td>架构深度 deck + 嵌入图表/KG</td></tr>
-    <tr><td>项目代码全景</td><td>viz-charts</td><td>3D 代码 KG</td></tr>
-    <tr><td>项目知识体系</td><td>viz-charts</td><td>3D 文档 KG</td></tr>
-    <tr><td>投资人路演</td><td>viz-deck（competitive-landscape）+ viz-charts</td><td>竞品景观 + 数据图表</td></tr>
-  </tbody>
-</table>
 </section>
 
-<!-- ==================== 09 排查 ==================== -->
-<section id="troubleshoot">
-<h2>09 · 疑难排查</h2>
+<section class="section" id="matrix">
+  <div class="section-intro reveal">
+    <span class="kicker-num">03</span>
+    <span class="eyebrow">Dependency Matrix</span>
+    <h2>各模式依赖一览</h2>
+    <p class="lead">按你要做的事查表，决定要不要装 Node / Chromium / ffmpeg / huashu-design。</p>
+  </div>
 
-<h3>Claude 看不到 skill</h3>
-<ul>
-  <li>检查 <code>.claude/skills/</code> 目录是否在<em>项目根</em>（不是子目录）</li>
-  <li>每个 skill 必须有 <code>SKILL.md</code> 含 frontmatter（<code>name:</code> + <code>description:</code>）</li>
-  <li>Claude Code 是否在最新版本（<code>claude --version</code>）</li>
-</ul>
-
-<h3>报告里的 Mermaid / ECharts 不渲染</h3>
-<ul>
-  <li>用浏览器开发者工具看 Console，看是否有 CDN 加载失败</li>
-  <li>右下角状态条会显示 <code>jsdelivr / unpkg</code> 哪个 CDN 在用</li>
-  <li>如果两个 CDN 都失败 → 设置 <code>VIZ_CHARTS_SELFHOST_BASE</code> 走本地</li>
-  <li>检查 <code>data-echarts-option</code> 属性是否是合法 JSON（用 <code>JSON.parse</code> 试一下）</li>
-</ul>
-
-<h3>3D KG 加载后空白</h3>
-<ul>
-  <li>检查浏览器是否支持 WebGL（<code>chrome://gpu</code>）</li>
-  <li>检查 KG 数据 JSON 是否合法（<code>{{KG_DATA_JSON}}</code> 替换是否完整）</li>
-  <li>如果节点数 &gt; 5000，会卡 — 拆图或换专业工具（Gephi）</li>
-  <li>状态条显示 <code>CDN load failed</code> → 网络问题</li>
-</ul>
-
-<h3>离线 Mermaid 渲染失败</h3>
-<ul>
-  <li>第一次必须 <code>npx playwright install chromium</code></li>
-  <li>沙箱/容器环境下载浏览器可能失败 — 走 placeholder SVG 兜底（不报错，但图是占位）</li>
-  <li>如果三档兜底都失败，看终端的 <code>[render-mermaid]</code> 输出</li>
-</ul>
-
-<h3>code-kg builder 跑出来 0 边</h3>
-<ul>
-  <li>builder 只解析<em>仓库内的相对 import</em>。如果项目用 monorepo 工作区或 path alias（如 <code>@/utils</code>），可能识别不到。</li>
-  <li>试着 <code>--group-by language</code> 看节点是否齐全（边的问题不影响节点）</li>
-  <li>如果需要 99% 精确，等后续版本接 tree-sitter，或自己写一个 builder（统一数据契约）</li>
-</ul>
-
-<h3>doc-kg 抽出来概念太杂</h3>
-<ul>
-  <li>调高 <code>--min-mentions</code>（默认 2，可设 3-5 过滤低频）</li>
-  <li>调低 <code>--top-terms</code>（默认 40，可设 20）</li>
-  <li>在 markdown 里多用 <code>**显式标加粗</code> 和 <code>`code-term`</code>，builder 优先抽这些</li>
-</ul>
-
-<h3>报告字体看起来不对</h3>
-<ul>
-  <li>检查网络是否能访问 Google Fonts（<code>fonts.googleapis.com</code>）</li>
-  <li>断网环境：把 <code>&lt;link href="...googleapis.com..."&gt;</code> 改成本地字体或系统字体兜底已自带</li>
-  <li>系统兜底链：JetBrains Mono → SF Mono → Menlo → Consolas → monospace（终端风）；Inter → ui-sans-serif → system-ui（讲演风）</li>
-</ul>
+  <div class="panel reveal">
+    <table>
+      <thead>
+        <tr><th>使用模式</th><th>需要</th><th>版本</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>biz-decision-stack 生成报告</strong></td><td>Claude Code</td><td>—</td></tr>
+        <tr><td><strong>biz-decision-stack 5 维评审</strong>（终端风）</td><td>仅 Claude Code（评分标准内嵌）</td><td>—</td></tr>
+        <tr><td><strong>viz-deck</strong> keynote-report（v1 模式）</td><td>Claude Code</td><td>—</td></tr>
+        <tr><td><strong>viz-deck</strong> 5 维评审（讲演风）</td><td>Node</td><td>18+</td></tr>
+        <tr><td><span style="color:var(--cyan);font-weight:600">v2 · viz-deck prototype 模式</span></td><td>Claude Code + 浏览器联网（React/Babel CDN）</td><td>—</td></tr>
+        <tr><td><span style="color:var(--cyan);font-weight:600">v2 · viz-deck slide-deck 模式（HTML 部分）</span></td><td>Claude Code</td><td>—</td></tr>
+        <tr><td><span style="color:var(--cyan);font-weight:600">v2 · viz-deck slide-deck 导出 PPTX</span></td><td><strong>huashu</strong> + Node + sharp + pptxgenjs</td><td>Node 18+</td></tr>
+        <tr><td><span style="color:var(--cyan);font-weight:600">v2 · viz-deck slide-deck 导出 PDF</span></td><td><strong>huashu</strong> + Node + Chromium + pdf-lib</td><td>Node 18+</td></tr>
+        <tr><td><span style="color:var(--cyan);font-weight:600">v2 · viz-deck motion-stage 模式</span></td><td><strong>huashu</strong> + Node + Chromium + ffmpeg</td><td>Node 18+ / ffmpeg 4+</td></tr>
+        <tr><td>viz-charts inline 模式</td><td>浏览器联网（CDN）</td><td>—</td></tr>
+        <tr><td>viz-charts 离线 ECharts SVG</td><td>Node + <code>npm i echarts</code></td><td>Node 18+</td></tr>
+        <tr><td>viz-charts 离线 Mermaid SVG</td><td>Node + Chromium</td><td>—</td></tr>
+        <tr><td><span style="color:var(--cyan);font-weight:600">v2 · viz-charts motion 模式</span></td><td><strong>huashu</strong> + Node + Chromium + ffmpeg</td><td>Node 18+ / ffmpeg 4+</td></tr>
+        <tr><td>3D KG builder 跑数据</td><td>Node（无外部依赖）</td><td>18+</td></tr>
+        <tr><td>3D KG 浏览器渲染</td><td>WebGL + 联网（CDN）</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
-<!-- ==================== 10 维护 ==================== -->
-<section id="maint">
-<h2>10 · 升级与维护</h2>
+<section class="section" id="modes">
+  <div class="section-intro reveal">
+    <span class="kicker-num">04</span>
+    <span class="eyebrow">v2 Core — viz-deck Four Modes</span>
+    <h2>四种产出形态，一套视觉语言</h2>
+    <p class="lead">v2 把 viz-deck 从单模 keynote-report 扩展为 4 模产出，共享深空蓝紫青 + Inter 设计语言。Agent 按用户自然语言自动路由到合适模式。</p>
+  </div>
 
-<h3>三 skill 各自独立升级</h3>
-<p>三个 zip 各自独立。如果只升级 <code>viz-charts</code>：</p>
-<pre><span class="k">cd</span> /path/to/your/project
-<span class="k">rm</span> -rf .claude/skills/viz-charts
-<span class="k">unzip</span> -o ~/Downloads/viz-charts-v1.1.zip</pre>
-<p>不影响 biz-decision-stack 和 viz-deck。</p>
+  <div class="grid-2">
 
-<h3>主题色调整</h3>
-<p>改主题色需<em>同步改三处</em>，否则会出现局部错位：</p>
-<ol>
-  <li><code>themes/{terminal,deck}.js</code> — 主题对象（被 cdn-loader 读）</li>
-  <li><code>vendor/loaders/cdn-loader.js</code> — 内联主题副本</li>
-  <li><code>components/*/</code> — 每个组件的 CSS 变量</li>
-  <li><code>templates/kg3d/*.html</code> — 3D KG viewer 的 root CSS 变量</li>
-</ol>
+    <div class="mode-card reveal">
+      <h3>① keynote-report <span class="mode-num">MODE 01 · v1</span></h3>
+      <p>讲演级长滚动报告，受众客户/投资人/全员 keynote。</p>
+      <ul>
+        <li>3 模板：<code>stage-report</code> · <code>architecture-deep</code> · <code>competitive-landscape</code></li>
+        <li>章节 5-8 章，每章 250-600 字</li>
+        <li>含 reveal 滚动入场、prefers-reduced-motion 降级</li>
+        <li>竞品模板含 web_search 三档自适应调研</li>
+      </ul>
+      <div class="triggers"><strong>触发：</strong> "讲演" · "阶段汇报" · "架构深研" · "竞品对比"</div>
+    </div>
 
-<h3>添加新图表模板</h3>
-<ol>
-  <li>在 <code>templates/echarts/</code>（或 mermaid）新建 .json/.mmd</li>
-  <li>必填 <code>_meta</code> 字段：<code>{name, use_when, data_shape}</code></li>
-  <li>更新 <code>references/decision-tree.md</code> 加进选型表</li>
-  <li>更新 <code>references/chart-cookbook.md</code> 加进契约速查</li>
-</ol>
+    <div class="mode-card prototype reveal">
+      <h3>② prototype <span class="mode-num">MODE 02 · v2</span></h3>
+      <p>HTML 高保真原型，受众 PM / 设计评审 / 内部客户。</p>
+      <ul>
+        <li>1 模板：<code>prototype-shell.html</code>（iOS 15 Pro 默认）</li>
+        <li>AppPhone 状态管理：home → detail → settings 切屏</li>
+        <li>设备外壳来自 huashu：<code>ios_frame.jsx</code> / <code>android_frame.jsx</code> / <code>macos_window.jsx</code> / <code>browser_window.jsx</code></li>
+        <li>真实素材：Wikimedia / Met / Unsplash</li>
+        <li>交付前 Playwright 点击测试每个按钮</li>
+      </ul>
+      <div class="triggers"><strong>触发：</strong> "做原型" · "iOS 原型" · "hi-fi" · "可点击 demo"</div>
+    </div>
 
-<h3>添加新 builder（如 PDF KG / API KG）</h3>
-<ol>
-  <li>在 <code>builders/</code> 新建 .mjs</li>
-  <li>输出符合 <code>references/kg-builder-guide.md</code> 的统一数据契约</li>
-  <li>不需要新 viewer — 直接喂 <code>data-graph.html</code></li>
-</ol>
+    <div class="mode-card slide reveal">
+      <h3>③ slide-deck <span class="mode-num">MODE 03 · v2</span></h3>
+      <p>HTML 演讲幻灯片，可一键导出可编辑 PPTX。</p>
+      <ul>
+        <li>1 模板：<code>slide-deck.html</code>（键盘 ← → / 空格翻页）</li>
+        <li>3-5 章节 / 12-25 总页 / 单页 ≤ 60 字</li>
+        <li>Speaker Notes 模式（按 <code>s</code>） / Overview 模式（按 <code>o</code>）</li>
+        <li><strong>真实文本框</strong> PPTX 导出（不是图片嵌入）</li>
+        <li>另支持横版 PDF / autoplay 录视频</li>
+      </ul>
+      <div class="triggers"><strong>触发：</strong> "做幻灯片" · "做 PPT" · "导出 PPTX" · "TED 风"</div>
+    </div>
 
-<h3>版本兼容</h3>
-<ul>
-  <li>CDN 版本固定（mermaid@10.9.1, echarts@5.5.1, 3d-force-graph@1.74.0），不会因上游升级破坏</li>
-  <li>升级时改 <code>vendor/loaders/cdn-loader.js</code> 的 <code>VERSIONS</code> 常量</li>
-  <li>升级前把 <code>examples/</code> 的 4 个 demo 跑一遍验证</li>
-</ul>
+    <div class="mode-card motion reveal">
+      <h3>④ motion-stage <span class="mode-num">MODE 04 · v2</span></h3>
+      <p>HTML 动画一镜到底，导出 MP4 + GIF + BGM。</p>
+      <ul>
+        <li>1 模板：<code>motion-stage.html</code>（orbit 主视觉 + 三段动画时间线）</li>
+        <li>录制要求：<code>window.__ready = true</code> 信号</li>
+        <li>导出三件套：25fps + 60fps 插帧 + palette GIF</li>
+        <li>6 首场景化 BGM（tech / educational / tutorial / ad）</li>
+        <li>解说子模式：豆包 TTS + ducking 混音</li>
+      </ul>
+      <div class="triggers"><strong>触发：</strong> "导出 MP4" · "60fps" · "hero video" · "解说视频"</div>
+    </div>
+
+  </div>
+
+  <h4 style="margin-top:3rem">20 设计哲学加持</h4>
+  <div class="panel reveal">
+    <p>v2 通过 <code>references/design-philosophies.md</code> 把 huashu-design 的 <strong>5 流派 × 20 哲学</strong> 映射到 viz-deck 的 4 模产出。</p>
+    <div class="grid-2" style="margin-top:1rem">
+      <ul>
+        <li><strong>信息建筑派</strong>：Pentagram · Stamen · Information Architects · Fathom</li>
+        <li><strong>运动诗学派</strong>：Locomotive · Active Theory · Field.io · Resn</li>
+        <li><strong>极简主义派</strong>：Experimental Jetset · Müller-Brockmann · Build · Sagmeister &amp; Walsh</li>
+      </ul>
+      <ul>
+        <li><strong>实验先锋派</strong>：Zach Lieberman · Raven Kwok · Ash Thorp · Territory Studio</li>
+        <li><strong>东方哲学派</strong>：Takram · Kenya Hara · Irma Boom · Neo Shen</li>
+      </ul>
+    </div>
+    <p style="margin-top:1.2rem;font-size:0.9rem">用法：<em>"用 18 Kenya Hara 风格做一份 Mingjing 阶段报告"</em> · <em>"不知道选哪个，给我推荐 3 个差异化方向"</em>。后者触发设计方向顾问模式，并行生成 3 个视觉 demo 让用户选。</p>
+  </div>
+
+  <h4 style="margin-top:2.5rem">5 维专家评审</h4>
+  <div class="panel reveal">
+    <table>
+      <thead><tr><th>#</th><th>维度</th><th>一句话</th><th>10 分门槛</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--cyan)">1</strong></td><td><strong>哲学一致性</strong></td><td>是否真按所选哲学执行，每个细节都有依据</td><td>无任何风格漂移</td></tr>
+        <tr><td><strong style="color:var(--cyan)">2</strong></td><td><strong>视觉层级</strong></td><td>用户视线按设计者意图自然流动</td><td>眯眼测试通过</td></tr>
+        <tr><td><strong style="color:var(--cyan)">3</strong></td><td><strong>细节执行</strong></td><td>像素级精确，对齐/间距/颜色/字体</td><td>无任何瑕疵</td></tr>
+        <tr><td><strong style="color:var(--cyan)">4</strong></td><td><strong>功能性</strong></td><td>每个元素都服务目标，零冗余</td><td>删一个就变差</td></tr>
+        <tr><td><strong style="color:var(--cyan)">5</strong></td><td><strong>创新性</strong></td><td>哲学框架内有独特表达（决策报告版只评反 cliché）</td><td>令人耳目一新</td></tr>
+      </tbody>
+    </table>
+    <div class="callout info" style="margin-top:1.2rem">
+      <h4>两套实现</h4>
+      <ul style="margin:0">
+        <li>决策报告 → <code>07-design-critic</code> subagent + <code>design-critique.html</code>（终端风）</li>
+        <li>讲演产出 → <code>viz-deck/scripts/review-5dim.mjs</code>（讲演风，深空配色）</li>
+      </ul>
+      <p style="margin-top:0.6rem;margin-bottom:0">两套都生成 ECharts 雷达 + Keep / Fix（critical · important · polish）/ Quick Wins。</p>
+    </div>
+  </div>
 </section>
+
+<section class="section" id="bridge">
+  <div class="section-intro reveal">
+    <span class="kicker-num">05</span>
+    <span class="eyebrow">Soft Bridge</span>
+    <h2>与 huashu-design 的关系</h2>
+    <p class="lead">huashu-design 是 <a class="inline-link" href="https://github.com/alchaincyf/huashu-design" target="_blank">花叔（alchaincyf）</a>的独立 skill，由本仓库 <strong>软桥接</strong>调用。不装也不影响 v1 能力。</p>
+  </div>
+
+  <div class="panel reveal">
+    <h3>桥接点清单</h3>
+    <table>
+      <thead><tr><th>能力</th><th>谁桥接</th><th>调用路径</th></tr></thead>
+      <tbody>
+        <tr><td>20 设计哲学风格库</td><td>viz-deck</td><td><code>references/design-styles.md</code>（仅引用）</td></tr>
+        <tr><td>5 维评审标准</td><td>biz-decision-stack + viz-deck</td><td><code>references/critique-guide.md</code>（仅引用）</td></tr>
+        <tr><td>HTML → MP4</td><td>viz-deck · viz-charts</td><td><code>scripts/render-video.js</code></td></tr>
+        <tr><td>25fps→60fps + GIF 三件套</td><td>viz-deck · viz-charts</td><td><code>scripts/convert-formats.sh</code></td></tr>
+        <tr><td>HTML → 可编辑 PPTX</td><td>viz-deck</td><td><code>scripts/export_deck_pptx.mjs</code></td></tr>
+        <tr><td>HTML → 横版 PDF</td><td>viz-deck</td><td><code>scripts/export_deck_pdf.mjs</code></td></tr>
+        <tr><td>设备外壳（iOS/Android/macOS/browser）</td><td>viz-deck</td><td><code>assets/*_frame.jsx</code></td></tr>
+        <tr><td>BGM 6 首场景化</td><td>viz-deck</td><td><code>assets/bgm-*.mp3</code></td></tr>
+        <tr><td>TTS 解说 pipeline</td><td>viz-deck</td><td><code>scripts/narrate-pipeline.mjs</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2" style="margin-top:1.4rem">
+    <div class="callout">
+      <h4>biz-decision-stack 的克制</h4>
+      <p style="font-size:0.92rem">biz-decision-stack <strong>只引用</strong> huashu 的 5 维评审标准和可选 PDF 导出，<strong>不引入</strong> motion / BGM / 设备外壳——决策签字报告坚持零动效原则。需要 motion 的用户应该用 viz-deck。</p>
+    </div>
+    <div class="callout info">
+      <h4>调用约定</h4>
+      <ul style="margin:0">
+        <li>所有调用走 <code>$HOME/.claude/skills/huashu-design/scripts/...</code> 绝对路径</li>
+        <li>CLI 风格：<code>node render-video.js &lt;html&gt; --duration=N --width=W --height=H</code></li>
+        <li>HTML stage 必须在首次渲染后设 <code>window.__ready = true</code></li>
+        <li>输出 MP4 自动命名为 <code>&lt;html&gt;.mp4</code>，同目录</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4 style="margin-top:2.5rem">许可证提示</h4>
+  <div class="callout warn">
+    <h4>商用合规</h4>
+    <p style="font-size:0.92rem">huashu-design 个人使用免费，<strong>商用需独立授权</strong>（USD 1,800/年 或 USD 3,500 永久）。本仓库以 Apache 2.0 发布，但 v2 模式调用 huashu 的商用合规由用户自行负责。联系 <code>alchaincyf@gmail.com</code>。</p>
+  </div>
+</section>
+
+<section class="section" id="samples">
+  <div class="section-intro reveal">
+    <span class="kicker-num">06</span>
+    <span class="eyebrow">Samples</span>
+    <h2>真实可视化产出，打开就看到</h2>
+    <p class="lead">每个 skill 的 <code>samples/</code> 目录都有实跑过的产出文件，可直接打开查看。下面是各样例的指针。</p>
+  </div>
+
+  <div class="grid-2">
+
+    <div class="sample-card reveal">
+      <div class="sample-meta"><b>VIZ-CHARTS</b><span>v2 motion</span></div>
+      <h3>ECharts 多 series reveal 动效</h3>
+      <p>四季度营收三条曲线错峰入场，最后停留在 Q3 拐点。深空主题，1920×1080。</p>
+      <div class="sample-files">
+        <a href="./viz-charts/samples/trend-motion-sample.html" target="_blank">trend-motion-sample.html</a>
+        <a href="./viz-charts/samples/trend-motion-sample.mp4" target="_blank">trend-motion-sample.mp4</a>
+      </div>
+    </div>
+
+    <div class="sample-card reveal">
+      <div class="sample-meta"><b>VIZ-DECK</b><span>v2 motion-stage</span></div>
+      <h3>讲演风 orbit 主视觉动效</h3>
+      <p>8 秒 hero 视频：eyebrow → headline → lead → orbit 旋转完整运动叙事，1920×1080。</p>
+      <div class="sample-files">
+        <a href="./viz-deck/samples/motion-stage-sample.html" target="_blank">motion-stage-sample.html</a>
+        <a href="./viz-deck/samples/motion-stage-sample.mp4" target="_blank">motion-stage-sample.mp4</a>
+      </div>
+    </div>
+
+    <div class="sample-card reveal">
+      <div class="sample-meta"><b>VIZ-DECK</b><span>v2 critique</span></div>
+      <h3>讲演风 5 维评审（深空配色）</h3>
+      <p>给某 motion-stage 产出打分 7.6/10 良好，含 ECharts 雷达 + Keep / Fix / Quick Wins。</p>
+      <div class="sample-files">
+        <a href="./viz-deck/samples/design-critique-sample.html" target="_blank">design-critique-sample.html</a>
+        <a href="./viz-deck/samples/design-critique-sample.scores.json" target="_blank">scores.json（输入）</a>
+      </div>
+    </div>
+
+    <div class="sample-card reveal">
+      <div class="sample-meta"><b>BIZ-DECISION-STACK</b><span>v2 critique</span></div>
+      <h3>终端风 5 维评审（黑底酸黄）</h3>
+      <p>对 Mingjing 董事会简报打分 7.8/10 良好，3 条 Fix 按 critical/important/polish 排序。</p>
+      <div class="sample-files">
+        <a href="./biz-decision-stack/samples/design-critique-sample.html" target="_blank">design-critique-sample.html</a>
+      </div>
+    </div>
+
+    <div class="sample-card reveal">
+      <div class="sample-meta"><b>VIZ-CHARTS</b><span>3D KG</span></div>
+      <h3>3D 代码知识图谱（80 节点）</h3>
+      <p>从 git repo 抽出文件 / 依赖关系，可拖动旋转、点击高亮、按分组过滤。</p>
+      <div class="sample-files">
+        <a href="./viz-charts/demo-3d-code-kg.html" target="_blank">demo-3d-code-kg.html</a>
+        <a href="./viz-charts/demo-3d-doc-kg.html" target="_blank">demo-3d-doc-kg.html</a>
+      </div>
+    </div>
+
+    <div class="sample-card reveal">
+      <div class="sample-meta"><b>VIZ-CHARTS</b><span>双主题</span></div>
+      <h3>双主题全组件演示</h3>
+      <p>同一份数据用 terminal（黑底酸黄）与 deck（深空蓝紫青）两套主题分别渲染。</p>
+      <div class="sample-files">
+        <a href="./viz-charts/demo-terminal.html" target="_blank">demo-terminal.html</a>
+        <a href="./viz-charts/demo-deck.html" target="_blank">demo-deck.html</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="workflow">
+  <div class="section-intro reveal">
+    <span class="kicker-num">07</span>
+    <span class="eyebrow">Co-skill Workflow</span>
+    <h2>三 skill 协同范例：一个项目阶段评审</h2>
+    <p class="lead">以 Mingjing v0.3 为例，演示三个 skill 各司其职、最终拼成内部归档 + 对外发布双产出。</p>
+  </div>
+
+  <div class="spine reveal">
+    <div class="spine-step">
+      <span class="step-num">Step 01</span>
+      <h3>决策链</h3>
+      <p>biz-decision-stack 跑 all-hands，出 6 份终端风报告 + 1 份 critique</p>
+    </div>
+    <div class="spine-step">
+      <span class="step-num">Step 02</span>
+      <h3>对外讲演</h3>
+      <p>viz-deck stage-report，1 份讲演风深空 deck</p>
+    </div>
+    <div class="spine-step">
+      <span class="step-num">Step 03</span>
+      <h3>项目可视化</h3>
+      <p>viz-charts code-kg，3D 代码知识图谱作为附录</p>
+    </div>
+    <div class="spine-step">
+      <span class="step-num">Step 04</span>
+      <h3>视频版</h3>
+      <p>viz-deck motion-stage，60s hero video + BGM 用于发布</p>
+    </div>
+    <div class="spine-step">
+      <span class="step-num">Step 05</span>
+      <h3>评审与签字</h3>
+      <p>design-critic 给每份打 5 维分，决策者按分数签字归档</p>
+    </div>
+  </div>
+
+  <h4 style="margin-top:3rem">常见组合速查</h4>
+  <div class="panel reveal">
+    <table>
+      <thead><tr><th>需求</th><th>用哪些 skill</th><th>产出</th></tr></thead>
+      <tbody>
+        <tr><td>内部决策评审</td><td>biz-decision-stack</td><td>6 份角色报告 + 1 份 critique（终端风）</td></tr>
+        <tr><td>对外阶段汇报</td><td>viz-deck</td><td>1 份 keynote deck（讲演风）</td></tr>
+        <tr><td>客户技术方案</td><td>viz-deck + viz-charts</td><td>architecture-deep + 嵌入图表 / 3D KG</td></tr>
+        <tr><td>App 原型评审</td><td>viz-deck (prototype) + huashu</td><td>iPhone 高保真原型，Playwright 验证</td></tr>
+        <tr><td>产品发布会幻灯</td><td>viz-deck (slide-deck) + huashu</td><td>HTML 幻灯 + 可编辑 PPTX</td></tr>
+        <tr><td>产品宣传视频</td><td>viz-deck (motion-stage) + huashu</td><td>MP4（25/60fps）+ GIF + BGM</td></tr>
+        <tr><td>项目代码全景</td><td>viz-charts</td><td>3D 代码 KG</td></tr>
+        <tr><td>投资人路演</td><td>viz-deck (competitive-landscape) + viz-charts</td><td>竞品景观 + 动效数据图表</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" id="troubleshoot">
+  <div class="section-intro reveal">
+    <span class="kicker-num">08</span>
+    <span class="eyebrow">Troubleshooting</span>
+    <h2>常见问题速查</h2>
+    <p class="lead">十个真实遇到过的坑，每条都告诉你"为什么"和"怎么修"。</p>
+  </div>
+
+  <div class="grid-2">
+
+    <div class="panel-sm panel reveal">
+      <h3>Claude 看不到 skill</h3>
+      <p style="font-size:0.9rem">检查 <code>.claude/skills/</code> 是否在项目根（不是子目录）。每个 skill 必须有 <code>SKILL.md</code> 含 frontmatter（<code>name:</code> + <code>description:</code>）。最后确认 <code>claude --version</code> 是最新版。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>render-video.js 报 "require is not defined"</h3>
+      <p style="font-size:0.9rem">huashu 目录的 <code>package.json</code> 不要加 <code>"type": "module"</code>——它会破坏 CommonJS 脚本。约定：<code>.js</code> = CJS，<code>.mjs</code> = ESM。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>MP4 前 1-2 秒是黑屏</h3>
+      <p style="font-size:0.9rem">stage HTML 未设 <code>window.__ready = true</code>。huashu 用这个信号作录制 t=0 起点。模板已内置，自己写 stage 必须加：<code>document.fonts.ready.then(() =&gt; { window.__ready = true; })</code>。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>MP4 录到了动画但太短</h3>
+      <p style="font-size:0.9rem">ECharts 动画在 <code>setOption()</code> 调用瞬间就开始播，可能在 <code>__ready</code> 之前已完成。修法：先创建空 chart 实例 → 等字体就绪 → 设 <code>__ready</code> → <code>requestAnimationFrame</code> 后再 <code>setOption()</code>。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>Mermaid 离线渲染失败</h3>
+      <p style="font-size:0.9rem">第一次必须 <code>npx playwright install chromium</code>。沙箱环境下载失败会自动走 placeholder SVG 兜底，不会崩。终端看 <code>[render-mermaid]</code> 输出诊断哪一档失败。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>3D KG 加载后空白</h3>
+      <p style="font-size:0.9rem">检查浏览器 WebGL 支持（<code>chrome://gpu</code>）。检查 <code>{{KG_DATA_JSON}}</code> 替换完整。节点 &gt; 5000 会卡——拆图或换 Gephi 等专业工具。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>PPTX 打开后文本变成图片</h3>
+      <p style="font-size:0.9rem">用错了脚本。<code>html2pptx.js</code> 适合任意 HTML 但偶尔降级到 PNG；<code>export_deck_pptx.mjs</code> 是 deck 专属，能识别 <code>.slide</code> / <code>.eyebrow</code> / <code>.speaker-notes</code>，保证文本是真实 PPT 文本框。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>code-kg builder 跑出 0 边</h3>
+      <p style="font-size:0.9rem">builder 只解析仓库内相对 import。monorepo workspace 或 path alias（<code>@/utils</code>）可能识别不到。先 <code>--group-by language</code> 看节点；边的问题不影响节点。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>doc-kg 抽出来概念太杂</h3>
+      <p style="font-size:0.9rem">调高 <code>--min-mentions</code>（默认 2，设 3-5 过滤低频）。调低 <code>--top-terms</code>（默认 40，设 20）。在 markdown 里多用 <code>**显式加粗**</code> 和 <code>`code-term`</code>，builder 优先抽这些。</p>
+    </div>
+
+    <div class="panel-sm panel reveal">
+      <h3>字体看起来不对</h3>
+      <p style="font-size:0.9rem">检查能否访问 Google Fonts。断网会自动走系统兜底：JetBrains Mono → SF Mono → Menlo → Consolas → monospace（终端风）；Inter → ui-sans-serif → system-ui → PingFang SC（讲演风）。</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="resources">
+  <div class="section-intro reveal">
+    <span class="kicker-num">09</span>
+    <span class="eyebrow">Resources</span>
+    <h2>下一步去哪</h2>
+  </div>
+
+  <div class="grid-3">
+    <div class="panel reveal">
+      <h3>完整文档</h3>
+      <ul>
+        <li><a class="inline-link" href="../README.md">README.md（中文）</a></li>
+        <li><a class="inline-link" href="../README_en.md">README_en.md（English）</a></li>
+        <li><a class="inline-link" href="./skills-install-guide.md">skills-install-guide.md（详细手册源文件）</a></li>
+        <li><a class="inline-link" href="../CHANGELOG.md">CHANGELOG.md</a></li>
+        <li><a class="inline-link" href="../CONTRIBUTING.md">CONTRIBUTING.md</a></li>
+      </ul>
+    </div>
+
+    <div class="panel reveal">
+      <h3>安装包</h3>
+      <ul>
+        <li><a class="inline-link" href="./biz-decision-stack/biz-decision-stack.zip">biz-decision-stack.zip</a> (62 KB)</li>
+        <li><a class="inline-link" href="./viz-deck/viz-deck.zip">viz-deck.zip</a> (65 KB)</li>
+        <li><a class="inline-link" href="./viz-charts/viz-charts.zip">viz-charts.zip</a> (153 KB)</li>
+      </ul>
+    </div>
+
+    <div class="panel reveal">
+      <h3>相关项目</h3>
+      <ul>
+        <li><a class="inline-link" href="https://github.com/alchaincyf/huashu-design" target="_blank">alchaincyf/huashu-design</a> — v2 桥接</li>
+        <li><a class="inline-link" href="https://github.com/garrytan/gstack" target="_blank">garrytan/gstack</a> — 多角色编排灵感</li>
+        <li><a class="inline-link" href="https://github.com/Lum1104/Understand-Anything" target="_blank">Lum1104/Understand-Anything</a> — KG 可视化思路</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-end">
+    <p style="margin-bottom:0.4rem"><strong>Skill Suite v2.0</strong> · 2026-05-11 · biz-decision-stack + viz-deck + viz-charts + huashu-design (bridge)</p>
+    <p style="margin:0">Apache License 2.0 · Copyright © 2026 ZimaBlueAI · <a class="inline-link" href="https://github.com/ZimaBlueAI" target="_blank">github.com/ZimaBlueAI</a></p>
+  </div>
+</section>
+
+</main>
 
 <footer>
-  Skill Suite · biz-decision-stack + viz-deck + viz-charts · v1.0 · 2026-05-10
+  <p>Made by <strong>ZimaBlueAI</strong> · 站在巨人肩膀上</p>
+  <p style="margin-top:0.4rem;font-size:0.78rem">本页面由 <code>viz-deck</code> 的设计语言生成，作为自身能力的演示。</p>
 </footer>
 
-</div>
+<script>
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = pct + '%';
+}, { passive: true });
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const sections = Array.from(document.querySelectorAll('section[id]'));
+const navLinks = Array.from(document.querySelectorAll('.deck-nav a'));
+const navIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sections.forEach(s => navIO.observe(s));
+</script>
+
 </body>
 </html>

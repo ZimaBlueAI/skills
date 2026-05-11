@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>设计评审报告 · Mingjing · Board Brief v1.2</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --fg: #f5f5f5;
+    --muted: #888;
+    --accent: #d4ff00;
+    --red: #ff5577;
+    --line: #1f1f1f;
+    --serif: Newsreader, 'Times New Roman', serif;
+    --sans: 'Inter Tight', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); padding: 48px 8vw; line-height: 1.5; }
+  .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; }
+  .meta-grid label { display: block; color: var(--muted); text-transform: uppercase; font-size: 10px; margin-bottom: 4px; }
+  .meta-grid b { font-weight: 500; }
+
+  h1.title { font-family: var(--serif); font-size: 52px; font-weight: 500; margin: 32px 0 8px; line-height: 1.1; letter-spacing: -0.01em; }
+  .subtitle { color: var(--muted); font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; margin-bottom: 48px; }
+
+  section { border-top: 1px solid var(--line); padding: 32px 0; }
+  section > h2 { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin: 0 0 24px; }
+
+  .overall { display: flex; align-items: baseline; gap: 24px; margin-bottom: 32px; }
+  .overall .score { font-family: var(--mono); font-size: 96px; font-weight: 500; color: var(--accent); line-height: 1; }
+  .overall .verdict { font-family: var(--mono); font-size: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg); }
+  .overall .of { color: var(--muted); font-family: var(--mono); }
+
+  .grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  #radar { width: 100%; height: 360px; }
+
+  table.scores { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.scores th, table.scores td { padding: 12px 12px 12px 0; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.scores th { color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; }
+  table.scores td.score-cell { font-family: var(--mono); color: var(--accent); white-space: nowrap; width: 80px; }
+
+  ul.keep { list-style: none; padding: 0; margin: 0; }
+  ul.keep li { padding: 12px 0 12px 24px; border-bottom: 1px solid var(--line); position: relative; }
+  ul.keep li::before { content: '+'; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); font-weight: 700; }
+
+  .fix-item { padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .fix-item:last-child { border: 0; }
+  .fix-item strong { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; }
+  .fix-item .severity { color: var(--accent); margin-right: 8px; }
+  .fix-item .severity.critical { color: var(--red); }
+  .fix-item .row { color: var(--muted); margin-top: 8px; font-size: 14px; }
+  .fix-item .row b { color: var(--fg); font-weight: 500; }
+
+  .quick-wins label { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: center; }
+  .quick-wins label:last-child { border: 0; }
+  .quick-wins input[type=checkbox] { transform: scale(1.4); accent-color: var(--accent); }
+
+  @media print {
+    body { padding: 24px; }
+    section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="meta-grid">
+  <div><label>TYPE</label><b>5-DIM DESIGN CRITIQUE</b></div>
+  <div><label>DATE</label><b>2026-05-11</b></div>
+  <div><label>SUBJECT</label><b>Mingjing · Board Brief v1.2</b></div>
+  <div><label>VERSION</label><b>v1.2</b></div>
+</div>
+
+<h1 class="title">终端风出片质量评审 — Mingjing 董事会简报</h1>
+<div class="subtitle">REVIEWER · DESIGN-CRITIC AGENT · 5-DIM CRITERIA</div>
+
+<section>
+  <h2>OVERALL</h2>
+  <div class="overall">
+    <span class="score">7.8</span>
+    <span class="verdict">良好 · GOOD</span>
+    <span class="of">/ 10</span>
+  </div>
+
+  <div class="grid-two">
+    <div id="radar"></div>
+    <table class="scores">
+      <tr><th>DIM</th><th>SCORE</th><th>NOTE</th></tr>
+      <tr><td>哲学一致性</td><td class="score-cell">9/10</td><td>严格遵守 design-system.md：黑底/酸黄/等宽/零动效全部到位</td></tr>
+      <tr><td>视觉层级</td>  <td class="score-cell">8/10</td><td>h1(serif) vs body(sans) 字号比 3.2 倍；section 标题 mono uppercase letter-spacing 0.18em</td></tr>
+      <tr><td>细节执行</td>  <td class="score-cell">7/10</td><td>Q2 营收一处写"1.2M"，其余写"¥1,200,000"，单位混用扣分</td></tr>
+      <tr><td>功能性</td>    <td class="score-cell">8/10</td><td>每章节有结论句；风险/决议都带 @负责人 + 截止日</td></tr>
+      <tr><td>创新性（反 cliché）</td><td class="score-cell">9/10</td><td>无紫色渐变 / 无玻璃拟态 / 无 emoji 装饰 / 无圆角 > 2px / 无 keyframe</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>KEEP · 做对的事</h2>
+  <ul class="keep">
+    <li>决策点全部带 @负责人 + 截止日（@bowen · 2026-06-30 格式）</li>
+    <li>数字优先：用 "12% 渗透率" 而非 "渗透不足"</li>
+    <li>章节标题严格 mono uppercase + letter-spacing 0.18em，扫读节奏清晰</li>
+  </ul>
+</section>
+
+<section>
+  <h2>FIX · 待修复（按严重度）</h2>
+
+  <div class="fix-item">
+    <strong><span class="severity critical">⚠ CRITICAL</span>数字单位不统一</strong>
+    <div class="row"><b>当前：</b>Q2 段写"1.2M"，Q3 段写"¥1,200,000"，Q4 段又写"120 万"</div>
+    <div class="row"><b>问题：</b>决策者扫读时需要在三种单位之间二次转换，注意力被分散</div>
+    <div class="row"><b>修复：</b>全文统一为 "¥1.2M"（mono），单位变化用脚注说明 1M = 100 万</div>
+  </div>
+
+  <div class="fix-item">
+    <strong><span class="severity">⚡ IMPORTANT</span>Q4 风险段缺结论句</strong>
+    <div class="row"><b>当前：</b>风险段直接是 3 条陈述句，没有顶部结论</div>
+    <div class="row"><b>问题：</b>违反"每章节有结论句"的内容质量规则；扫读者不知道这段在讲什么</div>
+    <div class="row"><b>修复：</b>在 3 条陈述前加一句 blockquote："Q4 最大风险是合规备案延误，影响 GA 时间窗"</div>
+  </div>
+
+  <div class="fix-item">
+    <strong><span class="severity">💡 POLISH</span>meta 区可读性偏弱</strong>
+    <div class="row"><b>当前：</b>meta 4 项字号 10px，1080p 屏看起来偏小</div>
+    <div class="row"><b>问题：</b>决策报告打印到 A4 后 meta 几乎不可读</div>
+    <div class="row"><b>修复：</b>font-size 10→11px，letter-spacing 由 0.06em 提到 0.08em</div>
+  </div>
+</section>
+
+<section class="quick-wins">
+  <h2>QUICK WINS · 5 分钟必修</h2>
+  <label><input type="checkbox"> 全局 grep-replace 数字单位为 "¥1.2M" 格式（预计 3 分钟）</label>
+  <label><input type="checkbox"> Q4 风险段加一句 blockquote 结论（预计 1 分钟）</label>
+  <label><input type="checkbox"> meta 区 font-size 10→11px / letter-spacing 0.06→0.08em（预计 1 分钟）</label>
+</section>
+
+<script>
+  echarts.init(document.getElementById('radar'), null, { renderer: 'svg' }).setOption({
+    backgroundColor: 'transparent',
+    radar: {
+      indicator: [
+        { name: '哲学一致性', max: 10 },
+        { name: '视觉层级',   max: 10 },
+        { name: '细节执行',   max: 10 },
+        { name: '功能性',     max: 10 },
+        { name: '反 cliché',  max: 10 }
+      ],
+      axisName: { color: '#888', fontFamily: 'JetBrains Mono', fontSize: 11 },
+      splitLine: { lineStyle: { color: '#1f1f1f' } },
+      splitArea: { areaStyle: { color: ['rgba(212,255,0,0.02)', 'rgba(255,255,255,0.01)'] } },
+      axisLine: { lineStyle: { color: '#1f1f1f' } }
+    },
+    series: [{
+      type: 'radar',
+      data: [{
+        value: [9, 8, 7, 8, 9],
+        name: '当前评分',
+        symbol: 'rect',
+        symbolSize: 6,
+        itemStyle: { color: '#d4ff00' },
+        lineStyle: { color: '#d4ff00', width: 1.5 },
+        areaStyle: { color: 'rgba(212, 255, 0, 0.12)' }
+      }]
+    }]
+  });
+</script>
+
+</body>
+</html>

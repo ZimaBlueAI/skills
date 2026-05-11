@@ -1,6 +1,8 @@
 # Skill 套件 · 安装、配置、使用说明
 
-**三个 Claude Code skill 的统一文档** · v1.0 · 2026-05-10
+**三个 Claude Code skill 的统一文档** · v2.0 · 2026-05-11
+
+> v2.0 起：viz-deck 从 1 模产出扩展到 **4 模产出**（keynote-report / hi-fi prototype / slide-deck / motion-stage），引入 **20 设计哲学** 与 **5 维专家评审**，并通过软依赖桥接 [`alchaincyf/huashu-design`](https://github.com/alchaincyf/huashu-design) 获得 HTML→MP4/PPTX 导出能力。详见 [第 11 节 · v2 新能力速查](#11--v2-新能力速查)。
 
 ---
 
@@ -16,52 +18,64 @@
 8. [三 skill 协同工作流](#08--三-skill-协同工作流)
 9. [疑难排查](#09--疑难排查)
 10. [升级与维护](#10--升级与维护)
+11. [v2 新能力速查](#11--v2-新能力速查)
+12. [huashu-design 桥接](#12--huashu-design-桥接)
 
 ---
 
 ## 01 · 三个 skill 是什么、谁负责什么
 
 ### biz-decision-stack
-商业决策角色思考链 + 终端风 HTML 报告生成器。**6 subagents + 1 skill**：
+商业决策角色思考链 + 终端风 HTML 报告生成器。**v2 起：7 subagents + 1 skill**：
 
 | 组件 | 角色 | 输出 |
 |---|---|---|
-| `00-all-hands-orchestrator` | 总调度 | 协调其他 6 个角色按顺序产出 |
+| `00-all-hands-orchestrator` | 总调度 | 协调其他 6 个角色按顺序产出 + 末尾可选触发 design-critic |
 | `01-board-advisor` | 董事会顾问 | 战略立场 + 备选方案 |
 | `02-ceo-decision` | CEO | 决策画布 + 资源分配 |
 | `03-chief-architect` | 首席架构师（合并 CTO/CAIO/CAO） | 技术路线图 |
 | `04-product-manager` | PM（MRD + Delivery 双模） | 产品需求文档 + 交付路径 |
 | `05-dev-test-lead` | 开发测试 lead（SD + TD） | 系统设计 + 测试设计 |
 | `06-acceptance-retro` | 验收复盘 | 验收清单 + 复盘框架 |
-| `biz-html-viz`（skill） | HTML 输出能力 | 7 终端风模板 |
+| `07-design-critic` 🆕 v2 | 设计评审官 | 5 维评分 + Keep/Fix/Quick-Wins |
+| `biz-html-viz`（skill） | HTML 输出能力 | **8 终端风模板**（含 v2 新增 `design-critique.html`） |
 
 **输出风格**：终端风 — 黑底 #0a0a0a + 酸黄 #d4ff00 + JetBrains Mono + 零动效。
 
-**包大小**：57KB zip。
+**包大小**：62KB zip。
 
 ---
 
 ### viz-deck
-讲演风深度报告 skill。**3 通用模板**：
+讲演风深度报告 skill。**v2 起：4 模产出**：
 
-| 模板 | 适合场景 |
-|---|---|
-| `stage-report.html` | 项目阶段汇报、季度成果展示 |
-| `architecture-deep.html` | 技术架构深度讲解、客户技术方案 |
-| `competitive-landscape.html` | 竞品分析、市场地图、投融对话 |
+| 模式 | 模板 | 适合场景 | 产出形态 |
+|---|---|---|---|
+| **1 · keynote-report** | `stage-report.html` | 项目阶段汇报、季度成果展示 | HTML |
+| | `architecture-deep.html` | 技术架构深度讲解、客户技术方案 | HTML |
+| | `competitive-landscape.html` | 竞品分析、市场地图、投融对话 | HTML（含 web_search 实时调研） |
+| **2 · prototype** 🆕 v2 | `prototype-shell.html` | iOS / Android / macOS / 浏览器高保真原型 | HTML + AppPhone 状态管理 |
+| **3 · slide-deck** 🆕 v2 | `slide-deck.html` | 演讲幻灯片、TED 风、客户路演 | HTML + 可编辑 PPTX + 横版 PDF |
+| **4 · motion-stage** 🆕 v2 | `motion-stage.html` | hero video、概念视频、解说视频 | HTML + MP4（25/60 fps）+ GIF + BGM |
 
 **输出风格**：讲演风 — 深空 #030711 + 青蓝金 + Inter + 微动效（含 reduced-motion 降级）。
 
 **核心配套**：
 - `references/design-system-deck.md` — 从 Octarus 真实样本提炼的视觉系统
 - `references/research-playbook.md` — 竞品调研 Tier 1/2/3 自适应方法论
+- `references/huashu-bridge.md` 🆕 v2 — 与 huashu-design 的桥接协议
+- `references/design-philosophies.md` 🆕 v2 — 20 设计哲学到 4 模产出的适配
+- `references/critique-5dim.md` 🆕 v2 — 5 维专家评审协议
+- `references/prototype-mode.md` 🆕 v2 — 高保真原型工作流
+- `references/slide-mode.md` 🆕 v2 — 幻灯片 + PPTX 导出工作流
+- `references/motion-mode.md` 🆕 v2 — 动画 + MP4 导出工作流
 
-**包大小**：35KB zip。
+**包大小**：65KB zip。
 
 ---
 
 ### viz-charts
-图表 + 3D 知识图谱能力 skill。**被前两个 skill 调用**。
+图表 + 3D 知识图谱 + 动效视频能力 skill。**被前两个 skill 调用**。**v2 起：5 类视觉**：
 
 | 类型 | 数量 | 路径 |
 |---|---|---|
@@ -70,11 +84,16 @@
 | 自研轻量组件 | 5 | `components/` |
 | 3D 知识图谱 viewer | 3 | `templates/kg3d/` |
 | KG builder | 2 | `builders/` |
+| **Motion stage** 🆕 v2 | 1 模板 | `templates/motion/motion-stage-template.html` |
 
-**双模渲染**：inline live（CDN，jsdelivr→unpkg fallback）+ offline SVG（Node.js）。
+**双模渲染**：inline live（CDN，jsdelivr→unpkg fallback）+ offline SVG（Node.js）+ motion 录屏（v2 桥接 huashu）。
 **双主题**：terminal（biz-decision-stack 报告用）+ deck（viz-deck 报告用）。
 
-**包大小**：150KB zip / 800KB 解压。
+**v2 新增 references**：
+- `references/motion-charts.md` — motion 图表三类模式（frame-step / temporal sweep / graph orbit）
+- `references/mp4-export.md` — MP4 / 60fps / GIF 导出工具链桥接
+
+**包大小**：153KB zip。
 
 ---
 
@@ -103,9 +122,11 @@
 | 组件 | 最低版本 | 用途 | 必装？ |
 |---|---|---|---|
 | Claude Code CLI | 最新版 | 跑 skill 的载体 | ✓ 必装 |
-| Node.js | 18.0+ | viz-charts 离线渲染、3D KG builders | 仅 viz-charts 需要 |
-| npm | 9.0+ | 装 echarts / mermaid 离线包 | 仅 viz-charts 离线模式 |
-| Chromium | — | Mermaid 离线 SVG 渲染 | 仅 Mermaid 离线模式 |
+| Node.js | 18.0+ | viz-charts 离线渲染、3D KG builders、v2 evaluator/exporters | 仅 viz-charts / v2 模式需要 |
+| npm | 9.0+ | 装 echarts / mermaid 离线包、huashu 运行时 | 仅 viz-charts 离线模式 / v2 模式 |
+| Chromium | — | Mermaid 离线 SVG 渲染、MP4 录制、PPTX 导出 | 仅 Mermaid 离线模式 / v2 模式（通过 playwright 自动装） |
+| **ffmpeg** 🆕 v2 | 4.0+ | MP4 编码 / 60fps 插帧 / GIF palette / BGM 混音 | 仅 v2 viz-deck motion-stage 模式 |
+| **huashu-design** 🆕 v2 | latest | 4 模产出（prototype/slide/motion）的工具链承载 | 仅 viz-deck v2 模式 + viz-charts motion |
 | Python 3 | 3.8+ | 3D KG 数据填充辅助脚本（可选） | 用模板替换辅助脚本时 |
 | 现代浏览器 | Chrome 90+ / Safari 14+ / Firefox 90+ | 预览报告、3D KG 交互 | 用户端 |
 
@@ -114,11 +135,19 @@
 | 使用模式 | 需要 | 不需要 |
 |---|---|---|
 | biz-decision-stack 生成报告 | Claude Code | Node.js 不需 |
-| viz-deck 生成报告 | Claude Code | Node.js 不需 |
+| biz-decision-stack 5 维评审（终端风）🆕 v2 | 仅 Claude Code | huashu 不需（评分标准已内嵌） |
+| viz-deck 生成报告（v1 模式 = keynote-report） | Claude Code | Node.js 不需 |
+| viz-deck 5 维评审（讲演风）🆕 v2 | Node 18+ | huashu 不需 |
+| **viz-deck prototype 模式** 🆕 v2 | Claude Code + 浏览器联网（React/Babel CDN） | huashu 非必须（Playwright 验证脚本来自 huashu） |
+| **viz-deck slide-deck 模式** 🆕 v2 | Claude Code（HTML） | PPTX 导出额外需要 huashu + Node + sharp |
+| **viz-deck motion-stage 模式** 🆕 v2 | **huashu-design + Node 18+ + Chromium + ffmpeg** | — |
+| viz-deck slide-deck 导出 PPTX 🆕 v2 | huashu + Node + sharp + pptxgenjs | — |
+| viz-deck slide-deck 导出 PDF 🆕 v2 | huashu + Node + Chromium + pdf-lib | — |
 | viz-charts inline 模式 | 浏览器联网（CDN） | Node.js 不需 |
 | viz-charts 离线 ECharts SVG | Node 18+ + `npm i echarts` | Chromium 不需 |
 | viz-charts 离线 Mermaid SVG | Node + Chromium | — |
 | viz-charts 离线 Mermaid 兜底 | 仅 Node | Chromium 不需（自动走 placeholder） |
+| **viz-charts motion 模式** 🆕 v2 | **huashu-design + Node 18+ + Chromium + ffmpeg** | — |
 | 3D KG builder 跑数据 | Node 18+（无外部依赖） | — |
 | 3D KG 浏览器渲染 | WebGL + 联网（CDN） | — |
 
@@ -579,4 +608,144 @@ unzip -o ~/Downloads/viz-charts-v1.1.zip
 
 ---
 
-**Skill Suite v1.0** · 2026-05-10 · biz-decision-stack + viz-deck + viz-charts
+---
+
+## 11 · v2 新能力速查
+
+> v2 在 v1 基础上叠加，**不破坏向后兼容**。原有 keynote-report / 决策链 / 静态图表全部继续可用。
+
+### 11.1 viz-deck 4 模产出
+
+| 模式 | 触发词 | 模板 | 关键依赖 |
+|---|---|---|---|
+| **1 · keynote-report**（v1 原模式） | "讲演 / 阶段汇报 / 架构深研 / 竞品" | `stage-report.html` 等三个 | Claude Code |
+| **2 · prototype**（v2 新增） | "做原型 / iOS 原型 / hi-fi / 可点击 demo" | `prototype-shell.html` | huashu 设备外壳（非必须）+ Playwright（验证） |
+| **3 · slide-deck**（v2 新增） | "做幻灯片 / 做 PPT / 导出 PPTX" | `slide-deck.html` | huashu + Node + sharp + pptxgenjs |
+| **4 · motion-stage**（v2 新增） | "导出 MP4 / 60fps / hero video / 解说视频" | `motion-stage.html` | huashu + Node + Chromium + ffmpeg |
+
+### 11.2 20 设计哲学 × viz-deck 适配
+
+通过 `references/design-philosophies.md` 把 huashu-design 的 5 流派 × 20 哲学映射到 viz-deck 的 4 模产出：
+
+- 信息建筑派（Pentagram / Stamen / Information Architects / Fathom）
+- 运动诗学派（Locomotive / Active Theory / Field.io / Resn）
+- 极简主义派（Experimental Jetset / Müller-Brockmann / Build / Sagmeister & Walsh）
+- 实验先锋派（Zach Lieberman / Raven Kwok / Ash Thorp / Territory Studio）
+- 东方哲学派（Takram / Kenya Hara / Irma Boom / Neo Shen）
+
+**用法**：
+
+```
+> 用 18 Kenya Hara 风格做一份 Mingjing 阶段报告
+> 用 04 Fathom 风格做一份数据 deck
+> 不知道选哪个，给我推荐 3 个差异化方向
+```
+
+最后一句会触发**设计方向顾问模式**——并行生成 3 个视觉 demo 供用户选。
+
+### 11.3 5 维专家评审
+
+| 维度 | 一句话 |
+|---|---|
+| 1 · 哲学一致性 | 是否真按所选哲学执行，每个细节都有依据 |
+| 2 · 视觉层级 | 用户视线是否按设计者意图自然流动 |
+| 3 · 细节执行 | 像素级精确——对齐、间距、颜色、字体 |
+| 4 · 功能性 | 每个元素都服务目标，零冗余 |
+| 5 · 创新性 | 在哲学框架内有独特表达（biz-html-viz 版只评"反 cliché"） |
+
+**两套实现**：
+
+| 评的对象 | 用谁 | 脚本 |
+|---|---|---|
+| 决策报告（biz-decision-stack 出品） | `07-design-critic` subagent → `design-critique.html`（终端风） | 手动填模板 |
+| 讲演产出（viz-deck 出品） | `viz-deck/scripts/review-5dim.mjs` → critique.html（讲演风） | `node review-5dim.mjs --input scores.json --output critique.html` |
+
+两套都生成 ECharts radar 图 + Keep / Fix（按严重度 critical/important/polish）/ Quick-Wins。
+
+### 11.4 v2 完整调用矩阵
+
+| 你想要 | 触发什么 | 跑什么命令 |
+|---|---|---|
+| 8 份决策报告 + 评审 | "走一遍全流程并做 5 维评审" | orchestrator + design-critic |
+| iOS 高保真原型 | "做个 iOS 原型" | viz-deck prototype-mode |
+| 可编辑 PPT | "做幻灯片并导出 PPTX" | viz-deck slide-mode + `scripts/export-pptx.sh` |
+| 8 秒 hero video | "做个 8 秒动画并导出 60fps MP4" | viz-deck motion-mode + `scripts/export-mp4.sh` |
+| 带解说的科普视频 | "5 分钟讲清楚 XX" | huashu narrate-pipeline.mjs |
+| 5 维评审讲演 deck | "评一下" | `scripts/review-5dim.mjs` |
+| ECharts reveal 动画 MP4 | "把营收 4 季度趋势做成动效视频" | viz-charts motion + huashu render-video.js |
+
+---
+
+## 12 · huashu-design 桥接
+
+### 12.1 何时需要
+
+| 需求 | 需要 huashu？ |
+|---|:---:|
+| 用 v1 阶段报告 / 决策链 / 静态图表 | ❌ |
+| 5 维评分本身（评分标准已内嵌） | ❌ |
+| 5 维评审 HTML 生成（review-5dim.mjs） | ❌（脚本本身只依赖 Node + ECharts CDN） |
+| HTML → MP4 / GIF | ✅ |
+| HTML → 可编辑 PPTX | ✅ |
+| 设备外壳（iPhone/Android/macOS/browser） | ⚠️ 可选（也可自己画，但 huashu 现成） |
+| 20 哲学的完整提示词 DNA / 代表作 | ✅（viz-deck 文件只做适配引用） |
+| TTS 解说视频 pipeline | ✅ + 豆包 TTS 凭据 |
+
+### 12.2 安装
+
+```bash
+# 1. clone 到 ~/.claude/skills/
+git clone --depth=1 https://github.com/alchaincyf/huashu-design.git ~/.claude/skills/huashu-design
+cd ~/.claude/skills/huashu-design
+
+# 2. huashu 自身不带 package.json，用本仓库推荐清单
+cat > package.json <<'JSON'
+{
+  "name": "huashu-design-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "playwright": "^1.48.0",
+    "sharp": "^0.33.5",
+    "pptxgenjs": "^3.12.0",
+    "pdf-lib": "^1.17.1"
+  }
+}
+JSON
+
+npm install
+npx playwright install chromium
+
+# 3. ffmpeg 必须在 PATH
+ffmpeg -version
+```
+
+### 12.3 桥接调用约定
+
+- 所有调用用 `~/.claude/skills/huashu-design/scripts/...` 绝对路径
+- render-video.js 是 **CommonJS**（用 `require`），所以 huashu 目录的 `package.json` **不要**加 `"type": "module"`
+- render-video.js 的 CLI 风格：`node render-video.js <html-file> --duration=N --width=W --height=H`（位置参数 + `--key=value`）
+- HTML stage 必须在首次渲染后设 `window.__ready = true`，这是 huashu 录制的 t=0 起点
+- 输出 MP4 自动命名为 `<html-file>.mp4`，在同目录下
+
+### 12.4 探测脚本
+
+每次进入 v2 模式前，agent 应做轻量探测：
+
+```bash
+HUASHU="$HOME/.claude/skills/huashu-design"
+test -f "$HUASHU/SKILL.md" && \
+test -f "$HUASHU/scripts/render-video.js" && \
+test -f "$HUASHU/references/design-styles.md" && \
+echo "OK" || echo "huashu-design MISSING — install via the guide section 12.2"
+```
+
+如果 `MISSING`：
+
+1. **不要 silently fallback** — 告诉用户 v2 高级模式需要 huashu-design
+2. 给出 12.2 节的安装命令
+3. 询问是否仍要继续 v1 模式
+
+---
+
+**Skill Suite v2.0** · 2026-05-11 · biz-decision-stack + viz-deck + viz-charts + huashu-design (bridge)
