@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — MRD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg-elev:#141414;--bg-hover:#1c1c1c;--border:#2a2a2a;--border-strong:#3a3a3a;--fg:#e8e8e8;--fg-dim:#888;--fg-faint:#555;--accent:#d4ff00;--accent-dim:#8a9e0a;--danger:#ff4444;--warn:#ffaa00;--ok:#44dd88;--font-mono:'JetBrains Mono','SF Mono','Menlo','Consolas',monospace;--font-sans:'Inter Tight','PingFang SC','Source Han Sans SC',system-ui,sans-serif;--font-serif:'Newsreader','Source Serif 4',Georgia,serif;--gap-xs:4px;--gap-sm:8px;--gap-md:16px;--gap-lg:24px;--gap-xl:48px;--max-width:1200px;--content-width:880px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--font-sans);font-size:14px;line-height:1.6;padding:var(--gap-xl) var(--gap-lg)}
+.report-header{max-width:var(--max-width);margin:0 auto var(--gap-xl);border-bottom:1px solid var(--border-strong);padding-bottom:var(--gap-lg)}
+.report-header .meta{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;gap:var(--gap-lg);margin-bottom:var(--gap-md);flex-wrap:wrap}
+.report-header h1{font-family:var(--font-serif);font-size:40px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.report-header .subtitle{color:var(--fg-dim);margin-top:var(--gap-sm);font-size:15px}
+main{max-width:var(--max-width);margin:0 auto}
+section{margin-bottom:var(--gap-xl)}
+h2{font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);padding-bottom:var(--gap-sm);border-bottom:1px solid var(--border);margin-bottom:var(--gap-md)}
+h3{font-size:18px;font-weight:600;margin-bottom:var(--gap-sm)}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px}
+th{text-align:left;padding:var(--gap-sm);border-bottom:1px solid var(--border-strong);font-weight:500;color:var(--fg-dim);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+td{padding:var(--gap-sm);border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg-hover)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:2px 6px;border:1px solid var(--border-strong);text-transform:uppercase;letter-spacing:.05em}
+.tag.ok{color:var(--ok);border-color:var(--ok)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.danger{color:var(--danger);border-color:var(--danger)}
+.tag.accent{color:var(--accent);border-color:var(--accent)}
+.kpi{font-family:var(--font-mono);font-size:36px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi.up{color:var(--ok)}.kpi.down{color:var(--danger)}
+.kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-xs)}
+.kpi-delta{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);margin-top:var(--gap-xs)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-md)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap-md)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md)}
+.card{border:1px solid var(--border);padding:var(--gap-md);background:var(--bg-elev)}
+.card:hover{border-color:var(--border-strong)}
+blockquote{font-family:var(--font-serif);font-size:19px;font-style:italic;line-height:1.5;color:var(--fg);padding:var(--gap-md) 0 var(--gap-md) var(--gap-md);border-left:2px solid var(--accent);margin:var(--gap-lg) 0;max-width:var(--content-width)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim)}
+a:hover{background:var(--accent);color:var(--bg)}
+pre,code{font-family:var(--font-mono);font-size:12px;color:var(--fg);background:var(--bg-elev);padding:var(--gap-md);border:1px solid var(--border);overflow-x:auto;white-space:pre;display:block;line-height:1.5}
+code:not(pre code){display:inline;padding:1px 4px;border:none;background:var(--bg-elev)}
+.row{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:140px 1fr auto;gap:var(--gap-md);align-items:baseline}
+.row .label{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em}
+ol,ul{padding-left:20px;font-size:14px;line-height:1.8}
+ol.mono,ul.mono{font-family:var(--font-mono);font-size:13px;line-height:2}
+@media print{body{background:#fff;color:#000;padding:0}:root{--bg:#fff;--bg-elev:#fff;--fg:#000;--fg-dim:#555;--border:#ccc}}
+.persona{display:grid;grid-template-columns:120px 1fr;gap:var(--gap-md);padding:var(--gap-md);border:1px solid var(--border);background:var(--bg-elev);margin-bottom:var(--gap-md)}
+.persona .avatar{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);background:var(--bg);border:1px solid var(--border);padding:var(--gap-md);display:flex;align-items:center;justify-content:center;text-align:center;text-transform:uppercase;letter-spacing:.1em}
+.persona dl{display:grid;grid-template-columns:90px 1fr;gap:var(--gap-xs) var(--gap-md);font-size:13px}
+.persona dt{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em}
+.competitor{padding:var(--gap-md) 0;border-bottom:1px solid var(--border)}
+.req{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:60px 1fr 100px 80px 80px;gap:var(--gap-md);align-items:start}
+.req .id{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim)}
+.req strong{display:block;margin-bottom:var(--gap-xs)}
+.req .desc{color:var(--fg-dim);font-size:13px}
+.tam-sam-som{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);background:var(--bg-elev)}
+.tam-sam-som > div{padding:var(--gap-lg);border-right:1px solid var(--border);text-align:center}
+.tam-sam-som > div:last-child{border-right:none}
+.tam-sam-som .label{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.15em;margin-bottom:var(--gap-sm)}
+.tam-sam-som .val{font-family:var(--font-mono);font-size:32px;font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums}
+.tam-sam-som .note{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);margin-top:var(--gap-sm)}
+</style></head><body>
+<header class="report-header">
+  <div class="meta"><span>REPORT // MRD</span><span>{{DATE}}</span><span>PM: {{AUTHOR}}</span><span>REV {{VERSION}}</span></div>
+  <h1>{{TITLE}}</h1><p class="subtitle">{{SUBTITLE}}</p>
+</header>
+<main>
+
+<section>
+  <h2>Problem Statement // 我们在解决什么问题</h2>
+  <blockquote>{{PROBLEM_STATEMENT}}</blockquote>
+</section>
+
+<section>
+  <h2>Market Size // 市场规模 (TAM / SAM / SOM)</h2>
+  <div class="tam-sam-som">
+    <div><div class="label">TAM · 总市场</div><div class="val">{{TAM}}</div><div class="note">{{TAM_NOTE}}</div></div>
+    <div><div class="label">SAM · 可服务</div><div class="val">{{SAM}}</div><div class="note">{{SAM_NOTE}}</div></div>
+    <div><div class="label">SOM · 可获取（3yr）</div><div class="val">{{SOM}}</div><div class="note">{{SOM_NOTE}}</div></div>
+  </div>
+  <p style="font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);margin-top:var(--gap-sm)">数据来源：{{MARKET_SOURCES}}</p>
+</section>
+
+<section>
+  <h2>Target Personas // 目标用户</h2>
+  {{PERSONAS}}
+  <!-- 每个 persona 格式：
+  <div class="persona">
+    <div class="avatar">PERSONA<br>P-01</div>
+    <dl>
+      <dt>Name</dt><dd>张明 · 38 · 投行 MD</dd>
+      <dt>Job-to-be-done</dt><dd>...</dd>
+      <dt>Pain</dt><dd>...</dd>
+      <dt>Today's solution</dt><dd>...</dd>
+      <dt>Willingness to pay</dt><dd>¥X/mo</dd>
+    </dl>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Competitive Matrix // 竞品矩阵</h2>
+  <table>
+    <thead><tr><th>Competitor</th><th>Position</th><th>Strength</th><th>Weakness</th><th>Pricing</th><th>Our Edge</th></tr></thead>
+    <tbody>{{COMPETITOR_ROWS}}</tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Differentiation // 我们凭什么赢</h2>
+  <ol class="mono">{{DIFFERENTIATION}}</ol>
+</section>
+
+<section>
+  <h2>Requirements // 需求清单（按优先级）</h2>
+  <p style="color:var(--fg-dim);font-size:13px;margin-bottom:var(--gap-md)">P0 = 首发必须；P1 = 6 个月内；P2 = 路线图；P3 = 已拒绝</p>
+  {{REQUIREMENTS}}
+  <!-- 每项格式：
+  <div class="req">
+    <div class="id">REQ-001</div>
+    <div><strong>13 境界进阶系统</strong><div class="desc">...</div></div>
+    <div><span class="tag accent">P0</span></div>
+    <div><span class="tag">M</span></div>
+    <div><span class="tag">@PM</span></div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Success Metrics // 成功标准</h2>
+  <table>
+    <thead><tr><th>Metric</th><th>Baseline</th><th>30-day</th><th>90-day</th><th>1-yr Target</th></tr></thead>
+    <tbody>{{METRICS_ROWS}}</tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Risks & Assumptions // 风险与假设</h2>
+  <table>
+    <thead><tr><th>Type</th><th>Item</th><th>Impact</th><th>Mitigation</th></tr></thead>
+    <tbody>{{RISKS_ROWS}}</tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Go / No-Go Recommendation // PM 建议</h2>
+  <blockquote>{{RECOMMENDATION}}</blockquote>
+</section>
+
+</main></body></html>

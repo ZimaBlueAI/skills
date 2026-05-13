@@ -1,0 +1,20 @@
+%% 用户旅程：情绪曲线随接触点变化
+journey
+    title 新用户从注册到首次成功的体验旅程
+    section 发现
+      看到广告          : 3: User
+      访问官网          : 4: User
+    section 注册
+      填写邮箱          : 4: User
+      验证邮件          : 2: User
+      首次登录          : 5: User
+    section 首单
+      浏览产品          : 5: User
+      加入购物车        : 5: User
+      支付              : 3: User, Payment
+      支付失败重试      : 1: User, Payment
+      下单成功          : 5: User, Order
+    section 转化
+      物流跟踪          : 4: User
+      收到货品          : 5: User
+      首次复购          : 5: User, CRM

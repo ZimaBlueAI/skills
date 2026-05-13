@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{PROJECT_NAME}} — All-Hands Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg-elev:#141414;--bg-hover:#1c1c1c;--border:#2a2a2a;--border-strong:#3a3a3a;--fg:#e8e8e8;--fg-dim:#888;--fg-faint:#555;--accent:#d4ff00;--accent-dim:#8a9e0a;--danger:#ff4444;--warn:#ffaa00;--ok:#44dd88;--font-mono:'JetBrains Mono','SF Mono','Menlo','Consolas',monospace;--font-sans:'Inter Tight','PingFang SC','Source Han Sans SC',system-ui,sans-serif;--font-serif:'Newsreader','Source Serif 4',Georgia,serif;--gap-xs:4px;--gap-sm:8px;--gap-md:16px;--gap-lg:24px;--gap-xl:48px;--max-width:1200px;--content-width:880px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--font-sans);font-size:14px;line-height:1.6;padding:var(--gap-xl) var(--gap-lg)}
+.report-header{max-width:var(--max-width);margin:0 auto var(--gap-xl);border-bottom:1px solid var(--border-strong);padding-bottom:var(--gap-lg)}
+.report-header .meta{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;gap:var(--gap-lg);margin-bottom:var(--gap-md);flex-wrap:wrap}
+.report-header h1{font-family:var(--font-serif);font-size:40px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.report-header .subtitle{color:var(--fg-dim);margin-top:var(--gap-sm);font-size:15px}
+main{max-width:var(--max-width);margin:0 auto}
+section{margin-bottom:var(--gap-xl)}
+h2{font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);padding-bottom:var(--gap-sm);border-bottom:1px solid var(--border);margin-bottom:var(--gap-md)}
+h3{font-size:18px;font-weight:600;margin-bottom:var(--gap-sm)}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px}
+th{text-align:left;padding:var(--gap-sm);border-bottom:1px solid var(--border-strong);font-weight:500;color:var(--fg-dim);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+td{padding:var(--gap-sm);border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg-hover)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:2px 6px;border:1px solid var(--border-strong);text-transform:uppercase;letter-spacing:.05em}
+.tag.ok{color:var(--ok);border-color:var(--ok)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.danger{color:var(--danger);border-color:var(--danger)}
+.tag.accent{color:var(--accent);border-color:var(--accent)}
+.kpi{font-family:var(--font-mono);font-size:36px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi.up{color:var(--ok)}.kpi.down{color:var(--danger)}
+.kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-xs)}
+.kpi-delta{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);margin-top:var(--gap-xs)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-md)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap-md)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md)}
+.card{border:1px solid var(--border);padding:var(--gap-md);background:var(--bg-elev)}
+.card:hover{border-color:var(--border-strong)}
+blockquote{font-family:var(--font-serif);font-size:19px;font-style:italic;line-height:1.5;color:var(--fg);padding:var(--gap-md) 0 var(--gap-md) var(--gap-md);border-left:2px solid var(--accent);margin:var(--gap-lg) 0;max-width:var(--content-width)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim)}
+a:hover{background:var(--accent);color:var(--bg)}
+pre,code{font-family:var(--font-mono);font-size:12px;color:var(--fg);background:var(--bg-elev);padding:var(--gap-md);border:1px solid var(--border);overflow-x:auto;white-space:pre;display:block;line-height:1.5}
+code:not(pre code){display:inline;padding:1px 4px;border:none;background:var(--bg-elev)}
+.row{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:140px 1fr auto;gap:var(--gap-md);align-items:baseline}
+.row .label{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em}
+ol,ul{padding-left:20px;font-size:14px;line-height:1.8}
+ol.mono,ul.mono{font-family:var(--font-mono);font-size:13px;line-height:2}
+@media print{body{background:#fff;color:#000;padding:0}:root{--bg:#fff;--bg-elev:#fff;--fg:#000;--fg-dim:#555;--border:#ccc}}
+.report-card{display:grid;grid-template-columns:60px 1fr 200px;gap:var(--gap-md);padding:var(--gap-md);border:1px solid var(--border);background:var(--bg-elev);margin-bottom:var(--gap-sm);text-decoration:none;color:var(--fg);align-items:start}
+.report-card:hover{border-color:var(--accent);background:var(--bg-hover)}
+.report-card .num{font-family:var(--font-mono);font-size:24px;color:var(--accent);font-weight:500}
+.report-card .body strong{display:block;font-size:16px;margin-bottom:var(--gap-xs)}
+.report-card .body .stage{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-sm)}
+.report-card .body .summary{color:var(--fg-dim);font-size:13px}
+.report-card .meta{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-align:right}
+.print-btn{display:inline-block;font-family:var(--font-mono);font-size:11px;padding:var(--gap-sm) var(--gap-md);border:1px solid var(--accent);color:var(--accent);text-transform:uppercase;letter-spacing:.1em;cursor:pointer;background:transparent}
+.print-btn:hover{background:var(--accent);color:var(--bg);border-bottom:1px solid var(--accent)}
+@media print{.print-btn{display:none}}
+</style></head><body>
+<header class="report-header">
+  <div class="meta"><span>INDEX // ALL-HANDS</span><span>{{DATE}}</span><span>{{AUTHOR}}</span><span>{{PROJECT_CODE}}</span></div>
+  <h1>{{PROJECT_NAME}}</h1>
+  <p class="subtitle">{{SUBTITLE}}</p>
+</header>
+<main>
+
+<section>
+  <h2>One Paragraph // 项目要义</h2>
+  <blockquote>{{ONE_PARAGRAPH}}</blockquote>
+</section>
+
+<section>
+  <h2>Decision Trail // 决策链路</h2>
+  <p style="color:var(--fg-dim);font-size:13px;margin-bottom:var(--gap-md)">六份报告按决策流顺序排列。每张卡片提取该阶段的「关键决策」一行摘要。</p>
+
+  <a class="report-card" href="{{LINK_BOARD}}">
+    <div class="num">01</div>
+    <div class="body">
+      <div class="stage">SHAREHOLDER · BOARD BRIEF</div>
+      <strong>{{TITLE_BOARD}}</strong>
+      <div class="summary">→ {{SUMMARY_BOARD}}</div>
+    </div>
+    <div class="meta">{{DATE_BOARD}}<br>REV {{REV_BOARD}}</div>
+  </a>
+
+  <a class="report-card" href="{{LINK_CEO}}">
+    <div class="num">02</div>
+    <div class="body">
+      <div class="stage">CEO · STRATEGY CANVAS</div>
+      <strong>{{TITLE_CEO}}</strong>
+      <div class="summary">→ {{SUMMARY_CEO}}</div>
+    </div>
+    <div class="meta">{{DATE_CEO}}<br>REV {{REV_CEO}}</div>
+  </a>
+
+  <a class="report-card" href="{{LINK_TECH}}">
+    <div class="num">03</div>
+    <div class="body">
+      <div class="stage">CHIEF ARCHITECT · TECH ROADMAP</div>
+      <strong>{{TITLE_TECH}}</strong>
+      <div class="summary">→ {{SUMMARY_TECH}}</div>
+    </div>
+    <div class="meta">{{DATE_TECH}}<br>REV {{REV_TECH}}</div>
+  </a>
+
+  <a class="report-card" href="{{LINK_MRD}}">
+    <div class="num">04</div>
+    <div class="body">
+      <div class="stage">PM · MRD</div>
+      <strong>{{TITLE_MRD}}</strong>
+      <div class="summary">→ {{SUMMARY_MRD}}</div>
+    </div>
+    <div class="meta">{{DATE_MRD}}<br>REV {{REV_MRD}}</div>
+  </a>
+
+  <a class="report-card" href="{{LINK_PROJECT}}">
+    <div class="num">05</div>
+    <div class="body">
+      <div class="stage">PM · PROJECT BOARD</div>
+      <strong>{{TITLE_PROJECT}}</strong>
+      <div class="summary">→ {{SUMMARY_PROJECT}}</div>
+    </div>
+    <div class="meta">{{DATE_PROJECT}}<br>SPRINT {{REV_PROJECT}}</div>
+  </a>
+
+  <a class="report-card" href="{{LINK_DEV}}">
+    <div class="num">06</div>
+    <div class="body">
+      <div class="stage">SD/TD · DEV & QA</div>
+      <strong>{{TITLE_DEV}}</strong>
+      <div class="summary">→ {{SUMMARY_DEV}}</div>
+    </div>
+    <div class="meta">{{DATE_DEV}}<br>BUILD {{REV_DEV}}</div>
+  </a>
+
+  <a class="report-card" href="{{LINK_RETRO}}">
+    <div class="num">07</div>
+    <div class="body">
+      <div class="stage">ACCEPTANCE & RETRO</div>
+      <strong>{{TITLE_RETRO}}</strong>
+      <div class="summary">→ {{SUMMARY_RETRO}}</div>
+    </div>
+    <div class="meta">{{DATE_RETRO}}<br>FINAL {{REV_RETRO}}</div>
+  </a>
+</section>
+
+<section>
+  <h2>Critical Path // 关键路径</h2>
+  <p style="color:var(--fg-dim);font-size:13px;margin-bottom:var(--gap-md)">从决策到交付的核心瓶颈和锁链</p>
+  <ol class="mono">{{CRITICAL_PATH}}</ol>
+</section>
+
+<section>
+  <h2>Open Items // 跨阶段未决项</h2>
+  <ol class="mono" style="color:var(--warn)">{{OPEN_ITEMS}}</ol>
+</section>
+
+<section>
+  <h2>Tools // 工具</h2>
+  <p><a class="print-btn" onclick="window.print()">PRINT ALL · 打印为 PDF</a></p>
+  <p style="color:var(--fg-dim);font-size:13px;margin-top:var(--gap-md)">提示：在浏览器打印时勾选「背景图形」可保留终端配色；取消勾选即获得高对比度黑白版。</p>
+</section>
+
+</main></body></html>

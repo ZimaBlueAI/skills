@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" data-motion-stage data-record-seconds="6">
+<head>
+<meta charset="utf-8">
+<title>Q1-Q4 Revenue Reveal · viz-charts motion sample</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #030711;
+    --fg: #e7efff;
+    --muted: #6b7d99;
+    --accent: #42e8ff;
+    --gold: #ffd987;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); overflow: hidden; }
+  body { width: 1920px; height: 1080px; font-family: Inter, system-ui, sans-serif; }
+  .stage { position: relative; width: 1920px; height: 1080px; padding: 80px; box-sizing: border-box; }
+  .eyebrow { color: var(--accent); font-family: var(--mono); font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 24px; }
+  h1 { font-size: 64px; font-weight: 600; margin: 0 0 12px; letter-spacing: -0.01em; line-height: 1.05; }
+  .lead { font-size: 24px; color: var(--muted); margin-bottom: 32px; max-width: 1200px; }
+  .canvas { width: 1760px; height: 720px; }
+  .footnote { position: absolute; bottom: 40px; left: 80px; right: 80px; display: flex; justify-content: space-between; color: var(--muted); font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+  <div class="stage">
+    <div class="eyebrow">CHAPTER 02 · REVENUE</div>
+    <h1>四个季度，三条曲线，一条结论</h1>
+    <p class="lead">Q3 起新签合同毛利率反超续费，是渠道结构调整的拐点。</p>
+    <div id="chart" class="canvas"></div>
+    <div class="footnote">
+      <span>SOURCE · FINANCE OPS · 2026 Q1-Q4</span>
+      <span>VIZ-CHARTS · MOTION SAMPLE</span>
+    </div>
+  </div>
+
+  <script>
+    const chart = echarts.init(document.getElementById('chart'));
+    const option = {
+      backgroundColor: 'transparent',
+      animationDuration: 1400,
+      animationDelay: (idx) => idx * 350,
+      animationEasing: 'cubicOut',
+      grid: { left: 80, right: 60, top: 60, bottom: 80 },
+      legend: {
+        textStyle: { color: '#8898b6', fontSize: 14, fontFamily: 'JetBrains Mono' },
+        top: 0, right: 0,
+      },
+      tooltip: { trigger: 'axis' },
+      xAxis: {
+        type: 'category',
+        data: ['Q1', 'Q2', 'Q3', 'Q4'],
+        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } },
+        axisLabel: { color: '#8898b6', fontFamily: 'JetBrains Mono', fontSize: 16 },
+      },
+      yAxis: {
+        type: 'value',
+        name: '¥M',
+        nameTextStyle: { color: '#8898b6', fontFamily: 'JetBrains Mono', fontSize: 12 },
+        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)' } },
+        axisLabel: { color: '#8898b6', fontFamily: 'JetBrains Mono', fontSize: 14 },
+      },
+      series: [
+        {
+          name: '新签',
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 8,
+          data: [1.2, 1.8, 2.6, 3.1],
+          itemStyle: { color: '#42e8ff' },
+          lineStyle: { width: 3, color: '#42e8ff' },
+          areaStyle: { color: 'rgba(66, 232, 255, 0.12)' },
+        },
+        {
+          name: '续费',
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 8,
+          data: [2.4, 2.6, 2.5, 2.7],
+          itemStyle: { color: '#ffd987' },
+          lineStyle: { width: 3, color: '#ffd987' },
+        },
+        {
+          name: '毛利率 %',
+          type: 'line',
+          smooth: true,
+          yAxisIndex: 0,
+          symbol: 'diamond',
+          symbolSize: 10,
+          data: [38, 42, 51, 56],
+          itemStyle: { color: '#b893ff' },
+          lineStyle: { width: 2, color: '#b893ff', type: 'dashed' },
+        },
+      ],
+    };
+    // huashu render-video.js 模式：先用空 option 装好 chart 实例 + 等字体，再设 __ready，
+    // 录制 t=0 之后立即触发真正的 setOption——保证动画完整入镜。
+    function go() {
+      window.__ready = true;
+      requestAnimationFrame(() => chart.setOption(option));
+      document.documentElement.classList.add('chart-loaded');
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => requestAnimationFrame(go));
+    } else {
+      requestAnimationFrame(go);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!--
+  Tag Cloud · 关键词云 / 技术栈展示
+  ===========================
+  
+  使用：
+  <div class="tag-cloud" data-tags='[
+    {"label":"Python","weight":10,"category":"lang"},
+    {"label":"Go","weight":8,"category":"lang"},
+    {"label":"PostgreSQL","weight":7,"category":"db"},
+    {"label":"Redis","weight":5,"category":"db"}
+  ]'></div>
+  
+  weight: 1-10 决定字号
+  category 可选，自动按 category 分组渲染（用 hr 分割）
+  
+  讲演风：class="tag-cloud tag-cloud--deck"
+-->
+
+<style>
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  padding: 16px;
+  border: 1px solid #2a2a2a;
+  background: #141414;
+  font-family: 'JetBrains Mono', monospace;
+  align-items: baseline;
+  line-height: 1.6;
+}
+.tag-cloud .vt {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid #3a3a3a;
+  color: #e8e8e8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tag-cloud .vt-cat {
+  width: 100%;
+  border: none;
+  padding: 0;
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 0.15em;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+.tag-cloud .vt-cat:first-child { margin-top: 0; }
+
+/* 字号按 weight */
+.tag-cloud .vt[data-w="1"], .tag-cloud .vt[data-w="2"], .tag-cloud .vt[data-w="3"] { font-size: 10px; }
+.tag-cloud .vt[data-w="4"], .tag-cloud .vt[data-w="5"], .tag-cloud .vt[data-w="6"] { font-size: 11px; color: #fff; }
+.tag-cloud .vt[data-w="7"], .tag-cloud .vt[data-w="8"]                              { font-size: 13px; color: #fff; border-color: #d4ff00; }
+.tag-cloud .vt[data-w="9"], .tag-cloud .vt[data-w="10"]                             { font-size: 15px; color: #d4ff00; border-color: #d4ff00; font-weight: 600; }
+
+/* Deck */
+.tag-cloud--deck {
+  border: 1px solid rgba(151, 209, 255, 0.16);
+  background: rgba(12, 26, 46, 0.72);
+  border-radius: 16px;
+  padding: 20px;
+  font-family: Inter, sans-serif;
+}
+.tag-cloud--deck .vt {
+  border: 1px solid rgba(151, 209, 255, 0.34);
+  border-radius: 999px;
+  background: rgba(7, 17, 31, 0.6);
+  color: #d8e8f4;
+  padding: 4px 12px;
+  text-transform: none;
+}
+.tag-cloud--deck .vt-cat { color: #688096; text-transform: uppercase; }
+.tag-cloud--deck .vt[data-w="7"], .tag-cloud--deck .vt[data-w="8"] {
+  color: #edf7ff; border-color: #42e8ff; font-size: 13px;
+}
+.tag-cloud--deck .vt[data-w="9"], .tag-cloud--deck .vt[data-w="10"] {
+  color: #42e8ff; border-color: #42e8ff; font-size: 15px;
+  background: rgba(66, 232, 255, 0.08);
+  font-weight: 600;
+}
+</style>
+
+<script>
+(function () {
+  function render(root) {
+    root = root || document;
+    const clouds = root.querySelectorAll('.tag-cloud[data-tags]:not([data-rendered])');
+    clouds.forEach(cloud => {
+      try {
+        const tags = JSON.parse(cloud.getAttribute('data-tags'));
+        // 按 category 分组（保持原序）
+        const groups = {};
+        const order = [];
+        tags.forEach(t => {
+          const cat = t.category || '';
+          if (!groups[cat]) { groups[cat] = []; order.push(cat); }
+          groups[cat].push(t);
+        });
+        let html = '';
+        order.forEach(cat => {
+          if (cat) html += `<div class="vt-cat">${escapeHtml(cat)}</div>`;
+          groups[cat].forEach(t => {
+            const w = Math.min(Math.max(parseInt(t.weight) || 5, 1), 10);
+            html += `<span class="vt" data-w="${w}">${escapeHtml(t.label)}</span> `;
+          });
+        });
+        cloud.innerHTML = html;
+        cloud.setAttribute('data-rendered', '1');
+      } catch (e) {
+        console.error('[tag-cloud]', e);
+      }
+    });
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => render());
+  } else { render(); }
+  window.VizTagCloud = { renderAll: render };
+})();
+</script>

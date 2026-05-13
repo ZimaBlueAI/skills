@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "name": "sunburst",
+    "use_when": "多层环形占比（≤4 层）",
+    "data_shape": "[{name, value, children}] 递归"
+  },
+  "series": [
+    {
+      "type": "sunburst",
+      "radius": ["20%", "90%"],
+      "label": { "rotate": "radial" },
+      "data": [
+        {
+          "name": "Cloud Spend",
+          "children": [
+            {
+              "name": "Compute",
+              "value": 320,
+              "children": [
+                { "name": "EC2", "value": 200 },
+                { "name": "Lambda", "value": 80 },
+                { "name": "ECS", "value": 40 }
+              ]
+            },
+            {
+              "name": "Storage",
+              "value": 180,
+              "children": [
+                { "name": "S3", "value": 110 },
+                { "name": "EBS", "value": 70 }
+              ]
+            },
+            {
+              "name": "Network",
+              "value": 90,
+              "children": [
+                { "name": "CloudFront", "value": 60 },
+                { "name": "Transfer", "value": 30 }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+%% 状态机：业务流转、生命周期
+stateDiagram-v2
+    direction LR
+
+    [*] --> Draft
+
+    Draft --> Submitted: submit()
+    Submitted --> InReview: assign()
+    InReview --> Approved: approve()
+    InReview --> Rejected: reject()
+    Approved --> Active: deploy()
+    Rejected --> Draft: revise()
+
+    Active --> Suspended: pause()
+    Suspended --> Active: resume()
+    Active --> Archived: archive()
+    Archived --> [*]
+
+    note right of InReview
+        SLA: 必须在 48h 内决策
+        否则自动升级
+    end note

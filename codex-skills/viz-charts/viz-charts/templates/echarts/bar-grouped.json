@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "name": "bar-grouped",
+    "use_when": "多类别 × 多维度对比",
+    "data_shape": "{categories, series: [{name, data}]}"
+  },
+  "tooltip": { "trigger": "axis", "axisPointer": { "type": "shadow" } },
+  "legend": { "top": 0 },
+  "xAxis": { "type": "category", "data": ["Q1","Q2","Q3","Q4"] },
+  "yAxis": { "type": "value" },
+  "series": [
+    { "name": "Plan",   "type": "bar", "data": [120, 132, 145, 160] },
+    { "name": "Actual", "type": "bar", "data": [125, 130, 152, 168] }
+  ]
+}

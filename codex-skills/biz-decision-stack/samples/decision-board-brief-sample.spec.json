@@ -1,0 +1,106 @@
+{
+  "name": "board_brief_q3_2026",
+  "slides": [
+    {
+      "id": "verdict",
+      "layout": "verdict-cover",
+      "kind": "BOARD BRIEF",
+      "date": "2026-05-13",
+      "code": "DEC-Q3-007",
+      "title": "Reallocate $4.2M from Bet C to Bet A this quarter",
+      "subtitle": "Vertical depth in finance + legal returns capital in 2 quarters; platform play does not.",
+      "verdict": "GO",
+      "verdict_note": "Reallocate $4.2M of Q3 OpEx from Bet C (platform / SDK) into Bet A (finance + legal verticals). Hold Bet B at current run-rate. Reassess Bet C in Q1 2027 with new data.",
+      "author": "Strategy · binxiaofeng@gmail.com",
+      "ref": "DOC-Q3-strategy-007"
+    },
+    {
+      "id": "kpis",
+      "layout": "kpi-roster",
+      "kind": "EVIDENCE",
+      "date": "Q3 2026",
+      "title": "Six KPIs, one constraint",
+      "lead": "Adoption is healthy; ARPU is the constraint. The decision moves $4.2M to the ARPU lever.",
+      "kpis": [
+        { "label": "Active workspaces", "value": "12847", "target": "10000", "status": "ahead", "note": "+38% QoQ" },
+        { "label": "ARPU", "value": "48", "unit": "/mo", "target": "60", "status": "behind", "note": "the constraint" },
+        { "label": "Logo churn", "value": "2.1", "unit": "%", "target": "3.0", "status": "ahead", "note": "best ever" },
+        { "label": "NPS", "value": "62", "target": "55", "status": "ahead", "note": "world-class" },
+        { "label": "Gross margin", "value": "71", "unit": "%", "target": "68", "status": "ahead", "note": "infra savings" },
+        { "label": "Cash runway", "value": "26", "unit": "mo", "target": "18", "status": "ahead", "note": "post-bridge" }
+      ]
+    },
+    {
+      "id": "matrix",
+      "layout": "decision-matrix",
+      "kind": "OPTIONS × CRITERIA",
+      "title": "Three bets, four criteria",
+      "lead": "Bet A is recommended; it scores well on payback period (the binding constraint).",
+      "options": [
+        {
+          "label": "Bet A — Vertical depth",
+          "sublabel": "Finance + legal",
+          "recommended": true,
+          "scores": [
+            { "value": "2Q", "weight": "high", "note": "payback" },
+            { "value": "25%", "note": "ARPU lift" },
+            { "value": "LOW", "note": "exec risk" },
+            { "value": "HIGH", "note": "fit" }
+          ]
+        },
+        {
+          "label": "Bet B — Horizontal breadth",
+          "sublabel": "More workspaces",
+          "scores": [
+            { "value": "1Q", "note": "payback" },
+            { "value": "5%", "note": "ARPU lift" },
+            { "value": "LOW", "note": "exec risk" },
+            { "value": "MED", "note": "fit" }
+          ]
+        },
+        {
+          "label": "Bet C — Platform play",
+          "sublabel": "Open SDK + marketplace",
+          "scores": [
+            { "value": "4Q+", "note": "payback" },
+            { "value": "10×", "note": "ARPU lift (best)" },
+            { "value": "HIGH", "note": "exec risk" },
+            { "value": "MED", "note": "fit" }
+          ]
+        }
+      ],
+      "criteria": ["Payback period", "ARPU lift", "Execution risk", "Strategic fit"]
+    },
+    {
+      "id": "risks",
+      "layout": "risks-grid",
+      "kind": "RISKS & MITIGATIONS",
+      "title": "Three risks worth tracking",
+      "lead": "All material risks have a named owner and a tracked due date.",
+      "risks": [
+        { "label": "Regulatory review on legal vertical", "impact": "could delay GA by 2 quarters", "severity": "MED" },
+        { "label": "Bet C team retention if reallocated", "impact": "2 senior engineers may leave", "severity": "MED" },
+        { "label": "Verticalization narrows TAM narrative", "impact": "next fundraise harder", "severity": "LOW" }
+      ],
+      "mitigations": [
+        { "label": "Engage outside counsel by Jun 15", "owner": "M. Wei", "due": "Jun 15" },
+        { "label": "Retention bonus + repurpose to Bet A", "owner": "P. Singh", "due": "Jul 01" },
+        { "label": "Pre-brief lead investor on logic", "owner": "CEO", "due": "May 30" }
+      ]
+    },
+    {
+      "id": "actions",
+      "layout": "action-list",
+      "kind": "DECISIONS & ACTIONS",
+      "title": "Five actions, one ask",
+      "lead": "Approve item 1 today; items 2-5 unlock automatically.",
+      "actions": [
+        { "text": "Approve $4.2M reallocation from Bet C to Bet A", "note": "binding board vote", "owner": "Board", "due": "May 13", "status": "TODO" },
+        { "text": "Engage outside counsel on legal vertical compliance", "owner": "M. Wei", "due": "Jun 15", "status": "TODO" },
+        { "text": "Internal reorg: 4 engineers from C → A", "owner": "P. Singh", "due": "Jul 01", "status": "TODO" },
+        { "text": "Pre-brief lead investor on Bet C deferral", "owner": "CEO", "due": "May 30", "status": "TODO" },
+        { "text": "Reassessment checkpoint for Bet C", "owner": "Strategy", "due": "Jan 2027", "status": "TODO" }
+      ]
+    }
+  ]
+}

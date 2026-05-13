@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "name": "geo-china",
+    "use_when": "中国省份分布",
+    "data_shape": "[{name, value}]",
+    "note": "需要额外加载 map JSON：echarts.registerMap('china', chinaJson)。建议从 https://datav.aliyun.com/portal/school/atlas/area_selector 下载"
+  },
+  "tooltip": { "trigger": "item" },
+  "visualMap": {
+    "min": 0, "max": 1000,
+    "left": "left", "bottom": 30,
+    "calculable": true,
+    "inRange": { "color": ["#0a3a4f", "#42e8ff"] }
+  },
+  "series": [
+    {
+      "name": "用户分布",
+      "type": "map",
+      "map": "china",
+      "roam": true,
+      "label": { "show": false },
+      "data": [
+        { "name": "北京", "value": 985 },
+        { "name": "上海", "value": 880 },
+        { "name": "广东", "value": 720 },
+        { "name": "浙江", "value": 540 },
+        { "name": "江苏", "value": 480 },
+        { "name": "四川", "value": 320 }
+      ]
+    }
+  ]
+}

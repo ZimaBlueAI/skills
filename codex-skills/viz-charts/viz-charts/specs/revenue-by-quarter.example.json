@@ -1,0 +1,14 @@
+{
+  "title": "Quarterly revenue by region",
+  "subtitle": "USD millions, FY 2026 (actuals + Q4 forecast)",
+  "type": "column",
+  "stacked": false,
+  "categories": ["Q1", "Q2", "Q3", "Q4 (fcst)"],
+  "series": [
+    { "name": "Americas", "data": [12, 18, 22, 28] },
+    { "name": "EMEA",     "data": [ 8, 11, 14, 18] },
+    { "name": "APAC",     "data": [ 5,  7,  9, 13] }
+  ],
+  "canvas": "ppt169",
+  "theme": "deep-space"
+}

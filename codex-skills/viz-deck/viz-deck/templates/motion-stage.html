@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" data-motion-stage data-record-seconds="8">
+<head>
+<meta charset="utf-8">
+<title>{{STAGE_TITLE}} · Motion Stage</title>
+<style>
+  :root {
+    --bg: #030711;
+    --fg: #e7efff;
+    --accent: #42e8ff;
+    --gold: #ffd987;
+    --muted: #6b7d99;
+  }
+  html, body { margin: 0; padding: 0; overflow: hidden; background: var(--bg); color: var(--fg); }
+  body {
+    width: 1920px;
+    height: 1080px;
+    font-family: Inter, system-ui, sans-serif;
+  }
+  .stage {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+  }
+
+  /* Orbit ring hero — characteristic viz-deck visual */
+  .orbit {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 720px;
+    height: 720px;
+    border: 1px solid rgba(66, 232, 255, 0.18);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .orbit::before {
+    content: '';
+    position: absolute;
+    inset: 80px;
+    border: 1px solid rgba(66, 232, 255, 0.08);
+    border-radius: 50%;
+  }
+  .orbit-dot {
+    position: absolute;
+    top: 0; left: 50%;
+    width: 14px; height: 14px;
+    background: var(--gold);
+    border-radius: 50%;
+    transform: translate(-50%, -7px);
+    box-shadow: 0 0 24px var(--gold);
+  }
+
+  .content {
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    right: 80px;
+    z-index: 2;
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-family: ui-monospace, 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0;
+  }
+  h1.headline {
+    font-size: 96px;
+    font-weight: 600;
+    line-height: 1.05;
+    margin: 16px 0 0;
+    letter-spacing: -0.02em;
+    max-width: 1400px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .lead {
+    position: absolute;
+    bottom: 80px;
+    left: 80px;
+    right: 80px;
+    font-size: 32px;
+    color: var(--muted);
+    max-width: 1200px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Sprite stages: timeline-driven via class toggles */
+  .stage[data-frame="1"] .eyebrow { animation: fadeUp 0.6s ease 0.2s forwards; }
+  .stage[data-frame="2"] .eyebrow { opacity: 1; }
+  .stage[data-frame="2"] h1.headline { animation: fadeUp 0.6s ease 0s forwards; }
+  .stage[data-frame="3"] .eyebrow,
+  .stage[data-frame="3"] h1.headline { opacity: 1; transform: translateY(0); }
+  .stage[data-frame="3"] .lead { animation: fadeUp 0.6s ease 0s forwards; }
+  .stage[data-frame="3"] .orbit { animation: orbitSpin 8s linear infinite; }
+  .stage[data-frame="3"] .orbit-dot { animation: orbitPulse 2s ease infinite; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes orbitSpin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  @keyframes orbitPulse {
+    0%, 100% { box-shadow: 0 0 24px var(--gold); }
+    50%       { box-shadow: 0 0 48px var(--gold); }
+  }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage" data-frame="0">
+    <div class="orbit"><div class="orbit-dot"></div></div>
+    <div class="content">
+      <div class="eyebrow">{{EYEBROW}}</div>
+      <h1 class="headline">{{HEADLINE}}</h1>
+    </div>
+    <div class="lead">{{LEAD}}</div>
+  </div>
+
+  <script>
+    // Timeline: 8 seconds total
+    // frame 1 @ 0.2s: eyebrow fade-in
+    // frame 2 @ 1.0s: headline rise
+    // frame 3 @ 2.2s: lead rise + orbit spin
+    // hold @ 7.0s — 7.5s : everything visible (recording capture window)
+    const stage = document.getElementById('stage');
+    const schedule = [
+      { at:  200, frame: 1 },
+      { at: 1000, frame: 2 },
+      { at: 2200, frame: 3 },
+    ];
+    schedule.forEach(({ at, frame }) => setTimeout(() => stage.dataset.frame = frame, at));
+
+    // Signal to huashu render-video.js: stage is initialized.
+    // It looks for window.__ready and treats that moment as recording t=0.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        requestAnimationFrame(() => { window.__ready = true; });
+      });
+    } else {
+      requestAnimationFrame(() => { window.__ready = true; });
+    }
+    document.documentElement.classList.add('stage-ready');
+  </script>
+</body>
+</html>

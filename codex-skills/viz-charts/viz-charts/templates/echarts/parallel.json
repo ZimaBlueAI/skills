@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "name": "parallel",
+    "use_when": "高维样本对比（5-12 维度）",
+    "data_shape": "value: [n, ...] 每条线 n 个值对应 dimensions"
+  },
+  "tooltip": {},
+  "parallelAxis": [
+    { "dim": 0, "name": "Cost" },
+    { "dim": 1, "name": "Performance" },
+    { "dim": 2, "name": "Stability" },
+    { "dim": 3, "name": "Adoption" },
+    { "dim": 4, "name": "Maturity" }
+  ],
+  "parallel": { "left": 60, "right": 30, "top": 30, "bottom": 30 },
+  "series": [
+    {
+      "name": "Stack Options",
+      "type": "parallel",
+      "lineStyle": { "width": 2, "opacity": 0.7 },
+      "data": [
+        [4, 8, 7, 6, 9],
+        [7, 9, 8, 4, 5],
+        [3, 6, 9, 8, 8],
+        [8, 7, 5, 9, 6]
+      ]
+    }
+  ]
+}

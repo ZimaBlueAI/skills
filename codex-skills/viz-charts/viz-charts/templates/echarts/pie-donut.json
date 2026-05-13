@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "name": "pie-donut",
+    "use_when": "整体的份额，≤6 块",
+    "data_shape": "[{name, value}]"
+  },
+  "tooltip": { "trigger": "item", "formatter": "{b}: {c} ({d}%)" },
+  "legend": { "orient": "vertical", "left": "right", "top": "middle" },
+  "series": [
+    {
+      "name": "Revenue Mix",
+      "type": "pie",
+      "radius": ["48%", "72%"],
+      "center": ["38%", "50%"],
+      "avoidLabelOverlap": true,
+      "label": { "show": false, "position": "center" },
+      "emphasis": {
+        "label": { "show": true, "fontSize": 16, "fontWeight": "bold" }
+      },
+      "data": [
+        { "name": "订阅", "value": 1248 },
+        { "name": "企业套餐", "value": 735 },
+        { "name": "广告", "value": 310 },
+        { "name": "咨询", "value": 484 },
+        { "name": "其他", "value": 100 }
+      ]
+    }
+  ]
+}

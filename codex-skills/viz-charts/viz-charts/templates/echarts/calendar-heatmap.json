@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "name": "calendar-heatmap",
+    "use_when": "全年逐日活跃度（如 GitHub 贡献图）",
+    "data_shape": "[['YYYY-MM-DD', value]]"
+  },
+  "tooltip": { "formatter": "{c}" },
+  "visualMap": {
+    "min": 0, "max": 100,
+    "calculable": true,
+    "orient": "horizontal",
+    "left": "center", "top": "top"
+  },
+  "calendar": {
+    "top": 80, "left": 30, "right": 30,
+    "cellSize": ["auto", 18],
+    "range": "2026",
+    "itemStyle": { "borderWidth": 0.5 },
+    "yearLabel": { "show": false }
+  },
+  "series": {
+    "type": "heatmap",
+    "coordinateSystem": "calendar",
+    "data": [
+      ["2026-01-15", 45], ["2026-01-22", 78], ["2026-02-03", 62],
+      ["2026-02-14", 88], ["2026-03-08", 55], ["2026-04-01", 92],
+      ["2026-04-15", 70], ["2026-05-09", 85], ["2026-06-01", 60]
+    ]
+  }
+}

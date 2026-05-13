@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" data-motion-stage data-record-seconds="{{RECORD_SECONDS}}">
+<head>
+<meta charset="utf-8">
+<title>{{TITLE}} · motion stage</title>
+<style>
+  :root {
+    --bg: #030711;
+    --fg: #e7efff;
+    --accent: #42e8ff;
+    --gold: #ffd987;
+    --mono: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); overflow: hidden; }
+  body { width: 1920px; height: 1080px; font-family: Inter, system-ui, sans-serif; }
+  .stage { position: relative; width: 1920px; height: 1080px; padding: 80px; box-sizing: border-box; }
+  .stage h1 { font-size: 56px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .stage .eyebrow { color: var(--accent); font-family: var(--mono); font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 24px; }
+  .stage .canvas { width: 1760px; height: 800px; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+  <div class="stage">
+    <div class="eyebrow">{{EYEBROW}}</div>
+    <h1>{{TITLE}}</h1>
+    <div id="chart" class="canvas"></div>
+  </div>
+  <script>
+    const chart = echarts.init(document.getElementById('chart'));
+    const option = /* {{ECHARTS_OPTION_JSON}} */ {
+      animationDuration: 600,
+      animationDelay: (idx) => idx * 250,
+      animationEasing: 'cubicOut',
+      grid: { left: 80, right: 40, top: 40, bottom: 60 },
+      xAxis: { type: 'category', data: ['Q1','Q2','Q3','Q4'] },
+      yAxis: { type: 'value' },
+      series: [{ type: 'line', smooth: true, data: [120, 200, 150, 280] }]
+    };
+    chart.setOption(option);
+    // 通知 huashu render-video.js: 渲染完成，可以开始录（这个信号是录制 t=0 起点）
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        requestAnimationFrame(() => { window.__ready = true; });
+      });
+    } else {
+      requestAnimationFrame(() => { window.__ready = true; });
+    }
+    document.documentElement.classList.add('chart-loaded');
+  </script>
+</body>
+</html>

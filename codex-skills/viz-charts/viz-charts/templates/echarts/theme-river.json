@@ -1,0 +1,22 @@
+{
+  "_meta": {
+    "name": "theme-river",
+    "use_when": "多类别随时间消长（≥4 类别推荐）",
+    "data_shape": "[[date, value, category]]"
+  },
+  "tooltip": { "trigger": "axis", "axisPointer": { "type": "line", "lineStyle": { "color": "rgba(0,0,0,0.2)", "width": 1, "type": "solid" } } },
+  "legend": { "top": 0 },
+  "singleAxis": { "top": 50, "bottom": 50, "axisTick": {}, "axisLabel": {}, "type": "time", "axisPointer": { "animation": true, "label": { "show": true } }, "splitLine": { "show": true, "lineStyle": { "type": "dashed" } } },
+  "series": [
+    {
+      "type": "themeRiver",
+      "emphasis": { "itemStyle": { "shadowBlur": 20, "shadowColor": "rgba(0,0,0,0.4)" } },
+      "data": [
+        ["2026-01-01", 10, "Mobile"], ["2026-01-08", 15, "Mobile"], ["2026-01-15", 35, "Mobile"], ["2026-01-22", 38, "Mobile"], ["2026-01-29", 22, "Mobile"],
+        ["2026-01-01", 35, "Web"],    ["2026-01-08", 36, "Web"],    ["2026-01-15", 37, "Web"],    ["2026-01-22", 22, "Web"],    ["2026-01-29", 24, "Web"],
+        ["2026-01-01", 21, "API"],    ["2026-01-08", 25, "API"],    ["2026-01-15", 27, "API"],    ["2026-01-22", 23, "API"],    ["2026-01-29", 29, "API"],
+        ["2026-01-01", 10, "CLI"],    ["2026-01-08", 15, "CLI"],    ["2026-01-15", 18, "CLI"],    ["2026-01-22", 14, "CLI"],    ["2026-01-29", 16, "CLI"]
+      ]
+    }
+  ]
+}

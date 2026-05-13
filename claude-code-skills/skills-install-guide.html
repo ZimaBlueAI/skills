@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ZimaBlueAI Agent Skills · 安装与使用 v2.0</title>
-<meta name="description" content="biz-decision-stack · viz-deck · viz-charts 三件套的端到端安装、配置、使用与 huashu-design 桥接手册。" />
+<title>ZimaBlueAI Agent Skills · 安装与使用 v3.0</title>
+<meta name="description" content="biz-decision-stack · viz-deck · viz-charts 三件套的端到端安装、配置、使用与 huashu-design / ppt-master 双桥接手册。" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -167,7 +167,7 @@ footer a:hover{color:var(--cyan)}
   <a href="#install">安装</a>
   <a href="#matrix">依赖矩阵</a>
   <a href="#modes">v2 四模产出</a>
-  <a href="#bridge">huashu 桥接</a>
+  <a href="#bridge">双桥接</a>
   <a href="#samples">样例</a>
   <a href="#workflow">协同工作流</a>
   <a href="#troubleshoot">疑难排查</a>
@@ -177,15 +177,15 @@ footer a:hover{color:var(--cyan)}
 
 <section class="section" id="opening">
   <div class="reveal" style="padding-top:5rem">
-    <span class="eyebrow">Install Guide · v2.0 · 2026-05-11</span>
-    <h1><span class="headline-gradient">ZimaBlueAI Agent Skills</span><br/>从安装到上手，30 分钟把决策链 / 讲演 / 视频跑通</h1>
-    <p class="lead" style="margin-top:1.4rem;font-size:1.15rem">三个 Claude Code skill 的统一手册——<strong>biz-decision-stack</strong> 决策链、<strong>viz-deck</strong> 四模讲演产出、<strong>viz-charts</strong> 图表与 3D 知识图谱，配合可选的 <strong>huashu-design</strong> 软桥接解锁 MP4/PPTX 导出与 5 维专家评审。</p>
+    <span class="eyebrow">Install Guide · v3.0 · 2026-05-13</span>
+    <h1><span class="headline-gradient">ZimaBlueAI Agent Skills</span><br/>从安装到上手，30 分钟把决策链 / 讲演 / 视频 / 可编辑 PPT 全跑通</h1>
+    <p class="lead" style="margin-top:1.4rem;font-size:1.15rem">三个 Claude Code skill 的统一手册——<strong>biz-decision-stack</strong> 决策链、<strong>viz-deck</strong> <strong style="color:var(--gold)">五模</strong>讲演产出、<strong>viz-charts</strong> 图表与 3D 知识图谱，配合两个可选软桥接：<strong>huashu-design</strong>（v2 · 动画/视频/哲学/评审）与 <strong style="color:var(--gold)">ppt-master</strong>（v3 · 真正可编辑 PPTX / TTS 旁白 / 母版继承 / 数据绑定图表）。</p>
   </div>
   <div class="grid-4 reveal" style="margin-top:3.2rem">
-    <div class="metric"><span class="label">SKILLS</span><span class="val">3</span><span class="delta">+ 1 软桥接</span></div>
-    <div class="metric"><span class="label">SUBAGENTS</span><span class="val">7</span><span class="delta">v2 新增 design-critic</span></div>
-    <div class="metric"><span class="label">输出模式</span><span class="val">8</span><span class="delta">HTML / PPTX / MP4 / GIF / PDF / SVG / 3D KG / 评审</span></div>
-    <div class="metric"><span class="label">总包体</span><span class="val">280<span style="font-size:1rem">KB</span></span><span class="delta">三 zip 合计</span></div>
+    <div class="metric"><span class="label">SKILLS</span><span class="val">3</span><span class="delta">+ 2 软桥接</span></div>
+    <div class="metric"><span class="label">SUBAGENTS</span><span class="val">7</span><span class="delta">v2 design-critic</span></div>
+    <div class="metric"><span class="label">输出模式</span><span class="val">10</span><span class="delta">HTML / 编辑级 PPTX / MP4 / GIF / PDF / SVG / 3D KG / 评审 / 旁白 / 数据绑定 chart</span></div>
+    <div class="metric"><span class="label">总包体</span><span class="val">310<span style="font-size:1rem">KB</span></span><span class="delta">三 zip 合计</span></div>
   </div>
 </section>
 
@@ -200,42 +200,45 @@ footer a:hover{color:var(--cyan)}
   <div class="grid-3">
     <div class="panel reveal">
       <h3><span class="status-dot status-done"></span> biz-decision-stack</h3>
-      <p style="font-size:0.92rem">7 subagents（投资人 → CEO → 架构 → MRD → 交付 → 验收 → <strong style="color:var(--gold)">评审 v2</strong>）+ 1 skill。<strong>终端风</strong>：黑底 + 酸黄 + 等宽 + 零动效。</p>
+      <p style="font-size:0.92rem">7 subagents（投资人 → CEO → 架构 → MRD → 交付 → 验收 → <strong style="color:var(--gold)">评审 v2</strong>）+ 1 skill。<strong>终端风</strong>：黑底 + 酸黄 + 等宽 + 零动效。<strong style="color:var(--gold)">v3 加 8 个决策 layout 的可编辑 PPTX 出口。</strong></p>
       <h4>输出模板</h4>
       <ul style="font-size:0.9rem">
         <li><code>board-brief</code> · <code>ceo-canvas</code> · <code>tech-roadmap</code></li>
         <li><code>mrd-report</code> · <code>project-board</code> · <code>dev-report</code></li>
         <li><code>retro-report</code> · <code>index</code></li>
         <li><strong style="color:var(--gold)">design-critique · v2</strong></li>
+        <li><strong style="color:var(--gold)">决策 PPTX · v3</strong> · 8 layout 终端风可点 shape</li>
       </ul>
-      <div class="tag-row"><span class="tag tag-cyan">62 KB</span><span class="tag">terminal 主题</span><span class="tag">零动效</span></div>
+      <div class="tag-row"><span class="tag tag-cyan">73 KB</span><span class="tag">terminal 主题</span><span class="tag">零动效</span><span class="tag tag-gold">软桥 ppt-master</span></div>
     </div>
 
     <div class="panel reveal">
       <h3><span class="status-dot status-done"></span> viz-deck</h3>
-      <p style="font-size:0.92rem"><strong style="color:var(--gold)">v2 从 1 模产出扩展到 4 模产出</strong>。<strong>讲演风</strong>：深空蓝紫青 + Inter + 微动效，支持 prefers-reduced-motion 降级。</p>
-      <h4>4 模产出</h4>
+      <p style="font-size:0.92rem"><strong style="color:var(--gold)">v3 从 4 模扩展到 5 模产出</strong>。<strong>讲演风</strong>：深空蓝紫青 + Inter + 微动效，支持 prefers-reduced-motion 降级。</p>
+      <h4>5 模产出</h4>
       <ul style="font-size:0.9rem">
         <li><strong>keynote-report</strong> · 阶段 / 架构 / 竞品</li>
         <li><strong style="color:var(--violet)">prototype · v2</strong> · iOS / 安卓 / macOS / 浏览器原型</li>
-        <li><strong style="color:var(--gold)">slide-deck · v2</strong> · 幻灯片 + 可编辑 PPTX</li>
+        <li><strong style="color:var(--gold)">slide-deck · v2</strong> · 幻灯片 + 快速 PPTX</li>
         <li><strong style="color:var(--green)">motion-stage · v2</strong> · 动画 + MP4/GIF/BGM</li>
+        <li><strong style="color:var(--gold)">pptx-deck · v3</strong> · 真正可编辑 DrawingML / TTS 旁白 / 母版继承</li>
       </ul>
-      <div class="tag-row"><span class="tag tag-cyan">65 KB</span><span class="tag">deck 主题</span><span class="tag tag-gold">软桥 huashu</span></div>
+      <div class="tag-row"><span class="tag tag-cyan">81 KB</span><span class="tag">deck 主题</span><span class="tag tag-gold">软桥 huashu + ppt-master</span></div>
     </div>
 
     <div class="panel reveal">
       <h3><span class="status-dot status-done"></span> viz-charts</h3>
-      <p style="font-size:0.92rem">被前两个 skill 调用的能力 skill。<strong>v2 从 4 类扩展到 5 类视觉表达</strong>，新增 motion 模式。双主题：terminal / deck。</p>
-      <h4>5 类视觉</h4>
+      <p style="font-size:0.92rem">被前两个 skill 调用的能力 skill。<strong style="color:var(--gold)">v3 从 5 类扩展到 6 类视觉表达</strong>，新增数据绑定原生 PPTX 图表。三主题：terminal / deck / deck-light。</p>
+      <h4>6 类视觉</h4>
       <ul style="font-size:0.9rem">
         <li>Mermaid 11 种流程/关系图</li>
         <li>ECharts 25+ 种数据图表</li>
         <li>SVG 轻量组件 · KPI / sparkline / gauge / progress / tag-cloud</li>
         <li>3D 知识图谱 · code-kg / doc-kg</li>
         <li><strong style="color:var(--green)">Motion 视频 · v2</strong> · ECharts reveal / 时间扫过 / KG 轨道</li>
+        <li><strong style="color:var(--gold)">Native PPTX 图表 · v3</strong> · 数据可在 PPT 里改</li>
       </ul>
-      <div class="tag-row"><span class="tag tag-cyan">153 KB</span><span class="tag">双主题</span></div>
+      <div class="tag-row"><span class="tag tag-cyan">156 KB</span><span class="tag">三主题</span><span class="tag tag-gold">软桥 ppt-master</span></div>
     </div>
   </div>
 
@@ -257,9 +260,14 @@ footer a:hover{color:var(--cyan)}
       <p>被前两者按需调用</p>
     </div>
     <div class="spine-step">
-      <span class="step-num">软桥接</span>
+      <span class="step-num">软桥接 · v2</span>
       <h3>huashu-design</h3>
-      <p>可选 · 解锁 v2 高级模式</p>
+      <p>可选 · 动画 / 视频 / 哲学 / 评审</p>
+    </div>
+    <div class="spine-step">
+      <span class="step-num">软桥接 · v3</span>
+      <h3>ppt-master</h3>
+      <p>可选 · 真正可编辑 PPTX</p>
     </div>
   </div>
 </section>
@@ -350,6 +358,31 @@ ffmpeg -version</pre>
       <p style="font-size:0.9rem">不要给 huashu 的 package.json 加 <code>"type": "module"</code>——会破坏它内部的 CommonJS 脚本（如 render-video.js）。脚本扩展名约定：<code>.js</code> = CJS，<code>.mjs</code> = ESM，混用即可。</p>
     </div>
   </div>
+
+  <h4 style="margin-top:2.5rem">可选：装 ppt-master 启用 v3 真正可编辑 PPTX</h4>
+  <div class="panel reveal">
+    <p><strong style="color:var(--gold)">v3 新增</strong>。三个 skill 现在都可以把产出落地为<strong>每个元素都可点击的</strong> PowerPoint 文件——不是图片嵌入，是原生 OOXML <code>&lt;p:sp&gt;</code> shapes。<strong>不装也能用</strong>——只是失去模式 5 / 决策 PPTX / 数据绑定 chart 这三条 v3 路径。</p>
+    <pre>git clone --depth=1 https://github.com/hugohe3/ppt-master.git \
+  ~/.claude/skills/ppt-master
+cd ~/.claude/skills/ppt-master
+
+# 隔离的 Python 3.10+ venv
+python -m venv .venv
+
+# Windows
+.venv/Scripts/pip install python-pptx edge-tts svglib \
+  reportlab Pillow numpy
+# macOS/Linux
+# .venv/bin/pip install python-pptx edge-tts svglib \
+#   reportlab Pillow numpy
+
+# 验证
+.venv/Scripts/python -c "import pptx, edge_tts; print('ok')"</pre>
+    <div class="callout info" style="margin-top:1rem">
+      <h4>双桥接的关系</h4>
+      <p style="font-size:0.9rem"><strong>huashu-design</strong>（Node + Playwright + ffmpeg）管动画 / 视频 / 设计哲学 / 5 维评审；<strong>ppt-master</strong>（Python + python-pptx + svglib + edge-tts）管真正可编辑 PPTX / TTS 旁白 / 母版继承 / 数据绑定图表。两者并列，不互相替代。可以只装一个，或两个都装。</p>
+    </div>
+  </div>
 </section>
 
 <section class="section" id="matrix">
@@ -379,6 +412,10 @@ ffmpeg -version</pre>
         <tr><td>viz-charts 离线 ECharts SVG</td><td>Node + <code>npm i echarts</code></td><td>Node 18+</td></tr>
         <tr><td>viz-charts 离线 Mermaid SVG</td><td>Node + Chromium</td><td>—</td></tr>
         <tr><td><span style="color:var(--cyan);font-weight:600">v2 · viz-charts motion 模式</span></td><td><strong>huashu</strong> + Node + Chromium + ffmpeg</td><td>Node 18+ / ffmpeg 4+</td></tr>
+        <tr><td><span style="color:var(--gold);font-weight:600">v3 · viz-deck pptx-deck（模式 5）</span></td><td><strong>ppt-master</strong> + Python venv + python-pptx + svglib + Pillow</td><td>Python 3.10+</td></tr>
+        <tr><td><span style="color:var(--gold);font-weight:600">v3 · viz-deck pptx-deck + TTS 旁白</span></td><td><strong>ppt-master</strong> + edge-tts（或 ElevenLabs/MiniMax/Qwen/CosyVoice）</td><td>Python 3.10+</td></tr>
+        <tr><td><span style="color:var(--gold);font-weight:600">v3 · biz-decision 决策 PPTX</span></td><td><strong>ppt-master</strong> + Python venv + python-pptx + svglib</td><td>Python 3.10+</td></tr>
+        <tr><td><span style="color:var(--gold);font-weight:600">v3 · viz-charts 数据绑定原生 chart</span></td><td><strong>ppt-master</strong> + Python venv + python-pptx</td><td>Python 3.10+</td></tr>
         <tr><td>3D KG builder 跑数据</td><td>Node（无外部依赖）</td><td>18+</td></tr>
         <tr><td>3D KG 浏览器渲染</td><td>WebGL + 联网（CDN）</td><td>—</td></tr>
       </tbody>
@@ -391,7 +428,7 @@ ffmpeg -version</pre>
     <span class="kicker-num">04</span>
     <span class="eyebrow">v2 Core — viz-deck Four Modes</span>
     <h2>四种产出形态，一套视觉语言</h2>
-    <p class="lead">v2 把 viz-deck 从单模 keynote-report 扩展为 4 模产出，共享深空蓝紫青 + Inter 设计语言。Agent 按用户自然语言自动路由到合适模式。</p>
+    <p class="lead">v2 把 viz-deck 从单模 keynote-report 扩展为 4 模产出，v3 再加上模式 5 · pptx-deck，共五种产出形态共享深空蓝紫青 + Inter 设计语言。Agent 按用户自然语言自动路由到合适模式。</p>
   </div>
 
   <div class="grid-2">
@@ -493,12 +530,12 @@ ffmpeg -version</pre>
   <div class="section-intro reveal">
     <span class="kicker-num">05</span>
     <span class="eyebrow">Soft Bridge</span>
-    <h2>与 huashu-design 的关系</h2>
-    <p class="lead">huashu-design 是 <a class="inline-link" href="https://github.com/alchaincyf/huashu-design" target="_blank">花叔（alchaincyf）</a>的独立 skill，由本仓库 <strong>软桥接</strong>调用。不装也不影响 v1 能力。</p>
+    <h2>两个软桥接 · huashu-design + ppt-master</h2>
+    <p class="lead">两个软桥接并列存在。<strong>huashu-design</strong>（v2 引入，<a class="inline-link" href="https://github.com/alchaincyf/huashu-design" target="_blank">花叔</a>独立维护）管动画 / 视频 / 设计哲学 / 5 维评审；<strong style="color:var(--gold)">ppt-master</strong>（v3 引入，<a class="inline-link" href="https://github.com/hugohe3/ppt-master" target="_blank">hugohe3</a>独立维护）管真正可编辑 PPTX / TTS 旁白 / 母版继承 / 数据绑定图表。不装也不影响 v1 能力。</p>
   </div>
 
   <div class="panel reveal">
-    <h3>桥接点清单</h3>
+    <h3>v2 桥接点清单（huashu-design）</h3>
     <table>
       <thead><tr><th>能力</th><th>谁桥接</th><th>调用路径</th></tr></thead>
       <tbody>
@@ -506,11 +543,27 @@ ffmpeg -version</pre>
         <tr><td>5 维评审标准</td><td>biz-decision-stack + viz-deck</td><td><code>references/critique-guide.md</code>（仅引用）</td></tr>
         <tr><td>HTML → MP4</td><td>viz-deck · viz-charts</td><td><code>scripts/render-video.js</code></td></tr>
         <tr><td>25fps→60fps + GIF 三件套</td><td>viz-deck · viz-charts</td><td><code>scripts/convert-formats.sh</code></td></tr>
-        <tr><td>HTML → 可编辑 PPTX</td><td>viz-deck</td><td><code>scripts/export_deck_pptx.mjs</code></td></tr>
+        <tr><td>HTML → 快速 PPTX（每页一张图 + 文本框）</td><td>viz-deck</td><td><code>scripts/export_deck_pptx.mjs</code></td></tr>
         <tr><td>HTML → 横版 PDF</td><td>viz-deck</td><td><code>scripts/export_deck_pdf.mjs</code></td></tr>
         <tr><td>设备外壳（iOS/Android/macOS/browser）</td><td>viz-deck</td><td><code>assets/*_frame.jsx</code></td></tr>
         <tr><td>BGM 6 首场景化</td><td>viz-deck</td><td><code>assets/bgm-*.mp3</code></td></tr>
-        <tr><td>TTS 解说 pipeline</td><td>viz-deck</td><td><code>scripts/narrate-pipeline.mjs</code></td></tr>
+        <tr><td>TTS 解说 pipeline（HTML 动画版）</td><td>viz-deck</td><td><code>scripts/narrate-pipeline.mjs</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel reveal" style="margin-top:1.4rem">
+    <h3 style="color:var(--gold)">v3 桥接点清单（ppt-master）</h3>
+    <table>
+      <thead><tr><th>能力</th><th>谁桥接</th><th>调用路径</th></tr></thead>
+      <tbody>
+        <tr><td>JSON spec → 真编辑 PPTX（每元素可点 native DrawingML）</td><td>viz-deck 模式 5</td><td><code>scripts/make-pptx-deck.mjs</code> → ppt-master <code>svg_to_pptx.py</code></td></tr>
+        <tr><td>JSON spec → 终端风可编辑决策 PPTX（8 layout）</td><td>biz-decision-stack</td><td><code>scripts/make-decision-pptx.mjs</code> → ppt-master <code>svg_to_pptx.py</code></td></tr>
+        <tr><td>ECharts spec → 数据绑定原生 chart PPTX</td><td>viz-charts</td><td><code>scripts/echarts_to_pptx.py</code>（python-pptx 直接调用）</td></tr>
+        <tr><td>TTS 旁白嵌入（edge-tts / ElevenLabs / MiniMax / Qwen / CosyVoice）</td><td>viz-deck</td><td><code>scripts/embed-narration.sh</code> → ppt-master <code>notes_to_audio.py</code></td></tr>
+        <tr><td>母版/模板继承（公司模板导入）</td><td>viz-deck</td><td>ppt-master <code>register_template.py</code></td></tr>
+        <tr><td>OOXML 原生动画 / 转场</td><td>viz-deck 模式 5</td><td><code>--anim fade|fly|zoom</code> + <code>--trans push|wipe</code></td></tr>
+        <tr><td>PowerPoint File → Export → Video（带旁白和动画自动同步）</td><td>用户在 PPT 里手动操作</td><td>PowerPoint native</td></tr>
       </tbody>
     </table>
   </div>
@@ -518,23 +571,29 @@ ffmpeg -version</pre>
   <div class="grid-2" style="margin-top:1.4rem">
     <div class="callout">
       <h4>biz-decision-stack 的克制</h4>
-      <p style="font-size:0.92rem">biz-decision-stack <strong>只引用</strong> huashu 的 5 维评审标准和可选 PDF 导出，<strong>不引入</strong> motion / BGM / 设备外壳——决策签字报告坚持零动效原则。需要 motion 的用户应该用 viz-deck。</p>
+      <p style="font-size:0.92rem">biz-decision-stack <strong>只引用</strong> huashu 的 5 维评审标准。v3 ppt-master 桥接只做"原生可点 shape"——<strong>不引入</strong> motion / 转场 / 旁白。决策签字报告坚持零动效原则；需要 motion 的用户应该用 viz-deck 模式 4，需要演讲旁白的用模式 5。</p>
     </div>
     <div class="callout info">
       <h4>调用约定</h4>
       <ul style="margin:0">
-        <li>所有调用走 <code>$HOME/.claude/skills/huashu-design/scripts/...</code> 绝对路径</li>
-        <li>CLI 风格：<code>node render-video.js &lt;html&gt; --duration=N --width=W --height=H</code></li>
-        <li>HTML stage 必须在首次渲染后设 <code>window.__ready = true</code></li>
-        <li>输出 MP4 自动命名为 <code>&lt;html&gt;.mp4</code>，同目录</li>
+        <li>huashu 调用走 <code>$HOME/.claude/skills/huashu-design/scripts/...</code> 绝对路径</li>
+        <li>ppt-master 调用走 <code>$HOME/.claude/skills/ppt-master/.venv/Scripts/python</code>（Win） 或 <code>.venv/bin/python</code>（*nix）</li>
+        <li>HTML stage 必须在首次渲染后设 <code>window.__ready = true</code>（huashu 录制起点）</li>
+        <li>ppt-master 项目目录约定：<code>&lt;project&gt;/svg_output/slide_NN_*.svg</code> + 可选 <code>speaker_notes/</code></li>
       </ul>
     </div>
   </div>
 
   <h4 style="margin-top:2.5rem">许可证提示</h4>
-  <div class="callout warn">
-    <h4>商用合规</h4>
-    <p style="font-size:0.92rem">huashu-design 个人使用免费，<strong>商用需独立授权</strong>（USD 1,800/年 或 USD 3,500 永久）。本仓库以 Apache 2.0 发布，但 v2 模式调用 huashu 的商用合规由用户自行负责。联系 <code>alchaincyf@gmail.com</code>。</p>
+  <div class="grid-2">
+    <div class="callout warn">
+      <h4>huashu-design — 商用合规</h4>
+      <p style="font-size:0.92rem">个人使用免费，<strong>商用需独立授权</strong>（USD 1,800/年 或 USD 3,500 永久）。本仓库以 Apache 2.0 发布，但 v2 模式调用 huashu 的商用合规由用户自行负责。联系 <code>alchaincyf@gmail.com</code>。</p>
+    </div>
+    <div class="callout">
+      <h4>ppt-master — MIT 协议</h4>
+      <p style="font-size:0.92rem">MIT License，无商用限制，仅需在分发物里保留版权声明。运行时为 Python 3.10+ + python-pptx + edge-tts + svglib + reportlab + Pillow + numpy（均开源依赖）。v3 模式调用无许可证负担。</p>
+    </div>
   </div>
 </section>
 
@@ -749,16 +808,17 @@ ffmpeg -version</pre>
     <div class="panel reveal">
       <h3>安装包</h3>
       <ul>
-        <li><a class="inline-link" href="./biz-decision-stack/biz-decision-stack.zip">biz-decision-stack.zip</a> (62 KB)</li>
-        <li><a class="inline-link" href="./viz-deck/viz-deck.zip">viz-deck.zip</a> (65 KB)</li>
-        <li><a class="inline-link" href="./viz-charts/viz-charts.zip">viz-charts.zip</a> (153 KB)</li>
+        <li><a class="inline-link" href="./biz-decision-stack/biz-decision-stack.zip">biz-decision-stack.zip</a> (73 KB)</li>
+        <li><a class="inline-link" href="./viz-deck/viz-deck.zip">viz-deck.zip</a> (81 KB)</li>
+        <li><a class="inline-link" href="./viz-charts/viz-charts.zip">viz-charts.zip</a> (157 KB)</li>
       </ul>
     </div>
 
     <div class="panel reveal">
       <h3>相关项目</h3>
       <ul>
-        <li><a class="inline-link" href="https://github.com/alchaincyf/huashu-design" target="_blank">alchaincyf/huashu-design</a> — v2 桥接</li>
+        <li><a class="inline-link" href="https://github.com/alchaincyf/huashu-design" target="_blank">alchaincyf/huashu-design</a> — v2 桥接（动画 / 视频 / 哲学 / 评审）</li>
+        <li><a class="inline-link" href="https://github.com/hugohe3/ppt-master" target="_blank">hugohe3/ppt-master</a> — v3 桥接（真编辑 PPTX / TTS / 母版 / 数据 chart）</li>
         <li><a class="inline-link" href="https://github.com/garrytan/gstack" target="_blank">garrytan/gstack</a> — 多角色编排灵感</li>
         <li><a class="inline-link" href="https://github.com/Lum1104/Understand-Anything" target="_blank">Lum1104/Understand-Anything</a> — KG 可视化思路</li>
       </ul>
@@ -766,7 +826,7 @@ ffmpeg -version</pre>
   </div>
 
   <div class="section-end">
-    <p style="margin-bottom:0.4rem"><strong>Skill Suite v2.0</strong> · 2026-05-11 · biz-decision-stack + viz-deck + viz-charts + huashu-design (bridge)</p>
+    <p style="margin-bottom:0.4rem"><strong>Skill Suite v3.0</strong> · 2026-05-13 · biz-decision-stack + viz-deck + viz-charts + huashu-design (bridge v2) + ppt-master (bridge v3)</p>
     <p style="margin:0">Apache License 2.0 · Copyright © 2026 ZimaBlueAI · <a class="inline-link" href="https://github.com/ZimaBlueAI" target="_blank">github.com/ZimaBlueAI</a></p>
   </div>
 </section>

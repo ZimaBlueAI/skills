@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920,initial-scale=1">
+<title>{{DECK_TITLE}} · Slide Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #030711;
+    --fg: #e7efff;
+    --muted: #8898b6;
+    --accent: #42e8ff;
+    --gold: #ffd987;
+    --serif: Newsreader, 'Times New Roman', serif;
+    --sans: Inter, system-ui, sans-serif;
+    --mono: ui-monospace, 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); }
+  body { overflow: hidden; }
+
+  /* Each slide is a full viewport */
+  .slide {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    display: none;
+    padding: 80px 100px;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; justify-content: center; }
+  .slide.entering { display: flex; animation: slideIn 0.35s ease-out; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .slide.entering { animation: none; } }
+
+  .eyebrow {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 18px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .slide h1 {
+    font-family: var(--serif);
+    font-size: 88px;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 32px;
+    max-width: 1400px;
+  }
+  .slide h2 {
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin: 0 0 24px;
+  }
+  .slide .lead {
+    font-size: 32px;
+    line-height: 1.4;
+    color: var(--muted);
+    max-width: 1200px;
+    margin: 0 0 48px;
+  }
+  .slide .figure-host {
+    flex: 1;
+    width: 100%;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide.cover { justify-content: center; align-items: flex-start; }
+  .slide.cover h1 { font-size: 128px; max-width: 100%; }
+  .slide.cover .subtitle { font-size: 36px; color: var(--muted); margin-bottom: 80px; }
+
+  /* Progress indicator */
+  .progress {
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .progress strong { color: var(--gold); font-weight: 500; }
+
+  /* Speaker notes overlay (toggle with `s`) */
+  .speaker-notes-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    color: var(--fg);
+    padding: 80px 120px;
+    z-index: 100;
+    overflow-y: auto;
+    font-size: 24px;
+    line-height: 1.6;
+  }
+  .speaker-notes-overlay.active { display: block; }
+  .speaker-notes-overlay h3 { color: var(--gold); margin-top: 0; }
+
+  /* Overview mode (toggle with `o`) */
+  .overview-mode {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    overflow-y: auto;
+    padding: 40px;
+    z-index: 50;
+  }
+  .overview-mode.active { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .overview-mode .thumb {
+    aspect-ratio: 16/9;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: border-color 0.15s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .overview-mode .thumb:hover { border-color: var(--accent); }
+  .overview-mode .thumb strong { color: var(--fg); font-size: 18px; font-weight: 500; }
+
+  /* Hint */
+  .hint {
+    position: fixed;
+    bottom: 24px;
+    left: 32px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Cover -->
+<section class="slide cover active" data-title="{{COVER_TITLE}}">
+  <div class="eyebrow">{{COVER_EYEBROW}}</div>
+  <h1>{{COVER_TITLE}}</h1>
+  <p class="subtitle">{{COVER_SUBTITLE}}</p>
+  <aside class="speaker-notes">这是封面页。讲解时介绍主题与时长（约 {{DURATION_MIN}} 分钟）。</aside>
+</section>
+
+<!-- Slide 2: Chapter intro -->
+<section class="slide" data-title="第一章 · {{CHAPTER_1_TITLE}}">
+  <div class="eyebrow">CHAPTER 01</div>
+  <h1>{{CHAPTER_1_TITLE}}</h1>
+  <p class="lead">{{CHAPTER_1_LEAD}}</p>
+  <aside class="speaker-notes">{{CHAPTER_1_NOTES}}</aside>
+</section>
+
+<!-- Slide 3: Data point -->
+<section class="slide" data-title="{{SLIDE_3_TITLE}}">
+  <div class="eyebrow">DATA · MARKET</div>
+  <h2>{{SLIDE_3_TITLE}}</h2>
+  <p class="lead">{{SLIDE_3_LEAD}}</p>
+  <div class="figure-host">
+    <!-- 用 viz-charts skill 填入 ECharts/Mermaid -->
+    <figure class="chart-echarts" style="width:100%;height:480px">
+      <div data-echarts-option='{{ECHARTS_OPTION_JSON}}' style="width:100%;height:100%"></div>
+    </figure>
+  </div>
+  <aside class="speaker-notes">{{SLIDE_3_NOTES}}</aside>
+</section>
+
+<!-- Slide N: Summary -->
+<section class="slide" data-title="结论">
+  <div class="eyebrow">TAKEAWAY</div>
+  <h1>{{TAKEAWAY_HEADLINE}}</h1>
+  <p class="lead">{{TAKEAWAY_DETAIL}}</p>
+  <aside class="speaker-notes">{{TAKEAWAY_NOTES}}</aside>
+</section>
+
+<!-- HUD -->
+<div class="progress"><strong id="page-cur">1</strong> / <span id="page-total">4</span></div>
+<div class="hint">← → 翻页 · s 备注 · o 概览 · Esc 关闭</div>
+
+<!-- Speaker notes overlay -->
+<div class="speaker-notes-overlay" id="notes-overlay">
+  <h3>SPEAKER NOTES</h3>
+  <div id="notes-body"></div>
+</div>
+
+<!-- Overview mode -->
+<div class="overview-mode" id="overview"></div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let current = 0;
+
+  function show(i) {
+    if (i < 0 || i >= total) return;
+    slides.forEach(s => s.classList.remove('active', 'entering'));
+    slides[i].classList.add('active', 'entering');
+    current = i;
+    document.getElementById('page-cur').textContent = i + 1;
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  document.getElementById('page-total').textContent = total;
+  show(parseInt(location.hash?.slice(1) || '1') - 1 || 0);
+
+  function toggleNotes() {
+    const overlay = document.getElementById('notes-overlay');
+    const notes = slides[current].querySelector('.speaker-notes');
+    document.getElementById('notes-body').textContent = notes?.textContent || '（无备注）';
+    overlay.classList.toggle('active');
+  }
+
+  function toggleOverview() {
+    const overview = document.getElementById('overview');
+    if (!overview.dataset.built) {
+      overview.innerHTML = slides.map((s, i) => `
+        <div class="thumb" data-i="${i}">
+          <div class="eyebrow" style="font-size:9px">${s.dataset.title || 'slide ' + (i+1)}</div>
+          <strong>${s.querySelector('h1, h2')?.textContent || ''}</strong>
+        </div>
+      `).join('');
+      overview.dataset.built = '1';
+      overview.addEventListener('click', e => {
+        const i = parseInt(e.target.closest('.thumb')?.dataset.i ?? -1);
+        if (i >= 0) { show(i); overview.classList.remove('active'); }
+      });
+    }
+    overview.classList.toggle('active');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+    if (e.key === 's' || e.key === 'S') toggleNotes();
+    if (e.key === 'o' || e.key === 'O') toggleOverview();
+    if (e.key === 'Escape') {
+      document.getElementById('notes-overlay').classList.remove('active');
+      document.getElementById('overview').classList.remove('active');
+    }
+  });
+
+  // Autoplay support: ?autoplay=true&per-slide=5
+  const qs = new URLSearchParams(location.search);
+  if (qs.get('autoplay') === 'true') {
+    const per = parseFloat(qs.get('per-slide') || '5') * 1000;
+    setInterval(() => show(current >= total - 1 ? 0 : current + 1), per);
+  }
+</script>
+
+</body>
+</html>

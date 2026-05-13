@@ -1,0 +1,150 @@
+<!--
+  KPI Card · 关键指标卡片
+  ===========================
+  用途：报告里的"大数字"区域，含 label / value / delta / 内嵌 sparkline
+  
+  使用：把以下 <style> 和 <script> 一次性内联到 HTML head
+  然后任意位置放：
+  
+  <div class="kpi-card" data-kpi='{
+    "label": "BURN RATE",
+    "value": "¥1.06M",
+    "delta": "+12% vs Q2",
+    "direction": "down",
+    "sparkline": [1.0, 0.9, 1.1, 1.05, 1.2, 1.06]
+  }'></div>
+  
+  direction: "up" / "down" / "" — 影响 delta 颜色（up=好，down=差，按业务语义）
+  
+  支持两套主题：默认终端风。讲演风加 class="kpi-card kpi-card--deck"
+-->
+
+<style>
+/* ============ KPI Card · Terminal Theme（默认）============ */
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid #2a2a2a;
+  background: #141414;
+  font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card:hover { border-color: #3a3a3a; }
+.kpi-card .kpi-label {
+  font-size: 10px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+.kpi-card .kpi-value {
+  font-size: 32px;
+  font-weight: 500;
+  color: #e8e8e8;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+}
+.kpi-card .kpi-value.up   { color: #44dd88; }
+.kpi-card .kpi-value.down { color: #ff4444; }
+.kpi-card .kpi-delta {
+  font-size: 11px;
+  color: #888;
+}
+.kpi-card .kpi-spark {
+  margin-top: 4px;
+  height: 28px;
+}
+.kpi-card .kpi-spark svg { width: 100%; height: 100%; display: block; }
+
+/* ============ KPI Card · Deck Theme ============ */
+.kpi-card--deck {
+  border: 1px solid rgba(151, 209, 255, 0.16);
+  background: rgba(12, 26, 46, 0.72);
+  border-radius: 16px;
+  padding: 22px 24px;
+  font-family: Inter, system-ui, 'PingFang SC', sans-serif;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.kpi-card--deck .kpi-label {
+  color: #688096;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+}
+.kpi-card--deck .kpi-value {
+  font-size: 36px;
+  background: linear-gradient(135deg, #42e8ff, #d8e8f4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+.kpi-card--deck .kpi-value.up   { background: linear-gradient(135deg, #78f7c5, #d8e8f4); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.kpi-card--deck .kpi-value.down { background: linear-gradient(135deg, #ff8c8c, #d8e8f4); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.kpi-card--deck .kpi-delta { color: #a8bdd5; }
+</style>
+
+<script>
+(function () {
+  function renderKpiCards(root) {
+    root = root || document;
+    const cards = root.querySelectorAll('.kpi-card[data-kpi]:not([data-rendered])');
+    cards.forEach(card => {
+      try {
+        const data = JSON.parse(card.getAttribute('data-kpi'));
+        const isDeck = card.classList.contains('kpi-card--deck');
+        const sparkColor = isDeck ? '#42e8ff' : '#d4ff00';
+        const sparkFill  = isDeck ? 'rgba(66, 232, 255, 0.18)' : 'rgba(212, 255, 0, 0.15)';
+
+        let sparkSvg = '';
+        if (Array.isArray(data.sparkline) && data.sparkline.length >= 2) {
+          const w = 200, h = 28;
+          const min = Math.min(...data.sparkline);
+          const max = Math.max(...data.sparkline);
+          const range = max - min || 1;
+          const step = w / (data.sparkline.length - 1);
+          const pts = data.sparkline.map((v, i) => {
+            const x = i * step;
+            const y = h - ((v - min) / range) * (h - 4) - 2;
+            return [x, y];
+          });
+          const linePath = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ');
+          const fillPath = `${linePath} L ${w} ${h} L 0 ${h} Z`;
+          sparkSvg = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+            <path d="${fillPath}" fill="${sparkFill}"/>
+            <path d="${linePath}" fill="none" stroke="${sparkColor}" stroke-width="1.5"/>
+            <circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="2.5" fill="${sparkColor}"/>
+          </svg>`;
+        }
+
+        const dirClass = data.direction || '';
+        card.innerHTML = `
+          <div class="kpi-label">${escapeHtml(data.label || '')}</div>
+          <div class="kpi-value ${dirClass}">${escapeHtml(data.value || '')}</div>
+          <div class="kpi-delta">${escapeHtml(data.delta || '')}</div>
+          ${sparkSvg ? `<div class="kpi-spark">${sparkSvg}</div>` : ''}
+        `;
+        card.setAttribute('data-rendered', '1');
+      } catch (e) {
+        console.error('[kpi-card] render failed:', e);
+        card.innerHTML = `<pre style="color:#ff4444">KPI render error: ${e.message}</pre>`;
+      }
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => renderKpiCards());
+  } else {
+    renderKpiCards();
+  }
+
+  window.VizKpi = { renderAll: renderKpiCards };
+})();
+</script>

@@ -1,0 +1,116 @@
+<!--
+  Progress Bar · 横向进度条（多项并列）
+  ===========================
+  
+  使用单项：
+  <div class="progress-bar" data-progress='{
+    "label": "M0 模块",
+    "value": 78,
+    "max": 100,
+    "rightLabel": "78/100"
+  }'></div>
+  
+  使用一组（堆栈）：
+  <div class="progress-group">
+    <div class="progress-bar" data-progress="..."></div>
+    <div class="progress-bar" data-progress="..."></div>
+    ...
+  </div>
+  
+  讲演风：class="progress-bar progress-bar--deck"
+-->
+
+<style>
+.progress-group { display: flex; flex-direction: column; gap: 10px; }
+.progress-bar {
+  display: grid;
+  grid-template-columns: 140px 1fr 80px;
+  gap: 12px;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+.progress-bar .pb-label {
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+}
+.progress-bar .pb-track {
+  height: 6px;
+  background: #2a2a2a;
+  position: relative;
+  overflow: hidden;
+}
+.progress-bar .pb-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: #d4ff00;
+}
+.progress-bar.warn  .pb-fill { background: #ffaa00; }
+.progress-bar.danger .pb-fill { background: #ff4444; }
+.progress-bar.ok    .pb-fill { background: #44dd88; }
+.progress-bar .pb-right {
+  text-align: right;
+  color: #e8e8e8;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Deck */
+.progress-bar--deck {
+  font-family: Inter, sans-serif;
+}
+.progress-bar--deck .pb-label { color: #a8bdd5; }
+.progress-bar--deck .pb-track {
+  height: 8px;
+  background: rgba(151, 209, 255, 0.16);
+  border-radius: 4px;
+}
+.progress-bar--deck .pb-fill {
+  background: linear-gradient(90deg, #42e8ff, #6ca5ff);
+  border-radius: 4px;
+}
+.progress-bar--deck.warn  .pb-fill { background: linear-gradient(90deg, #ffd987, #ff8c8c); }
+.progress-bar--deck.danger .pb-fill { background: #ff8c8c; }
+.progress-bar--deck.ok    .pb-fill { background: linear-gradient(90deg, #78f7c5, #42e8ff); }
+.progress-bar--deck .pb-right { color: #edf7ff; }
+
+@media (max-width: 600px) {
+  .progress-bar { grid-template-columns: 1fr 60px; }
+  .progress-bar .pb-label { grid-column: 1 / -1; }
+  .progress-bar .pb-track { grid-column: 1; }
+}
+</style>
+
+<script>
+(function () {
+  function render(root) {
+    root = root || document;
+    const bars = root.querySelectorAll('.progress-bar[data-progress]:not([data-rendered])');
+    bars.forEach(bar => {
+      try {
+        const cfg = JSON.parse(bar.getAttribute('data-progress'));
+        const max = cfg.max || 100;
+        const value = Math.min(Math.max(cfg.value || 0, 0), max);
+        const pct = (value / max * 100).toFixed(1);
+
+        bar.innerHTML = `
+          <div class="pb-label">${escapeHtml(cfg.label || '')}</div>
+          <div class="pb-track"><div class="pb-fill" style="width:${pct}%"></div></div>
+          <div class="pb-right">${escapeHtml(cfg.rightLabel || (pct + '%'))}</div>
+        `;
+        bar.setAttribute('data-rendered', '1');
+      } catch (e) {
+        console.error('[progress-bar]', e);
+      }
+    });
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => render());
+  } else { render(); }
+  window.VizProgress = { renderAll: render };
+})();
+</script>

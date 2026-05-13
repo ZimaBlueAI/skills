@@ -1,0 +1,20 @@
+%% Gantt 项目时间线
+gantt
+    title 项目里程碑（替换为实际项目名）
+    dateFormat YYYY-MM-DD
+    axisFormat %m-%d
+    todayMarker stroke-width:2px,stroke:#d4ff00,opacity:0.8
+
+    section Phase 1 — Planning
+    需求评审       :done,    p1-1, 2026-04-01, 5d
+    架构定稿       :done,    p1-2, after p1-1, 4d
+    资源分配       :active,  p1-3, after p1-2, 3d
+
+    section Phase 2 — Build
+    模块 A 开发    :         p2-1, 2026-04-15, 14d
+    模块 B 开发    :         p2-2, 2026-04-15, 18d
+    集成测试       :crit,    p2-3, after p2-1, 7d
+
+    section Phase 3 — Launch
+    Alpha 内测     :         p3-1, after p2-3, 5d
+    GA 发布        :milestone, gm, after p3-1, 0d

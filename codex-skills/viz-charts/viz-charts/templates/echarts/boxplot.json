@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "name": "boxplot",
+    "use_when": "分布形态（中位数/四分位/异常）",
+    "data_shape": "[[low, q1, median, q3, high]] 每个类别一组"
+  },
+  "tooltip": { "trigger": "item" },
+  "grid": { "left": 80 },
+  "xAxis": { "type": "category", "data": ["产品 A","产品 B","产品 C","产品 D","产品 E"] },
+  "yAxis": { "type": "value", "name": "响应时延 (ms)" },
+  "series": [
+    {
+      "name": "boxplot",
+      "type": "boxplot",
+      "data": [
+        [85, 95, 102, 110, 125],
+        [90, 100, 108, 115, 130],
+        [80, 90, 96,  105, 118],
+        [75, 88, 95,  102, 115],
+        [95, 105, 112, 120, 140]
+      ]
+    }
+  ]
+}

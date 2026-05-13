@@ -1,0 +1,65 @@
+{
+  "name": "retro_2026q2",
+  "slides": [
+    {
+      "id": "verdict",
+      "layout": "verdict-cover",
+      "kind": "RETROSPECTIVE",
+      "date": "2026-05-13",
+      "code": "RETRO-Q2",
+      "title": "Q2 2026 retrospective — three keepers, one drop",
+      "subtitle": "Ship velocity hit plan; quality gates leaked. Two process changes proposed.",
+      "verdict": "HOLD",
+      "verdict_note": "Verdict: hold scope for Q3 (do NOT add new initiatives). Q2 quality leakage came from missing test gates, not from over-commitment. Fix the gate, keep the scope."
+    },
+    {
+      "id": "kpis",
+      "layout": "kpi-roster",
+      "kind": "OUTCOMES",
+      "title": "Q2 by the numbers",
+      "lead": "Velocity green, quality amber, customer red.",
+      "kpis": [
+        { "label": "Story points shipped", "value": "247", "target": "240", "status": "ahead", "note": "+3%" },
+        { "label": "P1 bugs in prod", "value": "11", "target": "5", "status": "behind", "note": "quality gate leaked" },
+        { "label": "Customer NPS", "value": "47", "target": "55", "status": "behind", "note": "−8" },
+        { "label": "Deploy frequency", "value": "3.2", "unit": "/d", "target": "3.0", "status": "ahead", "note": "good" },
+        { "label": "Time to recover", "value": "42", "unit": "min", "target": "60", "status": "ahead", "note": "good" },
+        { "label": "Eng satisfaction", "value": "7.8", "unit": "/10", "target": "7.5", "status": "ahead", "note": "+0.3" }
+      ]
+    },
+    {
+      "id": "retro",
+      "layout": "retro-3col",
+      "kind": "WHAT WORKED / DIDN'T / CHANGE",
+      "title": "What worked, what didn't, what we change",
+      "lead": "Three keepers from Q2 — and the two specific changes we will make in Q3.",
+      "worked": [
+        { "text": "Daily async standup format", "note": "freed 4h/wk across team" },
+        { "text": "Pair on first PR of every initiative", "note": "caught 3 design issues early" },
+        { "text": "Customer call rotation", "note": "every engineer talked to 2 users" }
+      ],
+      "didnt": [
+        { "text": "Optional test gate", "note": "skipped under deadline pressure → 11 P1s" },
+        { "text": "Shared on-call calendar", "note": "two people on-call simultaneously, neither responded" },
+        { "text": "Late-Friday merges", "note": "5 of 11 P1s correlated" }
+      ],
+      "change": [
+        { "text": "Test gate becomes mandatory CI block", "note": "Q3 starting day 1" },
+        { "text": "Friday after 14:00 deploy freeze", "note": "with named on-call override" },
+        { "text": "On-call ownership tied to a single Slack user-group", "note": "no more parallel coverage" }
+      ]
+    },
+    {
+      "id": "actions",
+      "layout": "action-list",
+      "kind": "PROCESS CHANGES",
+      "title": "Two process changes, four owners, three weeks",
+      "actions": [
+        { "text": "Enforce test gate in CI (block merge on coverage <70%)", "owner": "DevTools", "due": "Jul 01", "status": "TODO" },
+        { "text": "Friday after 14:00 deploy freeze", "note": "exception requires VP eng sign-off", "owner": "Release Eng", "due": "Jul 01", "status": "TODO" },
+        { "text": "Migrate on-call to single Slack user-group", "owner": "SRE", "due": "Jun 15", "status": "TODO" },
+        { "text": "Reassess: do we keep or kill the bug-bash hour?", "owner": "EM", "due": "Aug 01", "status": "TODO" }
+      ]
+    }
+  ]
+}

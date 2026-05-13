@@ -1,0 +1,20 @@
+%% 时序图：N 个角色之间的对话/调用顺序
+sequenceDiagram
+    autonumber
+    participant U as User / 用户
+    participant API as Gateway
+    participant SVC as Service
+    participant DB as Database
+
+    U->>API: 1. POST /resource (request)
+    activate API
+    API->>SVC: 2. validate + dispatch
+    activate SVC
+    SVC->>DB: 3. SELECT ...
+    DB-->>SVC: rows
+    SVC-->>API: 4. response payload
+    deactivate SVC
+    API-->>U: 5. 200 OK
+    deactivate API
+
+    Note over U,DB: 同步调用链；失败时返回 4xx/5xx

@@ -1,0 +1,17 @@
+%% 通用 flowchart 模板：架构 / 数据流 / 决策流
+%% 替换占位符即可。方向可选 TD（上下）/LR（左右）/BT/RL
+flowchart LR
+    A[起点 / Source] --> B{判断节点}
+    B -->|条件 A| C[处理 A]
+    B -->|条件 B| D[处理 B]
+    C --> E[(数据库)]
+    D --> E
+    E --> F[终点 / Sink]
+
+    %% 节点样式提示：
+    %% [方框] 普通  ([圆角]) 软方框  [(柱)] 数据库  [/平行/] 输入  {菱形} 决策
+    %% (圆形) 起止  [/斜上/] [\斜下\] 平行四边形  [[子流程]]  ((圆点))
+    classDef warn stroke:#ffaa00,stroke-width:2px;
+    classDef done stroke:#44dd88,stroke-width:2px;
+    class B warn;
+    class F done;

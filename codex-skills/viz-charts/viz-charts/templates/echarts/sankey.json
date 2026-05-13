@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "name": "sankey",
+    "use_when": "多对多流向（资金/能量/用户路径）",
+    "data_shape": "{nodes:[{name}], links:[{source,target,value}]}"
+  },
+  "tooltip": { "trigger": "item", "triggerOn": "mousemove" },
+  "series": [
+    {
+      "type": "sankey",
+      "left": 30, "right": 100, "top": 20, "bottom": 20,
+      "data": [
+        { "name": "搜索流量" }, { "name": "广告流量" }, { "name": "口碑" },
+        { "name": "落地页" }, { "name": "注册" }, { "name": "弹回" },
+        { "name": "首单" }, { "name": "流失" }
+      ],
+      "links": [
+        { "source": "搜索流量", "target": "落地页", "value": 1200 },
+        { "source": "广告流量", "target": "落地页", "value": 800 },
+        { "source": "口碑",     "target": "落地页", "value": 400 },
+        { "source": "落地页", "target": "注册", "value": 1100 },
+        { "source": "落地页", "target": "弹回", "value": 1300 },
+        { "source": "注册", "target": "首单", "value": 480 },
+        { "source": "注册", "target": "流失", "value": 620 }
+      ],
+      "lineStyle": { "curveness": 0.5, "opacity": 0.5 },
+      "label": { "color": "#888", "fontSize": 11 }
+    }
+  ]
+}

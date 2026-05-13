@@ -1,0 +1,24 @@
+%% Git 分支演进
+---
+title: Release Train v2.x
+---
+gitGraph
+   commit id: "init" tag: "v1.0"
+   branch develop
+   checkout develop
+   commit id: "memory-spine"
+   commit id: "policy-gate"
+   branch feature/risk-engine
+   checkout feature/risk-engine
+   commit id: "risk-rules-v1"
+   commit id: "audit-log"
+   checkout develop
+   merge feature/risk-engine
+   commit id: "v2.0-rc1" tag: "v2.0-rc1"
+   checkout main
+   merge develop tag: "v2.0"
+   branch hotfix/v2.0.1
+   checkout hotfix/v2.0.1
+   commit id: "fix-cve-leak"
+   checkout main
+   merge hotfix/v2.0.1 tag: "v2.0.1"

@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{TITLE}} — Competitive Landscape</title>
+<meta name="description" content="{{DESCRIPTION}}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030711;--bg-2:#07111f;--panel:rgba(12,26,46,0.72);--panel-strong:rgba(16,36,62,0.92);--line:rgba(151,209,255,0.16);--line-strong:rgba(151,209,255,0.34);--text:#edf7ff;--muted:#a8bdd5;--faint:#688096;--cyan:#42e8ff;--blue:#6ca5ff;--silver:#d8e8f4;--gold:#ffd987;--green:#78f7c5;--red:#ff8c8c;--violet:#b893ff;--shadow:0 28px 90px rgba(0,0,0,0.48);--radius-xl:34px;--radius-lg:24px;--radius-md:16px;--max:1200px;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;line-height:1.58;background:radial-gradient(circle at 18% 5%,rgba(66,232,255,0.2),transparent 32rem),radial-gradient(circle at 84% 12%,rgba(255,217,135,0.12),transparent 30rem),radial-gradient(circle at 45% 52%,rgba(108,165,255,0.12),transparent 36rem),linear-gradient(180deg,#02050c 0%,#06111f 48%,#02050c 100%);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-3;opacity:0.35;background-image:linear-gradient(rgba(151,209,255,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(151,209,255,0.045) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.25) 35%,rgba(0,0,0,0.1))}
+body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(120deg,transparent 0 20%,rgba(66,232,255,0.045) 38%,transparent 56% 100%),radial-gradient(circle at 50% 0%,rgba(255,255,255,0.06),transparent 38rem);animation:atmosphericSweep 18s linear infinite}
+@keyframes atmosphericSweep{from{transform:translate3d(-8%,0,0)}to{transform:translate3d(8%,0,0)}}
+a{color:inherit;text-decoration:none}
+.skip-link{position:fixed;left:18px;top:18px;z-index:100;transform:translateY(-140%);padding:10px 14px;border-radius:999px;background:var(--cyan);color:#00121d;font-weight:800;transition:transform 0.2s ease}
+.skip-link:focus{transform:translateY(0)}
+#field{position:fixed;inset:0;z-index:-1;width:100vw;height:100vh;opacity:0.72;pointer-events:none}
+.progress-line{position:fixed;top:0;left:0;z-index:80;width:100%;height:3px;background:rgba(255,255,255,0.08)}
+.progress-line span{display:block;width:0%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--gold));box-shadow:0 0 24px rgba(66,232,255,0.75)}
+.deck-nav{position:fixed;top:18px;left:50%;z-index:60;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:999px;border:1px solid var(--line);background:rgba(7,17,31,0.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:0.78rem}
+.deck-nav a{padding:6px 14px;border-radius:999px;color:var(--muted);transition:color 0.2s ease,background 0.2s ease;letter-spacing:0.05em}
+.deck-nav a:hover{color:var(--text);background:rgba(66,232,255,0.08)}
+.deck-nav a.active{color:#00121d;background:var(--cyan);font-weight:600}
+.section{width:min(var(--max),calc(100vw - 40px));margin:0 auto;padding:8rem 0 5rem;position:relative}
+.section-intro{max-width:760px;margin-bottom:3rem}
+.eyebrow{font-size:0.78rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:0.6rem}
+.kicker-num{font-size:3rem;font-weight:700;background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1;margin-bottom:0.4rem}
+h1{font-size:clamp(2.4rem,4.6vw,3.6rem);font-weight:800;line-height:1.08;letter-spacing:-0.01em;margin:0.4rem 0 1.2rem}
+h2{font-size:clamp(1.9rem,3vw,2.4rem);font-weight:700;line-height:1.18;letter-spacing:-0.005em;margin:0.4rem 0 0.8rem}
+h3{font-size:1.25rem;font-weight:600;margin:0 0 0.6rem}
+p{margin:0 0 0.8rem;color:var(--muted)}
+.lead{font-size:1.05rem;color:var(--muted);max-width:680px}
+.headline-gradient{background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+strong{color:var(--text);font-weight:600}
+em{color:var(--gold);font-style:normal;font-weight:500}
+blockquote{margin:1.4rem 0;padding:1.2rem 1.6rem;border-left:3px solid var(--cyan);border-radius:0 var(--radius-md) var(--radius-md) 0;background:linear-gradient(90deg,rgba(66,232,255,0.08),transparent);color:var(--silver);font-size:1.05rem}
+.panel{border:1px solid var(--line);border-radius:var(--radius-xl);background:linear-gradient(180deg,var(--panel-strong),var(--panel));box-shadow:var(--shadow);padding:2rem 2.2rem;position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,var(--line-strong),transparent 50%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.panel-sm{padding:1.4rem 1.6rem;border-radius:var(--radius-lg)}
+.tag,.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--line-strong);background:rgba(12,26,46,0.6);font-size:0.78rem;color:var(--silver);margin:2px 4px 2px 0}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.8rem}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.status-done{background:var(--green);box-shadow:0 0 12px var(--green)}
+.status-progress{background:var(--blue);box-shadow:0 0 12px var(--blue)}
+.status-future{background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.status-risk{background:var(--red);box-shadow:0 0 12px var(--red)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.4rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.metric{display:flex;flex-direction:column;gap:0.4rem;padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
+.metric .label{font-size:0.78rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.12em}
+.metric .val{font-size:2.2rem;font-weight:700;line-height:1;background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.metric .delta{font-size:0.85rem;color:var(--muted)}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}body::after{animation:none}#field{display:none}}
+table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:0.92rem}
+th,td{text-align:left;padding:0.8rem 0.9rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:0.74rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--cyan);border-bottom:1px solid var(--line-strong)}
+td{color:var(--muted)}
+td strong{color:var(--text)}
+ol,ul{padding-left:1.2rem;color:var(--muted)}
+li{margin-bottom:0.4rem}
+code,pre{font-family:"JetBrains Mono","SF Mono","Consolas",monospace;font-size:0.86rem;color:var(--silver)}
+pre{padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-md);background:rgba(2,7,18,0.6);overflow-x:auto;line-height:1.5;white-space:pre}
+code:not(pre code){padding:1px 6px;border-radius:4px;background:rgba(66,232,255,0.1);color:var(--cyan)}
+.section-end{margin-top:5rem;padding-top:2rem;border-top:1px solid var(--line);color:var(--faint);font-size:0.85rem}
+footer{padding:5rem 0 4rem;text-align:center;color:var(--faint);font-size:0.85rem}
+@media (max-width:720px){.section{padding:5rem 0 3rem}.deck-nav{display:none}.kicker-num{font-size:2.2rem}h1{font-size:2.2rem}h2{font-size:1.6rem}.panel{padding:1.4rem 1.4rem;border-radius:var(--radius-lg)}}
+
+.compare-card{padding:1.6rem 1.8rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);position:relative}
+.compare-card.us{border-color:var(--cyan);box-shadow:0 0 0 1px rgba(66,232,255,0.18)}
+.compare-card .head{display:flex;justify-content:space-between;align-items:flex-start;gap:0.6rem;margin-bottom:0.8rem}
+.compare-card h3{margin:0;font-size:1.2rem}
+.compare-card .tier{font-family:"JetBrains Mono",monospace;font-size:0.7rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.12em}
+.compare-card.us .tier{color:var(--cyan)}
+.compare-card dl{display:grid;grid-template-columns:auto 1fr;gap:0.5rem 0.8rem;margin:0.8rem 0 0;font-size:0.86rem}
+.compare-card dt{font-size:0.74rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.1em}
+.compare-card dd{margin:0;color:var(--muted)}
+.compare-card dd strong{color:var(--text)}
+
+.matrix-wrap{overflow-x:auto;margin-top:1.4rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
+.matrix-wrap table{margin:0}
+.matrix-wrap th:first-child,.matrix-wrap td:first-child{position:sticky;left:0;background:var(--panel);z-index:1;font-weight:600;color:var(--text);min-width:200px}
+.matrix-wrap th{white-space:nowrap}
+.matrix-cell-yes{color:var(--green)}
+.matrix-cell-no{color:var(--faint)}
+.matrix-cell-partial{color:var(--gold)}
+.matrix-cell-na{color:var(--faint);font-style:italic}
+
+.radar-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem;align-items:center;margin-top:1.4rem}
+@media (max-width:880px){.radar-wrap{grid-template-columns:1fr}}
+.radar-svg{aspect-ratio:1/1;max-width:480px;margin:0 auto;width:100%}
+.radar-svg .axis{stroke:var(--line);stroke-width:1}
+.radar-svg .grid-poly{fill:none;stroke:var(--line);stroke-width:1}
+.radar-svg .label{font-size:11px;fill:var(--muted);font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:0.06em}
+.radar-svg .us-poly{fill:rgba(66,232,255,0.18);stroke:var(--cyan);stroke-width:2}
+.radar-svg .other-poly{fill:rgba(255,217,135,0.08);stroke:var(--gold);stroke-width:1.4;stroke-dasharray:4 4}
+.radar-legend{display:flex;flex-direction:column;gap:0.6rem;font-size:0.9rem}
+.radar-legend .item{display:flex;align-items:center;gap:0.6rem}
+.radar-legend .swatch{width:14px;height:14px;border-radius:3px;border:1.5px solid}
+
+.evidence{margin-top:0.6rem;font-size:0.78rem;color:var(--faint);font-family:"JetBrains Mono",monospace}
+.evidence a{color:var(--cyan);border-bottom:1px dotted var(--line-strong)}
+
+.takeaway{padding:1.6rem 2rem;border-radius:var(--radius-lg);background:linear-gradient(135deg,rgba(66,232,255,0.12),rgba(108,165,255,0.06));border:1px solid var(--line-strong);margin-top:1.4rem}
+.takeaway h3{color:var(--cyan);margin-top:0}
+
+.refs{font-size:0.84rem;color:var(--muted);font-family:"JetBrains Mono",monospace;line-height:1.7}
+.refs ol{padding-left:1.6rem}
+.refs a{color:var(--cyan);word-break:break-all}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="progress-line" aria-hidden="true"><span></span></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<nav class="deck-nav" aria-label="章节导航">
+  <a href="#opening">Opening</a>
+  <a href="#scope">Scope</a>
+  <a href="#players">Players</a>
+  <a href="#matrix">Matrix</a>
+  <a href="#radar">Radar</a>
+  <a href="#deepdive">Deep Dive</a>
+  <a href="#takeaway">Takeaway</a>
+  <a href="#references">Refs</a>
+</nav>
+
+<main id="main">
+
+<section class="section" id="opening">
+  <div class="reveal" style="padding-top:6rem">
+    <span class="eyebrow">Competitive Landscape · {{DATE}}</span>
+    <h1><span class="headline-gradient">{{PROJECT_NAME}}</span><br />{{COMPETE_TAGLINE}}</h1>
+    <p class="lead" style="margin-top:1.4rem;font-size:1.15rem">{{OPENING_LEAD}}</p>
+    <div class="tag-row" style="margin-top:1.4rem">
+      <span class="tag">RESEARCH TIER · {{RESEARCH_TIER}}</span>
+      <span class="tag">SOURCES · {{SOURCE_COUNT}}</span>
+      <span class="tag">PLAYERS · {{PLAYER_COUNT}}</span>
+      <span class="tag">CUTOFF · {{RESEARCH_DATE}}</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="scope">
+  <div class="section-intro reveal">
+    <span class="kicker-num">01</span>
+    <span class="eyebrow">Scope & Methodology</span>
+    <h2>研究范围与方法</h2>
+    <p class="lead">{{SCOPE_LEAD}}</p>
+  </div>
+  <div class="grid-2 reveal">
+    <div class="panel">
+      <h3>研究范围</h3>
+      <p>{{SCOPE_DESC}}</p>
+      <div class="tag-row">{{SCOPE_TAGS}}</div>
+    </div>
+    <div class="panel">
+      <h3>方法学</h3>
+      <p>{{METHOD_DESC}}</p>
+      <ul style="font-size:0.9rem;margin-top:0.6rem">
+        {{METHOD_BULLETS}}
+        <!-- <li>Tier {N} 调研：{n} 次 web_search · {n} 次 web_fetch</li>
+             <li>所有断言带 data-source 引用</li>
+             <li>缺失字段标 [N/A]，估值标 [ESTIMATED]</li> -->
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="players">
+  <div class="section-intro reveal">
+    <span class="kicker-num">02</span>
+    <span class="eyebrow">Players</span>
+    <h2>本次纳入对照的玩家</h2>
+    <p class="lead">{{PLAYERS_LEAD}}</p>
+  </div>
+  <div class="grid-2">
+    {{PLAYER_CARDS}}
+    <!-- 每张卡格式：
+    <div class="compare-card us reveal">
+      <div class="head"><h3>{{我方项目}}</h3><span class="tier">本项目 · OURS</span></div>
+      <p>一句话定位...</p>
+      <dl>
+        <dt>定位</dt><dd><strong>...</strong></dd>
+        <dt>形态</dt><dd>OSS / SaaS / 混合</dd>
+        <dt>语言</dt><dd>Go + Rust</dd>
+        <dt>已知用户</dt><dd>...</dd>
+        <dt>最近发布</dt><dd>v1.5 · 2026-05-01</dd>
+      </dl>
+    </div>
+    <div class="compare-card reveal">
+      <div class="head"><h3>LangGraph</h3><span class="tier">DIRECT</span></div>
+      ...
+      <p class="evidence">来源：<a href="#ref-1">[1]</a> <a href="#ref-2">[2]</a></p>
+    </div>
+    -->
+  </div>
+</section>
+
+<section class="section" id="matrix">
+  <div class="section-intro reveal">
+    <span class="kicker-num">03</span>
+    <span class="eyebrow">Capability Matrix</span>
+    <h2>能力维度横向矩阵</h2>
+    <p class="lead">{{MATRIX_LEAD}}</p>
+  </div>
+  <div class="matrix-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>能力维度</th>
+          {{MATRIX_HEADERS}}
+          <!-- <th>{{我方}}</th><th>LangGraph</th><th>AutoGen</th>... -->
+        </tr>
+      </thead>
+      <tbody>
+        {{MATRIX_ROWS}}
+        <!-- 每行格式：
+        <tr>
+          <td>状态持久化</td>
+          <td><span class="matrix-cell-yes">✓ 内置 SQLite + Bitable</span></td>
+          <td><span class="matrix-cell-yes">✓ checkpointer</span></td>
+          <td><span class="matrix-cell-partial">○ 内存为主</span></td>
+        </tr>
+        -->
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:0.8rem;font-size:0.82rem;color:var(--faint)">图例：✓ 完整支持　○ 部分支持　× 不支持　— 不适用</p>
+</section>
+
+<section class="section" id="radar">
+  <div class="section-intro reveal">
+    <span class="kicker-num">04</span>
+    <span class="eyebrow">Capability Radar</span>
+    <h2>核心能力雷达图</h2>
+    <p class="lead">{{RADAR_LEAD}}</p>
+  </div>
+  <div class="panel reveal">
+    <div class="radar-wrap">
+      <svg class="radar-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- 网格圆 -->
+        <circle cx="200" cy="200" r="160" class="grid-poly"/>
+        <circle cx="200" cy="200" r="120" class="grid-poly"/>
+        <circle cx="200" cy="200" r="80"  class="grid-poly"/>
+        <circle cx="200" cy="200" r="40"  class="grid-poly"/>
+        <!-- 轴线（6 维示例）-->
+        <line x1="200" y1="40"  x2="200" y2="360" class="axis"/>
+        <line x1="60"  y1="120" x2="340" y2="280" class="axis"/>
+        <line x1="60"  y1="280" x2="340" y2="120" class="axis"/>
+        <!-- 维度标签 · 替换占位 -->
+        <text x="200" y="30"  text-anchor="middle" class="label">{{DIM_1}}</text>
+        <text x="350" y="125" text-anchor="start"  class="label">{{DIM_2}}</text>
+        <text x="350" y="285" text-anchor="start"  class="label">{{DIM_3}}</text>
+        <text x="200" y="380" text-anchor="middle" class="label">{{DIM_4}}</text>
+        <text x="50"  y="285" text-anchor="end"    class="label">{{DIM_5}}</text>
+        <text x="50"  y="125" text-anchor="end"    class="label">{{DIM_6}}</text>
+        <!-- 数据多边形 · 替换 points 属性，每点格式 x,y，原点 200,200，最大半径 160 -->
+        <polygon class="us-poly"    points="{{US_POLY}}"/>
+        <polygon class="other-poly" points="{{OTHER_POLY}}"/>
+      </svg>
+      <div class="radar-legend">
+        <div class="item"><span class="swatch" style="border-color:var(--cyan);background:rgba(66,232,255,0.2)"></span><strong>{{PROJECT_NAME}}</strong>（本项目）</div>
+        <div class="item"><span class="swatch" style="border-color:var(--gold);background:rgba(255,217,135,0.1)"></span>{{COMPARE_NAME}}（参照对手）</div>
+        <p style="margin-top:0.8rem;font-size:0.82rem;color:var(--faint)">评分由 1-5 标度，基于公开资料。空白维度表示信息不足。{{RADAR_NOTE}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="deepdive">
+  <div class="section-intro reveal">
+    <span class="kicker-num">05</span>
+    <span class="eyebrow">Selected Deep Dives</span>
+    <h2>挑出来细看：{{DEEPDIVE_TARGETS}}</h2>
+    <p class="lead">{{DEEPDIVE_LEAD}}</p>
+  </div>
+  <div class="grid-2">
+    {{DEEPDIVE_PANELS}}
+    <!-- 每项格式：
+    <div class="panel reveal">
+      <h3>LangGraph：图状态机派</h3>
+      <p>...（用对方的术语描述对方）...</p>
+      <p><strong>它做对的：</strong>...</p>
+      <p><strong>它的限制：</strong>...</p>
+      <p><strong>对我们的启发：</strong>...</p>
+      <p class="evidence">来源：<a href="#ref-3">[3]</a> <a href="#ref-4">[4]</a></p>
+    </div>
+    -->
+  </div>
+</section>
+
+<section class="section" id="takeaway">
+  <div class="section-intro reveal">
+    <span class="kicker-num">06</span>
+    <span class="eyebrow">Strategic Takeaway</span>
+    <h2>所以我们怎么打</h2>
+    <p class="lead">{{TAKEAWAY_LEAD}}</p>
+  </div>
+  <div class="takeaway reveal">
+    <h3>差异化主张</h3>
+    <p>{{DIFFERENTIATION}}</p>
+  </div>
+  <div class="grid-2" style="margin-top:1.4rem">
+    <div class="panel reveal">
+      <h3>不打的仗</h3>
+      <ul>{{WONT_FIGHT}}</ul>
+    </div>
+    <div class="panel reveal">
+      <h3>必须赢的仗</h3>
+      <ul>{{MUST_WIN}}</ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="references">
+  <div class="section-intro reveal">
+    <span class="kicker-num">07</span>
+    <span class="eyebrow">References</span>
+    <h2>引用来源</h2>
+    <p class="lead">所有外部断言可在此追溯。最低要求：来源 + 日期 + URL。</p>
+  </div>
+  <div class="panel refs reveal">
+    <ol>
+      {{REFS}}
+      <!-- 每项格式：
+      <li id="ref-1">LangChain Blog · "Introducing LangGraph" · 2024-01-08 · <a href="https://...">https://...</a></li>
+      -->
+    </ol>
+  </div>
+</section>
+
+<footer>{{PROJECT_NAME}} · Competitive Landscape · {{DATE}} · prepared by {{AUTHOR}}</footer>
+</main>
+<script>(function(){
+  var sections=document.querySelectorAll('.section[id]');
+  var navLinks=document.querySelectorAll('.deck-nav a');
+  var progress=document.querySelector('.progress-line span');
+  function updateProgress(){
+    if(!progress) return;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var p=h>0?(window.scrollY/h)*100:0;
+    progress.style.width=p+'%';
+    var active=null;
+    sections.forEach(function(s){
+      var r=s.getBoundingClientRect();
+      if(r.top<=window.innerHeight*0.45&&r.bottom>=window.innerHeight*0.18) active=s;
+    });
+    navLinks.forEach(function(l){
+      l.classList.toggle('active',active&&l.getAttribute('href')==='#'+active.id);
+    });
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+    });
+  },{threshold:0.13,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  window.addEventListener('scroll',updateProgress,{passive:true});
+  window.addEventListener('resize',updateProgress);
+  updateProgress();
+})();
+
+(function(){
+  var canvas=document.getElementById('field');
+  if(!canvas||window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ctx=canvas.getContext('2d');
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var nodes=[];
+  function resize(){
+    canvas.width=Math.floor(window.innerWidth*dpr);
+    canvas.height=Math.floor(window.innerHeight*dpr);
+    canvas.style.width=window.innerWidth+'px';
+    canvas.style.height=window.innerHeight+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    var count=Math.max(42,Math.min(80,Math.floor(window.innerWidth/22)));
+    nodes=Array.from({length:count},function(_,i){
+      return{x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,vx:(Math.random()-0.5)*0.22,vy:(Math.random()-0.5)*0.22,r:1+Math.random()*1.7,phase:i*0.37};
+    });
+  }
+  function tick(t){
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    for(var i=0;i<nodes.length;i++){
+      var a=nodes[i];
+      a.x+=a.vx;a.y+=a.vy+Math.sin(t*0.0005+a.phase)*0.018;
+      if(a.x<-20)a.x=window.innerWidth+20;
+      if(a.x>window.innerWidth+20)a.x=-20;
+      if(a.y<-20)a.y=window.innerHeight+20;
+      if(a.y>window.innerHeight+20)a.y=-20;
+      for(var j=i+1;j<nodes.length;j++){
+        var b=nodes[j];
+        var dx=a.x-b.x,dy=a.y-b.y;
+        var d=Math.sqrt(dx*dx+dy*dy);
+        if(d<128){
+          ctx.strokeStyle='rgba(66, 232, 255, '+((1-d/128)*0.18)+')';
+          ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+      ctx.fillStyle='rgba(210, 245, 255, .58)';
+      ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('resize',resize);
+  resize();requestAnimationFrame(tick);
+})();</script>
+</body>
+</html>

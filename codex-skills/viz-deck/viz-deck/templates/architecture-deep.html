@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{TITLE}} — Architecture Deep Dive</title>
+<meta name="description" content="{{DESCRIPTION}}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030711;--bg-2:#07111f;--panel:rgba(12,26,46,0.72);--panel-strong:rgba(16,36,62,0.92);--line:rgba(151,209,255,0.16);--line-strong:rgba(151,209,255,0.34);--text:#edf7ff;--muted:#a8bdd5;--faint:#688096;--cyan:#42e8ff;--blue:#6ca5ff;--silver:#d8e8f4;--gold:#ffd987;--green:#78f7c5;--red:#ff8c8c;--violet:#b893ff;--shadow:0 28px 90px rgba(0,0,0,0.48);--radius-xl:34px;--radius-lg:24px;--radius-md:16px;--max:1200px;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;line-height:1.58;background:radial-gradient(circle at 18% 5%,rgba(66,232,255,0.2),transparent 32rem),radial-gradient(circle at 84% 12%,rgba(255,217,135,0.12),transparent 30rem),radial-gradient(circle at 45% 52%,rgba(108,165,255,0.12),transparent 36rem),linear-gradient(180deg,#02050c 0%,#06111f 48%,#02050c 100%);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-3;opacity:0.35;background-image:linear-gradient(rgba(151,209,255,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(151,209,255,0.045) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.25) 35%,rgba(0,0,0,0.1))}
+body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(120deg,transparent 0 20%,rgba(66,232,255,0.045) 38%,transparent 56% 100%),radial-gradient(circle at 50% 0%,rgba(255,255,255,0.06),transparent 38rem);animation:atmosphericSweep 18s linear infinite}
+@keyframes atmosphericSweep{from{transform:translate3d(-8%,0,0)}to{transform:translate3d(8%,0,0)}}
+a{color:inherit;text-decoration:none}
+.skip-link{position:fixed;left:18px;top:18px;z-index:100;transform:translateY(-140%);padding:10px 14px;border-radius:999px;background:var(--cyan);color:#00121d;font-weight:800;transition:transform 0.2s ease}
+.skip-link:focus{transform:translateY(0)}
+#field{position:fixed;inset:0;z-index:-1;width:100vw;height:100vh;opacity:0.72;pointer-events:none}
+.progress-line{position:fixed;top:0;left:0;z-index:80;width:100%;height:3px;background:rgba(255,255,255,0.08)}
+.progress-line span{display:block;width:0%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--gold));box-shadow:0 0 24px rgba(66,232,255,0.75)}
+.deck-nav{position:fixed;top:18px;left:50%;z-index:60;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:999px;border:1px solid var(--line);background:rgba(7,17,31,0.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:0.78rem}
+.deck-nav a{padding:6px 14px;border-radius:999px;color:var(--muted);transition:color 0.2s ease,background 0.2s ease;letter-spacing:0.05em}
+.deck-nav a:hover{color:var(--text);background:rgba(66,232,255,0.08)}
+.deck-nav a.active{color:#00121d;background:var(--cyan);font-weight:600}
+.section{width:min(var(--max),calc(100vw - 40px));margin:0 auto;padding:8rem 0 5rem;position:relative}
+.section-intro{max-width:760px;margin-bottom:3rem}
+.eyebrow{font-size:0.78rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:0.6rem}
+.kicker-num{font-size:3rem;font-weight:700;background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1;margin-bottom:0.4rem}
+h1{font-size:clamp(2.4rem,4.6vw,3.6rem);font-weight:800;line-height:1.08;letter-spacing:-0.01em;margin:0.4rem 0 1.2rem}
+h2{font-size:clamp(1.9rem,3vw,2.4rem);font-weight:700;line-height:1.18;letter-spacing:-0.005em;margin:0.4rem 0 0.8rem}
+h3{font-size:1.25rem;font-weight:600;margin:0 0 0.6rem}
+p{margin:0 0 0.8rem;color:var(--muted)}
+.lead{font-size:1.05rem;color:var(--muted);max-width:680px}
+.headline-gradient{background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+strong{color:var(--text);font-weight:600}
+em{color:var(--gold);font-style:normal;font-weight:500}
+blockquote{margin:1.4rem 0;padding:1.2rem 1.6rem;border-left:3px solid var(--cyan);border-radius:0 var(--radius-md) var(--radius-md) 0;background:linear-gradient(90deg,rgba(66,232,255,0.08),transparent);color:var(--silver);font-size:1.05rem}
+.panel{border:1px solid var(--line);border-radius:var(--radius-xl);background:linear-gradient(180deg,var(--panel-strong),var(--panel));box-shadow:var(--shadow);padding:2rem 2.2rem;position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,var(--line-strong),transparent 50%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.panel-sm{padding:1.4rem 1.6rem;border-radius:var(--radius-lg)}
+.tag,.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--line-strong);background:rgba(12,26,46,0.6);font-size:0.78rem;color:var(--silver);margin:2px 4px 2px 0}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.8rem}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.status-done{background:var(--green);box-shadow:0 0 12px var(--green)}
+.status-progress{background:var(--blue);box-shadow:0 0 12px var(--blue)}
+.status-future{background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.status-risk{background:var(--red);box-shadow:0 0 12px var(--red)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.4rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.metric{display:flex;flex-direction:column;gap:0.4rem;padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
+.metric .label{font-size:0.78rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.12em}
+.metric .val{font-size:2.2rem;font-weight:700;line-height:1;background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.metric .delta{font-size:0.85rem;color:var(--muted)}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}body::after{animation:none}#field{display:none}}
+table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:0.92rem}
+th,td{text-align:left;padding:0.8rem 0.9rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:0.74rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--cyan);border-bottom:1px solid var(--line-strong)}
+td{color:var(--muted)}
+td strong{color:var(--text)}
+ol,ul{padding-left:1.2rem;color:var(--muted)}
+li{margin-bottom:0.4rem}
+code,pre{font-family:"JetBrains Mono","SF Mono","Consolas",monospace;font-size:0.86rem;color:var(--silver)}
+pre{padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-md);background:rgba(2,7,18,0.6);overflow-x:auto;line-height:1.5;white-space:pre}
+code:not(pre code){padding:1px 6px;border-radius:4px;background:rgba(66,232,255,0.1);color:var(--cyan)}
+.section-end{margin-top:5rem;padding-top:2rem;border-top:1px solid var(--line);color:var(--faint);font-size:0.85rem}
+footer{padding:5rem 0 4rem;text-align:center;color:var(--faint);font-size:0.85rem}
+@media (max-width:720px){.section{padding:5rem 0 3rem}.deck-nav{display:none}.kicker-num{font-size:2.2rem}h1{font-size:2.2rem}h2{font-size:1.6rem}.panel{padding:1.4rem 1.4rem;border-radius:var(--radius-lg)}}
+
+.spine{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;margin-top:1.4rem}
+.spine-step{padding:1.4rem 1.2rem;border-right:1px solid var(--line);position:relative;background:var(--panel)}
+.spine-step:last-child{border-right:none}
+.spine-step::after{content:"→";position:absolute;right:-0.6rem;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:1.4rem;font-weight:700;background:var(--bg);padding:0 0.3rem;z-index:2}
+.spine-step:last-child::after{display:none}
+.spine-step h3{margin-bottom:0.4rem}
+.spine-step .step-num{font-family:"JetBrains Mono",monospace;font-size:0.74rem;color:var(--cyan);letter-spacing:0.12em;text-transform:uppercase}
+@media (max-width:880px){.spine-step{border-right:none;border-bottom:1px solid var(--line)}.spine-step::after{content:"↓";right:50%;top:auto;bottom:-0.6rem;transform:translateX(50%)}.spine-step:last-child{border-bottom:none}}
+
+.adr{display:grid;grid-template-columns:1fr;gap:1rem;border:1px solid var(--line);border-radius:var(--radius-lg);padding:1.6rem 1.8rem;background:var(--panel);margin-bottom:1.2rem}
+.adr-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.6rem;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:0.8rem}
+.adr-id{font-family:"JetBrains Mono",monospace;font-size:0.78rem;color:var(--cyan);letter-spacing:0.08em}
+.adr-fields{display:grid;grid-template-columns:120px 1fr;gap:0.5rem 1rem;font-size:0.94rem}
+.adr-fields .k{font-size:0.74rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.12em;padding-top:3px}
+@media (max-width:680px){.adr-fields{grid-template-columns:1fr}.adr-fields .k{padding-top:0.4rem}}
+
+.dim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:1.4rem}
+.dim{padding:1.4rem 1.6rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);position:relative;overflow:hidden}
+.dim::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:var(--cyan)}
+.dim.gov::before{background:var(--gold)}
+.dim.evo::before{background:var(--violet)}
+.dim h3{margin-top:0;display:flex;align-items:center;gap:0.6rem}
+
+.codeblock{margin:1rem 0}
+
+.layer-stack{display:grid;gap:0.6rem;margin-top:1.4rem}
+.layer{padding:1rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);display:grid;grid-template-columns:140px 1fr auto;gap:1rem;align-items:center;font-size:0.92rem}
+.layer-name{font-weight:600;color:var(--cyan);font-family:"JetBrains Mono",monospace;font-size:0.86rem;letter-spacing:0.05em}
+@media (max-width:680px){.layer{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="progress-line" aria-hidden="true"><span></span></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<nav class="deck-nav" aria-label="章节导航">
+  <a href="#opening">Opening</a>
+  <a href="#thesis">Thesis</a>
+  <a href="#system">System</a>
+  <a href="#dimensions">Dimensions</a>
+  <a href="#decisions">Decisions</a>
+  <a href="#debt">Debt</a>
+  <a href="#future">Future</a>
+</nav>
+
+<main id="main">
+
+<section class="section" id="opening">
+  <div class="reveal" style="padding-top:6rem">
+    <span class="eyebrow">Architecture Deep Dive · {{DATE}}</span>
+    <h1><span class="headline-gradient">{{PROJECT_NAME}}</span><br />{{ARCH_TAGLINE}}</h1>
+    <p class="lead" style="margin-top:1.4rem;font-size:1.15rem">{{OPENING_LEAD}}</p>
+  </div>
+</section>
+
+<section class="section" id="thesis">
+  <div class="section-intro reveal">
+    <span class="kicker-num">01</span>
+    <span class="eyebrow">Architecture Thesis</span>
+    <h2>我们为什么这样组合系统</h2>
+    <p class="lead">{{THESIS_LEAD}}</p>
+  </div>
+  <div class="panel reveal">
+    <blockquote style="margin:0;border:none;background:none;padding:0;font-size:1.25rem">{{THESIS_QUOTE}}</blockquote>
+    <div class="grid-3" style="margin-top:1.6rem">
+      <div><span class="eyebrow" style="color:var(--cyan)">Constraint 1</span><p>{{CONSTRAINT_1}}</p></div>
+      <div><span class="eyebrow" style="color:var(--cyan)">Constraint 2</span><p>{{CONSTRAINT_2}}</p></div>
+      <div><span class="eyebrow" style="color:var(--cyan)">Constraint 3</span><p>{{CONSTRAINT_3}}</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="system">
+  <div class="section-intro reveal">
+    <span class="kicker-num">02</span>
+    <span class="eyebrow">System Spine</span>
+    <h2>主流程：从事件到落库</h2>
+    <p class="lead">{{SYSTEM_LEAD}}</p>
+  </div>
+  <div class="spine reveal">
+    {{SYSTEM_SPINE}}
+    <!-- 每步格式：
+    <div class="spine-step">
+      <span class="step-num">Step 01</span>
+      <h3>Event</h3>
+      <p>...</p>
+    </div>
+    -->
+  </div>
+  <div class="codeblock reveal" style="margin-top:2rem">
+    <p class="lead" style="margin-bottom:0.6rem">数据流核心契约：</p>
+    <pre>{{SYSTEM_CONTRACT}}</pre>
+  </div>
+  <div class="layer-stack reveal" style="margin-top:2rem">
+    {{LAYER_STACK}}
+    <!-- 每层格式：
+    <div class="layer">
+      <span class="layer-name">L0 Control</span>
+      <span>Go runtime · 调度与生命周期</span>
+      <span><span class="tag"><span class="status-dot status-done"></span>GA</span></span>
+    </div>
+    -->
+  </div>
+</section>
+
+<section class="section" id="dimensions">
+  <div class="section-intro reveal">
+    <span class="kicker-num">03</span>
+    <span class="eyebrow">Three Dimensions</span>
+    <h2>架构三个维度的纵深</h2>
+    <p class="lead">{{DIMENSIONS_LEAD}}</p>
+  </div>
+  <div class="dim-grid">
+
+    <div class="dim reveal">
+      <h3>① Memory · 记忆机制</h3>
+      <p>{{MEM_INTRO}}</p>
+      <ul>
+        {{MEM_BULLETS}}
+        <!-- <li>Episodic：事件流时间线...</li>
+             <li>Semantic：知识图谱抽取...</li>
+             <li>Procedural：技能复用...</li> -->
+      </ul>
+      <div class="tag-row">{{MEM_TAGS}}</div>
+    </div>
+
+    <div class="dim gov reveal">
+      <h3>② Governance · 治理模型</h3>
+      <p>{{GOV_INTRO}}</p>
+      <ul>
+        {{GOV_BULLETS}}
+        <!-- <li>Policy Gate：默认拒绝...</li>
+             <li>Human-in-loop：风险阈值上抛...</li>
+             <li>Audit：行为可追溯...</li> -->
+      </ul>
+      <div class="tag-row">{{GOV_TAGS}}</div>
+    </div>
+
+    <div class="dim evo reveal">
+      <h3>③ Evolution · 自进化路径</h3>
+      <p>{{EVO_INTRO}}</p>
+      <ul>
+        {{EVO_BULLETS}}
+        <!-- <li>Reflection：输出自审...</li>
+             <li>Search：进化式搜索...</li>
+             <li>Self-modification：受控自我修改...</li> -->
+      </ul>
+      <div class="tag-row">{{EVO_TAGS}}</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="decisions">
+  <div class="section-intro reveal">
+    <span class="kicker-num">04</span>
+    <span class="eyebrow">Architecture Decisions</span>
+    <h2>关键决策与取舍</h2>
+    <p class="lead">{{DECISIONS_LEAD}}</p>
+  </div>
+  {{ADR_BLOCKS}}
+  <!-- 每个 ADR 格式：
+  <div class="adr reveal">
+    <div class="adr-head">
+      <span class="adr-id">ADR-001 · 2026-04-12</span>
+      <span><span class="tag"><span class="status-dot status-done"></span>ACCEPTED</span></span>
+    </div>
+    <h3>使用 Volcano Engine 作为统一 LLM 网关</h3>
+    <div class="adr-fields">
+      <span class="k">Context</span><span>...</span>
+      <span class="k">Decision</span><span>...</span>
+      <span class="k">Alternatives</span><span>...</span>
+      <span class="k">Consequence</span><span>...</span>
+    </div>
+  </div>
+  -->
+</section>
+
+<section class="section" id="debt">
+  <div class="section-intro reveal">
+    <span class="kicker-num">05</span>
+    <span class="eyebrow">Tech Debt Ledger</span>
+    <h2>账本：我们正在背的债</h2>
+    <p class="lead">{{DEBT_LEAD}}</p>
+  </div>
+  <div class="panel reveal">
+    <table>
+      <thead><tr><th>ID</th><th>条目</th><th>形成时间</th><th>利息</th><th>处置计划</th><th>责任</th></tr></thead>
+      <tbody>{{DEBT_ROWS}}</tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" id="future">
+  <div class="section-intro reveal">
+    <span class="kicker-num">06</span>
+    <span class="eyebrow">Architectural Roadmap</span>
+    <h2>架构演进计划</h2>
+    <p class="lead">{{FUTURE_LEAD}}</p>
+  </div>
+  <div class="grid-2">
+    {{FUTURE_PANELS}}
+    <!-- 每项格式：
+    <div class="panel reveal">
+      <h3>v2.0 · 记忆 + 自进化基座 <span class="tag"><span class="status-dot status-progress"></span>进行中</span></h3>
+      <p>...</p>
+      <ul><li>...</li></ul>
+    </div>
+    -->
+  </div>
+  <div class="section-end reveal">{{FUTURE_NOTE}}</div>
+</section>
+
+<footer>{{PROJECT_NAME}} · Architecture Deep Dive · {{DATE}} · prepared by {{AUTHOR}}</footer>
+</main>
+<script>(function(){
+  var sections=document.querySelectorAll('.section[id]');
+  var navLinks=document.querySelectorAll('.deck-nav a');
+  var progress=document.querySelector('.progress-line span');
+  function updateProgress(){
+    if(!progress) return;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var p=h>0?(window.scrollY/h)*100:0;
+    progress.style.width=p+'%';
+    var active=null;
+    sections.forEach(function(s){
+      var r=s.getBoundingClientRect();
+      if(r.top<=window.innerHeight*0.45&&r.bottom>=window.innerHeight*0.18) active=s;
+    });
+    navLinks.forEach(function(l){
+      l.classList.toggle('active',active&&l.getAttribute('href')==='#'+active.id);
+    });
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+    });
+  },{threshold:0.13,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  window.addEventListener('scroll',updateProgress,{passive:true});
+  window.addEventListener('resize',updateProgress);
+  updateProgress();
+})();
+
+(function(){
+  var canvas=document.getElementById('field');
+  if(!canvas||window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ctx=canvas.getContext('2d');
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var nodes=[];
+  function resize(){
+    canvas.width=Math.floor(window.innerWidth*dpr);
+    canvas.height=Math.floor(window.innerHeight*dpr);
+    canvas.style.width=window.innerWidth+'px';
+    canvas.style.height=window.innerHeight+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    var count=Math.max(42,Math.min(80,Math.floor(window.innerWidth/22)));
+    nodes=Array.from({length:count},function(_,i){
+      return{x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,vx:(Math.random()-0.5)*0.22,vy:(Math.random()-0.5)*0.22,r:1+Math.random()*1.7,phase:i*0.37};
+    });
+  }
+  function tick(t){
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    for(var i=0;i<nodes.length;i++){
+      var a=nodes[i];
+      a.x+=a.vx;a.y+=a.vy+Math.sin(t*0.0005+a.phase)*0.018;
+      if(a.x<-20)a.x=window.innerWidth+20;
+      if(a.x>window.innerWidth+20)a.x=-20;
+      if(a.y<-20)a.y=window.innerHeight+20;
+      if(a.y>window.innerHeight+20)a.y=-20;
+      for(var j=i+1;j<nodes.length;j++){
+        var b=nodes[j];
+        var dx=a.x-b.x,dy=a.y-b.y;
+        var d=Math.sqrt(dx*dx+dy*dy);
+        if(d<128){
+          ctx.strokeStyle='rgba(66, 232, 255, '+((1-d/128)*0.18)+')';
+          ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+      ctx.fillStyle='rgba(210, 245, 255, .58)';
+      ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('resize',resize);
+  resize();requestAnimationFrame(tick);
+})();</script>
+</body>
+</html>

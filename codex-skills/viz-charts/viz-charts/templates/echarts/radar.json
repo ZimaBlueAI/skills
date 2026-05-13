@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "name": "radar",
+    "use_when": "≤4 主体在 5-8 维度上对比",
+    "data_shape": "{indicators: [{name,max}], data: [{name, value:[]}]}"
+  },
+  "tooltip": {},
+  "legend": { "top": 0 },
+  "radar": {
+    "indicator": [
+      { "name": "性能", "max": 100 },
+      { "name": "易用性", "max": 100 },
+      { "name": "扩展性", "max": 100 },
+      { "name": "安全", "max": 100 },
+      { "name": "生态", "max": 100 },
+      { "name": "成本", "max": 100 }
+    ],
+    "radius": "65%"
+  },
+  "series": [
+    {
+      "type": "radar",
+      "data": [
+        { "name": "Ours",       "value": [85, 80, 90, 88, 60, 75], "areaStyle": { "opacity": 0.25 } },
+        { "name": "Competitor", "value": [70, 90, 75, 65, 85, 70], "areaStyle": { "opacity": 0.15 } }
+      ]
+    }
+  ]
+}

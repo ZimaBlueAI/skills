@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "name": "gauge",
+    "use_when": "进度/达成率/风险评分（单值）",
+    "data_shape": "[{name, value}]"
+  },
+  "tooltip": { "formatter": "{a} <br/>{b} : {c}%" },
+  "series": [
+    {
+      "name": "Sprint Progress",
+      "type": "gauge",
+      "progress": { "show": true, "width": 18 },
+      "axisLine": { "lineStyle": { "width": 18 } },
+      "axisTick": { "show": false },
+      "splitLine": { "length": 14 },
+      "axisLabel": { "distance": 22, "fontSize": 11 },
+      "anchor": { "show": true, "showAbove": true, "size": 14 },
+      "title": { "show": false },
+      "detail": {
+        "valueAnimation": true,
+        "fontSize": 32,
+        "fontWeight": 700,
+        "offsetCenter": [0, "70%"],
+        "formatter": "{value}%"
+      },
+      "data": [{ "value": 78, "name": "完成度" }]
+    }
+  ]
+}

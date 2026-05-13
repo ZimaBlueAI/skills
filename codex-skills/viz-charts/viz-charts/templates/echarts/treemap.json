@@ -1,0 +1,42 @@
+{
+  "_meta": {
+    "name": "treemap",
+    "use_when": "层级占比（如代码模块体量 / 预算分配）",
+    "data_shape": "[{name, value, children?}] 递归"
+  },
+  "tooltip": { "formatter": "{b}: {c}" },
+  "series": [
+    {
+      "type": "treemap",
+      "data": [
+        {
+          "name": "Engineering",
+          "value": 180,
+          "children": [
+            { "name": "Backend", "value": 70 },
+            { "name": "Frontend", "value": 50 },
+            { "name": "Infra", "value": 35 },
+            { "name": "QA", "value": 25 }
+          ]
+        },
+        {
+          "name": "Product",
+          "value": 75,
+          "children": [
+            { "name": "PM", "value": 40 },
+            { "name": "Design", "value": 35 }
+          ]
+        },
+        {
+          "name": "GTM",
+          "value": 95,
+          "children": [
+            { "name": "Sales", "value": 55 },
+            { "name": "Marketing", "value": 40 }
+          ]
+        }
+      ],
+      "label": { "show": true, "formatter": "{b}\n{c}" }
+    }
+  ]
+}

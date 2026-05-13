@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "name": "scatter",
+    "use_when": "二维相关性、分布",
+    "data_shape": "[[x, y, sizeOpt, labelOpt]]"
+  },
+  "tooltip": { "trigger": "item" },
+  "grid": { "left": 50, "right": 30, "top": 30, "bottom": 40 },
+  "xAxis": { "name": "Effort (人天)", "type": "value" },
+  "yAxis": { "name": "Impact (1-10)", "type": "value" },
+  "series": [
+    {
+      "type": "scatter",
+      "symbolSize": 12,
+      "data": [
+        [10, 8.5, "F-1"], [22, 9.0, "F-2"], [35, 6.0, "F-3"],
+        [50, 4.0, "F-4"], [70, 7.5, "F-5"], [12, 3.0, "F-6"],
+        [40, 8.8, "F-7"], [60, 6.5, "F-8"]
+      ],
+      "label": { "show": true, "position": "right", "formatter": "{@[2]}", "fontSize": 10 }
+    }
+  ]
+}

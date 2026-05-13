@@ -1,0 +1,36 @@
+%% 类图：对象/接口/继承
+classDiagram
+    direction LR
+
+    class BaseAgent {
+        <<abstract>>
+        +String id
+        +String name
+        +run() Promise~Result~
+        #validate() void
+    }
+
+    class TaskAgent {
+        -Memory memory
+        -Skill[] skills
+        +execute(task) Result
+        +reflect() void
+    }
+
+    class PlanningAgent {
+        -Plan currentPlan
+        +decompose(goal) Plan
+        +replan(failure) Plan
+    }
+
+    class Memory {
+        <<interface>>
+        +read(key) any
+        +write(key, val) void
+        +query(filter) any[]
+    }
+
+    BaseAgent <|-- TaskAgent
+    BaseAgent <|-- PlanningAgent
+    TaskAgent o-- Memory : uses
+    PlanningAgent o-- Memory : uses

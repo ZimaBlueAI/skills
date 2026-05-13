@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "name": "graph-force",
+    "use_when": "10-200 节点关系网络（>200 用专门工具）",
+    "data_shape": "{nodes:[{id,name,symbolSize,category}], links:[{source,target}], categories}"
+  },
+  "tooltip": {},
+  "legend": [{ "data": ["核心","数据","平台","集成"], "top": 0 }],
+  "series": [
+    {
+      "type": "graph",
+      "layout": "force",
+      "force": { "repulsion": 200, "edgeLength": 80 },
+      "roam": true,
+      "label": { "show": true, "position": "right" },
+      "categories": [
+        { "name": "核心" }, { "name": "数据" }, { "name": "平台" }, { "name": "集成" }
+      ],
+      "data": [
+        { "id": "1", "name": "Agent Core",     "symbolSize": 50, "category": 0 },
+        { "id": "2", "name": "Memory",         "symbolSize": 35, "category": 0 },
+        { "id": "3", "name": "Risk Gate",      "symbolSize": 35, "category": 0 },
+        { "id": "4", "name": "Bitable",        "symbolSize": 28, "category": 1 },
+        { "id": "5", "name": "Vector DB",      "symbolSize": 28, "category": 1 },
+        { "id": "6", "name": "Volcano LLM",    "symbolSize": 32, "category": 2 },
+        { "id": "7", "name": "Feishu API",     "symbolSize": 25, "category": 3 },
+        { "id": "8", "name": "Slack",          "symbolSize": 22, "category": 3 }
+      ],
+      "links": [
+        { "source": "1", "target": "2" },
+        { "source": "1", "target": "3" },
+        { "source": "1", "target": "6" },
+        { "source": "2", "target": "4" },
+        { "source": "2", "target": "5" },
+        { "source": "1", "target": "7" },
+        { "source": "1", "target": "8" }
+      ]
+    }
+  ]
+}

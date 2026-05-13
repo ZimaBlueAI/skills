@@ -1,8 +1,10 @@
 # Skill 套件 · 安装、配置、使用说明
 
-**三个 Claude Code skill 的统一文档** · v2.0 · 2026-05-11
+**三个 Claude Code skill 的统一文档** · v3.0 · 2026-05-13
 
-> v2.0 起：viz-deck 从 1 模产出扩展到 **4 模产出**（keynote-report / hi-fi prototype / slide-deck / motion-stage），引入 **20 设计哲学** 与 **5 维专家评审**，并通过软依赖桥接 [`alchaincyf/huashu-design`](https://github.com/alchaincyf/huashu-design) 获得 HTML→MP4/PPTX 导出能力。详见 [第 11 节 · v2 新能力速查](#11--v2-新能力速查)。
+> **v3.0** 起新增第二个软桥接 [`hugohe3/ppt-master`](https://github.com/hugohe3/ppt-master) 获得真正可编辑的 native DrawingML PPTX：viz-deck 增加第 5 模 `pptx-deck`、biz-decision-stack 增加终端风决策 PPTX 出口、viz-charts 增加数据绑定原生 chart。详见 [第 13 节 · ppt-master 桥接](#13--ppt-master-桥接v3-真正可编辑-pptx)。
+>
+> v2.0 起：viz-deck 从 1 模产出扩展到 **4 模产出**（keynote-report / hi-fi prototype / slide-deck / motion-stage），引入 **20 设计哲学** 与 **5 维专家评审**，并通过软依赖桥接 [`alchaincyf/huashu-design`](https://github.com/alchaincyf/huashu-design) 获得 HTML→MP4/PPTX 导出能力。详见 [第 11 节 · v2 新能力速查](#11--v2-新能力速查) 与 [第 12 节 · huashu-design 桥接](#12--huashu-design-桥接)。
 
 ---
 
@@ -40,14 +42,14 @@
 | `07-design-critic` 🆕 v2 | 设计评审官 | 5 维评分 + Keep/Fix/Quick-Wins |
 | `biz-html-viz`（skill） | HTML 输出能力 | **8 终端风模板**（含 v2 新增 `design-critique.html`） |
 
-**输出风格**：终端风 — 黑底 #0a0a0a + 酸黄 #d4ff00 + JetBrains Mono + 零动效。
+**输出风格**：终端风 — 黑底 #0a0a0a + 酸黄 #d4ff00 + JetBrains Mono + 零动效。**v3 起**：可选 ppt-master 桥接出口 8 个决策 layout 的可编辑 PPTX（同样的视觉哲学）。
 
-**包大小**：62KB zip。
+**包大小**：73KB zip（v0.3，含决策 PPTX 出口）。
 
 ---
 
 ### viz-deck
-讲演风深度报告 skill。**v2 起：4 模产出**：
+讲演风深度报告 skill。**v3 起：5 模产出**：
 
 | 模式 | 模板 | 适合场景 | 产出形态 |
 |---|---|---|---|
@@ -55,8 +57,9 @@
 | | `architecture-deep.html` | 技术架构深度讲解、客户技术方案 | HTML |
 | | `competitive-landscape.html` | 竞品分析、市场地图、投融对话 | HTML（含 web_search 实时调研） |
 | **2 · prototype** 🆕 v2 | `prototype-shell.html` | iOS / Android / macOS / 浏览器高保真原型 | HTML + AppPhone 状态管理 |
-| **3 · slide-deck** 🆕 v2 | `slide-deck.html` | 演讲幻灯片、TED 风、客户路演 | HTML + 可编辑 PPTX + 横版 PDF |
+| **3 · slide-deck** 🆕 v2 | `slide-deck.html` | 演讲幻灯片、TED 风、客户路演 | HTML + 快速 PPTX + 横版 PDF |
 | **4 · motion-stage** 🆕 v2 | `motion-stage.html` | hero video、概念视频、解说视频 | HTML + MP4（25/60 fps）+ GIF + BGM |
+| **5 · pptx-deck** 🆕 v3 | `pptx-deck-spec.example.json` | 给 stakeholder 在 PowerPoint 里改的 deck、母版继承、TTS 旁白 | **真正可编辑 PPTX**（native DrawingML，每元素可点）+ MP4 |
 
 **输出风格**：讲演风 — 深空 #030711 + 青蓝金 + Inter + 微动效（含 reduced-motion 降级）。
 
@@ -69,13 +72,17 @@
 - `references/prototype-mode.md` 🆕 v2 — 高保真原型工作流
 - `references/slide-mode.md` 🆕 v2 — 幻灯片 + PPTX 导出工作流
 - `references/motion-mode.md` 🆕 v2 — 动画 + MP4 导出工作流
+- `references/pptx-master-bridge.md` 🆕 v3 — 与 ppt-master 桥接（v3 真编辑 PPTX）
+- `references/editable-pptx.md` 🆕 v3 — PPTX 里哪些可编辑、哪些不可
+- `references/master-templates.md` 🆕 v3 — 母版/模板继承（导入公司模板）
+- `references/narration-pptx.md` 🆕 v3 — TTS 旁白嵌入 + PowerPoint 自动导出 MP4
 
-**包大小**：65KB zip。
+**包大小**：81KB zip（v0.3，含 pptx-deck 模式）。
 
 ---
 
 ### viz-charts
-图表 + 3D 知识图谱 + 动效视频能力 skill。**被前两个 skill 调用**。**v2 起：5 类视觉**：
+图表 + 3D 知识图谱 + 动效视频 + 原生 PPTX 图表能力 skill。**被前两个 skill 调用**。**v3 起：6 类视觉**：
 
 | 类型 | 数量 | 路径 |
 |---|---|---|
@@ -85,15 +92,19 @@
 | 3D 知识图谱 viewer | 3 | `templates/kg3d/` |
 | KG builder | 2 | `builders/` |
 | **Motion stage** 🆕 v2 | 1 模板 | `templates/motion/motion-stage-template.html` |
+| **Native PPTX chart** 🆕 v3 | 8 chart 类型 | `scripts/echarts_to_pptx.py` |
 
-**双模渲染**：inline live（CDN，jsdelivr→unpkg fallback）+ offline SVG（Node.js）+ motion 录屏（v2 桥接 huashu）。
-**双主题**：terminal（biz-decision-stack 报告用）+ deck（viz-deck 报告用）。
+**双模渲染**：inline live（CDN，jsdelivr→unpkg fallback）+ offline SVG（Node.js）+ motion 录屏（v2 桥接 huashu）+ **原生 PPTX chart**（v3 桥接 ppt-master）。
+**三主题**：terminal（biz-decision-stack 报告用）+ deck（viz-deck 报告用）+ deck-light（v3 公司模板友好）。
 
 **v2 新增 references**：
 - `references/motion-charts.md` — motion 图表三类模式（frame-step / temporal sweep / graph orbit）
 - `references/mp4-export.md` — MP4 / 60fps / GIF 导出工具链桥接
 
-**包大小**：153KB zip。
+**v3 新增 references**：
+- `references/pptx-charts.md` — ECharts→python-pptx 数据绑定 chart 导出协议
+
+**包大小**：156KB zip（v0.3，含 pptx-charts 出口）。
 
 ---
 
@@ -122,13 +133,14 @@
 | 组件 | 最低版本 | 用途 | 必装？ |
 |---|---|---|---|
 | Claude Code CLI | 最新版 | 跑 skill 的载体 | ✓ 必装 |
-| Node.js | 18.0+ | viz-charts 离线渲染、3D KG builders、v2 evaluator/exporters | 仅 viz-charts / v2 模式需要 |
+| Node.js | 18.0+ | viz-charts 离线渲染、3D KG builders、v2 evaluator/exporters、v3 PPTX bridge driver | 仅 viz-charts / v2 / v3 模式需要 |
 | npm | 9.0+ | 装 echarts / mermaid 离线包、huashu 运行时 | 仅 viz-charts 离线模式 / v2 模式 |
 | Chromium | — | Mermaid 离线 SVG 渲染、MP4 录制、PPTX 导出 | 仅 Mermaid 离线模式 / v2 模式（通过 playwright 自动装） |
 | **ffmpeg** 🆕 v2 | 4.0+ | MP4 编码 / 60fps 插帧 / GIF palette / BGM 混音 | 仅 v2 viz-deck motion-stage 模式 |
 | **huashu-design** 🆕 v2 | latest | 4 模产出（prototype/slide/motion）的工具链承载 | 仅 viz-deck v2 模式 + viz-charts motion |
-| Python 3 | 3.8+ | 3D KG 数据填充辅助脚本（可选） | 用模板替换辅助脚本时 |
-| 现代浏览器 | Chrome 90+ / Safari 14+ / Firefox 90+ | 预览报告、3D KG 交互 | 用户端 |
+| **ppt-master** 🆕 v3 | latest | 真正可编辑 PPTX / TTS 旁白 / 母版 / 数据绑定 chart | 仅 viz-deck 模式 5 / biz-decision 决策 PPTX / viz-charts 原生 chart |
+| **Python 3** 🆕 v3 用途扩展 | 3.10+ | v3 ppt-master 运行时 + 可选 3D KG 数据填充 | v3 模式必需 |
+| 现代浏览器 | Chrome 90+ / Safari 14+ / Firefox 90+ | 预览报告、3D KG 交互、最终 PPTX 打开 | 用户端 |
 
 ### 各模式依赖矩阵
 
@@ -748,4 +760,96 @@ echo "OK" || echo "huashu-design MISSING — install via the guide section 12.2"
 
 ---
 
-**Skill Suite v2.0** · 2026-05-11 · biz-decision-stack + viz-deck + viz-charts + huashu-design (bridge)
+## 13 · ppt-master 桥接（v3 真正可编辑 PPTX）
+
+### 13.1 何时需要
+
+| 用户意图 | 路由 | 必装组件 |
+|---|---|---|
+| "做个真正能在 PowerPoint 里改的 PPT" | viz-deck 模式 5 + ppt-master | ✅ |
+| "决策报告做成可编辑 PPT" | biz-decision-stack PPTX 出口 + ppt-master | ✅ |
+| "图表数据 stakeholder 要能在 PPT 里改" | viz-charts 原生 chart 出口 + ppt-master | ✅ |
+| "PPT 里嵌入旁白音频" | viz-deck 模式 5 + embed-narration.sh + ppt-master | ✅ |
+| "用公司模板生成 PPT" | viz-deck 模式 5 + register_template.py + ppt-master | ✅ |
+| "PPT 自动导出 MP4 带旁白和动画" | viz-deck 模式 5 narrated + PowerPoint File → Export → Video | ✅（PowerPoint 是免费的 export 工具）|
+
+**不需要**：HTML 报告 / 静态图表 / motion MP4（这些是 v1 / v2 能力，不依赖 ppt-master）。
+
+### 13.2 安装
+
+```bash
+git clone --depth=1 https://github.com/hugohe3/ppt-master.git ~/.claude/skills/ppt-master
+cd ~/.claude/skills/ppt-master
+
+# 隔离的 Python 3.10+ venv，避免污染系统 Python
+python -m venv .venv
+
+# Windows
+.venv/Scripts/pip install python-pptx edge-tts svglib reportlab Pillow numpy
+# macOS/Linux
+# .venv/bin/pip install python-pptx edge-tts svglib reportlab Pillow numpy
+
+# 验证
+.venv/Scripts/python -c "import pptx, edge_tts; print('ok')"
+```
+
+可选附加（图像生成、语音克隆）：
+
+```bash
+.venv/Scripts/pip install openai google-genai elevenlabs
+```
+
+### 13.3 三个 skill 的调用约定
+
+| Skill | 入口 | 输入 | 输出 |
+|---|---|---|---|
+| viz-deck 模式 5 | `scripts/export-editable-pptx.sh <spec.json>` | JSON deck spec（8 layout） | `<base>_pptx_build/exports/<base>.pptx`（每元素可点） |
+| viz-deck 旁白 | `scripts/embed-narration.sh <build_dir>` | speaker_notes/*.txt | `<base>_narrated.pptx`（嵌入 MP3，时长同步） |
+| biz-decision-stack | `scripts/export-decision-pptx.sh <spec.json>`（在 biz-html-viz 内） | JSON 决策 spec（8 layout） | 终端风 PPTX（零动效） |
+| viz-charts | `scripts/export-chart-pptx.sh <spec.json>` | chart spec 或 ECharts option | 单页含 `<c:chart>` 的 PPTX（数据可在 PPT 里改） |
+
+### 13.4 探测脚本
+
+每次进入 v3 模式前，agent 应做轻量探测：
+
+```bash
+PPTM="$HOME/.claude/skills/ppt-master"
+PY="$PPTM/.venv/Scripts/python.exe"
+[ -f "$PY" ] || PY="$PPTM/.venv/bin/python"
+
+test -f "$PY" && \
+test -f "$PPTM/skills/ppt-master/scripts/svg_to_pptx.py" && \
+"$PY" -c "import pptx, edge_tts" 2>/dev/null && \
+echo "OK" || echo "ppt-master MISSING — install via the guide section 13.2"
+```
+
+如果 `MISSING`：**不要 silently fallback** — 给用户 13.2 节的安装命令，询问是否走 v2 的快速 PPTX 出口（huashu html2pptx）替代。
+
+### 13.5 可编辑性验证
+
+生成 PPTX 后用 `unzip` 探测内部 OOXML 结构：
+
+```bash
+# 看每张 slide 的 native shape 数量 — 应该是数十个 <p:sp>
+unzip -p deck.pptx ppt/slides/slide1.xml | grep -c "<p:sp>"
+
+# 看是否有真正的 chart 对象 — viz-charts native 输出特有
+unzip -l deck.pptx | grep "ppt/charts/chart"
+```
+
+如果 `<p:sp>` 数量是 1 或 0 → 失败，输出退化成单张图片。改用 `--only native` 重新生成：
+
+```bash
+~/.claude/skills/ppt-master/.venv/Scripts/python ~/.claude/skills/ppt-master/skills/ppt-master/scripts/svg_to_pptx.py \
+  <project_dir> --only native -o <out>.pptx
+```
+
+### 13.6 边界
+
+- ppt-master **不**用于：HTML keynote（viz-deck 模式 1）、motion MP4（viz-deck 模式 4，走 huashu）、HTML 报告（biz-decision-stack 主流程）
+- ppt-master **跟** huashu-design 是并列的两个软桥接，**不互相替代**——huashu 管动画/视频/设计哲学/评审，ppt-master 管可编辑 PPT/旁白/母版/数据绑定图表
+- ppt-master 是 MIT 协议，无商用限制；huashu-design 个人免费但商用需独立授权
+
+---
+
+**Skill Suite v3.0** · 2026-05-13 · biz-decision-stack + viz-deck + viz-charts + huashu-design (bridge v2) + ppt-master (bridge v3)

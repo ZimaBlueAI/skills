@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — CEO Strategy Canvas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg-elev:#141414;--bg-hover:#1c1c1c;--border:#2a2a2a;--border-strong:#3a3a3a;--fg:#e8e8e8;--fg-dim:#888;--fg-faint:#555;--accent:#d4ff00;--accent-dim:#8a9e0a;--danger:#ff4444;--warn:#ffaa00;--ok:#44dd88;--font-mono:'JetBrains Mono','SF Mono','Menlo','Consolas',monospace;--font-sans:'Inter Tight','PingFang SC','Source Han Sans SC',system-ui,sans-serif;--font-serif:'Newsreader','Source Serif 4',Georgia,serif;--gap-xs:4px;--gap-sm:8px;--gap-md:16px;--gap-lg:24px;--gap-xl:48px;--max-width:1200px;--content-width:880px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--font-sans);font-size:14px;line-height:1.6;padding:var(--gap-xl) var(--gap-lg)}
+.report-header{max-width:var(--max-width);margin:0 auto var(--gap-xl);border-bottom:1px solid var(--border-strong);padding-bottom:var(--gap-lg)}
+.report-header .meta{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;gap:var(--gap-lg);margin-bottom:var(--gap-md);flex-wrap:wrap}
+.report-header h1{font-family:var(--font-serif);font-size:40px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.report-header .subtitle{color:var(--fg-dim);margin-top:var(--gap-sm);font-size:15px}
+main{max-width:var(--max-width);margin:0 auto}
+section{margin-bottom:var(--gap-xl)}
+h2{font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);padding-bottom:var(--gap-sm);border-bottom:1px solid var(--border);margin-bottom:var(--gap-md)}
+h3{font-size:18px;font-weight:600;margin-bottom:var(--gap-sm)}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px}
+th{text-align:left;padding:var(--gap-sm);border-bottom:1px solid var(--border-strong);font-weight:500;color:var(--fg-dim);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+td{padding:var(--gap-sm);border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg-hover)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:2px 6px;border:1px solid var(--border-strong);text-transform:uppercase;letter-spacing:.05em}
+.tag.ok{color:var(--ok);border-color:var(--ok)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.danger{color:var(--danger);border-color:var(--danger)}
+.tag.accent{color:var(--accent);border-color:var(--accent)}
+.kpi{font-family:var(--font-mono);font-size:36px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi.up{color:var(--ok)}.kpi.down{color:var(--danger)}
+.kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-xs)}
+.kpi-delta{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);margin-top:var(--gap-xs)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-md)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap-md)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md)}
+.card{border:1px solid var(--border);padding:var(--gap-md);background:var(--bg-elev)}
+.card:hover{border-color:var(--border-strong)}
+blockquote{font-family:var(--font-serif);font-size:19px;font-style:italic;line-height:1.5;color:var(--fg);padding:var(--gap-md) 0 var(--gap-md) var(--gap-md);border-left:2px solid var(--accent);margin:var(--gap-lg) 0;max-width:var(--content-width)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim)}
+a:hover{background:var(--accent);color:var(--bg)}
+pre,code{font-family:var(--font-mono);font-size:12px;color:var(--fg);background:var(--bg-elev);padding:var(--gap-md);border:1px solid var(--border);overflow-x:auto;white-space:pre;display:block;line-height:1.5}
+code:not(pre code){display:inline;padding:1px 4px;border:none;background:var(--bg-elev)}
+.row{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:140px 1fr auto;gap:var(--gap-md);align-items:baseline}
+.row .label{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em}
+ol,ul{padding-left:20px;font-size:14px;line-height:1.8}
+ol.mono,ul.mono{font-family:var(--font-mono);font-size:13px;line-height:2}
+@media print{body{background:#fff;color:#000;padding:0}:root{--bg:#fff;--bg-elev:#fff;--fg:#000;--fg-dim:#555;--border:#ccc}}
+.priority-matrix{display:grid;grid-template-columns:80px 1fr 1fr;grid-template-rows:40px 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);min-height:480px}
+.priority-matrix > div{background:var(--bg-elev);padding:var(--gap-md)}
+.priority-matrix .axis{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;justify-content:center;text-align:center}
+.priority-matrix .quad{position:relative}
+.priority-matrix .quad-label{position:absolute;top:8px;right:12px;font-family:var(--font-mono);font-size:10px;color:var(--fg-faint);text-transform:uppercase;letter-spacing:.1em}
+.priority-matrix .item{font-family:var(--font-mono);font-size:12px;padding:4px 0;border-bottom:1px dashed var(--border)}
+.priority-matrix .item:last-child{border-bottom:none}
+.bet{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:30px 1fr 120px 100px;gap:var(--gap-md);align-items:start}
+.bet .num-circle{font-family:var(--font-mono);font-size:11px;color:var(--accent);border:1px solid var(--accent-dim);width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.tradeoff{display:grid;grid-template-columns:1fr 40px 1fr;gap:var(--gap-md);align-items:center;padding:var(--gap-md);border:1px solid var(--border);margin-bottom:var(--gap-sm)}
+.tradeoff .vs{text-align:center;font-family:var(--font-mono);font-size:11px;color:var(--fg-dim)}
+</style></head><body>
+<header class="report-header">
+  <div class="meta"><span>REPORT // CEO CANVAS</span><span>{{DATE}}</span><span>{{AUTHOR}}</span><span>REV {{VERSION}}</span></div>
+  <h1>{{TITLE}}</h1><p class="subtitle">{{SUBTITLE}}</p>
+</header>
+<main>
+
+<section>
+  <h2>The Bet // 核心赌注</h2>
+  <blockquote>{{CORE_THESIS}}</blockquote>
+</section>
+
+<section>
+  <h2>North Star // 北极星指标</h2>
+  <div class="grid-3">
+    <div class="card"><div class="kpi-label">{{NS_1_LABEL}}</div><div class="kpi">{{NS_1_VALUE}}</div><div class="kpi-delta">target: {{NS_1_TARGET}}</div></div>
+    <div class="card"><div class="kpi-label">{{NS_2_LABEL}}</div><div class="kpi">{{NS_2_VALUE}}</div><div class="kpi-delta">target: {{NS_2_TARGET}}</div></div>
+    <div class="card"><div class="kpi-label">{{NS_3_LABEL}}</div><div class="kpi">{{NS_3_VALUE}}</div><div class="kpi-delta">target: {{NS_3_TARGET}}</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Priority Matrix // 优先级矩阵 (Impact × Effort)</h2>
+  <div class="priority-matrix">
+    <div class="axis"></div><div class="axis">LOW EFFORT</div><div class="axis">HIGH EFFORT</div>
+    <div class="axis">HIGH<br>IMPACT</div>
+    <div class="quad"><div class="quad-label">DO NOW</div>{{Q_HIGH_LOW}}</div>
+    <div class="quad"><div class="quad-label">BIG BETS</div>{{Q_HIGH_HIGH}}</div>
+    <div class="axis">LOW<br>IMPACT</div>
+    <div class="quad"><div class="quad-label">FILL-IN</div>{{Q_LOW_LOW}}</div>
+    <div class="quad"><div class="quad-label">DROP</div>{{Q_LOW_HIGH}}</div>
+  </div>
+  <p style="font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);margin-top:var(--gap-sm)">每格内用 <code>&lt;div class="item"&gt;项目名 · ROI&lt;/div&gt;</code> 列出条目</p>
+</section>
+
+<section>
+  <h2>Strategic Bets // 我们押的 5 件事</h2>
+  {{STRATEGIC_BETS}}
+  <!-- 每项格式：
+  <div class="bet"><div class="num-circle">01</div>
+    <div><strong>赌注名称</strong><div style="color:var(--fg-dim);font-size:13px;margin-top:4px">为什么押 + 成功标准</div></div>
+    <div><span class="tag accent">PRIORITY 1</span></div>
+    <div><span class="tag">@CEO</span></div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Tradeoffs // 取舍</h2>
+  <p style="color:var(--fg-dim);margin-bottom:var(--gap-md);font-size:13px">每条取舍 = 一个明确的选择，不要写"两手都要抓"</p>
+  {{TRADEOFFS}}
+  <!-- 每项格式：
+  <div class="tradeoff">
+    <div><span class="tag">不做</span> 旧业务 X 的 SLA 升级</div>
+    <div class="vs">→</div>
+    <div><span class="tag accent">做</span> 把工程资源压到新产品 Y</div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Resource Allocation // 资源分配</h2>
+  <table>
+    <thead><tr><th>Resource</th><th>Total</th><th>Bet 1</th><th>Bet 2</th><th>Bet 3</th><th>BAU</th><th>Reserve</th></tr></thead>
+    <tbody>{{RESOURCE_ROWS}}</tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Decision Log // 本次决策清单</h2>
+  <ol class="mono">{{DECISIONS}}</ol>
+</section>
+
+<section>
+  <h2>Open Questions // 我没想清楚的</h2>
+  <ol class="mono" style="color:var(--warn)">{{OPEN_QUESTIONS}}</ol>
+</section>
+
+</main></body></html>

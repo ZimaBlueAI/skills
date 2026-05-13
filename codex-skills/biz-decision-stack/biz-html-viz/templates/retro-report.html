@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Acceptance & Retro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg-elev:#141414;--bg-hover:#1c1c1c;--border:#2a2a2a;--border-strong:#3a3a3a;--fg:#e8e8e8;--fg-dim:#888;--fg-faint:#555;--accent:#d4ff00;--accent-dim:#8a9e0a;--danger:#ff4444;--warn:#ffaa00;--ok:#44dd88;--font-mono:'JetBrains Mono','SF Mono','Menlo','Consolas',monospace;--font-sans:'Inter Tight','PingFang SC','Source Han Sans SC',system-ui,sans-serif;--font-serif:'Newsreader','Source Serif 4',Georgia,serif;--gap-xs:4px;--gap-sm:8px;--gap-md:16px;--gap-lg:24px;--gap-xl:48px;--max-width:1200px;--content-width:880px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--font-sans);font-size:14px;line-height:1.6;padding:var(--gap-xl) var(--gap-lg)}
+.report-header{max-width:var(--max-width);margin:0 auto var(--gap-xl);border-bottom:1px solid var(--border-strong);padding-bottom:var(--gap-lg)}
+.report-header .meta{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;gap:var(--gap-lg);margin-bottom:var(--gap-md);flex-wrap:wrap}
+.report-header h1{font-family:var(--font-serif);font-size:40px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.report-header .subtitle{color:var(--fg-dim);margin-top:var(--gap-sm);font-size:15px}
+main{max-width:var(--max-width);margin:0 auto}
+section{margin-bottom:var(--gap-xl)}
+h2{font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);padding-bottom:var(--gap-sm);border-bottom:1px solid var(--border);margin-bottom:var(--gap-md)}
+h3{font-size:18px;font-weight:600;margin-bottom:var(--gap-sm)}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px}
+th{text-align:left;padding:var(--gap-sm);border-bottom:1px solid var(--border-strong);font-weight:500;color:var(--fg-dim);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+td{padding:var(--gap-sm);border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg-hover)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:2px 6px;border:1px solid var(--border-strong);text-transform:uppercase;letter-spacing:.05em}
+.tag.ok{color:var(--ok);border-color:var(--ok)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.danger{color:var(--danger);border-color:var(--danger)}
+.tag.accent{color:var(--accent);border-color:var(--accent)}
+.kpi{font-family:var(--font-mono);font-size:36px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi.up{color:var(--ok)}.kpi.down{color:var(--danger)}
+.kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-xs)}
+.kpi-delta{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);margin-top:var(--gap-xs)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-md)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap-md)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md)}
+.card{border:1px solid var(--border);padding:var(--gap-md);background:var(--bg-elev)}
+.card:hover{border-color:var(--border-strong)}
+blockquote{font-family:var(--font-serif);font-size:19px;font-style:italic;line-height:1.5;color:var(--fg);padding:var(--gap-md) 0 var(--gap-md) var(--gap-md);border-left:2px solid var(--accent);margin:var(--gap-lg) 0;max-width:var(--content-width)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim)}
+a:hover{background:var(--accent);color:var(--bg)}
+pre,code{font-family:var(--font-mono);font-size:12px;color:var(--fg);background:var(--bg-elev);padding:var(--gap-md);border:1px solid var(--border);overflow-x:auto;white-space:pre;display:block;line-height:1.5}
+code:not(pre code){display:inline;padding:1px 4px;border:none;background:var(--bg-elev)}
+.row{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:140px 1fr auto;gap:var(--gap-md);align-items:baseline}
+.row .label{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em}
+ol,ul{padding-left:20px;font-size:14px;line-height:1.8}
+ol.mono,ul.mono{font-family:var(--font-mono);font-size:13px;line-height:2}
+@media print{body{background:#fff;color:#000;padding:0}:root{--bg:#fff;--bg-elev:#fff;--fg:#000;--fg-dim:#555;--border:#ccc}}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--border);background:var(--bg-elev)}
+.kpi-grid > div{padding:var(--gap-md);border-right:1px solid var(--border)}
+.kpi-grid > div:last-child{border-right:none}
+.kpi-grid .target{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);margin-top:var(--gap-xs)}
+.timeline-h{display:flex;border:1px solid var(--border);background:var(--bg-elev);overflow-x:auto}
+.timeline-h .phase{flex:1;min-width:140px;padding:var(--gap-md);border-right:1px solid var(--border);font-family:var(--font-mono);font-size:11px}
+.timeline-h .phase:last-child{border-right:none}
+.timeline-h .phase .when{color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-xs)}
+.timeline-h .phase .what{color:var(--fg);font-size:13px;font-family:var(--font-sans)}
+.lesson{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:80px 1fr;gap:var(--gap-md)}
+.lesson .tag-col{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em}
+.lesson strong{display:block;margin-bottom:var(--gap-xs)}
+.lesson .so-what{color:var(--fg-dim);font-size:13px}
+.action{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:60px 1fr 120px 120px 80px;gap:var(--gap-md);align-items:start}
+.action .id{font-family:var(--font-mono);font-size:11px;color:var(--accent)}
+.acceptance-row{padding:var(--gap-sm) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:60px 1fr 100px 100px 80px;gap:var(--gap-md);align-items:center;font-size:13px}
+.acceptance-row .id{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim)}
+</style></head><body>
+<header class="report-header">
+  <div class="meta"><span>REPORT // ACCEPTANCE & RETRO</span><span>{{DATE}}</span><span>{{AUTHOR}}</span><span>FINAL {{VERSION}}</span></div>
+  <h1>{{TITLE}}</h1><p class="subtitle">{{SUBTITLE}}</p>
+</header>
+<main>
+
+<section>
+  <h2>Verdict // 一句话定性</h2>
+  <blockquote>{{VERDICT}}</blockquote>
+</section>
+
+<section>
+  <h2>KPI Achievement // 目标达成</h2>
+  <div class="kpi-grid">
+    <div>
+      <div class="kpi-label">{{KPI_1_LABEL}}</div>
+      <div class="kpi {{KPI_1_DIRECTION}}">{{KPI_1_ACTUAL}}</div>
+      <div class="target">target {{KPI_1_TARGET}} · {{KPI_1_RATIO}}</div>
+    </div>
+    <div>
+      <div class="kpi-label">{{KPI_2_LABEL}}</div>
+      <div class="kpi {{KPI_2_DIRECTION}}">{{KPI_2_ACTUAL}}</div>
+      <div class="target">target {{KPI_2_TARGET}} · {{KPI_2_RATIO}}</div>
+    </div>
+    <div>
+      <div class="kpi-label">{{KPI_3_LABEL}}</div>
+      <div class="kpi {{KPI_3_DIRECTION}}">{{KPI_3_ACTUAL}}</div>
+      <div class="target">target {{KPI_3_TARGET}} · {{KPI_3_RATIO}}</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Acceptance Checklist // 验收清单</h2>
+  <p style="color:var(--fg-dim);font-size:13px;margin-bottom:var(--gap-md)">每项 = 一条可验证的交付标准</p>
+  {{ACCEPTANCE_ITEMS}}
+  <!-- 每项格式：
+  <div class="acceptance-row">
+    <div class="id">AC-01</div>
+    <div>13 境界进阶系统线上可用</div>
+    <div><span class="tag">FUNCTIONAL</span></div>
+    <div><span class="tag ok">PASS</span></div>
+    <div>{{evidence_link}}</div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Project Timeline // 实际时间线</h2>
+  <div class="timeline-h">
+    {{TIMELINE_PHASES}}
+    <!-- 每阶段格式：
+    <div class="phase">
+      <div class="when">2026-03 · 2W</div>
+      <div class="what">需求评审 + 架构定稿</div>
+    </div>
+    -->
+  </div>
+  <p style="font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);margin-top:var(--gap-sm)">{{TIMELINE_NOTE}}</p>
+</section>
+
+<section>
+  <h2>What Worked // 做对的</h2>
+  {{WHAT_WORKED}}
+  <!-- 每项格式：
+  <div class="lesson"><div class="tag-col"><span class="tag ok">KEEP</span></div>
+    <div><strong>提前两周拉通飞书 API 文档</strong><div class="so-what">省了后期约 5 人天联调</div></div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>What Didn't // 没做好的</h2>
+  {{WHAT_DIDNT}}
+  <!-- 每项格式：
+  <div class="lesson"><div class="tag-col"><span class="tag danger">FIX</span></div>
+    <div><strong>...</strong><div class="so-what">...</div></div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Lessons Learned // 沉淀</h2>
+  <ol class="mono">{{LESSONS}}</ol>
+</section>
+
+<section>
+  <h2>Action Items // 后续行动</h2>
+  <p style="color:var(--fg-dim);font-size:13px;margin-bottom:var(--gap-md)">每项必须有责任人 + 截止日</p>
+  {{ACTION_ITEMS}}
+  <!-- 每项格式：
+  <div class="action">
+    <div class="id">AI-01</div>
+    <div><strong>...</strong><div style="color:var(--fg-dim);font-size:13px;margin-top:4px">...</div></div>
+    <div><span class="tag">@person</span></div>
+    <div><span class="tag">2026-06-15</span></div>
+    <div><span class="tag accent">P0</span></div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Sign-off // 签字确认</h2>
+  <table>
+    <thead><tr><th>Role</th><th>Name</th><th>Decision</th><th>Date</th><th>Note</th></tr></thead>
+    <tbody>{{SIGNOFF_ROWS}}</tbody>
+  </table>
+</section>
+
+</main></body></html>

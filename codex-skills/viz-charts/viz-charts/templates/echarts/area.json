@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "name": "area",
+    "use_when": "累积量随时间，单系列",
+    "data_shape": "{x, data: [...]}"
+  },
+  "tooltip": { "trigger": "axis" },
+  "xAxis": { "type": "category", "boundaryGap": false, "data": ["W1","W2","W3","W4","W5","W6","W7","W8"] },
+  "yAxis": { "type": "value" },
+  "series": [
+    {
+      "type": "line",
+      "smooth": true,
+      "areaStyle": { "opacity": 0.4 },
+      "lineStyle": { "width": 2 },
+      "data": [120, 200, 350, 480, 620, 810, 950, 1180]
+    }
+  ]
+}

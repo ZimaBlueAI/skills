@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{TITLE}} — Stage Report</title>
+<meta name="description" content="{{DESCRIPTION}}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030711;--bg-2:#07111f;--panel:rgba(12,26,46,0.72);--panel-strong:rgba(16,36,62,0.92);--line:rgba(151,209,255,0.16);--line-strong:rgba(151,209,255,0.34);--text:#edf7ff;--muted:#a8bdd5;--faint:#688096;--cyan:#42e8ff;--blue:#6ca5ff;--silver:#d8e8f4;--gold:#ffd987;--green:#78f7c5;--red:#ff8c8c;--violet:#b893ff;--shadow:0 28px 90px rgba(0,0,0,0.48);--radius-xl:34px;--radius-lg:24px;--radius-md:16px;--max:1200px;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;line-height:1.58;background:radial-gradient(circle at 18% 5%,rgba(66,232,255,0.2),transparent 32rem),radial-gradient(circle at 84% 12%,rgba(255,217,135,0.12),transparent 30rem),radial-gradient(circle at 45% 52%,rgba(108,165,255,0.12),transparent 36rem),linear-gradient(180deg,#02050c 0%,#06111f 48%,#02050c 100%);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-3;opacity:0.35;background-image:linear-gradient(rgba(151,209,255,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(151,209,255,0.045) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.25) 35%,rgba(0,0,0,0.1))}
+body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(120deg,transparent 0 20%,rgba(66,232,255,0.045) 38%,transparent 56% 100%),radial-gradient(circle at 50% 0%,rgba(255,255,255,0.06),transparent 38rem);animation:atmosphericSweep 18s linear infinite}
+@keyframes atmosphericSweep{from{transform:translate3d(-8%,0,0)}to{transform:translate3d(8%,0,0)}}
+a{color:inherit;text-decoration:none}
+.skip-link{position:fixed;left:18px;top:18px;z-index:100;transform:translateY(-140%);padding:10px 14px;border-radius:999px;background:var(--cyan);color:#00121d;font-weight:800;transition:transform 0.2s ease}
+.skip-link:focus{transform:translateY(0)}
+#field{position:fixed;inset:0;z-index:-1;width:100vw;height:100vh;opacity:0.72;pointer-events:none}
+.progress-line{position:fixed;top:0;left:0;z-index:80;width:100%;height:3px;background:rgba(255,255,255,0.08)}
+.progress-line span{display:block;width:0%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--gold));box-shadow:0 0 24px rgba(66,232,255,0.75)}
+.deck-nav{position:fixed;top:18px;left:50%;z-index:60;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:999px;border:1px solid var(--line);background:rgba(7,17,31,0.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:0.78rem}
+.deck-nav a{padding:6px 14px;border-radius:999px;color:var(--muted);transition:color 0.2s ease,background 0.2s ease;letter-spacing:0.05em}
+.deck-nav a:hover{color:var(--text);background:rgba(66,232,255,0.08)}
+.deck-nav a.active{color:#00121d;background:var(--cyan);font-weight:600}
+.section{width:min(var(--max),calc(100vw - 40px));margin:0 auto;padding:8rem 0 5rem;position:relative}
+.section-intro{max-width:760px;margin-bottom:3rem}
+.eyebrow{font-size:0.78rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:0.6rem}
+.kicker-num{font-size:3rem;font-weight:700;background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1;margin-bottom:0.4rem}
+h1{font-size:clamp(2.4rem,4.6vw,3.6rem);font-weight:800;line-height:1.08;letter-spacing:-0.01em;margin:0.4rem 0 1.2rem}
+h2{font-size:clamp(1.9rem,3vw,2.4rem);font-weight:700;line-height:1.18;letter-spacing:-0.005em;margin:0.4rem 0 0.8rem}
+h3{font-size:1.25rem;font-weight:600;margin:0 0 0.6rem}
+p{margin:0 0 0.8rem;color:var(--muted)}
+.lead{font-size:1.05rem;color:var(--muted);max-width:680px}
+.headline-gradient{background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+strong{color:var(--text);font-weight:600}
+em{color:var(--gold);font-style:normal;font-weight:500}
+blockquote{margin:1.4rem 0;padding:1.2rem 1.6rem;border-left:3px solid var(--cyan);border-radius:0 var(--radius-md) var(--radius-md) 0;background:linear-gradient(90deg,rgba(66,232,255,0.08),transparent);color:var(--silver);font-size:1.05rem}
+.panel{border:1px solid var(--line);border-radius:var(--radius-xl);background:linear-gradient(180deg,var(--panel-strong),var(--panel));box-shadow:var(--shadow);padding:2rem 2.2rem;position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,var(--line-strong),transparent 50%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.panel-sm{padding:1.4rem 1.6rem;border-radius:var(--radius-lg)}
+.tag,.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--line-strong);background:rgba(12,26,46,0.6);font-size:0.78rem;color:var(--silver);margin:2px 4px 2px 0}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.8rem}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.status-done{background:var(--green);box-shadow:0 0 12px var(--green)}
+.status-progress{background:var(--blue);box-shadow:0 0 12px var(--blue)}
+.status-future{background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.status-risk{background:var(--red);box-shadow:0 0 12px var(--red)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.4rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.metric{display:flex;flex-direction:column;gap:0.4rem;padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
+.metric .label{font-size:0.78rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.12em}
+.metric .val{font-size:2.2rem;font-weight:700;line-height:1;background:linear-gradient(135deg,var(--cyan),var(--silver));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.metric .delta{font-size:0.85rem;color:var(--muted)}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}body::after{animation:none}#field{display:none}}
+table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:0.92rem}
+th,td{text-align:left;padding:0.8rem 0.9rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:0.74rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--cyan);border-bottom:1px solid var(--line-strong)}
+td{color:var(--muted)}
+td strong{color:var(--text)}
+ol,ul{padding-left:1.2rem;color:var(--muted)}
+li{margin-bottom:0.4rem}
+code,pre{font-family:"JetBrains Mono","SF Mono","Consolas",monospace;font-size:0.86rem;color:var(--silver)}
+pre{padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-md);background:rgba(2,7,18,0.6);overflow-x:auto;line-height:1.5;white-space:pre}
+code:not(pre code){padding:1px 6px;border-radius:4px;background:rgba(66,232,255,0.1);color:var(--cyan)}
+.section-end{margin-top:5rem;padding-top:2rem;border-top:1px solid var(--line);color:var(--faint);font-size:0.85rem}
+footer{padding:5rem 0 4rem;text-align:center;color:var(--faint);font-size:0.85rem}
+@media (max-width:720px){.section{padding:5rem 0 3rem}.deck-nav{display:none}.kicker-num{font-size:2.2rem}h1{font-size:2.2rem}h2{font-size:1.6rem}.panel{padding:1.4rem 1.4rem;border-radius:var(--radius-lg)}}
+
+/* stage-report 特定样式 */
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,0.9fr);gap:3rem;align-items:center;min-height:78vh;padding-top:6rem}
+@media (max-width:880px){.hero-grid{grid-template-columns:1fr;min-height:auto;padding-top:4rem}}
+.orb-card{position:relative;aspect-ratio:1/1;max-width:520px;margin:0 auto;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:radial-gradient(circle at center,rgba(66,232,255,0.12),transparent 60%)}
+.orb-core{position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,var(--cyan),transparent 70%);animation:pulseRing 4s ease-in-out infinite}
+@keyframes pulseRing{0%,100%{transform:scale(0.95);opacity:0.7}50%{transform:scale(1.1);opacity:1}}
+.orbit{position:absolute;left:50%;top:50%;border:1px solid var(--line-strong);border-radius:50%;transform:translate(-50%,-50%) rotate(var(--tilt));animation:orbitSpin var(--speed) linear infinite}
+@keyframes orbitSpin{to{transform:translate(-50%,-50%) rotate(calc(var(--tilt) + 360deg))}}
+.orbit span{position:absolute;right:0;top:50%;transform:translate(50%,-50%) rotate(calc(-1 * var(--tilt)));font-size:0.78rem;color:var(--silver);background:rgba(7,17,31,0.85);padding:4px 10px;border-radius:999px;border:1px solid var(--line-strong);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.orb-core,.orbit{animation:none}}
+.status-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.4rem}
+.timeline{display:grid;gap:1.2rem;margin-top:2rem}
+.timeline-item{display:grid;grid-template-columns:140px 1fr;gap:1.4rem;padding:1.2rem 1.4rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
+.timeline-when{font-family:"JetBrains Mono",monospace;font-size:0.82rem;color:var(--cyan);letter-spacing:0.05em}
+@media (max-width:680px){.timeline-item{grid-template-columns:1fr;gap:0.4rem}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="progress-line" aria-hidden="true"><span></span></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<nav class="deck-nav" aria-label="章节导航">
+  <a href="#opening">Opening</a>
+  <a href="#state">Current</a>
+  <a href="#progress">Progress</a>
+  <a href="#highlights">Highlights</a>
+  <a href="#risks">Risks</a>
+  <a href="#next">Next</a>
+  <a href="#closing">Closing</a>
+</nav>
+
+<main id="main">
+
+<section class="section" id="opening">
+  <div class="hero-grid">
+    <div class="reveal">
+      <span class="eyebrow">Stage Report · {{DATE}}</span>
+      <h1><span class="headline-gradient">{{PROJECT_NAME}}</span><br />{{TAGLINE}}</h1>
+      <blockquote>{{HERO_QUOTE}}</blockquote>
+      <div class="status-strip">
+        <span class="pill"><span class="status-dot status-done"></span><b>{{PILL_DONE}}</b></span>
+        <span class="pill"><span class="status-dot status-progress"></span><b>{{PILL_PROGRESS}}</b></span>
+        <span class="pill"><span class="status-dot status-future"></span><b>{{PILL_FUTURE}}</b></span>
+      </div>
+    </div>
+    <aside class="orb-card reveal" aria-label="主视觉">
+      <div class="orb-core" aria-hidden="true"></div>
+      <div class="orbit" style="--size:290px;--tilt:18deg;--speed:22s;width:290px;height:290px"><span>{{ORBIT_1}}</span></div>
+      <div class="orbit" style="--size:370px;--tilt:-28deg;--speed:30s;width:370px;height:370px"><span>{{ORBIT_2}}</span></div>
+      <div class="orbit" style="--size:445px;--tilt:62deg;--speed:38s;width:445px;height:445px"><span>{{ORBIT_3}}</span></div>
+    </aside>
+  </div>
+</section>
+
+<section class="section" id="state">
+  <div class="section-intro reveal">
+    <span class="kicker-num">01</span>
+    <span class="eyebrow">Current State</span>
+    <h2>我们已经站在哪里</h2>
+    <p class="lead">{{STATE_LEAD}}</p>
+  </div>
+  <div class="grid-4 reveal">
+    <div class="metric"><span class="label">{{KPI_1_LABEL}}</span><span class="val">{{KPI_1_VAL}}</span><span class="delta">{{KPI_1_DELTA}}</span></div>
+    <div class="metric"><span class="label">{{KPI_2_LABEL}}</span><span class="val">{{KPI_2_VAL}}</span><span class="delta">{{KPI_2_DELTA}}</span></div>
+    <div class="metric"><span class="label">{{KPI_3_LABEL}}</span><span class="val">{{KPI_3_VAL}}</span><span class="delta">{{KPI_3_DELTA}}</span></div>
+    <div class="metric"><span class="label">{{KPI_4_LABEL}}</span><span class="val">{{KPI_4_VAL}}</span><span class="delta">{{KPI_4_DELTA}}</span></div>
+  </div>
+  <div class="grid-2" style="margin-top:1.6rem">
+    {{STATE_PANELS}}
+    <!-- 每个 panel 格式：
+    <div class="panel reveal">
+      <h3>已 GA 模块</h3>
+      <p>...</p>
+      <div class="tag-row">
+        <span class="tag"><span class="status-dot status-done"></span>模块 A</span>
+        <span class="tag"><span class="status-dot status-done"></span>模块 B</span>
+      </div>
+    </div>
+    -->
+  </div>
+</section>
+
+<section class="section" id="progress">
+  <div class="section-intro reveal">
+    <span class="kicker-num">02</span>
+    <span class="eyebrow">Progress</span>
+    <h2>本期完成的事</h2>
+    <p class="lead">{{PROGRESS_LEAD}}</p>
+  </div>
+  <div class="timeline">
+    {{PROGRESS_TIMELINE}}
+    <!-- 每项格式：
+    <div class="timeline-item reveal">
+      <div class="timeline-when">W18 D3 · 04-29</div>
+      <div><h3>Phase 2 启动 · Memory Spine 接线</h3><p>...</p></div>
+    </div>
+    -->
+  </div>
+</section>
+
+<section class="section" id="highlights">
+  <div class="section-intro reveal">
+    <span class="kicker-num">03</span>
+    <span class="eyebrow">Highlights</span>
+    <h2>值得圈住的几件事</h2>
+    <p class="lead">{{HIGHLIGHTS_LEAD}}</p>
+  </div>
+  <div class="grid-2">
+    {{HIGHLIGHTS_PANELS}}
+    <!-- 同 STATE_PANELS 的 panel 格式 -->
+  </div>
+</section>
+
+<section class="section" id="risks">
+  <div class="section-intro reveal">
+    <span class="kicker-num">04</span>
+    <span class="eyebrow">Risks & Decisions</span>
+    <h2>仍在桌面上的风险与决策</h2>
+    <p class="lead">{{RISKS_LEAD}}</p>
+  </div>
+  <div class="panel reveal">
+    <table>
+      <thead><tr><th>类别</th><th>事项</th><th>影响</th><th>当前状态</th><th>责任人</th></tr></thead>
+      <tbody>{{RISKS_ROWS}}</tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" id="next">
+  <div class="section-intro reveal">
+    <span class="kicker-num">05</span>
+    <span class="eyebrow">What's Next</span>
+    <h2>下个里程碑要落地什么</h2>
+    <p class="lead">{{NEXT_LEAD}}</p>
+  </div>
+  <div class="grid-2">
+    {{NEXT_PANELS}}
+    <!-- 同 panel 格式 -->
+  </div>
+</section>
+
+<section class="section" id="closing">
+  <div class="section-intro reveal">
+    <span class="kicker-num">06</span>
+    <span class="eyebrow">Closing</span>
+    <h2>{{CLOSING_TITLE}}</h2>
+    <p class="lead">{{CLOSING_LEAD}}</p>
+  </div>
+  <blockquote class="reveal" style="font-size:1.2rem;max-width:760px">{{CLOSING_QUOTE}}</blockquote>
+</section>
+
+<footer>{{PROJECT_NAME}} · Stage Report · {{DATE}} · prepared by {{AUTHOR}}</footer>
+</main>
+<script>(function(){
+  var sections=document.querySelectorAll('.section[id]');
+  var navLinks=document.querySelectorAll('.deck-nav a');
+  var progress=document.querySelector('.progress-line span');
+  function updateProgress(){
+    if(!progress) return;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var p=h>0?(window.scrollY/h)*100:0;
+    progress.style.width=p+'%';
+    var active=null;
+    sections.forEach(function(s){
+      var r=s.getBoundingClientRect();
+      if(r.top<=window.innerHeight*0.45&&r.bottom>=window.innerHeight*0.18) active=s;
+    });
+    navLinks.forEach(function(l){
+      l.classList.toggle('active',active&&l.getAttribute('href')==='#'+active.id);
+    });
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+    });
+  },{threshold:0.13,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  window.addEventListener('scroll',updateProgress,{passive:true});
+  window.addEventListener('resize',updateProgress);
+  updateProgress();
+})();
+
+(function(){
+  var canvas=document.getElementById('field');
+  if(!canvas||window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ctx=canvas.getContext('2d');
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var nodes=[];
+  function resize(){
+    canvas.width=Math.floor(window.innerWidth*dpr);
+    canvas.height=Math.floor(window.innerHeight*dpr);
+    canvas.style.width=window.innerWidth+'px';
+    canvas.style.height=window.innerHeight+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    var count=Math.max(42,Math.min(80,Math.floor(window.innerWidth/22)));
+    nodes=Array.from({length:count},function(_,i){
+      return{x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,vx:(Math.random()-0.5)*0.22,vy:(Math.random()-0.5)*0.22,r:1+Math.random()*1.7,phase:i*0.37};
+    });
+  }
+  function tick(t){
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    for(var i=0;i<nodes.length;i++){
+      var a=nodes[i];
+      a.x+=a.vx;a.y+=a.vy+Math.sin(t*0.0005+a.phase)*0.018;
+      if(a.x<-20)a.x=window.innerWidth+20;
+      if(a.x>window.innerWidth+20)a.x=-20;
+      if(a.y<-20)a.y=window.innerHeight+20;
+      if(a.y>window.innerHeight+20)a.y=-20;
+      for(var j=i+1;j<nodes.length;j++){
+        var b=nodes[j];
+        var dx=a.x-b.x,dy=a.y-b.y;
+        var d=Math.sqrt(dx*dx+dy*dy);
+        if(d<128){
+          ctx.strokeStyle='rgba(66, 232, 255, '+((1-d/128)*0.18)+')';
+          ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+      ctx.fillStyle='rgba(210, 245, 255, .58)';
+      ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('resize',resize);
+  resize();requestAnimationFrame(tick);
+})();</script>
+</body>
+</html>

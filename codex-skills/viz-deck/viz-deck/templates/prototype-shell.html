@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{APP_NAME}} · Hi-Fi Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --device-shadow: 0 24px 80px rgba(0,0,0,0.18);
+    --ios-bg: #ffffff;
+    --ios-fg: #1c1c1e;
+    --ios-secondary: #8e8e93;
+    --ios-blue: #007aff;
+    --ios-system-bg: #f2f2f7;
+    --safe-top: 47px;
+    --safe-bottom: 34px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: var(--ios-fg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  /* iPhone 15 Pro bezel — 390 × 844 design pt */
+  .iphone-frame {
+    width: 412px;
+    height: 870px;
+    background: #0c0c0c;
+    border-radius: 56px;
+    padding: 12px;
+    box-shadow: var(--device-shadow);
+    position: relative;
+  }
+  .iphone-frame::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 36px;
+    background: #0c0c0c;
+    border-radius: 24px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .iphone-screen {
+    width: 100%;
+    height: 100%;
+    background: var(--ios-bg);
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+  }
+  .ios-statusbar {
+    height: var(--safe-top);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 28px 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ios-fg);
+  }
+  .ios-statusbar .icons { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+  .ios-content {
+    height: calc(100% - var(--safe-top) - var(--safe-bottom));
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 16px;
+  }
+  .ios-homebar {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    background: var(--ios-fg);
+    border-radius: 3px;
+    opacity: 0.85;
+  }
+
+  /* Screen common */
+  .screen {
+    display: none;
+    animation: fadeIn 0.18s ease;
+    padding-bottom: 24px;
+  }
+  .screen[data-active] { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .nav-title { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; margin: 12px 4px 24px; }
+  .ios-card {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .ios-card h3 { margin: 0 0 4px; font-size: 17px; font-weight: 600; }
+  .ios-card p { margin: 0; font-size: 14px; color: var(--ios-secondary); }
+  .ios-button {
+    background: var(--ios-blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 17px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    transition: opacity 0.1s;
+  }
+  .ios-button:active { opacity: 0.6; }
+  .back-button {
+    background: transparent;
+    border: none;
+    color: var(--ios-blue);
+    font-size: 17px;
+    padding: 8px 0;
+    cursor: pointer;
+  }
+
+  /* Inspector panel (toggled) */
+  .inspector {
+    position: fixed;
+    right: 16px;
+    top: 16px;
+    width: 280px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    padding: 16px;
+    font-size: 13px;
+  }
+  .inspector h4 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ios-secondary); }
+  .inspector code { background: #f2f2f7; padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+  .inspector .assumption { padding: 8px 0; border-bottom: 1px solid #f2f2f7; }
+  .inspector .assumption:last-child { border: 0; }
+</style>
+</head>
+<body>
+
+<div class="iphone-frame">
+  <div class="iphone-screen" id="screen-container">
+
+    <div class="ios-statusbar">
+      <span>9:41</span>
+      <span class="icons">●●●●● 5G  100%</span>
+    </div>
+
+    <div class="ios-content">
+
+      <!-- Screen 1: Home -->
+      <section class="screen" id="screen-home" data-active>
+        <h1 class="nav-title">{{APP_NAME}}</h1>
+
+        <div class="ios-card" data-action="goto:detail">
+          <h3>{{HOME_ITEM_1_TITLE}}</h3>
+          <p>{{HOME_ITEM_1_SUBTITLE}}</p>
+        </div>
+        <div class="ios-card" data-action="goto:detail">
+          <h3>{{HOME_ITEM_2_TITLE}}</h3>
+          <p>{{HOME_ITEM_2_SUBTITLE}}</p>
+        </div>
+        <div class="ios-card" data-action="goto:settings">
+          <h3>设置</h3>
+          <p>账户、隐私、通知</p>
+        </div>
+
+        <div style="height:24px"></div>
+        <button class="ios-button" data-action="primary-cta">{{HOME_CTA}}</button>
+      </section>
+
+      <!-- Screen 2: Detail -->
+      <section class="screen" id="screen-detail">
+        <button class="back-button" data-action="goto:home">‹ 返回</button>
+        <h1 class="nav-title">{{DETAIL_TITLE}}</h1>
+        <div class="ios-card">
+          <p>{{DETAIL_BODY}}</p>
+        </div>
+        <div style="height:24px"></div>
+        <button class="ios-button" data-action="confirm">{{DETAIL_CTA}}</button>
+      </section>
+
+      <!-- Screen 3: Settings -->
+      <section class="screen" id="screen-settings">
+        <button class="back-button" data-action="goto:home">‹ 返回</button>
+        <h1 class="nav-title">设置</h1>
+        <div class="ios-card">
+          <h3>账户</h3>
+          <p>{{USER_EMAIL}}</p>
+        </div>
+        <div class="ios-card">
+          <h3>偏好</h3>
+          <p>主题、字号、深色模式</p>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="ios-homebar"></div>
+  </div>
+</div>
+
+<!-- Inspector: shown when ?inspector=1 -->
+<aside class="inspector" id="inspector" hidden>
+  <h4>Assumptions</h4>
+  <div class="assumption">用户已登录，使用 <code>{{USER_EMAIL}}</code></div>
+  <div class="assumption">数据来自 <code>{{DATA_SOURCE}}</code></div>
+  <div class="assumption">CTA <code>primary-cta</code> 跳转到 <code>{{CTA_DESTINATION}}</code></div>
+
+  <h4 style="margin-top:16px">Screens</h4>
+  <div class="assumption">home → detail → settings</div>
+</aside>
+
+<script>
+  // AppPhone state manager: 路由 + 状态
+  const screens = document.querySelectorAll('.screen');
+  function goto(screen) {
+    screens.forEach(s => s.removeAttribute('data-active'));
+    const target = document.getElementById('screen-' + screen);
+    if (target) target.setAttribute('data-active', '');
+    history.replaceState(null, '', '#' + screen);
+  }
+  document.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-action]')?.dataset.action;
+    if (!action) return;
+    if (action.startsWith('goto:')) goto(action.slice(5));
+    if (action === 'primary-cta') {
+      console.log('[prototype] primary-cta fired');
+      goto('detail');
+    }
+    if (action === 'confirm') {
+      console.log('[prototype] confirm fired');
+      goto('home');
+    }
+  });
+
+  // Initial screen from hash or 'home'
+  const initial = location.hash?.slice(1) || 'home';
+  goto(initial);
+
+  // Inspector toggle
+  if (new URLSearchParams(location.search).has('inspector')) {
+    document.getElementById('inspector').hidden = false;
+  }
+
+  // Mark ready for Playwright verify
+  document.documentElement.classList.add('prototype-ready');
+</script>
+
+</body>
+</html>

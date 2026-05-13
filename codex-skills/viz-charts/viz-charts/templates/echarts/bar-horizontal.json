@@ -1,0 +1,22 @@
+{
+  "_meta": {
+    "name": "bar-horizontal",
+    "use_when": "数值排序对比，≤12 项，标签较长",
+    "data_shape": "{categories: string[], values: number[]}"
+  },
+  "tooltip": { "trigger": "axis", "axisPointer": { "type": "shadow" } },
+  "grid": { "left": 120, "right": 30, "top": 10, "bottom": 30 },
+  "xAxis": { "type": "value" },
+  "yAxis": {
+    "type": "category",
+    "inverse": true,
+    "data": ["认证服务","订单中心","风控","推荐引擎","通知","支付网关","数据湖","导出"]
+  },
+  "series": [
+    {
+      "type": "bar",
+      "data": [4200, 3800, 2900, 2400, 1900, 1500, 1200, 600],
+      "label": { "show": true, "position": "right", "fontFamily": "monospace" }
+    }
+  ]
+}

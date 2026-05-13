@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Dev/Test Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg-elev:#141414;--bg-hover:#1c1c1c;--border:#2a2a2a;--border-strong:#3a3a3a;--fg:#e8e8e8;--fg-dim:#888;--fg-faint:#555;--accent:#d4ff00;--accent-dim:#8a9e0a;--danger:#ff4444;--warn:#ffaa00;--ok:#44dd88;--font-mono:'JetBrains Mono','SF Mono','Menlo','Consolas',monospace;--font-sans:'Inter Tight','PingFang SC','Source Han Sans SC',system-ui,sans-serif;--font-serif:'Newsreader','Source Serif 4',Georgia,serif;--gap-xs:4px;--gap-sm:8px;--gap-md:16px;--gap-lg:24px;--gap-xl:48px;--max-width:1200px;--content-width:880px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--font-sans);font-size:14px;line-height:1.6;padding:var(--gap-xl) var(--gap-lg)}
+.report-header{max-width:var(--max-width);margin:0 auto var(--gap-xl);border-bottom:1px solid var(--border-strong);padding-bottom:var(--gap-lg)}
+.report-header .meta{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;gap:var(--gap-lg);margin-bottom:var(--gap-md);flex-wrap:wrap}
+.report-header h1{font-family:var(--font-serif);font-size:40px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.report-header .subtitle{color:var(--fg-dim);margin-top:var(--gap-sm);font-size:15px}
+main{max-width:var(--max-width);margin:0 auto}
+section{margin-bottom:var(--gap-xl)}
+h2{font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);padding-bottom:var(--gap-sm);border-bottom:1px solid var(--border);margin-bottom:var(--gap-md)}
+h3{font-size:18px;font-weight:600;margin-bottom:var(--gap-sm)}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px}
+th{text-align:left;padding:var(--gap-sm);border-bottom:1px solid var(--border-strong);font-weight:500;color:var(--fg-dim);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+td{padding:var(--gap-sm);border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg-hover)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:2px 6px;border:1px solid var(--border-strong);text-transform:uppercase;letter-spacing:.05em}
+.tag.ok{color:var(--ok);border-color:var(--ok)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.danger{color:var(--danger);border-color:var(--danger)}
+.tag.accent{color:var(--accent);border-color:var(--accent)}
+.kpi{font-family:var(--font-mono);font-size:36px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi.up{color:var(--ok)}.kpi.down{color:var(--danger)}
+.kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-xs)}
+.kpi-delta{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);margin-top:var(--gap-xs)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-md)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap-md)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md)}
+.card{border:1px solid var(--border);padding:var(--gap-md);background:var(--bg-elev)}
+.card:hover{border-color:var(--border-strong)}
+blockquote{font-family:var(--font-serif);font-size:19px;font-style:italic;line-height:1.5;color:var(--fg);padding:var(--gap-md) 0 var(--gap-md) var(--gap-md);border-left:2px solid var(--accent);margin:var(--gap-lg) 0;max-width:var(--content-width)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim)}
+a:hover{background:var(--accent);color:var(--bg)}
+pre,code{font-family:var(--font-mono);font-size:12px;color:var(--fg);background:var(--bg-elev);padding:var(--gap-md);border:1px solid var(--border);overflow-x:auto;white-space:pre;display:block;line-height:1.5}
+code:not(pre code){display:inline;padding:1px 4px;border:none;background:var(--bg-elev)}
+.row{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:140px 1fr auto;gap:var(--gap-md);align-items:baseline}
+.row .label{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em}
+ol,ul{padding-left:20px;font-size:14px;line-height:1.8}
+ol.mono,ul.mono{font-family:var(--font-mono);font-size:13px;line-height:2}
+@media print{body{background:#fff;color:#000;padding:0}:root{--bg:#fff;--bg-elev:#fff;--fg:#000;--fg-dim:#555;--border:#ccc}}
+.coverage-bar{height:8px;background:var(--bg-elev);border:1px solid var(--border);position:relative;margin-top:var(--gap-xs)}
+.coverage-bar > div{height:100%;background:var(--accent)}
+.coverage-bar.low > div{background:var(--danger)}
+.coverage-bar.mid > div{background:var(--warn)}
+.bug-row{display:grid;grid-template-columns:60px 1fr 80px 80px 100px 80px;gap:var(--gap-md);padding:var(--gap-sm) 0;border-bottom:1px solid var(--border);align-items:start;font-size:13px}
+.bug-row .id{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim)}
+.bug-row .title strong{display:block}
+.bug-row .title small{color:var(--fg-dim);font-family:var(--font-mono);font-size:11px}
+.spark{font-family:var(--font-mono);font-size:14px;color:var(--accent);letter-spacing:1px}
+</style></head><body>
+<header class="report-header">
+  <div class="meta"><span>REPORT // DEV / QA</span><span>{{DATE}}</span><span>SD: {{SD_AUTHOR}} · TD: {{TD_AUTHOR}}</span><span>BUILD {{VERSION}}</span></div>
+  <h1>{{TITLE}}</h1><p class="subtitle">{{SUBTITLE}}</p>
+</header>
+<main>
+
+<section>
+  <h2>Health Snapshot // 健康度</h2>
+  <div class="grid-4">
+    <div class="card"><div class="kpi-label">Build Status</div><div class="kpi {{BUILD_STATUS_CLASS}}">{{BUILD_STATUS}}</div><div class="kpi-delta">{{BUILD_NOTE}}</div></div>
+    <div class="card"><div class="kpi-label">Test Coverage</div><div class="kpi">{{COVERAGE_PCT}}</div><div class="kpi-delta">target ≥80%</div></div>
+    <div class="card"><div class="kpi-label">Open Bugs</div><div class="kpi {{BUG_DIRECTION}}">{{BUG_COUNT}}</div><div class="kpi-delta">{{BUG_DELTA}} vs last week</div></div>
+    <div class="card"><div class="kpi-label">P0 / P1 Open</div><div class="kpi {{CRITICAL_DIRECTION}}">{{CRITICAL_COUNT}}</div><div class="kpi-delta">{{CRITICAL_NOTE}}</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Headline // 一句话总结</h2>
+  <blockquote>{{HEADLINE}}</blockquote>
+</section>
+
+<section>
+  <h2>Commit Activity // 提交活跃度</h2>
+  <table>
+    <thead><tr><th>Author</th><th>Commits</th><th>+Lines</th><th>-Lines</th><th>Files</th><th>Trend (7d)</th></tr></thead>
+    <tbody>{{COMMIT_ROWS}}</tbody>
+  </table>
+  <p style="font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);margin-top:var(--gap-sm)">Trend 列用 sparkline 字符 ▁▂▃▄▅▆▇█，例：<span class="spark">▂▃▅▇▇▆▄</span></p>
+</section>
+
+<section>
+  <h2>Test Coverage // 测试覆盖率（按模块）</h2>
+  <table>
+    <thead><tr><th style="width:30%">Module</th><th style="width:15%">Lines</th><th>Coverage</th><th style="width:15%">Tests</th><th style="width:15%">Status</th></tr></thead>
+    <tbody>{{COVERAGE_ROWS}}</tbody>
+  </table>
+  <p style="font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);margin-top:var(--gap-sm)">Coverage 用：<code>&lt;div class="coverage-bar"&gt;&lt;div style="width:84%"&gt;&lt;/div&gt;&lt;/div&gt;&nbsp;84%</code></p>
+</section>
+
+<section>
+  <h2>Bug Distribution // 缺陷分布</h2>
+  <p style="color:var(--fg-dim);font-size:13px;margin-bottom:var(--gap-md)">按 严重度 × 模块 的简表，无需热力图</p>
+  <table>
+    <thead><tr><th>Module</th><th class="num">P0</th><th class="num">P1</th><th class="num">P2</th><th class="num">P3</th><th class="num">Total</th></tr></thead>
+    <tbody>{{BUG_DIST_ROWS}}</tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Top Bugs // 必须解决</h2>
+  {{TOP_BUGS}}
+  <!-- 每项格式：
+  <div class="bug-row">
+    <div class="id">BUG-042</div>
+    <div class="title"><strong>登录态在 iOS 15 偶发丢失</strong><small>repro 60% · 影响 ~12% 用户</small></div>
+    <div><span class="tag danger">P0</span></div>
+    <div><span class="tag">AUTH</span></div>
+    <div><span class="tag">@dev-x</span></div>
+    <div><span class="tag warn">DOING</span></div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>What's Done This Week // 本周完成</h2>
+  <ol class="mono">{{DONE_THIS_WEEK}}</ol>
+</section>
+
+<section>
+  <h2>What's Next // 下周计划</h2>
+  <ol class="mono">{{NEXT_WEEK}}</ol>
+</section>
+
+<section>
+  <h2>Blockers / Help Needed // 卡点</h2>
+  <ol class="mono" style="color:var(--warn)">{{HELP_NEEDED}}</ol>
+</section>
+
+</main></body></html>

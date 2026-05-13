@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "name": "pictorial-bar",
+    "use_when": "类别对比，需要图标/形状强化（信息图风）",
+    "data_shape": "[{value, symbol, symbolSize}]"
+  },
+  "tooltip": {},
+  "xAxis": { "data": ["Mobile","Desktop","Tablet","Wearable","TV"], "axisTick": { "show": false }, "axisLine": { "show": false } },
+  "yAxis": { "splitLine": { "show": false }, "axisTick": { "show": false }, "axisLine": { "show": false }, "axisLabel": { "show": false } },
+  "series": [
+    {
+      "type": "pictorialBar",
+      "symbolSize": ["80%", 16],
+      "symbolRepeat": "fixed",
+      "symbolMargin": "5%",
+      "symbolClip": true,
+      "data": [620, 540, 380, 180, 90],
+      "label": { "show": true, "position": "top", "fontSize": 12 }
+    }
+  ]
+}

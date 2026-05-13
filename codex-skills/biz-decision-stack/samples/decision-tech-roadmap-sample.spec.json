@@ -1,0 +1,113 @@
+{
+  "name": "tech_roadmap_fy2026_2027",
+  "slides": [
+    {
+      "id": "verdict",
+      "layout": "verdict-cover",
+      "kind": "TECH ROADMAP",
+      "date": "2026-05-13",
+      "code": "ROADMAP-FY27",
+      "title": "Four-quarter platform roadmap with explicit Q3 freeze",
+      "subtitle": "Three architectural bets, one mandated freeze window, four named owners.",
+      "verdict": "GO",
+      "verdict_note": "Lock the four-phase architecture plan. Q3 has a hard merge-freeze 2026-09-15 → 2026-10-01 for the multi-tenant migration. Engineering capacity is 14 FTE — plan holds within 88% utilisation.",
+      "author": "Chief Architect · arch@zimablueai.com",
+      "ref": "ADR-FY27-001"
+    },
+    {
+      "id": "capacity",
+      "layout": "kpi-roster",
+      "kind": "CAPACITY · CONSTRAINTS",
+      "title": "What we're spending against",
+      "lead": "Capacity, not roadmap items, is the binding constraint. These six numbers shape every decision below.",
+      "kpis": [
+        { "label": "Eng FTE total", "value": "14", "target": "14", "status": "go", "note": "+2 hired Q1" },
+        { "label": "Senior:Mid:Junior", "value": "4:7:3", "note": "1 senior departing Q4", "status": "hold" },
+        { "label": "Runway after FY27", "value": "18", "unit": "mo", "target": "12", "status": "ahead", "note": "post Series-A" },
+        { "label": "Avg PR lead time", "value": "31", "unit": "h", "target": "24", "status": "behind", "note": "+ 4h vs Q1" },
+        { "label": "Bug backlog", "value": "47", "target": "30", "status": "behind", "note": "see retro" },
+        { "label": "Build success rate", "value": "94", "unit": "%", "target": "95", "status": "hold", "note": "flaky 1.x suite" }
+      ]
+    },
+    {
+      "id": "phases",
+      "layout": "roadmap-phases",
+      "kind": "FOUR-PHASE PLAN",
+      "title": "Q3 → Q2 next year",
+      "lead": "Each phase has a named owner (M. Wei / P. Singh / L. Park / J. Wu). Q3 freeze is non-negotiable.",
+      "phases": [
+        {
+          "phase": "Q3 26",
+          "range": "Jul–Sep",
+          "milestones": [
+            "Multi-tenant migration",
+            "Merge freeze 09-15→10-01",
+            "Owner: M. Wei"
+          ]
+        },
+        {
+          "phase": "Q4 26",
+          "range": "Oct–Dec",
+          "milestones": [
+            "Event-driven inbox rewrite",
+            "Search relevance v2",
+            "Owner: P. Singh"
+          ]
+        },
+        {
+          "phase": "Q1 27",
+          "range": "Jan–Mar",
+          "milestones": [
+            "Open SDK GA",
+            "OAuth marketplace",
+            "Owner: L. Park"
+          ]
+        },
+        {
+          "phase": "Q2 27",
+          "range": "Apr–Jun",
+          "milestones": [
+            "EU region launch",
+            "SOC 2 Type II audit",
+            "Owner: J. Wu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "risks",
+      "layout": "risks-grid",
+      "kind": "RISKS · MITIGATIONS",
+      "title": "Five risks worth tracking",
+      "lead": "Every risk has a named owner and a due date — no \"team\" entries.",
+      "risks": [
+        { "label": "Senior departure mid Q4", "impact": "owner of inbox rewrite leaves", "severity": "HIGH" },
+        { "label": "Q3 freeze slips past 10-01", "impact": "blocks event-driven rewrite start", "severity": "HIGH" },
+        { "label": "EU data residency in Q2", "impact": "may require dedicated infra", "severity": "MED" },
+        { "label": "Build flakiness on 1.x suite", "impact": "merge throughput at 87%", "severity": "MED" },
+        { "label": "SOC 2 evidence collection", "impact": "estimate +3wk in Q2", "severity": "LOW" }
+      ],
+      "mitigations": [
+        { "label": "Knowledge-transfer plan + retention bonus", "owner": "P. Singh", "due": "Aug 30" },
+        { "label": "Hard cut-over 10-01 with rollback gate", "owner": "M. Wei", "due": "Sep 28" },
+        { "label": "Lock GCP-Frankfurt region by Mar 15", "owner": "L. Park", "due": "Mar 15" },
+        { "label": "Migrate 1.x suite to Pytest in Q4", "owner": "DevTools", "due": "Dec 01" },
+        { "label": "Engage Drata + evidence-collector subcontractor", "owner": "J. Wu", "due": "Apr 15" }
+      ]
+    },
+    {
+      "id": "actions",
+      "layout": "action-list",
+      "kind": "BINDING DECISIONS",
+      "title": "Five actions, four owners, one binding vote",
+      "lead": "Approve item 1 today; items 2–5 unlock automatically with named owners.",
+      "actions": [
+        { "text": "Approve four-phase plan + Q3 freeze window", "note": "binding architecture vote", "owner": "Engineering Council", "due": "May 20", "status": "TODO" },
+        { "text": "Lock GCP region for EU residency requirement", "owner": "L. Park", "due": "Mar 15", "status": "TODO" },
+        { "text": "Migrate 1.x test suite to Pytest", "owner": "DevTools", "due": "Dec 01", "status": "TODO" },
+        { "text": "Engage Drata + evidence-collector for SOC 2", "owner": "J. Wu", "due": "Apr 15", "status": "TODO" },
+        { "text": "Quarterly checkpoint review (every Mar / Jun / Sep / Dec)", "owner": "Chief Architect", "due": "ongoing", "status": "TODO" }
+      ]
+    }
+  ]
+}

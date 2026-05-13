@@ -1,0 +1,117 @@
+{
+  "name": "viz_deck_sample_deck",
+  "theme": "deep-space",
+  "format": "ppt169",
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "title-cover",
+      "eyebrow": "Q3 2026 BOARD UPDATE",
+      "title": "Scaling the agent platform to 10× revenue",
+      "subtitle": "Three bets, one constraint, and a 90-day path to sign-off.",
+      "author": "ZimaBlueAI · Strategy",
+      "date": "May 2026",
+      "notes": "Welcome. Today we'll cover three strategic bets, their tradeoffs, and the path to commercial readiness by end of Q3."
+    },
+    {
+      "id": "agenda",
+      "layout": "agenda",
+      "eyebrow": "Agenda",
+      "title": "Six items, 25 minutes",
+      "items": [
+        "State of the platform",
+        "The three bets",
+        "Capital allocation tradeoff",
+        "Architecture readiness",
+        "Risks and what could go wrong",
+        "Decision and ask"
+      ],
+      "notes": "We'll spend most time on bets and the capital allocation tradeoff. Architecture and risk are reference, not debate."
+    },
+    {
+      "id": "section-01",
+      "layout": "section-divider",
+      "section": "01",
+      "title": "State of the platform",
+      "subtitle": "What's working, what's flat, what's leaking",
+      "notes": "The platform is healthy on adoption but flat on ARPU. We dig into why next."
+    },
+    {
+      "id": "kpis",
+      "layout": "kpi-grid",
+      "eyebrow": "Quarterly KPIs",
+      "title": "Adoption up, ARPU flat, churn under control",
+      "kpis": [
+        { "label": "Active workspaces", "value": "12,847", "delta": "+38% QoQ", "note": "ahead of plan" },
+        { "label": "Avg revenue / user", "value": "$48", "unit": "/mo", "delta": "+1.2%", "note": "below plan" },
+        { "label": "Logo churn", "value": "2.1", "unit": "%", "delta": "-0.3pp", "note": "best ever" },
+        { "label": "NPS", "value": "62", "delta": "+4", "note": "world-class" },
+        { "label": "Gross margin", "value": "71", "unit": "%", "delta": "+2pp", "note": "infra savings" },
+        { "label": "Cash runway", "value": "26", "unit": "mo", "delta": "+3mo", "note": "post-bridge" }
+      ],
+      "notes": "Adoption is the headline. ARPU is the problem we'll solve in the next section."
+    },
+    {
+      "id": "section-02",
+      "layout": "section-divider",
+      "section": "02",
+      "title": "The three bets",
+      "subtitle": "Pick one. Resource it for real."
+    },
+    {
+      "id": "bets",
+      "layout": "title-bullets",
+      "eyebrow": "Strategic options",
+      "title": "Three doors, one budget",
+      "lead": "Each bet is real and defensible. The question is not which is best in isolation — it's which one we can resource to actually win.",
+      "bullets": [
+        { "text": "Bet A — Vertical depth (finance + legal)", "note": "highest ARPU lift but slowest GTM cycle" },
+        { "text": "Bet B — Horizontal breadth (more workspaces)", "note": "extends current curve; minimal risk" },
+        { "text": "Bet C — Platform play (open SDK + marketplace)", "note": "largest TAM, also largest engineering bill" }
+      ],
+      "notes": "I'll argue for Bet A. Holding scope on B, deferring C. Reasons next slide."
+    },
+    {
+      "id": "tradeoff",
+      "layout": "two-column",
+      "eyebrow": "Capital allocation",
+      "title": "Bet A vs Bet C — the real tradeoff",
+      "left": {
+        "heading": "Bet A · Vertical depth",
+        "subheading": "Finance + legal verticals",
+        "items": [
+          "+25% ARPU within 2 quarters",
+          "Existing logos, no new acquisition",
+          "Eng team already has domain context",
+          "Risk: regulatory review on legal vertical"
+        ]
+      },
+      "right": {
+        "heading": "Bet C · Platform play",
+        "subheading": "Open SDK + marketplace",
+        "items": [
+          "10× TAM in 18 months (best case)",
+          "Needs 8 net-new hires",
+          "Marketplace ops is a new muscle",
+          "Risk: 12-month investment before signal"
+        ]
+      },
+      "notes": "Bet A returns capital in 2 quarters; Bet C takes 4. We are not yet at scale to absorb Bet C's J-curve."
+    },
+    {
+      "id": "quote",
+      "layout": "pullquote",
+      "quote": "We didn't lose because we picked the wrong bet — we lost because we hedged across two and couldn't fund either.",
+      "author": "Board chair, last cycle",
+      "role": "Post-mortem, FY24"
+    },
+    {
+      "id": "closing",
+      "layout": "closing",
+      "title": "Decision: ship Bet A",
+      "subtitle": "Hold Bet B. Reassess Bet C in Q1 2027.",
+      "contacts": ["strategy@zimablueai.com", "decisions.zimablueai.com/q3-2026"],
+      "notes": "Asking for board sign-off on Bet A budget reallocation and explicit deferral of Bet C investment until Q1."
+    }
+  ]
+}

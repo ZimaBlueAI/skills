@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Board Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg-elev:#141414;--bg-hover:#1c1c1c;--border:#2a2a2a;--border-strong:#3a3a3a;--fg:#e8e8e8;--fg-dim:#888;--fg-faint:#555;--accent:#d4ff00;--accent-dim:#8a9e0a;--danger:#ff4444;--warn:#ffaa00;--ok:#44dd88;--font-mono:'JetBrains Mono','SF Mono','Menlo','Consolas',monospace;--font-sans:'Inter Tight','PingFang SC','Source Han Sans SC',system-ui,sans-serif;--font-serif:'Newsreader','Source Serif 4',Georgia,serif;--gap-xs:4px;--gap-sm:8px;--gap-md:16px;--gap-lg:24px;--gap-xl:48px;--max-width:1200px;--content-width:880px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--font-sans);font-size:14px;line-height:1.6;padding:var(--gap-xl) var(--gap-lg)}
+.report-header{max-width:var(--max-width);margin:0 auto var(--gap-xl);border-bottom:1px solid var(--border-strong);padding-bottom:var(--gap-lg)}
+.report-header .meta{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;gap:var(--gap-lg);margin-bottom:var(--gap-md);flex-wrap:wrap}
+.report-header h1{font-family:var(--font-serif);font-size:40px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.report-header .subtitle{color:var(--fg-dim);margin-top:var(--gap-sm);font-size:15px}
+main{max-width:var(--max-width);margin:0 auto}
+section{margin-bottom:var(--gap-xl)}
+h2{font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);padding-bottom:var(--gap-sm);border-bottom:1px solid var(--border);margin-bottom:var(--gap-md)}
+h3{font-size:18px;font-weight:600;margin-bottom:var(--gap-sm)}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px}
+th{text-align:left;padding:var(--gap-sm);border-bottom:1px solid var(--border-strong);font-weight:500;color:var(--fg-dim);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+td{padding:var(--gap-sm);border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:var(--bg-hover)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:2px 6px;border:1px solid var(--border-strong);text-transform:uppercase;letter-spacing:.05em}
+.tag.ok{color:var(--ok);border-color:var(--ok)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.danger{color:var(--danger);border-color:var(--danger)}
+.tag.accent{color:var(--accent);border-color:var(--accent)}
+.kpi{font-family:var(--font-mono);font-size:36px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi.up{color:var(--ok)}.kpi.down{color:var(--danger)}
+.kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--gap-xs)}
+.kpi-delta{font-family:var(--font-mono);font-size:12px;color:var(--fg-dim);margin-top:var(--gap-xs)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-md)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap-md)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md)}
+.card{border:1px solid var(--border);padding:var(--gap-md);background:var(--bg-elev)}
+.card:hover{border-color:var(--border-strong)}
+blockquote{font-family:var(--font-serif);font-size:19px;font-style:italic;line-height:1.5;color:var(--fg);padding:var(--gap-md) 0 var(--gap-md) var(--gap-md);border-left:2px solid var(--accent);margin:var(--gap-lg) 0;max-width:var(--content-width)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim)}
+a:hover{background:var(--accent);color:var(--bg)}
+.risk-matrix{display:grid;grid-template-columns:80px repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.risk-matrix > div{background:var(--bg-elev);padding:var(--gap-sm);font-family:var(--font-mono);font-size:11px;min-height:60px}
+.risk-matrix .axis{color:var(--fg-dim);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;justify-content:center}
+.risk-matrix .cell-high{background:rgba(255,68,68,.08)}
+.risk-matrix .cell-mid{background:rgba(255,170,0,.06)}
+.risk-matrix .cell-low{background:rgba(68,221,136,.04)}
+.resolution{padding:var(--gap-md) 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:60px 1fr 200px 100px;gap:var(--gap-md);align-items:start}
+.resolution .id{font-family:var(--font-mono);color:var(--fg-dim);font-size:11px}
+.resolution .desc strong{display:block;margin-bottom:var(--gap-xs)}
+.resolution .desc small{color:var(--fg-dim);font-family:var(--font-mono);font-size:11px}
+@media print{body{background:#fff;color:#000;padding:0}:root{--bg:#fff;--bg-elev:#fff;--fg:#000;--fg-dim:#555;--border:#ccc}}
+</style>
+</head>
+<body>
+<header class="report-header">
+  <div class="meta">
+    <span>REPORT // BOARD BRIEF</span>
+    <span>{{DATE}}</span>
+    <span>PREPARED BY {{AUTHOR}}</span>
+    <span>REV {{VERSION}}</span>
+    <span>CONFIDENTIAL</span>
+  </div>
+  <h1>{{TITLE}}</h1>
+  <p class="subtitle">{{SUBTITLE}}</p>
+</header>
+
+<main>
+
+<section>
+  <h2>Executive Summary // 摘要</h2>
+  <blockquote>{{EXECUTIVE_SUMMARY}}</blockquote>
+</section>
+
+<section>
+  <h2>KPI Dashboard // 关键指标</h2>
+  <div class="grid-4">
+    <div class="card">
+      <div class="kpi-label">{{KPI_1_LABEL}}</div>
+      <div class="kpi {{KPI_1_DIRECTION}}">{{KPI_1_VALUE}}</div>
+      <div class="kpi-delta">{{KPI_1_DELTA}}</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">{{KPI_2_LABEL}}</div>
+      <div class="kpi {{KPI_2_DIRECTION}}">{{KPI_2_VALUE}}</div>
+      <div class="kpi-delta">{{KPI_2_DELTA}}</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">{{KPI_3_LABEL}}</div>
+      <div class="kpi {{KPI_3_DIRECTION}}">{{KPI_3_VALUE}}</div>
+      <div class="kpi-delta">{{KPI_3_DELTA}}</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">{{KPI_4_LABEL}}</div>
+      <div class="kpi {{KPI_4_DIRECTION}}">{{KPI_4_VALUE}}</div>
+      <div class="kpi-delta">{{KPI_4_DELTA}}</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Financial Snapshot // 财务快照</h2>
+  <table>
+    <thead>
+      <tr><th>Item</th><th>Period</th><th>Actual</th><th>Plan</th><th>Δ</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      {{FINANCIAL_ROWS}}
+      <!-- 每行格式：
+      <tr><td>Revenue</td><td>Q2-2026</td><td class="num">¥X.XM</td><td class="num">¥X.XM</td><td class="num">+X%</td><td>...</td></tr>
+      -->
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Risk Matrix // 风险矩阵 (Impact × Likelihood)</h2>
+  <div class="risk-matrix">
+    <div class="axis"></div>
+    <div class="axis">LOW LIKELIHOOD</div>
+    <div class="axis">MED LIKELIHOOD</div>
+    <div class="axis">HIGH LIKELIHOOD</div>
+
+    <div class="axis">HIGH<br>IMPACT</div>
+    <div class="cell-mid">{{RISK_HI_LO}}</div>
+    <div class="cell-high">{{RISK_HI_MID}}</div>
+    <div class="cell-high">{{RISK_HI_HI}}</div>
+
+    <div class="axis">MED<br>IMPACT</div>
+    <div class="cell-low">{{RISK_MID_LO}}</div>
+    <div class="cell-mid">{{RISK_MID_MID}}</div>
+    <div class="cell-high">{{RISK_MID_HI}}</div>
+
+    <div class="axis">LOW<br>IMPACT</div>
+    <div class="cell-low">{{RISK_LO_LO}}</div>
+    <div class="cell-low">{{RISK_LO_MID}}</div>
+    <div class="cell-mid">{{RISK_LO_HI}}</div>
+  </div>
+</section>
+
+<section>
+  <h2>Resolutions for Vote // 待决议事项</h2>
+  {{RESOLUTION_BLOCKS}}
+  <!-- 每项格式：
+  <div class="resolution">
+    <div class="id">R-001</div>
+    <div class="desc"><strong>批准 Mingjing 项目追加预算 ¥XXM</strong><small>详见附件 A · 投票要求 2/3 多数</small></div>
+    <div><span class="tag accent">CAPEX</span> <span class="tag warn">URGENT</span></div>
+    <div><span class="tag">PENDING</span></div>
+  </div>
+  -->
+</section>
+
+<section>
+  <h2>Strategic Bets // 战略下注</h2>
+  <table>
+    <thead><tr><th>Initiative</th><th>Stage</th><th>Owner</th><th>Investment</th><th>Expected Return</th><th>Status</th></tr></thead>
+    <tbody>{{STRATEGIC_ROWS}}</tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Asks // 我们需要董事会的什么</h2>
+  <ol style="padding-left:20px;font-family:var(--font-mono);font-size:13px;line-height:2">
+    {{ASKS}}
+    <!-- 每项格式：<li>批准 X · @person · YYYY-MM-DD</li> -->
+  </ol>
+</section>
+
+<section>
+  <h2>Appendix Pointers // 附件索引</h2>
+  <p style="color:var(--fg-dim);font-family:var(--font-mono);font-size:12px">{{APPENDIX_LIST}}</p>
+</section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!--
+  Mini Gauge · 半圆仪表盘（轻量版，不引 ECharts）
+  ===========================
+  
+  使用：
+  <div class="mini-gauge" data-gauge='{
+    "value": 78,
+    "max": 100,
+    "label": "Sprint 完成度",
+    "unit": "%"
+  }'></div>
+  
+  讲演风加 class="mini-gauge mini-gauge--deck"
+-->
+
+<style>
+.mini-gauge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #2a2a2a;
+  background: #141414;
+  font-family: 'JetBrains Mono', monospace;
+}
+.mini-gauge svg { display: block; }
+.mini-gauge .gauge-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: #e8e8e8;
+  font-variant-numeric: tabular-nums;
+  margin-top: -28px;
+}
+.mini-gauge .gauge-label {
+  font-size: 10px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.mini-gauge--deck {
+  border: 1px solid rgba(151, 209, 255, 0.16);
+  background: rgba(12, 26, 46, 0.72);
+  border-radius: 16px;
+  padding: 22px;
+  font-family: Inter, sans-serif;
+}
+.mini-gauge--deck .gauge-value {
+  background: linear-gradient(135deg, #42e8ff, #d8e8f4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 26px;
+}
+.mini-gauge--deck .gauge-label { color: #688096; }
+</style>
+
+<script>
+(function () {
+  function render(root) {
+    root = root || document;
+    const els = root.querySelectorAll('.mini-gauge[data-gauge]:not([data-rendered])');
+    els.forEach(el => {
+      try {
+        const cfg = JSON.parse(el.getAttribute('data-gauge'));
+        const isDeck = el.classList.contains('mini-gauge--deck');
+        const max = cfg.max || 100;
+        const value = Math.min(Math.max(cfg.value || 0, 0), max);
+        const pct = value / max;
+
+        const W = 140, H = 80;
+        const cx = W / 2, cy = H - 10;
+        const r = 60;
+        // 半圆从 180° 到 0°（左到右）
+        const startAngle = Math.PI;
+        const endAngle = startAngle - pct * Math.PI;
+
+        const x2 = cx + r * Math.cos(endAngle);
+        const y2 = cy - r * Math.sin(endAngle); // 注意 y 反向（屏幕 y 向下）
+        const x1 = cx - r;
+        const y1 = cy;
+
+        const largeArc = pct > 0.5 ? 1 : 0;
+        const trackPath = `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`;
+        const fillPath  = pct > 0
+          ? `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`
+          : '';
+
+        const trackColor = isDeck ? 'rgba(151, 209, 255, 0.16)' : '#2a2a2a';
+        const fillColor  = isDeck ? '#42e8ff' : '#d4ff00';
+
+        const unit = cfg.unit || '';
+        el.innerHTML = `
+          <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+            <path d="${trackPath}" fill="none" stroke="${trackColor}" stroke-width="10" stroke-linecap="round"/>
+            ${fillPath ? `<path d="${fillPath}" fill="none" stroke="${fillColor}" stroke-width="10" stroke-linecap="round"/>` : ''}
+          </svg>
+          <div class="gauge-value">${value}${unit}</div>
+          <div class="gauge-label">${escapeHtml(cfg.label || '')}</div>
+        `;
+        el.setAttribute('data-rendered', '1');
+      } catch (e) {
+        console.error('[mini-gauge]', e);
+        el.innerHTML = `<pre style="color:#ff4444">Gauge error: ${e.message}</pre>`;
+      }
+    });
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => render());
+  } else { render(); }
+  window.VizMiniGauge = { renderAll: render };
+})();
+</script>

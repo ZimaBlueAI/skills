@@ -4,7 +4,7 @@
 > Write once, ship across harnesses.
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Release](https://img.shields.io/badge/release-v0.2.0-2b6cb0.svg)](./CHANGELOG.md)
+[![Release](https://img.shields.io/badge/release-v0.3.0-2b6cb0.svg)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-public_preview-orange.svg)](#9-roadmap)
 [![Harness](https://img.shields.io/badge/harness-Claude_Code-7c3aed.svg)](./claude-code-skills/)
 [![Maintainer](https://img.shields.io/badge/maintainer-ZimaBlueAI-111.svg)](https://github.com/ZimaBlueAI)
@@ -15,111 +15,131 @@
 
 ## 1. What is this
 
-**ZimaBlueAI Agent Skills** is a curated set of **declarative capability packs** for modern AI coding agents — starting with Claude Code, with planned ports to Codex / OpenClaw / Hermes / Octarus.
+**ZimaBlueAI Agent Skills** is a curated set of **declarative capability packs** for modern AI coding agents — launching with **Claude Code + OpenAI Codex CLI dual-harness** support, planned ports to OpenClaw / Hermes / Octarus.
 
-Each skill ships as a self-contained `.zip` archive with this layout:
+Each skill ships as a self-contained `.zip` archive. **The same content** is installed into each harness's expected directory:
 
 ```
-.claude/
-├── agents/            # subagents — "with which identity to think"
-└── skills/<name>/     # the skill itself
-    ├── SKILL.md       # trigger conditions + workflow (agent entry point)
-    ├── references/    # workflow references (loaded on demand)
-    ├── templates/     # deliverable templates (HTML / mmd / json …)
-    └── scripts/       # optional tool scripts
+Claude Code:                          Codex CLI:
+.claude/                              .agents/
+├── agents/         subagents (.md)   └── skills/<name>/   # skill body (identical to Claude)
+└── skills/<name>/  skill body        .codex/
+    ├── SKILL.md    trigger + workflow └── agents/        subagents (.toml)
+    ├── references/ workflow refs
+    ├── templates/  deliverable templates
+    └── scripts/    optional scripts
 ```
+
+Skill content (SKILL.md / references / templates / scripts) is **byte-for-byte identical** between the two harnesses. Only the install path and subagent serialization format differ.
 
 The agent loads a skill when a user expresses the matching intent, and produces a structured deliverable. This is **not a library** and **not an npm package** — it's a capability declaration consumed by the agent.
 
 ---
 
-## 2. What ships in v0.2.0
+## 2. What ships in v0.3.0
 
-Three skills cover the full chain from **board brief to outbound keynote video**. All skills are independent — pick what you need.
+Three skills cover the full chain from **board brief to outbound keynote video to truly editable PPT**; **launches simultaneously on Claude Code and OpenAI Codex CLI**. All skills are independent — pick what you need.
 
 | Skill | One line | Output | Zip size |
 |---|---|---|---|
-| **biz-decision-stack** | 7 subagents · investor → CEO → architect → MRD → delivery → retro → critique | 8 terminal-grade HTML reports (black + acid-yellow + mono + zero-motion) | 62 KB |
-| **viz-deck** | 4 production modes · keynote-report / hi-fi prototype / slide-deck / motion-stage | HTML / editable PPTX / MP4 / GIF / PDF (deep-space cyan/blue/gold) | 65 KB |
-| **viz-charts** | 5 visual layers · Mermaid · ECharts · SVG widgets · 3D knowledge graphs · motion video | Inline HTML or offline SVG / MP4 | 153 KB |
+| **biz-decision-stack** | 7 subagents · investor → CEO → architect → MRD → delivery → retro → critique; v3 adds 8 terminal-themed editable PPTX layouts | 8 terminal-grade HTML reports + editable PPTX (black + acid-yellow + mono + zero-motion) | 73 KB |
+| **viz-deck** | 5 production modes · keynote-report / hi-fi prototype / slide-deck / motion-stage / **pptx-deck** (v3 — true DrawingML) | HTML / editable PPTX (every element clickable) / MP4 / GIF / PDF (deep-space cyan/blue/gold) | 81 KB |
+| **viz-charts** | 6 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · motion video · **native PPTX charts** (v3 — data editable inside PowerPoint) | Inline HTML / offline SVG / MP4 / data-bound PPTX charts | 156 KB |
 
-### What's new in v0.2 (vs v0.1)
+### What's new in v0.3 (vs v0.2)
 
-- ✨ **viz-deck expanded from 1 output mode to 4** (hi-fi prototype / slide deck / motion MP4 / original stage report)
-- ✨ **20 design philosophies** wired into viz-deck — switch style on demand (Pentagram / Kenya Hara / Sagmeister and more)
-- ✨ **5-dimension expert critique** in both terminal and keynote skins, with ECharts radar chart and a Keep / Fix / Quick-Wins punch list
-- ✨ **HTML → MP4 / 60fps / GIF** toolchain
-- ✨ **HTML → editable PPTX** (real text frames, not flattened images)
-- ✨ biz-decision-stack adds a 7th subagent `design-critic` and a `design-critique.html` template
-- ✨ Every skill ships a `samples/` directory with real, rendered deliverables
+- ✨ **ppt-master soft bridge**: via [`hugohe3/ppt-master`](https://github.com/hugohe3/ppt-master)'s python-pptx + SVG→DrawingML pipeline, every skill now exports `.pptx` files where **every visual element is an independently clickable native shape** — not flattened images
+- ✨ **viz-deck mode 5 · pptx-deck**: JSON deck spec → per-slide SVG → ppt-master → `.pptx`. 8 layouts (cover / agenda / section / bullets / two-column / kpi-grid / pullquote / closing), three themes (deep-space / terminal / deck-light)
+- ✨ **TTS narration embedding**: free edge-tts + paid ElevenLabs / MiniMax / Qwen / CosyVoice voice-clone backends. PowerPoint File → Export → Video produces an MP4 with narration + animations auto-synced
+- ✨ **biz-decision-stack editable PPTX**: 8 decision-specific layouts (verdict-cover / kpi-roster / decision-matrix / roadmap-phases / risks-grid / retro-3col / action-list / summary-stack), zero motion preserves the scan-and-sign philosophy
+- ✨ **viz-charts native data-bound charts**: ECharts spec → `.pptx` containing a real `<c:chart>` object. Stakeholder right-clicks → "Edit Data" → spreadsheet editor opens with the underlying values
+- ✨ Every skill ships a v3 sample PPTX in `samples/`
+
+### What was new in v0.2 (vs v0.1)
+
+- ✨ viz-deck expanded from 1 output mode to 4 (hi-fi prototype / slide deck / motion MP4 / original stage report)
+- ✨ 20 design philosophies and 5-dimension expert critique integrated
+- ✨ HTML → MP4 / 60fps / GIF toolchain via huashu-design bridge
+- ✨ biz-decision-stack 7th subagent `design-critic` + `design-critique.html`
 
 Full notes in the [CHANGELOG](./CHANGELOG.md).
 
 ---
 
-## 3. Bridge to huashu-design
+## 3. Two soft bridges
 
-v0.2 introduces an **optional soft-bridge** to [`alchaincyf/huashu-design`](https://github.com/alchaincyf/huashu-design):
+v0.2 added the first soft bridge: [`alchaincyf/huashu-design`](https://github.com/alchaincyf/huashu-design) (motion / video / design philosophies / critique). v0.3 adds a second: [`hugohe3/ppt-master`](https://github.com/hugohe3/ppt-master) (python-pptx + SVG→DrawingML — truly editable native PPTX).
 
-- **viz-deck**'s *prototype / slide-deck / motion-stage* modes call into huashu-design for MP4/PPTX export, device frames, the animation engine, the 20-philosophy library, and the 5-dimension critique standard
-- **biz-decision-stack** only borrows the critique scoring standard and optional PDF export; it deliberately **does not** import motion / BGM / device frames (decision reports stay zero-motion by principle)
-- **viz-charts**'s motion mode calls huashu's `render-video.js` directly for screen recording
+**v0.2 · huashu-design** (Node + Playwright + ffmpeg):
+- **viz-deck** modes 2-4 (prototype / slide-deck / motion-stage) use it for MP4/PPTX export, device frames, animation engine, 20 philosophies, 5-dim critique
+- **biz-decision-stack** only borrows the critique standard (decisions stay zero-motion by principle — no motion / BGM / device frames imported)
+- **viz-charts** motion mode calls `render-video.js` directly for screen recording
 
-The bridge is a **soft dependency**: without huashu-design installed, v1 capabilities (the original stage report / decision chain / static charts) remain fully functional. huashu-design itself is free for personal use; **commercial use requires a separate license** — see its [LICENSE](https://github.com/alchaincyf/huashu-design).
+**v0.3 · ppt-master** (Python + python-pptx + svglib + edge-tts):
+- **viz-deck** mode 5 (pptx-deck): JSON spec → SVG → true DrawingML PPTX with optional TTS narration
+- **biz-decision-stack**: 8 decision-specific layouts as terminal-themed editable PPTX
+- **viz-charts**: ECharts spec → data-bound native `<c:chart>` object
+
+Both bridges are **soft dependencies**: without them, v1 / v2 capabilities (HTML reports / decision chain / static charts) remain fully functional. ppt-master is MIT-licensed; huashu-design is free for personal use, **commercial use requires a separate license** from its author — see each project's LICENSE.
 
 ```
-                 ┌──────────────────────────────┐
-                 │  huashu-design (soft bridge) │
-                 │  - render-video.js (MP4)     │
-                 │  - export_deck_pptx.mjs      │
-                 │  - 20 design philosophies    │
-                 │  - 5-dim critique standard   │
-                 │  - ios/android/macos frames  │
-                 └──────────┬───────────────────┘
-                            │ optional bridge
-       ┌────────────────────┼────────────────────┐
-       ▼                    ▼                    ▼
-┌─────────────┐  ┌─────────────────┐  ┌──────────────────┐
-│ viz-charts  │  │    viz-deck     │  │ biz-decision-    │
-│ (motion only│  │  (full bridge)  │  │     stack        │
-│              │  │                 │  │ (critique only)  │
-└─────────────┘  └─────────────────┘  └──────────────────┘
+        ┌──────────────────────────┐     ┌────────────────────────────┐
+        │ huashu-design (v0.2)     │     │ ppt-master (v0.3)          │
+        │ - MP4 / 60fps / GIF      │     │ - python-pptx              │
+        │ - HTML→PPTX (text-only)  │     │ - SVG→DrawingML (clickable)│
+        │ - 20 design philosophies │     │ - master/template inherit  │
+        │ - 5-dim critique std     │     │ - TTS narration embed      │
+        │ - iOS/Android frames     │     │ - native data-bound charts │
+        └────────────┬─────────────┘     └──────────────┬─────────────┘
+                     │                                  │
+       ┌─────────────┼──────────────┐    ┌──────────────┼─────────────┐
+       ▼             ▼              ▼    ▼              ▼             ▼
+┌─────────────┐ ┌──────────────┐ ┌──────────────────┐ ┌─────────────┐
+│ viz-charts  │ │   viz-deck   │ │ biz-decision-    │ │   shared    │
+│ (motion +   │ │ (modes 2-4 + │ │     stack        │ │  install    │
+│  pptx chart)│ │   mode 5)    │ │ (critique+pptx)  │ │             │
+└─────────────┘ └──────────────┘ └──────────────────┘ └─────────────┘
 ```
 
 ---
 
 ## 4. Five-minute quickstart
 
-### 4.1 Install skills into Claude Code
-
-**Single project** (recommended for first validation):
+### 4.1 Install skills into your harness of choice
 
 ```bash
 git clone --depth=1 https://github.com/ZimaBlueAI/skills.git
-cd skills/claude-code-skills
+cd skills
+```
 
+**A · Claude Code** (recommended for first validation, single project):
+
+```bash
+cd claude-code-skills
 # Unzip into the root of your project (next to .git)
 unzip -o biz-decision-stack/biz-decision-stack.zip -d /path/to/your-project/
 unzip -o viz-deck/viz-deck.zip                       -d /path/to/your-project/
 unzip -o viz-charts/viz-charts.zip                   -d /path/to/your-project/
+# Or globally: unzip -o ... -d ~/
 ```
 
-**Global** (shared across projects):
+**B · OpenAI Codex CLI** (one-shot script):
 
 ```bash
-unzip -o biz-decision-stack/biz-decision-stack.zip -d ~/
-unzip -o viz-deck/viz-deck.zip                       -d ~/
-unzip -o viz-charts/viz-charts.zip                   -d ~/
+cd codex-skills
+bash install.sh                    # Linux/macOS — installs to ~/.agents/skills/ + ~/.codex/agents/
+# Windows: .\install.ps1
 ```
 
-### 4.2 Optional: install huashu-design to unlock the v2 advanced modes
+For project-level vs global installs, optional bridge setup, etc. see [`claude-code-skills/skills-install-guide.md`](./claude-code-skills/skills-install-guide.md) and [`codex-skills/INSTALL.md`](./codex-skills/INSTALL.md).
+
+### 4.2 Optional · install huashu-design to unlock v2 (motion / video / philosophies / critique)
 
 ```bash
 git clone --depth=1 https://github.com/alchaincyf/huashu-design.git ~/.claude/skills/huashu-design
 cd ~/.claude/skills/huashu-design
 
-# Node runtime (playwright + sharp + pptxgenjs + pdf-lib).
-# huashu-design ships without a package.json, so use this minimal one:
+# Node runtime (playwright + sharp + pptxgenjs + pdf-lib)
 cat > package.json <<'JSON'
 {
   "name": "huashu-design-runtime",
@@ -133,33 +153,54 @@ cat > package.json <<'JSON'
   }
 }
 JSON
-npm install
-npx playwright install chromium
+npm install && npx playwright install chromium
 
 # ffmpeg must be on PATH (used for MP4 encoding and 60fps interpolation)
 ffmpeg -version || echo "Please install ffmpeg first"
 ```
 
-> Skipping this step is fine — you just lose the 4 advanced output modes and fall back to v1 single mode, and the 5-dim critique uses the locally mirrored standard instead.
+### 4.3 Optional · install ppt-master to unlock v3 (truly editable PPTX)
 
-### 4.3 Verify Claude Code recognizes the skills
+```bash
+git clone --depth=1 https://github.com/hugohe3/ppt-master.git ~/.claude/skills/ppt-master
+cd ~/.claude/skills/ppt-master
+
+# Isolated Python 3.10+ venv keeps the system Python clean
+python -m venv .venv
+
+# Windows
+.venv/Scripts/pip install python-pptx edge-tts svglib reportlab Pillow numpy
+# macOS/Linux
+# .venv/bin/pip install python-pptx edge-tts svglib reportlab Pillow numpy
+
+# Verify
+.venv/Scripts/python -c "import pptx, edge_tts; print('ok')"   # Windows
+# .venv/bin/python -c "import pptx, edge_tts; print('ok')"     # macOS/Linux
+```
+
+> Skipping either bridge is fine — v1 capabilities (HTML reports / static charts / decision chain) work unchanged. Install huashu to unlock v2 (4-mode output / 20 philosophies / 5-dim critique / MP4); also install ppt-master to unlock v3 (clickable native DrawingML PPTX / TTS narration / master inheritance / data-bound charts).
+
+### 4.4 Verify Claude Code recognizes the skills
 
 ```
 > /skills
 ```
 
-You should see `biz-html-viz` · `viz-deck` · `viz-charts`. With huashu installed you'll see a fourth: `huashu-design`.
+You should see `biz-html-viz` · `viz-deck` · `viz-charts`. With huashu installed you'll see a fourth: `huashu-design`. ppt-master is loaded as an internal runtime by the three skills — it doesn't show as its own entry.
 
-### 4.4 Trigger by natural language
+### 4.5 Trigger by natural language
 
 | You say | Auto-routes to |
 |---|---|
 | "Write me a board brief for Rolin" | `01-board-advisor` + `biz-html-viz · board-brief` |
 | "Run an all-hands flow" / "走一遍全流程" | `00-all-hands-orchestrator` (chain through 6 roles + critique) |
-| "Build a stage-report deck for Mingjing" | `viz-deck · stage-report` |
-| "Make an iOS hi-fi prototype" | `viz-deck · prototype-mode` |
-| "Build a slide deck" + "export to PPTX" | `viz-deck · slide-mode` + `export-pptx.sh` |
-| "Render this to MP4" / "60fps video" | `viz-deck · motion-mode` + huashu `render-video.js` |
+| "Build a stage-report deck for Mingjing" | `viz-deck · stage-report` (mode 1) |
+| "Make an iOS hi-fi prototype" | `viz-deck · prototype` (mode 2) |
+| "Build a slide deck" + "export to PPTX" | `viz-deck · slide-mode` (mode 3) + huashu `export_deck_pptx.mjs` |
+| "Render this to MP4" / "60fps video" / "explainer with narration" | `viz-deck · motion-mode` (mode 4) + huashu `render-video.js` |
+| **"Give me a truly editable PPT" / "something stakeholders can edit in PowerPoint"** | **`viz-deck · pptx-deck` (mode 5) + ppt-master** (v3) |
+| **"Turn this decision report into a PPT"** | **biz-html-viz + ppt-master terminal-themed PPTX** (v3) |
+| **"Chart data needs to be editable inside PowerPoint"** | **viz-charts + ppt-master native chart** (v3) |
 | "Critique this" / "5-dim review" | `07-design-critic` or `viz-deck · review-5dim.mjs` |
 | "Add an architecture diagram" / "Add a line chart" | `viz-charts` (auto-picks Mermaid/ECharts by data shape) |
 | "Make a 3D code KG of this repo" | `viz-charts · code-kg.mjs` + `templates/kg3d/code-graph.html` |
@@ -168,14 +209,24 @@ You should see `biz-html-viz` · `viz-deck` · `viz-charts`. With huashu install
 
 ## 5. Samples
 
-Every skill ships a `samples/` directory with **real rendered deliverables** you can open immediately:
+Every skill ships a `samples/` directory with **real rendered deliverables** you can open immediately. Full catalog in each skill's `samples/SAMPLES.md`. Highlights:
+
+### v3 · PPTX samples (11 deliverables, each with `.spec.json` starter)
+
+| Group | Files | One-liner |
+|---|---|---|
+| **biz-decision-stack · 4 decision PPTX** | [`decision-board-brief-sample.pptx`](./claude-code-skills/biz-decision-stack/samples/decision-board-brief-sample.pptx) · [`decision-retro-report-sample.pptx`](./claude-code-skills/biz-decision-stack/samples/decision-retro-report-sample.pptx) · [`decision-tech-roadmap-sample.pptx`](./claude-code-skills/biz-decision-stack/samples/decision-tech-roadmap-sample.pptx) · [`decision-sprint-dev-sample.pptx`](./claude-code-skills/biz-decision-stack/samples/decision-sprint-dev-sample.pptx) | Terminal-themed editable: board brief · quarterly retro · 4-quarter tech roadmap · weekly sprint. 15–55 independent clickable shapes per slide. See [SAMPLES.md](./claude-code-skills/biz-decision-stack/samples/SAMPLES.md) |
+| **viz-deck · 3 decks** (mode 5) | [`editable-deck-sample.pptx`](./claude-code-skills/viz-deck/samples/editable-deck-sample.pptx) · [`product-launch-deck-sample.pptx`](./claude-code-skills/viz-deck/samples/product-launch-deck-sample.pptx) · [`all-layouts-showcase-sample.pptx`](./claude-code-skills/viz-deck/samples/all-layouts-showcase-sample.pptx) | Deep-space board update (9 slides) · deck-light product launch (10 slides) · 8-layout reference (8 slides). See [SAMPLES.md](./claude-code-skills/viz-deck/samples/SAMPLES.md) |
+| **viz-charts · 4 native data-bound charts** | [`native-chart-sample.pptx`](./claude-code-skills/viz-charts/samples/native-chart-sample.pptx) · [`chart-trend-line-sample.pptx`](./claude-code-skills/viz-charts/samples/chart-trend-line-sample.pptx) · [`chart-market-share-doughnut-sample.pptx`](./claude-code-skills/viz-charts/samples/chart-market-share-doughnut-sample.pptx) · [`chart-critique-radar-sample.pptx`](./claude-code-skills/viz-charts/samples/chart-critique-radar-sample.pptx) | column · line · doughnut · radar — four chart types. Right-click → "Edit Data" in PowerPoint opens the underlying spreadsheet. See [SAMPLES.md](./claude-code-skills/viz-charts/samples/SAMPLES.md) |
+
+### v2 · HTML / video / critique samples
 
 | Skill | Sample | What you see |
 |---|---|---|
-| biz-decision-stack | [`samples/design-critique-sample.html`](./claude-code-skills/biz-decision-stack/samples/design-critique-sample.html) | Terminal-style 5-dim critique with ECharts radar and a Keep / Fix / Quick-Wins list |
-| viz-deck | [`samples/motion-stage-sample.html`](./claude-code-skills/viz-deck/samples/motion-stage-sample.html) + [`.mp4`](./claude-code-skills/viz-deck/samples/motion-stage-sample.mp4) | Keynote-grade motion stage source HTML plus a recorded 1920×1080 MP4 |
-| viz-deck | [`samples/design-critique-sample.html`](./claude-code-skills/viz-deck/samples/design-critique-sample.html) | Keynote-style 5-dim critique (deep-space palette variant) |
-| viz-charts | [`samples/trend-motion-sample.html`](./claude-code-skills/viz-charts/samples/trend-motion-sample.html) + [`.mp4`](./claude-code-skills/viz-charts/samples/trend-motion-sample.mp4) | ECharts multi-series reveal animation, with recorded MP4 |
+| biz-decision-stack | [`design-critique-sample.html`](./claude-code-skills/biz-decision-stack/samples/design-critique-sample.html) | Terminal-style 5-dim critique with ECharts radar and a Keep / Fix / Quick-Wins list |
+| viz-deck | [`motion-stage-sample.html`](./claude-code-skills/viz-deck/samples/motion-stage-sample.html) + [`.mp4`](./claude-code-skills/viz-deck/samples/motion-stage-sample.mp4) | Keynote-grade motion stage source HTML plus a recorded 1920×1080 MP4 |
+| viz-deck | [`design-critique-sample.html`](./claude-code-skills/viz-deck/samples/design-critique-sample.html) | Keynote-style 5-dim critique (deep-space palette) |
+| viz-charts | [`trend-motion-sample.html`](./claude-code-skills/viz-charts/samples/trend-motion-sample.html) + [`.mp4`](./claude-code-skills/viz-charts/samples/trend-motion-sample.mp4) | ECharts multi-series reveal animation with recorded MP4 |
 | viz-charts | [`demo-3d-code-kg.html`](./claude-code-skills/viz-charts/demo-3d-code-kg.html) · [`demo-3d-doc-kg.html`](./claude-code-skills/viz-charts/demo-3d-doc-kg.html) | 3D code/doc knowledge graphs (80 / 92 nodes, interactive) |
 | viz-charts | [`demo-terminal.html`](./claude-code-skills/viz-charts/demo-terminal.html) · [`demo-deck.html`](./claude-code-skills/viz-charts/demo-deck.html) | Full component showcase in both themes |
 
@@ -219,7 +270,7 @@ skills/
 │   ├── biz-decision-stack/
 │   │   ├── biz-decision-stack.zip Installable archive
 │   │   ├── README.md              Per-skill notes
-│   │   └── samples/               v0.2 — rendered output examples
+│   │   └── samples/               v0.2 critique + v0.3 decision PPTX
 │   │
 │   ├── viz-deck/
 │   │   ├── viz-deck.zip
@@ -227,12 +278,20 @@ skills/
 │   │   ├── design-system-deck.md  Public design spec
 │   │   ├── research-playbook.md   Tier 1/2/3 competitive research protocol
 │   │   ├── sample-board-brief.html
-│   │   └── samples/               v0.2 — 4-mode output examples
+│   │   └── samples/               5-mode samples (v0.2 motion + v0.3 editable-deck)
 │   │
 │   └── viz-charts/
 │       ├── viz-charts.zip
 │       ├── demo-*.html            Four interactive showcases
-│       └── samples/               v0.2 — motion chart examples
+│       └── samples/               motion chart (v0.2) + native PPTX chart (v0.3)
+│
+├── codex-skills/                  ★ OpenAI Codex CLI harness (v0.3, same content)
+│   ├── README.md                  Codex-flavored intro
+│   ├── INSTALL.md                 Codex install guide
+│   ├── install.sh / install.ps1   One-shot install scripts
+│   ├── biz-decision-stack/        Includes .agents/skills/ + 8 TOML agents
+│   ├── viz-deck/                  Includes .agents/skills/viz-deck/
+│   └── viz-charts/                Includes .agents/skills/viz-charts/
 │
 ├── codex-skills/                  ☐ OpenAI Codex CLI (planned)
 ├── openclaw-skills/               ☐ OpenClaw (planned)
@@ -246,11 +305,11 @@ skills/
 
 | Role | Recommended bundle | Why |
 |---|---|---|
-| **Startup CEO** | biz-decision-stack (all) + viz-deck (stage-report) | Internal alignment via the decision chain; outbound pitch via the keynote deck |
-| **Product manager** | biz-decision-stack (PM modes) + viz-deck (prototype) | MRD as docs + hi-fi prototype to align engineering |
+| **Startup CEO** | biz-decision-stack (all) + viz-deck (stage-report) + ppt-master | Internal decision chain in HTML + outbound keynote + editable PPT for the board |
+| **Product manager** | biz-decision-stack (PM modes) + viz-deck (prototype) + viz-deck (pptx-deck) | MRD as docs + hi-fi prototype to align engineering + PRD review PPT for business |
 | **Chief architect** | biz-decision-stack (architect) + viz-deck (architecture-deep) + viz-charts | Internal ADRs + customer-facing technical decks + 3D code KG |
-| **Investor / FA** | viz-deck (competitive-landscape) + viz-charts | Live competitive research + animated data for roadshows |
-| **Design / brand lead** | viz-deck (all 4 modes) + huashu-design | One toolchain for prototype / slides / video / critique |
+| **Investor / FA** | viz-deck (competitive-landscape) + viz-charts + viz-charts (native chart pptx) | Live competitive research + animated data for roadshows + LP monthly data PPT |
+| **Design / brand lead** | viz-deck (all 5 modes) + huashu-design + ppt-master | One toolchain for prototype / slides / video / critique / shippable PPT |
 | **Engineering lead** | biz-decision-stack (dev-test) + viz-charts (3D KG) | Status reporting + project structure visualization |
 
 ---
@@ -260,10 +319,11 @@ skills/
 | Phase | Scope | Status |
 |---|---|---|
 | v0.1 | Initial release of the claude-code-skills trio | ✅ Released |
-| **v0.2** | **4 output modes · 20 philosophies · 5-dim critique · huashu-design bridge · samples** | ✅ **Released (current)** |
-| v0.3 | Port to OpenAI Codex CLI (`codex-skills/`) | 🟡 Planned |
-| v0.4 | `openclaw-skills/` · `hermes-skills/` | ⚪ Planned |
-| v0.5 | `octarus-skills/` + cross-harness consistency test suite | ⚪ Planned |
+| v0.2 | 4 output modes · 20 philosophies · 5-dim critique · huashu-design bridge · samples | ✅ Released |
+| **v0.3** | **ppt-master soft bridge · viz-deck mode 5 pptx-deck · decision PPTX · data-bound native chart · TTS narration embed · codex-skills dual-harness launch** | ✅ **Released (current)** |
+| v0.4 | `openclaw-skills/` + tri-harness consistency tests | 🟡 Planned |
+| v0.5 | `hermes-skills/` | ⚪ Planned |
+| v0.6 | `octarus-skills/` | ⚪ Planned |
 | v1.0 | All 5 harnesses + skill registry (`skills.json` index) | ⚪ Planned |
 
 ---
@@ -295,13 +355,18 @@ Standing on the shoulders of giants. The following projects made this repository
 - [Lum1104/Understand-Anything](https://github.com/Lum1104/Understand-Anything) — knowledge-graph visualization
 - Thariq's early writing on *HTML for Claude Code* — HTML-first for decision content
 
-**v2 bridge dependency**
+**v2 bridge dependency** (motion / video / philosophies / critique)
 
-- [alchaincyf/huashu-design](https://github.com/alchaincyf/huashu-design) — video / PPTX / device frame toolchain, the 20-philosophy library, and the 5-dim critique standard
+- [alchaincyf/huashu-design](https://github.com/alchaincyf/huashu-design) — video / quick-PPTX / device-frame toolchain, 20-philosophy library, 5-dim critique standard
 
-**Runtime libraries** (loaded via CDN or npm at render time — not vendored)
+**v3 bridge dependency** (truly editable PPTX / TTS narration / master inheritance / data-bound charts)
 
-- [Mermaid](https://mermaid.js.org/) · [Apache ECharts](https://echarts.apache.org/) · [three.js](https://threejs.org/) · [3d-force-graph](https://github.com/vasturiano/3d-force-graph) · [Playwright](https://playwright.dev/) · [ffmpeg](https://ffmpeg.org/) · [pptxgenjs](https://gitbrent.github.io/PptxGenJS/) · [pdf-lib](https://pdf-lib.js.org/)
+- [hugohe3/ppt-master](https://github.com/hugohe3/ppt-master) — MIT · python-pptx + SVG→DrawingML pipeline, edge-tts narration, template import, native chart rendering
+
+**Runtime libraries** (loaded via CDN or npm/pip at render time — not vendored)
+
+- Node-side: [Mermaid](https://mermaid.js.org/) · [Apache ECharts](https://echarts.apache.org/) · [three.js](https://threejs.org/) · [3d-force-graph](https://github.com/vasturiano/3d-force-graph) · [Playwright](https://playwright.dev/) · [ffmpeg](https://ffmpeg.org/) · [pptxgenjs](https://gitbrent.github.io/PptxGenJS/) · [pdf-lib](https://pdf-lib.js.org/)
+- Python-side (v3 new): [python-pptx](https://python-pptx.readthedocs.io/) · [edge-tts](https://github.com/rany2/edge-tts) · [svglib](https://github.com/deeplook/svglib) · [reportlab](https://www.reportlab.com/) · [Pillow](https://python-pillow.org/) · [NumPy](https://numpy.org/)
 
 Each retains its upstream license — see [NOTICE](./NOTICE).
 
@@ -309,7 +374,7 @@ Each retains its upstream license — see [NOTICE](./NOTICE).
 
 ## Contact
 
-- GitHub: <https://github.com/ZimaBlueAI>
+- GitHub: <https://github.com/ZimaBlueAI/skills>
 - Issues: <https://github.com/ZimaBlueAI/skills/issues>
 - Security: see [CONTRIBUTING.md](./CONTRIBUTING.md)
 

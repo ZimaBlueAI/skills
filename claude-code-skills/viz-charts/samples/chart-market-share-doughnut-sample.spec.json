@@ -1,0 +1,11 @@
+{
+  "title": "Market share by vendor",
+  "subtitle": "Top 5 + long-tail, FY 2026 H1",
+  "type": "doughnut",
+  "categories": ["Vendor A", "Vendor B", "Vendor C", "Vendor D", "Vendor E", "Others"],
+  "series": [
+    { "name": "Share %", "data": [34, 22, 16, 9, 7, 12] }
+  ],
+  "canvas": "ppt169",
+  "theme": "deck-light"
+}

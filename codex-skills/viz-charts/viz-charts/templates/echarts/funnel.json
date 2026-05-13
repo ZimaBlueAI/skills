@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "name": "funnel",
+    "use_when": "转化漏斗，每步留存率",
+    "data_shape": "[{name, value}] 按 value 降序"
+  },
+  "tooltip": { "trigger": "item", "formatter": "{a} <br/>{b}: {c} ({d}%)" },
+  "legend": { "top": 0 },
+  "series": [
+    {
+      "name": "用户漏斗",
+      "type": "funnel",
+      "left": "10%", "top": 30, "bottom": 10, "width": "80%",
+      "min": 0, "max": 100,
+      "minSize": "20%", "maxSize": "100%",
+      "sort": "descending",
+      "gap": 2,
+      "label": { "show": true, "position": "inside", "formatter": "{b}\n{c}" },
+      "data": [
+        { "value": 10000, "name": "访问" },
+        { "value": 4200,  "name": "注册" },
+        { "value": 2800,  "name": "激活" },
+        { "value": 1450,  "name": "首单" },
+        { "value": 620,   "name": "复购" }
+      ]
+    }
+  ]
+}

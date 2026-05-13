@@ -1,0 +1,16 @@
+{
+  "_meta": {
+    "name": "bar-stacked",
+    "use_when": "总和 + 内部构成，≤6 系列",
+    "data_shape": "同 bar-grouped，加 stack 字段"
+  },
+  "tooltip": { "trigger": "axis", "axisPointer": { "type": "shadow" } },
+  "legend": { "top": 0 },
+  "xAxis": { "type": "category", "data": ["Jan","Feb","Mar","Apr","May","Jun"] },
+  "yAxis": { "type": "value" },
+  "series": [
+    { "name": "Direct",  "type": "bar", "stack": "total", "data": [320, 332, 301, 334, 390, 330] },
+    { "name": "Search",  "type": "bar", "stack": "total", "data": [120, 132, 101, 134, 90, 230] },
+    { "name": "Referral","type": "bar", "stack": "total", "data": [220, 182, 191, 234, 290, 330] }
+  ]
+}

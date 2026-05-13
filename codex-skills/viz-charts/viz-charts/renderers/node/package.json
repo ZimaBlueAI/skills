@@ -1,0 +1,19 @@
+{
+  "name": "viz-charts-renderer",
+  "version": "1.0.0",
+  "description": "Offline SVG renderer for viz-charts skill — Mermaid + ECharts via Node.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "render-mermaid": "node render-mermaid.mjs",
+    "render-echarts": "node render-echarts.mjs",
+    "batch": "node batch.mjs"
+  },
+  "dependencies": {
+    "mermaid-isomorphic": "^3.0.0",
+    "echarts": "^5.5.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

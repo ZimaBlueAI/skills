@@ -1,0 +1,29 @@
+{
+  "subject": "Smoke Test · motion-stage",
+  "mode": "motion-stage",
+  "philosophy": "viz-deck default (Active Theory variant)",
+  "dimensions": {
+    "philosophy_alignment": { "score": 8, "note": "深空蓝紫青配色严格执行" },
+    "visual_hierarchy":      { "score": 8, "note": "h1 96px / lead 32px / eyebrow 14px 三档清晰" },
+    "craft_quality":         { "score": 7, "note": "orbit 旋转 8s 一圈节奏稳，对齐到 80px grid" },
+    "functionality":         { "score": 8, "note": "8s 内完整运动叙事，末帧 hold 0.5s" },
+    "originality":           { "score": 7, "note": "orbit 主视觉沿用 deck DNA，没有新突破" }
+  },
+  "keep": [
+    "orbit 主视觉一镜到底，无 PPT 切换",
+    "eyebrow → headline → lead 三段动画错峰 1s/2s 节奏"
+  ],
+  "fix": [
+    {
+      "severity": "polish",
+      "name": "orbit 旋转周期偏快",
+      "current": "8s 一圈",
+      "issue": "上台投影时观众感觉急",
+      "fix": "改 12s 一圈，配合 BGM 节奏"
+    }
+  ],
+  "quick_wins": [
+    "orbit 周期 8s → 12s",
+    "lead 字号 32 → 28（lead 不能比 h1 抢戏）"
+  ]
+}

@@ -1,0 +1,89 @@
+<!--
+  Sparkline · 极简趋势线
+  ===========================
+  独立组件（不嵌在 KPI 里），可任意行内使用。
+  
+  使用：
+  <span class="sparkline" data-spark='{"data":[3,5,2,8,4,9,7],"color":"auto"}'></span>
+  
+  data-spark 字段：
+    data:   number[]   必填
+    color:  "auto"|"up"|"down"|具体色值  默认 auto（按整体趋势）
+    width:  number     默认 80px
+    height: number     默认 20px
+    showDot: bool      默认 true（末尾点）
+    showFill: bool     默认 true
+  
+  内联使用示例：
+    "营收呈上升趋势 <span class='sparkline' data-spark='{"data":[1,2,3,4,5]}'></span> 月环比+12%"
+-->
+
+<style>
+.sparkline {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+.sparkline svg { display: block; overflow: visible; }
+.sparkline--terminal { color: #d4ff00; }
+.sparkline--deck     { color: #42e8ff; }
+</style>
+
+<script>
+(function () {
+  function render(root) {
+    root = root || document;
+    const els = root.querySelectorAll('.sparkline[data-spark]:not([data-rendered])');
+    els.forEach(el => {
+      try {
+        const cfg = JSON.parse(el.getAttribute('data-spark'));
+        const data = cfg.data || [];
+        if (data.length < 2) {
+          el.textContent = '─';
+          return;
+        }
+        const w = cfg.width  || 80;
+        const h = cfg.height || 20;
+        const showDot  = cfg.showDot  !== false;
+        const showFill = cfg.showFill !== false;
+
+        let color = cfg.color || 'auto';
+        if (color === 'auto') {
+          color = data[data.length - 1] >= data[0] ? '#44dd88' : '#ff4444';
+        } else if (color === 'up')   color = '#44dd88';
+        else if (color === 'down') color = '#ff4444';
+
+        const min = Math.min(...data);
+        const max = Math.max(...data);
+        const range = max - min || 1;
+        const step  = w / (data.length - 1);
+        const pts = data.map((v, i) => {
+          const x = i * step;
+          const y = h - ((v - min) / range) * (h - 2) - 1;
+          return [x, y];
+        });
+        const linePath = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ');
+        const fillPath = `${linePath} L ${w} ${h} L 0 ${h} Z`;
+
+        const last = pts[pts.length - 1];
+        el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+          ${showFill ? `<path d="${fillPath}" fill="${color}" fill-opacity="0.18"/>` : ''}
+          <path d="${linePath}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+          ${showDot ? `<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2" fill="${color}"/>` : ''}
+        </svg>`;
+        el.setAttribute('data-rendered', '1');
+      } catch (e) {
+        console.error('[sparkline]', e);
+        el.textContent = '⚠';
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => render());
+  } else {
+    render();
+  }
+  window.VizSparkline = { renderAll: render };
+})();
+</script>
