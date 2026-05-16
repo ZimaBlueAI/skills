@@ -1,0 +1,66 @@
+{
+  "name": "sprint_dev_report_w22",
+  "slides": [
+    {
+      "id": "verdict",
+      "layout": "verdict-cover",
+      "kind": "SPRINT DEV REPORT",
+      "date": "2026-05-13",
+      "code": "SPRINT-W22",
+      "title": "W22 sprint — velocity green, quality amber, two blockers",
+      "subtitle": "Shipped 18 of 22 story points. Two blockers required engineering escalation. Quality gate slipped on the inbox refactor.",
+      "verdict": "HOLD",
+      "verdict_note": "Hold on scope for W23 (carry over the 4 unshipped points; do NOT add new). The quality regression on inbox is a real signal — fix the gate before resuming.",
+      "author": "Dev Lead · dev@zimablueai.com",
+      "ref": "PR-batch W22"
+    },
+    {
+      "id": "kpis",
+      "layout": "kpi-roster",
+      "kind": "W22 OUTCOMES",
+      "title": "Six dev KPIs",
+      "lead": "Velocity at plan, quality dropped, customer-reported issues stable.",
+      "kpis": [
+        { "label": "Story points shipped", "value": "18 / 22", "delta": "−4", "status": "hold", "note": "carry to W23" },
+        { "label": "PRs merged", "value": "47", "delta": "+3", "status": "ahead", "note": "above plan" },
+        { "label": "Avg PR lead time", "value": "34", "unit": "h", "delta": "+3h", "status": "behind", "note": "review queue" },
+        { "label": "P1 bugs in prod", "value": "3", "target": "2", "status": "behind", "note": "inbox refactor leaked" },
+        { "label": "Build success rate", "value": "92", "unit": "%", "delta": "−2pp", "status": "behind", "note": "1.x flakes" },
+        { "label": "On-call MTTR", "value": "44", "unit": "min", "target": "60", "status": "ahead", "note": "good" }
+      ]
+    },
+    {
+      "id": "retro",
+      "layout": "retro-3col",
+      "kind": "WORKED / DIDN'T / CHANGE",
+      "title": "Three keepers, two drops, three changes",
+      "lead": "Sprint retro distilled to actionable diff.",
+      "worked": [
+        { "text": "Pair on first PR of every refactor", "note": "caught 2 design issues early" },
+        { "text": "Async standup format (Slack thread)", "note": "saved 3.5h across team this week" },
+        { "text": "Daily SLO dashboard in #ops", "note": "spotted MTTR drift Day 2" }
+      ],
+      "didnt": [
+        { "text": "Inbox refactor quality gate optional", "note": "skipped under deadline → 3 P1s" },
+        { "text": "Late-Friday merges (3 of 18 PRs)", "note": "1 caused weekend page" }
+      ],
+      "change": [
+        { "text": "Quality gate becomes hard CI block", "note": "starts W23 day 1" },
+        { "text": "Friday 14:00 deploy freeze", "note": "VP sign-off to override" },
+        { "text": "Pair review for any refactor > 200 LOC", "note": "starts W23" }
+      ]
+    },
+    {
+      "id": "actions",
+      "layout": "action-list",
+      "kind": "W23 ACTIONS",
+      "title": "Four actions, three owners",
+      "actions": [
+        { "text": "Enforce coverage-70% block in CI for refactor PRs", "owner": "DevTools · A. Lin", "due": "W23 Mon", "status": "TODO" },
+        { "text": "Migrate 1.x flaky tests to Pytest (15 of 47 files)", "owner": "DevTools · A. Lin", "due": "W26 Fri", "status": "TODO" },
+        { "text": "Set up Friday 14:00 deploy-freeze guard in release bot", "owner": "Release · P. Chen", "due": "W23 Wed", "status": "TODO" },
+        { "text": "Pair review process doc + Slack reminder", "owner": "EM · S. Wong", "due": "W23 Fri", "status": "DONE" }
+      ]
+    }
+  ]
+}

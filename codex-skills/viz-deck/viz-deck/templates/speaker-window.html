@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Speaker · {{DECK_TITLE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #030711;
+    --panel: rgba(255,255,255,0.04);
+    --panel-bd: rgba(255,255,255,0.10);
+    --fg: #e7efff;
+    --muted: #8898b6;
+    --accent: #42e8ff;
+    --gold: #ffd987;
+    --warn: #ff7676;
+    --sans: Inter, system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    overflow: hidden;
+    height: 100vh;
+  }
+  body {
+    background-image:
+      radial-gradient(rgba(66,232,255,0.05) 1px, transparent 1px),
+      radial-gradient(rgba(255,217,135,0.03) 1px, transparent 1px);
+    background-size: 24px 24px, 24px 24px;
+    background-position: 0 0, 12px 12px;
+  }
+
+  /* Header bar */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 44px;
+    background: rgba(3,7,17,0.92);
+    border-bottom: 1px solid var(--panel-bd);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+    z-index: 100;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+  .topbar .brand { color: var(--accent); font-weight: 600; }
+  .topbar .status { color: var(--muted); }
+  .topbar .status strong { color: var(--gold); font-weight: 500; }
+  .topbar .right { margin-left: auto; display: flex; gap: 16px; }
+  .topbar button {
+    background: transparent;
+    border: 1px solid var(--panel-bd);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .topbar button:hover { border-color: var(--accent); color: var(--accent); }
+  .topbar .disconnected { color: var(--warn); }
+
+  /* Cards container — 2x2 magnetic grid */
+  .stage {
+    position: fixed;
+    top: 44px; left: 0; right: 0; bottom: 0;
+    padding: 16px;
+    overflow: hidden;
+  }
+  .card {
+    position: absolute;
+    background: var(--panel);
+    border: 1px solid var(--panel-bd);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    user-select: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    min-width: 240px;
+    min-height: 160px;
+  }
+  .card:hover { border-color: rgba(66,232,255,0.30); }
+  .card.dragging { border-color: var(--accent); box-shadow: 0 12px 40px rgba(66,232,255,0.25); z-index: 50; }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: grab;
+    flex-shrink: 0;
+  }
+  .card-head:active { cursor: grabbing; }
+  .card-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .card-body {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .resize-handle {
+    position: absolute;
+    right: 0; bottom: 0;
+    width: 16px; height: 16px;
+    cursor: nwse-resize;
+    background: linear-gradient(135deg, transparent 50%, var(--muted) 50%, var(--muted) 60%, transparent 60%);
+    opacity: 0.4;
+  }
+  .resize-handle:hover { opacity: 1; }
+
+  /* Card 1: Current slide preview (iframe-based mini) */
+  #card-current { left: 16px; top: 16px; width: calc(60% - 24px); height: calc(60% - 24px); }
+  #card-current .preview-frame {
+    flex: 1;
+    background: #000;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  #card-current iframe {
+    width: 1920px;
+    height: 1080px;
+    border: 0;
+    transform-origin: 0 0;
+    pointer-events: none;
+  }
+  #card-current .slide-name {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--fg);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* Card 2: Next slide preview */
+  #card-next { right: 16px; top: 16px; width: calc(40% - 16px); height: calc(40% - 24px); }
+  #card-next .preview-frame {
+    flex: 1;
+    background: #000;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    opacity: 0.7;
+  }
+  #card-next iframe {
+    width: 1920px;
+    height: 1080px;
+    border: 0;
+    transform-origin: 0 0;
+    pointer-events: none;
+  }
+  #card-next .slide-name {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Card 3: Teleprompter */
+  #card-prompter { left: 16px; bottom: 16px; width: calc(60% - 24px); height: calc(40% - 24px); }
+  .prompter-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.30);
+    border-radius: 4px;
+    font-family: var(--serif, Newsreader, serif);
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--fg);
+  }
+  .prompter-body em { color: var(--gold); font-style: normal; }
+  .prompter-body::-webkit-scrollbar { width: 6px; }
+  .prompter-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+  /* Card 4: Timer + page indicator */
+  #card-meter { right: 16px; bottom: 16px; width: calc(40% - 16px); height: calc(60% - 24px); }
+  #card-meter .timer-big {
+    font-family: var(--mono);
+    font-size: 64px;
+    font-weight: 500;
+    color: var(--fg);
+    letter-spacing: -0.02em;
+    text-align: center;
+    line-height: 1;
+    margin-top: 16px;
+  }
+  #card-meter .timer-big.elapsed-warn { color: var(--gold); }
+  #card-meter .timer-big.elapsed-over { color: var(--warn); }
+  #card-meter .timer-mode {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.22em;
+    margin-top: 4px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+  #card-meter .meter-row {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 12px;
+    font-family: var(--mono);
+  }
+  #card-meter .meter-num {
+    font-size: 28px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  #card-meter .meter-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    text-align: center;
+  }
+  #card-meter .meter-controls {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: auto;
+    padding-top: 12px;
+  }
+  #card-meter button {
+    background: transparent;
+    border: 1px solid var(--panel-bd);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  #card-meter button:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Layout presets */
+  .layout-buttons { display: flex; gap: 6px; }
+  .layout-buttons button { padding: 4px 8px; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">SPEAKER</div>
+  <div class="status">
+    SLIDE <strong id="t-cur">—</strong> / <span id="t-total">—</span>
+    &nbsp;·&nbsp;
+    <span id="t-link" class="disconnected">DISCONNECTED</span>
+  </div>
+  <div class="right">
+    <div class="layout-buttons">
+      <button data-layout="grid">GRID</button>
+      <button data-layout="prompter">PROMPTER</button>
+      <button data-layout="duo">DUO</button>
+    </div>
+    <button id="btn-prev">‹ PREV</button>
+    <button id="btn-next">NEXT ›</button>
+  </div>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- Card 1: Current slide preview -->
+  <div class="card" id="card-current" data-magnet="tl">
+    <div class="card-head">
+      <span class="card-dot"></span>
+      <span class="card-title">CURRENT</span>
+    </div>
+    <div class="card-body">
+      <div class="preview-frame"><iframe id="iframe-current" src=""></iframe></div>
+      <div class="slide-name" id="name-current">—</div>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+
+  <!-- Card 2: Next slide preview -->
+  <div class="card" id="card-next" data-magnet="tr">
+    <div class="card-head">
+      <span class="card-dot" style="background:var(--gold)"></span>
+      <span class="card-title">NEXT UP</span>
+    </div>
+    <div class="card-body">
+      <div class="preview-frame"><iframe id="iframe-next" src=""></iframe></div>
+      <div class="slide-name" id="name-next">—</div>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+
+  <!-- Card 3: Teleprompter -->
+  <div class="card" id="card-prompter" data-magnet="bl">
+    <div class="card-head">
+      <span class="card-dot" style="background:#9ee493"></span>
+      <span class="card-title">SPEAKER NOTES</span>
+    </div>
+    <div class="card-body">
+      <div class="prompter-body" id="prompter-body">
+        Waiting for slide deck to connect…
+      </div>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+
+  <!-- Card 4: Timer + meter -->
+  <div class="card" id="card-meter" data-magnet="br">
+    <div class="card-head">
+      <span class="card-dot" style="background:var(--warn)"></span>
+      <span class="card-title">TIMER</span>
+    </div>
+    <div class="card-body">
+      <div class="timer-big" id="timer">00:00</div>
+      <div class="timer-mode" id="timer-mode">ELAPSED · TARGET {{DURATION_MIN}} MIN</div>
+      <div class="meter-row">
+        <div>
+          <div class="meter-num" id="m-elapsed">0%</div>
+          <div class="meter-label">ELAPSED</div>
+        </div>
+        <div>
+          <div class="meter-num" id="m-progress">0%</div>
+          <div class="meter-label">PROGRESS</div>
+        </div>
+      </div>
+      <div class="meter-controls">
+        <button id="btn-start">START</button>
+        <button id="btn-pause">PAUSE</button>
+        <button id="btn-reset">RESET</button>
+        <button id="btn-mode">↔ MODE</button>
+      </div>
+    </div>
+    <div class="resize-handle"></div>
+  </div>
+
+</div>
+
+<script>
+  // ============ CONFIG (filled from spec) ============
+  const TARGET_MIN = parseInt('{{DURATION_MIN}}', 10) || 30;
+  const DECK_URL = '{{DECK_URL}}';   // e.g., './deck.html' — same-origin only
+
+  // ============ DECK CONNECTION via BroadcastChannel ============
+  // Both windows must be same-origin. The main slide-deck broadcasts state;
+  // we listen + send back nav commands. Heartbeat detects disconnects.
+  const bc = ('BroadcastChannel' in window) ? new BroadcastChannel('viz-deck-presenter') : null;
+  let connected = false;
+  let lastBeat = 0;
+  let state = { current: 0, total: 1, slides: [] };
+
+  function send(msg) { if (bc) bc.postMessage(msg); }
+  function setLink(ok) {
+    connected = ok;
+    const el = document.getElementById('t-link');
+    el.textContent = ok ? 'CONNECTED' : 'DISCONNECTED';
+    el.className = ok ? '' : 'disconnected';
+  }
+
+  if (bc) {
+    bc.onmessage = e => {
+      const m = e.data || {};
+      if (m.type === 'state') {
+        state = m;
+        lastBeat = Date.now();
+        setLink(true);
+        renderState();
+      } else if (m.type === 'beat') {
+        lastBeat = Date.now();
+        setLink(true);
+      }
+    };
+    // Ask deck for current state on open
+    send({ type: 'hello' });
+    setInterval(() => { if (Date.now() - lastBeat > 3000) setLink(false); }, 1000);
+  }
+
+  document.getElementById('btn-prev').onclick = () => send({ type: 'nav', dir: -1 });
+  document.getElementById('btn-next').onclick = () => send({ type: 'nav', dir: +1 });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); send({ type: 'nav', dir: +1 }); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); send({ type: 'nav', dir: -1 }); }
+  });
+
+  // ============ IFRAME PREVIEWS ============
+  // Strategy: load deck HTML twice in iframes, jump to slide N via location.hash.
+  // Scale 1920x1080 down to fit the card preview area.
+  function syncIframe(iframeEl, slideIdx) {
+    if (!DECK_URL || DECK_URL.startsWith('{{')) return;
+    const wantHash = '#' + (slideIdx + 1);
+    if (!iframeEl.src) {
+      iframeEl.src = DECK_URL + wantHash;
+    } else {
+      try {
+        iframeEl.contentWindow.location.hash = wantHash;
+      } catch { iframeEl.src = DECK_URL + wantHash; }
+    }
+  }
+
+  function scaleIframes() {
+    document.querySelectorAll('.preview-frame').forEach(frame => {
+      const iframe = frame.querySelector('iframe');
+      if (!iframe) return;
+      const w = frame.clientWidth;
+      const h = frame.clientHeight;
+      const scale = Math.min(w / 1920, h / 1080);
+      iframe.style.transform = `scale(${scale})`;
+      iframe.style.width = '1920px';
+      iframe.style.height = '1080px';
+    });
+  }
+  window.addEventListener('resize', scaleIframes);
+  setTimeout(scaleIframes, 200);
+
+  // ============ RENDER STATE ============
+  function renderState() {
+    document.getElementById('t-cur').textContent = state.current + 1;
+    document.getElementById('t-total').textContent = state.total;
+
+    const curMeta = state.slides[state.current] || {};
+    const nextMeta = state.slides[state.current + 1] || {};
+    document.getElementById('name-current').textContent = curMeta.title || `Slide ${state.current + 1}`;
+    document.getElementById('name-next').textContent = nextMeta.title || (state.current + 1 < state.total ? `Slide ${state.current + 2}` : '— end —');
+
+    syncIframe(document.getElementById('iframe-current'), state.current);
+    if (state.current + 1 < state.total) syncIframe(document.getElementById('iframe-next'), state.current + 1);
+    scaleIframes();
+
+    // Notes
+    const notes = curMeta.notes || '（这一页没有 Speaker Notes — 提醒自己临场补一句钩子。）';
+    document.getElementById('prompter-body').innerHTML = notes;
+
+    // Progress
+    const pct = state.total > 1 ? Math.round((state.current / (state.total - 1)) * 100) : 0;
+    document.getElementById('m-progress').textContent = pct + '%';
+  }
+
+  // ============ TIMER ============
+  let timerStart = null, timerPaused = 0, timerRunning = false;
+  let countdownMode = false;
+  function fmt(sec) {
+    sec = Math.max(0, Math.floor(sec));
+    const m = Math.floor(sec / 60), s = sec % 60;
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
+  function tickTimer() {
+    if (!timerRunning) return;
+    const elapsedSec = (Date.now() - timerStart) / 1000 + timerPaused;
+    const targetSec = TARGET_MIN * 60;
+    const display = countdownMode ? targetSec - elapsedSec : elapsedSec;
+    const tEl = document.getElementById('timer');
+    tEl.textContent = (countdownMode && display < 0 ? '-' : '') + fmt(Math.abs(display));
+    tEl.className = 'timer-big';
+    const ratio = elapsedSec / targetSec;
+    if (ratio > 1.0) tEl.classList.add('elapsed-over');
+    else if (ratio > 0.9) tEl.classList.add('elapsed-warn');
+    document.getElementById('m-elapsed').textContent = Math.round(ratio * 100) + '%';
+  }
+  setInterval(tickTimer, 250);
+  document.getElementById('btn-start').onclick = () => {
+    if (timerRunning) return;
+    timerStart = Date.now() - timerPaused * 1000;
+    timerPaused = 0;
+    timerRunning = true;
+  };
+  document.getElementById('btn-pause').onclick = () => {
+    if (!timerRunning) return;
+    timerPaused = (Date.now() - timerStart) / 1000;
+    timerRunning = false;
+  };
+  document.getElementById('btn-reset').onclick = () => {
+    timerRunning = false;
+    timerStart = null;
+    timerPaused = 0;
+    document.getElementById('timer').textContent = '00:00';
+    document.getElementById('timer').className = 'timer-big';
+    document.getElementById('m-elapsed').textContent = '0%';
+  };
+  document.getElementById('btn-mode').onclick = () => {
+    countdownMode = !countdownMode;
+    document.getElementById('timer-mode').textContent =
+      (countdownMode ? 'COUNTDOWN · ' : 'ELAPSED · ') + 'TARGET ' + TARGET_MIN + ' MIN';
+  };
+
+  // ============ DRAG + RESIZE + MAGNETIC SNAP ============
+  document.querySelectorAll('.card').forEach(card => {
+    const head = card.querySelector('.card-head');
+    const handle = card.querySelector('.resize-handle');
+    let drag = null;
+
+    head.addEventListener('mousedown', e => {
+      drag = { mode: 'move', x0: e.clientX, y0: e.clientY,
+               L: card.offsetLeft, T: card.offsetTop };
+      card.classList.add('dragging');
+      e.preventDefault();
+    });
+    if (handle) handle.addEventListener('mousedown', e => {
+      drag = { mode: 'resize', x0: e.clientX, y0: e.clientY,
+               W: card.offsetWidth, H: card.offsetHeight };
+      card.classList.add('dragging');
+      e.preventDefault(); e.stopPropagation();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x0, dy = e.clientY - drag.y0;
+      if (drag.mode === 'move') {
+        card.style.left = (drag.L + dx) + 'px';
+        card.style.top  = (drag.T + dy) + 'px';
+        card.style.right = 'auto';
+        card.style.bottom = 'auto';
+      } else {
+        card.style.width  = Math.max(240, drag.W + dx) + 'px';
+        card.style.height = Math.max(160, drag.H + dy) + 'px';
+      }
+    });
+    document.addEventListener('mouseup', () => {
+      if (!drag) return;
+      // Magnetic snap to nearest corner zone
+      if (drag.mode === 'move') {
+        const stage = document.getElementById('stage');
+        const sw = stage.clientWidth, sh = stage.clientHeight;
+        const cl = card.offsetLeft, ct = card.offsetTop;
+        const cw = card.offsetWidth, ch = card.offsetHeight;
+        const ccx = cl + cw/2, ccy = ct + ch/2;
+        // Snap to thirds grid
+        if (ccx < sw/3)        card.style.left = '16px';
+        else if (ccx > 2*sw/3) card.style.left = (sw - cw - 16) + 'px';
+        if (ccy < sh/3)        card.style.top = '16px';
+        else if (ccy > 2*sh/3) card.style.top = (sh - ch - 16) + 'px';
+      }
+      card.classList.remove('dragging');
+      drag = null;
+      scaleIframes();
+    });
+  });
+
+  // Resize stage triggers iframe rescale
+  new ResizeObserver(scaleIframes).observe(document.body);
+
+  // ============ LAYOUT PRESETS ============
+  function applyLayout(name) {
+    const C = id => document.getElementById(id);
+    const stage = document.getElementById('stage');
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    const m = 16, gap = 16;
+    if (name === 'grid') {
+      const cw = (sw - 2*m - gap) / 2, ch = (sh - 2*m - gap) / 2;
+      C('card-current').style.cssText  = `left:${m}px;top:${m}px;width:${cw}px;height:${ch}px;`;
+      C('card-next').style.cssText     = `left:${m+cw+gap}px;top:${m}px;width:${cw}px;height:${ch}px;`;
+      C('card-prompter').style.cssText = `left:${m}px;top:${m+ch+gap}px;width:${cw}px;height:${ch}px;`;
+      C('card-meter').style.cssText    = `left:${m+cw+gap}px;top:${m+ch+gap}px;width:${cw}px;height:${ch}px;`;
+    } else if (name === 'prompter') {
+      // Prompter dominant
+      const cw = (sw - 2*m - gap) * 0.30;
+      const px = (sw - 2*m - gap) * 0.70;
+      C('card-current').style.cssText  = `left:${m+px+gap}px;top:${m}px;width:${cw}px;height:${(sh-2*m-gap)/3}px;`;
+      C('card-next').style.cssText     = `left:${m+px+gap}px;top:${m+(sh-2*m-gap)/3+gap}px;width:${cw}px;height:${(sh-2*m-gap)/3}px;`;
+      C('card-meter').style.cssText    = `left:${m+px+gap}px;top:${m+2*(sh-2*m-gap)/3+2*gap}px;width:${cw}px;height:${(sh-2*m-gap)/3 - gap}px;`;
+      C('card-prompter').style.cssText = `left:${m}px;top:${m}px;width:${px}px;height:${sh-2*m}px;`;
+    } else if (name === 'duo') {
+      // Just current + notes
+      const cw = (sw - 2*m - gap) / 2;
+      C('card-current').style.cssText  = `left:${m}px;top:${m}px;width:${cw}px;height:${sh-2*m}px;`;
+      C('card-prompter').style.cssText = `left:${m+cw+gap}px;top:${m}px;width:${cw}px;height:${(sh-2*m-gap)*0.7}px;`;
+      C('card-next').style.cssText     = `left:${m+cw+gap}px;top:${m+(sh-2*m-gap)*0.7+gap}px;width:${cw*0.6 - gap/2}px;height:${(sh-2*m-gap)*0.3}px;`;
+      C('card-meter').style.cssText    = `left:${m+cw+gap+cw*0.6+gap/2}px;top:${m+(sh-2*m-gap)*0.7+gap}px;width:${cw*0.4 - gap/2}px;height:${(sh-2*m-gap)*0.3}px;`;
+    }
+    scaleIframes();
+  }
+  document.querySelectorAll('.layout-buttons button').forEach(b => {
+    b.onclick = () => applyLayout(b.dataset.layout);
+  });
+
+</script>
+</body>
+</html>

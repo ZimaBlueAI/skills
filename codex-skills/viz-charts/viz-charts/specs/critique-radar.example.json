@@ -1,0 +1,19 @@
+{
+  "title": "5-dimension design critique — v0.3 release",
+  "subtitle": "Scoring the v3 PPTX bridge against the 5-dim standard (each 0–10)",
+  "type": "radar",
+  "categories": [
+    "Philosophy alignment",
+    "Visual hierarchy",
+    "Craft quality",
+    "Functionality",
+    "Originality"
+  ],
+  "series": [
+    { "name": "viz-deck pptx-deck",       "data": [8.2, 8.0, 7.6, 8.8, 7.4] },
+    { "name": "biz-decision PPTX",        "data": [9.0, 7.8, 7.4, 8.2, 6.8] },
+    { "name": "viz-charts native chart",  "data": [8.4, 7.6, 8.6, 9.2, 7.0] }
+  ],
+  "canvas": "ppt169",
+  "theme": "terminal"
+}

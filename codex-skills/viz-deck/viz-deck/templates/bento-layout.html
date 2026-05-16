@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{TITLE}} — Bento Highlights</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030711; --bg-2:#07111f; --panel:#0c1525; --panel-2:#101a2e;
+  --line:rgba(151,209,255,0.14); --line-strong:rgba(151,209,255,0.30);
+  --text:#edf7ff; --muted:#a8bdd5; --faint:#688096;
+  --cyan:#42e8ff; --blue:#6ca5ff; --gold:#ffd987; --green:#78f7c5;
+  --sans: Inter, system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans)}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(66,232,255,0.10), transparent 28rem),
+    radial-gradient(circle at 88% 90%, rgba(255,217,135,0.08), transparent 26rem),
+    var(--bg);
+}
+.wrap{max-width:1320px; margin:0 auto; padding:80px 32px}
+.eyebrow{font-family:var(--mono); font-size:0.78rem; color:var(--cyan); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:1rem}
+h1{font-size:clamp(2.2rem, 4vw, 3.2rem); line-height:1.08; margin:0 0 1.6rem; font-weight:700; letter-spacing:-0.01em; max-width:900px}
+.lead{font-size:1.15rem; color:var(--muted); max-width:780px; line-height:1.6; margin:0 0 3rem}
+
+/* ============ BENTO GRID ============ */
+/* 12-col grid; each tile sets `data-span="X-Y"` (cols × rows). */
+.bento{display:grid; grid-template-columns:repeat(12, 1fr); grid-auto-rows: minmax(140px, auto); gap:14px}
+.tile{
+  background:linear-gradient(180deg, var(--panel-2), var(--panel));
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px 26px;
+  position:relative;
+  overflow:hidden;
+  display:flex; flex-direction:column; justify-content:space-between;
+  transition: transform 0.3s ease, border-color 0.2s, box-shadow 0.3s;
+}
+.tile:hover{ transform:translateY(-3px); border-color:var(--line-strong); box-shadow:0 18px 60px rgba(0,0,0,0.36) }
+.tile::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--accent-color, var(--cyan)); border-radius:2px}
+.tile.accent-cyan{ --accent-color: var(--cyan) }
+.tile.accent-gold{ --accent-color: var(--gold) }
+.tile.accent-blue{ --accent-color: var(--blue) }
+.tile.accent-green{ --accent-color: var(--green) }
+
+/* Tile content */
+.tile .label{font-family:var(--mono); font-size:0.72rem; color:var(--muted); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:0.4rem}
+.tile .value{font-size:clamp(2.4rem, 4vw, 4rem); font-weight:700; line-height:1; color:var(--accent-color, var(--cyan)); margin:0.4rem 0; font-family:var(--mono); letter-spacing:-0.02em}
+.tile .caption{font-size:0.96rem; color:var(--text); line-height:1.5; margin:0.6rem 0 0; max-width:96%}
+.tile .footer-meta{font-family:var(--mono); font-size:0.72rem; color:var(--faint); margin-top:0.8rem; letter-spacing:0.12em}
+
+/* Span variants — Tailwind-ish */
+.tile[data-span="1-1"]{ grid-column:span 3 }
+.tile[data-span="2-1"]{ grid-column:span 6 }
+.tile[data-span="3-1"]{ grid-column:span 9 }
+.tile[data-span="4-1"]{ grid-column:span 12 }
+.tile[data-span="1-2"]{ grid-column:span 3; grid-row:span 2 }
+.tile[data-span="2-2"]{ grid-column:span 6; grid-row:span 2 }
+
+/* Hero tile (big value + small icon shape) */
+.tile.hero .value{font-size:clamp(3.6rem, 6vw, 5.6rem)}
+.tile.hero .caption{font-size:1.08rem; max-width:80%}
+.tile.hero::after{
+  content:""; position:absolute; right:-40px; bottom:-40px;
+  width:200px; height:200px; border-radius:50%;
+  background:radial-gradient(circle, var(--accent-color, var(--cyan)) 0%, transparent 70%);
+  opacity:0.18; pointer-events:none;
+}
+
+@media (max-width:920px){
+  .bento{grid-template-columns:repeat(6, 1fr)}
+  .tile[data-span="1-1"]{grid-column:span 3}
+  .tile[data-span="2-1"]{grid-column:span 6}
+  .tile[data-span="3-1"]{grid-column:span 6}
+  .tile[data-span="4-1"]{grid-column:span 6}
+  .tile[data-span="1-2"], .tile[data-span="2-2"]{grid-column:span 6; grid-row:auto}
+}
+
+footer{margin-top:4rem; padding-top:2rem; border-top:1px solid var(--line); font-family:var(--mono); font-size:0.78rem; color:var(--faint); letter-spacing:0.12em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">{{EYEBROW}}</div>
+  <h1>{{TITLE}}</h1>
+  <p class="lead">{{LEAD}}</p>
+
+  <section class="bento" aria-label="bento highlights">
+
+    <!-- Big hero tile: takes 2x2 -->
+    <article class="tile hero accent-cyan" data-span="2-2">
+      <div>
+        <div class="label">{{TILE1_LABEL}}</div>
+        <div class="value">{{TILE1_VALUE}}</div>
+      </div>
+      <div>
+        <p class="caption">{{TILE1_CAPTION}}</p>
+        <div class="footer-meta">{{TILE1_SOURCE}}</div>
+      </div>
+    </article>
+
+    <!-- Two 1x1 tiles to the right of hero -->
+    <article class="tile accent-gold" data-span="1-1">
+      <div>
+        <div class="label">{{TILE2_LABEL}}</div>
+        <div class="value">{{TILE2_VALUE}}</div>
+      </div>
+      <p class="caption">{{TILE2_CAPTION}}</p>
+    </article>
+    <article class="tile accent-blue" data-span="1-1">
+      <div>
+        <div class="label">{{TILE3_LABEL}}</div>
+        <div class="value">{{TILE3_VALUE}}</div>
+      </div>
+      <p class="caption">{{TILE3_CAPTION}}</p>
+    </article>
+    <article class="tile accent-cyan" data-span="2-1">
+      <div>
+        <div class="label">{{TILE4_LABEL}}</div>
+        <div class="value">{{TILE4_VALUE}}</div>
+      </div>
+      <p class="caption">{{TILE4_CAPTION}}</p>
+    </article>
+
+    <!-- Wide 4-col tile -->
+    <article class="tile accent-gold" data-span="4-1">
+      <div>
+        <div class="label">{{TILE5_LABEL}}</div>
+        <div class="value">{{TILE5_VALUE}}</div>
+      </div>
+      <p class="caption">{{TILE5_CAPTION_LONG}}</p>
+    </article>
+
+    <!-- Three 1x1 tiles -->
+    <article class="tile accent-cyan" data-span="1-1">
+      <div>
+        <div class="label">{{TILE6_LABEL}}</div>
+        <div class="value">{{TILE6_VALUE}}</div>
+      </div>
+      <p class="caption">{{TILE6_CAPTION}}</p>
+    </article>
+    <article class="tile accent-blue" data-span="1-1">
+      <div>
+        <div class="label">{{TILE7_LABEL}}</div>
+        <div class="value">{{TILE7_VALUE}}</div>
+      </div>
+      <p class="caption">{{TILE7_CAPTION}}</p>
+    </article>
+    <article class="tile accent-gold" data-span="2-1">
+      <div>
+        <div class="label">{{TILE8_LABEL}}</div>
+        <div class="value">{{TILE8_VALUE}}</div>
+      </div>
+      <p class="caption">{{TILE8_CAPTION}}</p>
+    </article>
+
+  </section>
+
+  <footer>{{TITLE}} · {{DATE}} · GENERATED BY viz-deck bento-layout</footer>
+</div>
+</body>
+</html>

@@ -32,8 +32,25 @@
 - `<section class="slide">` × N（每页一屏）
 - 键盘翻页 JS（← → 空格 Esc）
 - 进度指示器（右下角 N/N）
-- Speaker Notes 模式（按 `s` 切换，演讲者备注独立屏显示）
+- **Speaker Mode（按 `s`）**——独立演讲者窗口弹出，4 张磁吸卡片（当前页缩略图 / 下一页预览 / 提词器 / 计时器），BroadcastChannel 双窗同步
+- **Inline Notes（按 `n`）**——演讲者备注全屏覆盖层，适合单屏调试
 - 双视图：演示模式 / overview 模式（按 `o` 切换，缩略图列表）
+- `?present=true` URL 参数自动打开演讲者窗口
+
+### Speaker Mode 工作机制
+
+`slide-deck.html` 通过 BroadcastChannel `'viz-deck-presenter'` 广播状态（当前页 + 总页 + 所有页 metadata）。`speaker-window.html` 是单文件预制的演讲者窗口，监听同一 channel：
+
+- **CURRENT 卡片**：1920×1080 iframe 等比缩放显示当前页
+- **NEXT UP 卡片**：同样 iframe，显示下一页（不透明度 70%）
+- **SPEAKER NOTES 卡片**：自动抓取 `<aside class="speaker-notes">` 内容，serif 大字号提词器
+- **TIMER 卡片**：elapsed / countdown 双模式（按 ↔ MODE 切换），> 90% 黄色警告，> 100% 红色告警
+- 上方 LAYOUT 按钮：GRID（2×2 默认）/ PROMPTER（提词器占 70%）/ DUO（双屏对比）
+- 卡片头部可拖动 + 右下角 resize，松手后磁吸到三分网格
+
+**前提**：投影屏 + 笔记本双屏。slide-deck.html 全屏在投影屏；演讲者窗口在笔记本。两个窗口必须同源（即从同一个文件路径或同一 origin 服务的）。本地直接双击打开走 `file://` 协议时 BroadcastChannel 仍可用——但有些浏览器（如 Safari 严格模式）会拦截 popup，此时 hint 会提示。
+
+**输出物**：`templates/slide-deck.html` 旁边永远生成一份 `speaker-window.html`（同目录），无需配置。`export-pptx.sh` 等导出脚本会忽略 speaker-window.html（不进 PPTX 包）。
 
 ### 2. 内容结构（每页）
 

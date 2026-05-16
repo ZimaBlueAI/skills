@@ -1,0 +1,100 @@
+{
+  "name": "intentionally_flawed_demo_deck",
+  "theme": "deep-space",
+  "format": "ppt169",
+  "_note": "This spec is intentionally flawed to demonstrate reflect-and-redo.mjs catching issues. Each comment block below explains the intended fault.",
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "title-cover",
+      "eyebrow": "DEMO",
+      "title": "ok",
+      "_fault_d2": "title is only 2 chars — looks broken",
+      "subtitle": "",
+      "_fault_d4": "cover slide missing subtitle"
+    },
+    {
+      "id": "agenda",
+      "layout": "agenda",
+      "eyebrow": "AGENDA",
+      "title": "We will cover lorem ipsum many many many things and yet more things and then some more, this is way too long for a real cover",
+      "_fault_d2": "title is 110+ chars and contains 'lorem ipsum'",
+      "_fault_d3": "lorem ipsum left behind",
+      "items": [
+        "{{PLACEHOLDER_ITEM_1}}",
+        "Real item",
+        "Another item"
+      ],
+      "_fault_d3_b": "unfilled {{placeholder}} in items list"
+    },
+    {
+      "id": "too-many-bullets",
+      "layout": "title-bullets",
+      "eyebrow": "FACTS",
+      "title": "Why agents are interesting",
+      "bullets": [
+        { "text": "Agents are smart" },
+        { "text": "Agents are fast" },
+        { "text": "Agents are cheap" },
+        { "text": "Agents are scalable" },
+        { "text": "Agents are reliable" },
+        { "text": "Agents are popular" },
+        { "text": "Agents are growing" },
+        { "text": "Agents are global" },
+        { "text": "Agents are flexible" },
+        { "text": "Agents are stable" }
+      ],
+      "_fault_d2": "10 bullets — way over the 7±2 cognitive limit"
+    },
+    {
+      "id": "missing-kpis",
+      "layout": "kpi-grid",
+      "eyebrow": "METRICS",
+      "title": "Our numbers",
+      "_fault_d4": "kpi-grid layout but no kpis array supplied",
+      "kpis": []
+    },
+    {
+      "id": "kpis-without-units",
+      "layout": "kpi-grid",
+      "eyebrow": "REVENUE",
+      "title": "Revenue snapshot",
+      "kpis": [
+        { "label": "ARR", "value": "28" },
+        { "label": "Growth", "value": "47" },
+        { "label": "Churn", "value": "2.1" }
+      ],
+      "_fault_d3": "all three KPIs have plain numbers but no unit field"
+    },
+    {
+      "id": "broken-two-column",
+      "layout": "two-column",
+      "eyebrow": "COMPARE",
+      "title": "A vs B",
+      "left": { "heading": "Option A", "items": ["pro 1", "pro 2"] },
+      "_fault_d4": "two-column layout but right column missing"
+    },
+    {
+      "id": "empty-bento",
+      "layout": "bento-grid",
+      "eyebrow": "BENTO",
+      "title": "Highlights",
+      "tiles": [],
+      "_fault_d4": "bento-grid layout but tiles array is empty"
+    },
+    {
+      "id": "good-cover",
+      "layout": "section-divider",
+      "section": "02",
+      "title": "Healthy section divider",
+      "subtitle": "This one is fine — for contrast.",
+      "notes": "should pass"
+    },
+    {
+      "id": "closing",
+      "layout": "closing",
+      "_fault_d4": "closing slide has no title",
+      "subtitle": "thanks"
+    }
+  ]
+}

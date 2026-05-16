@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<title>Reflective Critique — intentionally_flawed_demo_deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030711; --panel:#0c1525; --line:rgba(151,209,255,0.14);
+  --text:#edf7ff; --muted:#a8bdd5; --faint:#688096;
+  --cyan:#42e8ff; --gold:#ffd987; --red:#ff8c8c; --green:#78f7c5;
+  --sans:Inter,sans-serif; --serif:Newsreader,serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); padding:40px}
+.wrap{max-width:1180px; margin:0 auto}
+h1{font-family:var(--serif); font-weight:500; font-size:2.4rem; margin:0 0 0.4rem; letter-spacing:-0.01em}
+.subtitle{color:var(--muted); margin-bottom:2rem; font-size:1.05rem}
+.summary{display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-bottom:2.4rem}
+.kpi{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:1.4rem 1.6rem}
+.kpi .lbl{font-family:var(--mono); font-size:0.72rem; color:var(--muted); letter-spacing:0.20em; text-transform:uppercase; margin-bottom:0.4rem}
+.kpi .val{font-family:var(--mono); font-size:2.6rem; font-weight:500; color:var(--cyan); line-height:1}
+.kpi .val.warn{color:var(--gold)}
+.kpi .val.bad{color:var(--red)}
+.dim-bar{display:grid; grid-template-columns:repeat(5, 1fr); gap:12px; margin-bottom:2.4rem}
+.dim{padding:1rem 1.2rem; border:1px solid var(--line); border-radius:10px; background:var(--panel)}
+.dim .lbl{font-family:var(--mono); font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem}
+.dim .score{font-family:var(--mono); font-size:1.8rem; color:var(--cyan); line-height:1}
+.dim.unscored .score{color:var(--faint)}
+.dim small{display:block; margin-top:0.3rem; font-size:0.7rem; color:var(--faint); font-family:var(--mono)}
+table{width:100%; border-collapse:collapse; margin-top:1.4rem; font-size:0.92rem}
+th,td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-family:var(--mono); font-size:0.70rem; color:var(--cyan); letter-spacing:0.18em; text-transform:uppercase; font-weight:500}
+td.score{font-family:var(--mono); color:var(--cyan); font-weight:500}
+tr.flagged td{background:rgba(255,140,140,0.04)}
+tr.flagged td.score{color:var(--red)}
+.issues{font-family:var(--mono); font-size:0.78rem; color:var(--gold); margin:0; padding:0; list-style:none}
+.issues li{padding:2px 0}
+.issues li::before{content:"▸ "; color:var(--cyan)}
+.note{margin-top:2.4rem; padding:1.2rem 1.4rem; border:1px dashed var(--line); border-radius:10px; color:var(--muted); font-size:0.92rem; line-height:1.6}
+.note strong{color:var(--gold)}
+</style>
+</head><body><div class="wrap">
+
+<h1>Reflective critique</h1>
+<p class="subtitle">intentionally_flawed_demo_deck · 9 slides · threshold 7/10</p>
+
+<div class="summary">
+  <div class="kpi">
+    <div class="lbl">Deck mean</div>
+    <div class="val  ">7.8</div>
+  </div>
+  <div class="kpi">
+    <div class="lbl">Flagged slides</div>
+    <div class="val warn ">1 / 9</div>
+  </div>
+  <div class="kpi">
+    <div class="lbl">Verdict</div>
+    <div class="val" style="font-size:1.4rem; padding-top:0.5rem; font-family:var(--serif); font-weight:500">
+      Good
+    </div>
+  </div>
+</div>
+
+<div class="dim-bar">
+  <div class="dim unscored">
+    <div class="lbl">D1 · Philosophy</div>
+    <div class="score">7.0</div>
+    <small>NEUTRAL · needs LLM judgement</small>
+  </div>
+  <div class="dim"><div class="lbl">D2 · Hierarchy</div><div class="score">8.6</div><small>Mean over 9</small></div>
+  <div class="dim"><div class="lbl">D3 · Craft</div><div class="score">8.8</div><small>Objective</small></div>
+  <div class="dim"><div class="lbl">D4 · Function</div><div class="score">7.4</div><small>Layout fit</small></div>
+  <div class="dim unscored">
+    <div class="lbl">D5 · Originality</div>
+    <div class="score">7.0</div>
+    <small>NEUTRAL · needs LLM judgement</small>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr><th>#</th><th>Layout</th><th>Title</th><th>D2</th><th>D3</th><th>D4</th><th>Mean</th><th>Issues</th></tr>
+  </thead>
+  <tbody>
+    
+      <tr class="">
+        <td>01</td>
+        <td>title-cover</td>
+        <td>ok</td>
+        <td class="score">6</td>
+        <td class="score">10</td>
+        <td class="score">6</td>
+        <td class="score">7.2</td>
+        <td><ul class="issues"><li>Title is too short (&lt;4 chars) — looks broken</li><li>cover slide missing title or subtitle</li></ul></td>
+      </tr>
+    
+      <tr class="flagged">
+        <td>02</td>
+        <td>agenda</td>
+        <td>We will cover lorem ipsum many many many things and yet more things and then some more, this is way too long for a real cover</td>
+        <td class="score">7</td>
+        <td class="score">0</td>
+        <td class="score">10</td>
+        <td class="score">6.2</td>
+        <td><ul class="issues"><li>Title is very long (125 chars) — wrapping risk on 16:9</li><li>Unfilled {{placeholder}} still in spec</li><li>Lorem ipsum left behind</li></ul></td>
+      </tr>
+    
+      <tr class="">
+        <td>03</td>
+        <td>title-bullets</td>
+        <td>Why agents are interesting</td>
+        <td class="score">8</td>
+        <td class="score">10</td>
+        <td class="score">10</td>
+        <td class="score">8.4</td>
+        <td><ul class="issues"><li>10 bullets — over the 7±2 cognitive limit</li></ul></td>
+      </tr>
+    
+      <tr class="">
+        <td>04</td>
+        <td>kpi-grid</td>
+        <td>Our numbers</td>
+        <td class="score">10</td>
+        <td class="score">10</td>
+        <td class="score">5</td>
+        <td class="score">7.8</td>
+        <td><ul class="issues"><li>kpi-grid layout but no kpis supplied</li></ul></td>
+      </tr>
+    
+      <tr class="">
+        <td>05</td>
+        <td>kpi-grid</td>
+        <td>Revenue snapshot</td>
+        <td class="score">10</td>
+        <td class="score">9</td>
+        <td class="score">10</td>
+        <td class="score">8.6</td>
+        <td><ul class="issues"><li>KPI "ARR" has number "28" without unit</li></ul></td>
+      </tr>
+    
+      <tr class="">
+        <td>06</td>
+        <td>two-column</td>
+        <td>A vs B</td>
+        <td class="score">10</td>
+        <td class="score">10</td>
+        <td class="score">5</td>
+        <td class="score">7.8</td>
+        <td><ul class="issues"><li>two-column layout missing left/right</li></ul></td>
+      </tr>
+    
+      <tr class="">
+        <td>07</td>
+        <td>bento-grid</td>
+        <td>Highlights</td>
+        <td class="score">10</td>
+        <td class="score">10</td>
+        <td class="score">5</td>
+        <td class="score">7.8</td>
+        <td><ul class="issues"><li>bento-grid layout but no tiles</li></ul></td>
+      </tr>
+    
+      <tr class="">
+        <td>08</td>
+        <td>section-divider</td>
+        <td>Healthy section divider</td>
+        <td class="score">10</td>
+        <td class="score">10</td>
+        <td class="score">10</td>
+        <td class="score">8.8</td>
+        <td><ul class="issues"></ul></td>
+      </tr>
+    
+      <tr class="">
+        <td>09</td>
+        <td>closing</td>
+        <td>(no title)</td>
+        <td class="score">6</td>
+        <td class="score">10</td>
+        <td class="score">6</td>
+        <td class="score">7.2</td>
+        <td><ul class="issues"><li>Title is too short (&lt;4 chars) — looks broken</li><li>closing slide has no title (use "Thank you" minimum)</li></ul></td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<div class="note">
+  <strong>How to read this report.</strong> Only three of five dimensions are scored objectively from
+  the JSON spec (visual hierarchy, craft, functionality). Philosophy alignment and originality
+  remain at neutral 7.0 — they need a human or LLM look at the rendered output. To resolve a
+  flagged slide:
+  <ol>
+    <li>Read the issues column — most are mechanical (missing units, over-stuffed bullets).</li>
+    <li>For each issue, edit <code>reflect-input-flawed-sample.json</code> directly.</li>
+    <li>Re-run <code>node make-pptx-deck.mjs &amp;&amp; node reflect-and-redo.mjs</code> until all slides ≥ threshold.</li>
+    <li>For D1 and D5 (subjective), open the rendered HTML / PPTX and ask Claude to evaluate against the chosen design philosophy.</li>
+  </ol>
+</div>
+
+</div></body></html>

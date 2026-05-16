@@ -1,6 +1,6 @@
 ---
 name: biz-html-viz
-description: Generate terminal-grade HTML reports for business decision flows — board briefs, CEO strategy canvas, tech roadmap, MRD/market analysis, project status, dev/QA reports, retrospectives, and 5-dimension design critiques. v3 adds an optional editable-PPTX bridge via hugohe3/ppt-master (terminal-themed, every shape clickable, zero motion — for stakeholders who must mark up the report in PowerPoint). Use when the user asks for a "可视化报告 / HTML 报告 / 决策简报 / 路线图 / MRD / 项目看板 / 复盘 / 验收 / retro / board deck / 设计评审 / critique / 5 维评审 / 决策 PPT / 可编辑 PPTX / 终端风 PPT". Do NOT use for marketing landing pages, narrated slide decks, or playful UI — for narrated/animated decks route to viz-deck pptx-deck mode. The 5-dimension critique (philosophy alignment / visual hierarchy / craft quality / functionality / anti-cliché originality, each 0-10) emits a terminal-style critique HTML with embedded radar chart; standard derived from huashu-design's critique-guide.md.
+description: Generate terminal-grade HTML reports for business decision flows — board briefs, CEO strategy canvas, tech roadmap, MRD/market analysis, project status, dev/QA reports, retrospectives, and 5-dimension design critiques. v3 adds an optional editable-PPTX bridge via hugohe3/ppt-master (terminal-themed, every shape clickable, zero motion — for stakeholders who must mark up the report in PowerPoint). v4 adds the template-router subagent (mckinsey-pptx lineage) — when the user's intent is ambiguous ("做个 deck 给老板"、"做个汇报"), it scores all 8 templates against a 5-dimension routing rubric (audience fit / decision type / temporal fit / density / trigger keywords) and writes a one-paragraph justification into the chosen HTML's header comment. Use when the user asks for a "可视化报告 / HTML 报告 / 决策简报 / 路线图 / MRD / 项目看板 / 复盘 / 验收 / retro / board deck / 设计评审 / critique / 5 维评审 / 决策 PPT / 可编辑 PPTX / 终端风 PPT / 选哪个模板 / 用哪种报告 / 老板看的 deck". Do NOT use for marketing landing pages, narrated slide decks, or playful UI — for narrated/animated decks route to viz-deck pptx-deck mode. The 5-dimension critique (philosophy alignment / visual hierarchy / craft quality / functionality / anti-cliché originality, each 0-10) emits a terminal-style critique HTML with embedded radar chart; standard derived from huashu-design's critique-guide.md.
 license: MIT
 ---
 
@@ -24,7 +24,11 @@ license: MIT
 
 **强制**先读 `references/design-system.md`。这份文档定义了所有 7 个模板共享的 CSS 变量、字体、骨架结构和视觉禁令。**未读 design-system 直接写 HTML = 视觉不统一 = 返工**。
 
-### 第二步：选模板
+### 第二步：选模板（v4 路由器）
+
+> **v4 新增 template-router subagent**：用户表达含混（"做个 deck 给老板"、"做个项目报告"）→ 自动跑 8 模板路由 + 输出 ROUTING DECISION 块 + 写辩护文进 HTML 注释头。详见 `~/.claude/agents/08-template-router.md` + `references/template-routing-rubric.md`。
+>
+> 用户明确说"做 board brief"或"做 retro" → **不需要路由**，直接走对应模板。
 
 | 用户意图 / agent 来源 | 模板 |
 |---|---|

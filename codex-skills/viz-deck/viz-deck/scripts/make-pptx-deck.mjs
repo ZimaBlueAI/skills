@@ -265,6 +265,62 @@ function layoutPullquote(slide, theme, fmt) {
   return parts.join("\n");
 }
 
+function layoutBentoGrid(slide, theme, fmt) {
+  // Apple-inspired bento grid: 3 columns × N rows of unequal-span tiles.
+  // Tile spec: { span: 1|2|3, label, value, caption, accent?: "gold"|"accent"|"accent2", ratio?: number }
+  // Auto-pack tiles row-by-row, wrapping when sum(span) > 3.
+  const { w, h } = fmt;
+  const parts = [svgOpen(w, h, theme)];
+  const pad = 80, gutter = 20, cols = 3;
+  parts.push(rect(pad, 78, 60, 6, { fill: theme.accentBar, rx: 3 }));
+  parts.push(txt(pad, 130, (slide.eyebrow || "FEATURES").toUpperCase(), { size: 14, color: theme.muted, font: theme.font, weight: 500 }));
+  parts.push(txt(pad, 180, slide.title || "Highlights", { size: 36, color: theme.text, font: theme.titleFont, weight: 700 }));
+
+  const tiles = (slide.tiles || []).map(t => ({
+    span: Math.min(cols, Math.max(1, parseInt(t.span || 1, 10))),
+    label: t.label || "",
+    value: t.value || "",
+    caption: t.caption || "",
+    accent: t.accent || "accent",  // "accent" | "accent2" | "gold"
+  }));
+  if (tiles.length === 0) {
+    parts.push(svgClose());
+    return parts.join("\n");
+  }
+
+  // Greedy row packing
+  const rows = []; let row = []; let used = 0;
+  for (const t of tiles) {
+    if (used + t.span > cols) { if (row.length) rows.push(row); row = []; used = 0; }
+    row.push(t); used += t.span;
+  }
+  if (row.length) rows.push(row);
+
+  const gridTop = 240;
+  const gridBottom = h - pad;
+  const cellW = (w - 2*pad - (cols-1)*gutter) / cols;
+  const rowH = Math.min(180, (gridBottom - gridTop - (rows.length-1)*gutter) / Math.max(1, rows.length));
+
+  rows.forEach((r, ri) => {
+    let x = pad;
+    const y = gridTop + ri * (rowH + gutter);
+    r.forEach((t) => {
+      const tw = cellW * t.span + gutter * (t.span - 1);
+      const accentClr = t.accent === "gold" ? theme.gold : (t.accent === "accent2" ? theme.accent2 : theme.accent);
+      parts.push(rect(x, y, tw, rowH, { fill: theme.panel, rx: 14, opacity: 0.85 }));
+      parts.push(rect(x, y, 4, rowH, { fill: accentClr, rx: 2 }));
+      parts.push(txt(x + 24, y + 36, t.label.toUpperCase(), { size: 12, color: theme.muted, font: theme.font, weight: 600 }));
+      // Value: bigger when tile spans more cells
+      const vSize = t.span === 1 ? 40 : (t.span === 2 ? 58 : 76);
+      parts.push(txt(x + 24, y + rowH/2 + vSize/3, t.value, { size: vSize, color: accentClr, font: theme.titleFont, weight: 700 }));
+      if (t.caption) parts.push(txt(x + 24, y + rowH - 22, t.caption, { size: 14, color: theme.text, font: theme.font, weight: 400 }));
+      x += tw + gutter;
+    });
+  });
+  parts.push(svgClose());
+  return parts.join("\n");
+}
+
 function layoutClosing(slide, theme, fmt) {
   const { w, h } = fmt;
   const parts = [svgOpen(w, h, theme)];
@@ -289,6 +345,7 @@ const LAYOUTS = {
   "two-column": layoutTwoColumn,
   "kpi-grid": layoutKpiGrid,
   "pullquote": layoutPullquote,
+  "bento-grid": layoutBentoGrid,
   "closing": layoutClosing
 };
 

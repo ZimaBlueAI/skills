@@ -99,6 +99,21 @@
       "notes": "Bet A returns capital in 2 quarters; Bet C takes 4. We are not yet at scale to absorb Bet C's J-curve."
     },
     {
+      "id": "features",
+      "layout": "bento-grid",
+      "eyebrow": "What's new",
+      "title": "Six product bets in 2026",
+      "tiles": [
+        { "span": 2, "label": "FASTER", "value": "3.2×", "caption": "Time-to-first-byte across all agents.", "accent": "accent" },
+        { "span": 1, "label": "SMARTER", "value": "GPT-5", "caption": "Multi-step reasoning loop.", "accent": "gold" },
+        { "span": 1, "label": "ARR", "value": "$28M", "caption": "+47% YoY.", "accent": "accent2" },
+        { "span": 1, "label": "LATENCY", "value": "180ms", "caption": "p95, cached.", "accent": "accent" },
+        { "span": 1, "label": "MARGIN", "value": "71%", "caption": "Gross.", "accent": "gold" },
+        { "span": 3, "label": "MOAT", "value": "Vertical depth", "caption": "Finance + legal verticals where domain context compounds.", "accent": "accent2" }
+      ],
+      "notes": "Bento grid — Apple-inspired feature recap. Lean on big numbers; each tile is a single claim."
+    },
+    {
       "id": "quote",
       "layout": "pullquote",
       "quote": "We didn't lose because we picked the wrong bet — we lost because we hedged across two and couldn't fund either.",

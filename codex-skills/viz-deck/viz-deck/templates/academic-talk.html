@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{TITLE}} — Academic Talk</title>
+<meta name="description" content="{{DESCRIPTION}}" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030711;--bg-2:#07111f;--panel:rgba(12,26,46,0.65);
+  --line:rgba(151,209,255,0.14);--line-strong:rgba(151,209,255,0.28);
+  --text:#edf7ff;--muted:#a8bdd5;--faint:#688096;
+  --cyan:#42e8ff;--blue:#6ca5ff;--gold:#ffd987;--green:#78f7c5;--red:#ff8c8c;
+  --serif: Newsreader, Georgia, serif;
+  --sans: Inter, system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius:14px; --max:1180px;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{
+  margin:0; color:var(--text); font-family:var(--sans); line-height:1.62;
+  background:
+    radial-gradient(circle at 15% 8%, rgba(66,232,255,0.12), transparent 30rem),
+    radial-gradient(circle at 85% 5%, rgba(255,217,135,0.06), transparent 28rem),
+    linear-gradient(180deg, #02050c 0%, #061020 55%, #02050c 100%);
+  overflow-x:hidden;
+}
+body::before{
+  content:""; position:fixed; inset:0; z-index:-2; opacity:0.30;
+  background-image:
+    linear-gradient(rgba(151,209,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(151,209,255,0.04) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.20));
+}
+a{color:inherit; text-decoration:none}
+.skip-link{position:fixed; left:18px; top:18px; z-index:99; transform:translateY(-140%); padding:8px 14px; border-radius:999px; background:var(--cyan); color:#00121d; font-weight:700; transition:transform 0.18s}
+.skip-link:focus{transform:translateY(0)}
+
+/* Top progress bar */
+.progress-line{position:fixed; top:0; left:0; right:0; height:2px; background:rgba(255,255,255,0.06); z-index:80}
+.progress-line span{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--cyan), var(--gold))}
+
+/* Section nav */
+.deck-nav{position:fixed; top:14px; left:50%; transform:translateX(-50%); z-index:60;
+  display:flex; gap:2px; padding:4px; border-radius:999px;
+  border:1px solid var(--line); background:rgba(7,17,31,0.78); backdrop-filter:blur(14px);
+  font-family:var(--mono); font-size:0.72rem; letter-spacing:0.10em}
+.deck-nav a{padding:5px 12px; border-radius:999px; color:var(--muted); transition:color 0.15s, background 0.15s}
+.deck-nav a:hover{color:var(--text); background:rgba(66,232,255,0.08)}
+.deck-nav a.active{color:#00121d; background:var(--cyan); font-weight:600}
+
+.section{width:min(var(--max), calc(100vw - 32px)); margin:0 auto; padding:7rem 0 4rem; position:relative}
+
+/* ============ HERO ============ */
+.hero{padding-top:9rem; padding-bottom:4rem}
+.hero-meta{font-family:var(--mono); font-size:0.78rem; color:var(--cyan); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:2rem}
+.hero-meta span{margin-right:1.4rem}
+.hero-meta strong{color:var(--text); font-weight:500}
+.hero h1{
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(2.6rem, 5.4vw, 4.2rem); line-height:1.08; letter-spacing:-0.012em;
+  margin:0 0 1.4rem; max-width:1000px;
+}
+.hero .subtitle{font-family:var(--serif); font-size:clamp(1.3rem, 2vw, 1.6rem); color:var(--muted); margin:0 0 2.4rem; max-width:880px; font-style:italic; font-weight:400}
+.hero-byline{display:flex; gap:2.4rem; flex-wrap:wrap; font-family:var(--mono); font-size:0.85rem; padding:1.2rem 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+.hero-byline > div{display:flex; flex-direction:column; gap:4px}
+.hero-byline .lbl{font-size:0.65rem; color:var(--faint); letter-spacing:0.18em; text-transform:uppercase}
+.hero-byline .val{color:var(--text); font-weight:500}
+
+/* ============ ABSTRACT ============ */
+.abstract{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:2rem 2.2rem; margin-top:3rem; max-width:880px}
+.abstract .label{font-family:var(--mono); font-size:0.7rem; color:var(--gold); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:0.6rem}
+.abstract .body{font-family:var(--serif); font-size:1.08rem; line-height:1.65; color:var(--text)}
+.abstract .body em{color:var(--gold); font-style:normal; font-weight:500}
+
+/* ============ SECTION (action-title sections) ============ */
+.action-section{padding:7rem 0 4rem; position:relative}
+.action-section .kicker{font-family:var(--mono); font-size:0.78rem; color:var(--cyan); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:1.2rem; display:flex; align-items:baseline; gap:1rem}
+.action-section .kicker .num{color:var(--gold); font-size:2.2rem; font-weight:500; letter-spacing:0}
+.action-title{
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(2rem, 3.6vw, 2.8rem); line-height:1.16; letter-spacing:-0.01em;
+  margin:0 0 1.2rem; max-width:980px;
+}
+/* ACTION TITLE = full sentence with verb. Subject + Verb + Object.
+   Not "Market analysis" but "Market grows 47% YoY in 2026".  */
+.action-section .verb-highlight{color:var(--gold); font-style:normal}
+.action-section .lead{font-size:1.08rem; color:var(--muted); margin:0 0 2rem; max-width:780px; line-height:1.7}
+
+/* Exhibits (figures + tables) */
+.exhibit{margin:2.4rem 0 2rem; padding:1.6rem 1.8rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--panel)}
+.exhibit-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:1rem; padding-bottom:0.8rem; border-bottom:1px solid var(--line)}
+.exhibit-label{font-family:var(--mono); font-size:0.7rem; color:var(--cyan); letter-spacing:0.18em; text-transform:uppercase}
+.exhibit-title{font-family:var(--serif); font-size:1.15rem; color:var(--text); font-weight:500; margin:0}
+.exhibit-source{font-family:var(--mono); font-size:0.75rem; color:var(--faint)}
+.exhibit-body{min-height:140px}
+.exhibit-caption{font-family:var(--serif); font-size:0.92rem; color:var(--muted); font-style:italic; margin-top:1rem; padding-top:0.8rem; border-top:1px dashed var(--line)}
+
+/* Citation markers */
+sup.cite{font-family:var(--mono); font-size:0.65rem; color:var(--cyan); padding:1px 5px; border-radius:3px; background:rgba(66,232,255,0.10); margin-left:1px; cursor:pointer; vertical-align:super}
+sup.cite:hover{background:rgba(66,232,255,0.25)}
+
+/* Argument list */
+.argument-list{counter-reset:arg; list-style:none; padding:0; margin:0}
+.argument-list li{counter-increment:arg; padding:1rem 0 1rem 3.4rem; position:relative; border-bottom:1px solid var(--line)}
+.argument-list li:last-child{border-bottom:0}
+.argument-list li::before{content:counter(arg, decimal-leading-zero); position:absolute; left:0; top:1rem; font-family:var(--mono); font-size:1.4rem; color:var(--gold); font-weight:500}
+.argument-list li strong{display:block; font-family:var(--serif); font-size:1.12rem; color:var(--text); font-weight:500; margin-bottom:0.4rem}
+.argument-list li span{color:var(--muted); font-size:0.96rem}
+
+/* Two-col compare */
+.compare{display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; margin-top:2rem}
+@media (max-width:760px){.compare{grid-template-columns:1fr}}
+.compare .col{padding:1.6rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--panel)}
+.compare .col h3{font-family:var(--serif); font-size:1.2rem; font-weight:500; margin:0 0 1rem; padding-bottom:0.6rem; border-bottom:1px solid var(--line)}
+.compare .col h3 .tag-mini{font-family:var(--mono); font-size:0.7rem; color:var(--cyan); letter-spacing:0.18em; text-transform:uppercase; margin-right:0.6rem}
+.compare ul{list-style:none; padding:0; margin:0}
+.compare li{padding:0.5rem 0; padding-left:1.2rem; position:relative; color:var(--muted); font-size:0.95rem}
+.compare li::before{content:"·"; position:absolute; left:0; top:0.4rem; color:var(--cyan); font-size:1.4rem; line-height:1}
+
+/* ============ Q & A ============ */
+.qa-list{display:flex; flex-direction:column; gap:1.2rem; margin-top:2rem}
+.qa-item{padding:1.4rem 1.8rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); position:relative}
+.qa-item::before{content:"Q"; position:absolute; top:-12px; left:24px; font-family:var(--mono); font-size:0.7rem; font-weight:600; color:#00121d; background:var(--cyan); padding:3px 8px; border-radius:4px; letter-spacing:0.10em}
+.qa-question{font-family:var(--serif); font-size:1.1rem; color:var(--text); font-weight:500; margin:0 0 0.8rem; line-height:1.5}
+.qa-answer{color:var(--muted); font-size:0.96rem; line-height:1.65; margin:0; padding-top:0.8rem; border-top:1px dashed var(--line)}
+.qa-answer::before{content:"A · "; font-family:var(--mono); font-size:0.72rem; color:var(--gold); font-weight:600; letter-spacing:0.12em; margin-right:4px}
+
+/* ============ REFERENCES ============ */
+.references{padding:6rem 0 4rem; border-top:1px solid var(--line); margin-top:4rem}
+.references h2{font-family:var(--serif); font-size:1.6rem; font-weight:500; margin:0 0 1.6rem}
+.ref-list{list-style:none; padding:0; margin:0; counter-reset:ref}
+.ref-list li{counter-increment:ref; padding:0.8rem 0 0.8rem 3rem; position:relative; border-bottom:1px solid var(--line); font-family:var(--serif); font-size:0.92rem; line-height:1.55; color:var(--muted)}
+.ref-list li:last-child{border-bottom:0}
+.ref-list li::before{content:"["counter(ref)"]"; position:absolute; left:0; top:0.8rem; font-family:var(--mono); font-size:0.78rem; color:var(--cyan); font-weight:500}
+.ref-list li strong{color:var(--text); font-weight:500}
+.ref-list li em{color:var(--gold); font-style:italic; font-weight:400}
+.ref-list li a{color:var(--cyan); text-decoration:underline; text-underline-offset:2px}
+
+footer{padding:4rem 0 3rem; text-align:center; color:var(--faint); font-family:var(--mono); font-size:0.78rem; letter-spacing:0.12em}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1; transform:none; transition:none}
+}
+.reveal{opacity:0; transform:translateY(20px); transition:opacity 0.6s ease, transform 0.6s ease}
+.reveal.visible{opacity:1; transform:none}
+
+@media (max-width:720px){
+  .section, .action-section{padding:4rem 0 3rem}
+  .hero{padding-top:5rem}
+  .deck-nav{display:none}
+  .hero-byline{flex-direction:column; gap:0.8rem}
+}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="progress-line"><span id="progress"></span></div>
+
+<nav class="deck-nav" aria-label="sections">
+  <a href="#abstract" class="nav-link active">ABSTRACT</a>
+  <a href="#sec-01" class="nav-link">01</a>
+  <a href="#sec-02" class="nav-link">02</a>
+  <a href="#sec-03" class="nav-link">03</a>
+  <a href="#sec-04" class="nav-link">04</a>
+  <a href="#qa" class="nav-link">Q&amp;A</a>
+  <a href="#refs" class="nav-link">REFS</a>
+</nav>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero section">
+  <div class="hero-meta">
+    <span>{{CONFERENCE}}</span>
+    <span>{{TRACK}}</span>
+    <span>SESSION <strong>{{SESSION_NO}}</strong></span>
+  </div>
+
+  <h1>{{ACTION_TITLE}}</h1>
+  <p class="subtitle">{{SUBTITLE_ACTION_PHRASE}}</p>
+
+  <div class="hero-byline">
+    <div>
+      <span class="lbl">Speaker</span>
+      <span class="val">{{SPEAKER_NAME}}, {{SPEAKER_TITLE}}</span>
+    </div>
+    <div>
+      <span class="lbl">Affiliation</span>
+      <span class="val">{{AFFILIATION}}</span>
+    </div>
+    <div>
+      <span class="lbl">Date</span>
+      <span class="val">{{DATE}}</span>
+    </div>
+    <div>
+      <span class="lbl">Duration</span>
+      <span class="val">{{DURATION_MIN}} min</span>
+    </div>
+  </div>
+
+  <div class="abstract" id="abstract">
+    <div class="label">ABSTRACT</div>
+    <div class="body">{{ABSTRACT_TEXT_WITH_ACTION_VERBS}}</div>
+  </div>
+</section>
+
+<!-- ============ SECTION 01 ============ -->
+<section class="action-section" id="sec-01">
+  <div class="kicker">
+    <span class="num">01</span>
+    <span>{{SECTION_01_PHASE}}</span>
+  </div>
+  <!-- ACTION TITLE: every section title MUST be a full sentence with a verb.
+       BAD:  "Market overview"
+       GOOD: "The agent market doubled in 2026, but ARPU stayed flat" -->
+  <h2 class="action-title">{{SECTION_01_ACTION_TITLE}}</h2>
+  <p class="lead">{{SECTION_01_LEAD_WITH_VERB}}</p>
+
+  <ol class="argument-list">
+    <li>
+      <strong>{{S01_ARG1_CLAIM_AS_FULL_SENTENCE}}</strong>
+      <span>{{S01_ARG1_EVIDENCE}}<sup class="cite" data-ref="1">[1]</sup></span>
+    </li>
+    <li>
+      <strong>{{S01_ARG2_CLAIM_AS_FULL_SENTENCE}}</strong>
+      <span>{{S01_ARG2_EVIDENCE}}<sup class="cite" data-ref="2">[2]</sup></span>
+    </li>
+    <li>
+      <strong>{{S01_ARG3_CLAIM_AS_FULL_SENTENCE}}</strong>
+      <span>{{S01_ARG3_EVIDENCE}}<sup class="cite" data-ref="3">[3]</sup></span>
+    </li>
+  </ol>
+
+  <figure class="exhibit">
+    <header class="exhibit-head">
+      <div>
+        <div class="exhibit-label">EXHIBIT 1</div>
+        <p class="exhibit-title">{{EXHIBIT_1_TITLE}}</p>
+      </div>
+      <span class="exhibit-source">SOURCE · {{EXHIBIT_1_SOURCE}}</span>
+    </header>
+    <div class="exhibit-body">
+      <!-- 用 viz-charts skill 在这里嵌入 ECharts 或 Mermaid 图。
+           charts must come from real data; cite source in exhibit-head. -->
+      <div data-echarts-option='{{EXHIBIT_1_ECHARTS_OPTION}}' style="width:100%; height:340px"></div>
+    </div>
+    <p class="exhibit-caption">{{EXHIBIT_1_CAPTION_INTERPRETIVE}}</p>
+  </figure>
+</section>
+
+<!-- ============ SECTION 02 ============ -->
+<section class="action-section" id="sec-02">
+  <div class="kicker">
+    <span class="num">02</span>
+    <span>{{SECTION_02_PHASE}}</span>
+  </div>
+  <h2 class="action-title">{{SECTION_02_ACTION_TITLE}}</h2>
+  <p class="lead">{{SECTION_02_LEAD}}</p>
+
+  <div class="compare">
+    <div class="col">
+      <h3><span class="tag-mini">HYPOTHESIS A</span> {{S02_HYPA_TITLE}}</h3>
+      <ul>
+        <li>{{S02_HYPA_POINT_1}}<sup class="cite" data-ref="4">[4]</sup></li>
+        <li>{{S02_HYPA_POINT_2}}</li>
+        <li>{{S02_HYPA_POINT_3}}</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3><span class="tag-mini">HYPOTHESIS B</span> {{S02_HYPB_TITLE}}</h3>
+      <ul>
+        <li>{{S02_HYPB_POINT_1}}<sup class="cite" data-ref="5">[5]</sup></li>
+        <li>{{S02_HYPB_POINT_2}}</li>
+        <li>{{S02_HYPB_POINT_3}}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 03 ============ -->
+<section class="action-section" id="sec-03">
+  <div class="kicker">
+    <span class="num">03</span>
+    <span>{{SECTION_03_PHASE}}</span>
+  </div>
+  <h2 class="action-title">{{SECTION_03_ACTION_TITLE}}</h2>
+  <p class="lead">{{SECTION_03_LEAD}}</p>
+
+  <figure class="exhibit">
+    <header class="exhibit-head">
+      <div>
+        <div class="exhibit-label">EXHIBIT 2 · METHODOLOGY</div>
+        <p class="exhibit-title">{{EXHIBIT_2_TITLE}}</p>
+      </div>
+      <span class="exhibit-source">N={{EXHIBIT_2_N}}, {{EXHIBIT_2_PERIOD}}</span>
+    </header>
+    <div class="exhibit-body">
+      {{EXHIBIT_2_BODY_HTML}}
+    </div>
+    <p class="exhibit-caption">{{EXHIBIT_2_CAPTION}}</p>
+  </figure>
+</section>
+
+<!-- ============ SECTION 04 ============ -->
+<section class="action-section" id="sec-04">
+  <div class="kicker">
+    <span class="num">04</span>
+    <span>{{SECTION_04_PHASE}}</span>
+  </div>
+  <h2 class="action-title">{{SECTION_04_ACTION_TITLE_CONCLUSION}}</h2>
+  <p class="lead">{{SECTION_04_LEAD}}</p>
+
+  <ol class="argument-list">
+    <li>
+      <strong>{{TAKEAWAY_1_AS_SENTENCE}}</strong>
+      <span>{{TAKEAWAY_1_EVIDENCE}}</span>
+    </li>
+    <li>
+      <strong>{{TAKEAWAY_2_AS_SENTENCE}}</strong>
+      <span>{{TAKEAWAY_2_EVIDENCE}}</span>
+    </li>
+    <li>
+      <strong>{{TAKEAWAY_3_OPEN_QUESTION}}</strong>
+      <span>{{TAKEAWAY_3_NEXT_STEPS}}</span>
+    </li>
+  </ol>
+</section>
+
+<!-- ============ Q & A ============ -->
+<section class="action-section" id="qa">
+  <div class="kicker">
+    <span class="num">Q&amp;A</span>
+    <span>ANTICIPATED QUESTIONS</span>
+  </div>
+  <h2 class="action-title">Three questions I expect you will ask.</h2>
+  <p class="lead">If your question is not here, raise it — I'll address it now or follow up via email.</p>
+
+  <div class="qa-list">
+    <article class="qa-item">
+      <p class="qa-question">{{QA_QUESTION_1}}</p>
+      <p class="qa-answer">{{QA_ANSWER_1_WITH_EVIDENCE}}<sup class="cite" data-ref="6">[6]</sup></p>
+    </article>
+    <article class="qa-item">
+      <p class="qa-question">{{QA_QUESTION_2}}</p>
+      <p class="qa-answer">{{QA_ANSWER_2}}</p>
+    </article>
+    <article class="qa-item">
+      <p class="qa-question">{{QA_QUESTION_3_LIMITATIONS}}</p>
+      <p class="qa-answer">{{QA_ANSWER_3_HONEST_LIMITATIONS}}</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ REFERENCES ============ -->
+<section class="references section" id="refs">
+  <h2>References</h2>
+  <ol class="ref-list">
+    <li><strong>{{REF_1_AUTHORS}}</strong> ({{REF_1_YEAR}}). <em>{{REF_1_TITLE}}</em>. {{REF_1_VENUE}}. <a href="{{REF_1_URL}}">{{REF_1_URL}}</a></li>
+    <li><strong>{{REF_2_AUTHORS}}</strong> ({{REF_2_YEAR}}). <em>{{REF_2_TITLE}}</em>. {{REF_2_VENUE}}.</li>
+    <li><strong>{{REF_3_AUTHORS}}</strong> ({{REF_3_YEAR}}). <em>{{REF_3_TITLE}}</em>. {{REF_3_VENUE}}.</li>
+    <li><strong>{{REF_4_AUTHORS}}</strong> ({{REF_4_YEAR}}). <em>{{REF_4_TITLE}}</em>. {{REF_4_VENUE}}.</li>
+    <li><strong>{{REF_5_AUTHORS}}</strong> ({{REF_5_YEAR}}). <em>{{REF_5_TITLE}}</em>. {{REF_5_VENUE}}.</li>
+    <li><strong>{{REF_6_AUTHORS}}</strong> ({{REF_6_YEAR}}). <em>{{REF_6_TITLE}}</em>. {{REF_6_VENUE}}.</li>
+  </ol>
+</section>
+
+</main>
+
+<footer>
+  {{TITLE}} · {{SPEAKER_NAME}} · {{DATE}} · GENERATED BY viz-deck academic-talk
+</footer>
+
+<script>
+  // Progress bar + section nav
+  const progress = document.getElementById('progress');
+  const sections = Array.from(document.querySelectorAll('.action-section, .hero, .references'));
+  const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+
+  function updateProgress() {
+    const sc = window.scrollY;
+    const max = document.body.scrollHeight - window.innerHeight;
+    progress.style.width = (max > 0 ? (sc / max * 100) : 0) + '%';
+    let activeId = sections[0]?.id;
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top - 100 <= 0) activeId = s.id;
+    }
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + activeId));
+  }
+  updateProgress();
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.10 });
+  document.querySelectorAll('.action-section, .abstract, .exhibit, .qa-item').forEach(el => {
+    el.classList.add('reveal'); io.observe(el);
+  });
+
+  // Citation click → scroll to ref
+  document.querySelectorAll('sup.cite').forEach(c => {
+    c.addEventListener('click', e => {
+      const ref = c.dataset.ref;
+      const target = document.querySelectorAll('.ref-list li')[parseInt(ref,10)-1];
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.style.background = 'rgba(255,217,135,0.10)';
+        setTimeout(() => { target.style.background = ''; }, 1500);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+{
+  "name": "zimablueai_agents_2026_q4_investor_brief",
+  "theme": "deep-space",
+  "format": "ppt169",
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "title-cover",
+      "eyebrow": "KEYNOTE · 2026",
+      "title": "ZimaBlueAI Agents 平台 · 2026 Q4 投资人简报",
+      "subtitle": "ZimaBlueAI 是一家专注于企业级 AI Agent 编排的早期公司，2025 年 9 月成立，总部位于上海。本文档面向 B 轮潜在投资人，呈现公司当前状态、未来 18 个月的核心赌注以及融资请求。",
+      "author": "",
+      "date": "2026-05-16",
+      "notes": "Welcome. Today we'll cover 4 sections in roughly 25 minutes."
+    },
+    {
+      "id": "agenda",
+      "layout": "agenda",
+      "eyebrow": "AGENDA",
+      "title": "4 items, 25 minutes",
+      "items": [
+        "一、市场现状",
+        "二、三个战略选择",
+        "三、决议与融资请求",
+        "四、风险与限制"
+      ],
+      "notes": "High-level shape of the talk."
+    },
+    {
+      "id": "section-01",
+      "layout": "section-divider",
+      "section": "01",
+      "title": "一、市场现状",
+      "subtitle": "2026 年中国企业级 LLM 应用渗透率为 12%，远低于同期 SaaS 应用 38% 的水平。差距背后是三个结构性原因：本地化模型选型困难、合规与数据驻留要求高、缺乏面向中型企业的开箱方案。",
+      "notes": ""
+    },
+    {
+      "id": "市场现状-1",
+      "layout": "title-bullets",
+      "eyebrow": "一、市场现状",
+      "title": "一、市场现状",
+      "lead": "我们用一年时间验证了一件事：Agent 编排层是这个市场的关键瓶颈。客户不缺模型 API，缺的是把多个 Agent 编排成可交付业务的工具。",
+      "bullets": [
+        { "text": "客单价 ARPU 提升路径仍是核心瓶颈" },
+        { "text": "Agent 编排层是市场真正的关键瓶颈" },
+        { "text": "客户不缺模型 API，缺的是业务可交付编排工具" }
+      ],
+      "notes": "Agent 编排层是这个市场的关键瓶颈。客户不缺模型 API，缺的是把多个 Agent 编排成可交付业务的工具。"
+    },
+    {
+      "id": "市场现状-kpis-2",
+      "layout": "kpi-grid",
+      "eyebrow": "METRICS",
+      "title": "一、市场现状 · 关键数据",
+      "kpis": [
+        { "label": "活跃工作空间", "value": "12,847", "note": "2026Q3 · 超计划 14%" },
+        { "label": "客单价 ARPU", "value": "$48", "unit": "/月", "note": "2026Q3 · 略低于计划" },
+        { "label": "Logo 流失率", "value": "2.1", "unit": "%", "note": "2026Q3 · 历史最佳" },
+        { "label": "现金跑道", "value": "26", "unit": "月", "note": "含本次融资后 30 月" }
+      ],
+      "notes": "数据来源：内部 ARR 仪表盘、客户成功团队月报。所有数字截至 2026-05-15。"
+    },
+    {
+      "id": "section-02",
+      "layout": "section-divider",
+      "section": "02",
+      "title": "二、三个战略选择",
+      "subtitle": "我们当前面临一个清晰的资源分配决策：把下一笔预算押在哪。三个候选方向各有差异化的回报曲线。",
+      "notes": ""
+    },
+    {
+      "id": "战略选择-quote-1",
+      "layout": "pullquote",
+      "quote": "我们不会输给\"选错赌注\"——我们会输给\"想同时下三注，结果哪个都没下够\"。",
+      "author": "内部辩论",
+      "role": "12 周讨论后"
+    },
+    {
+      "id": "战略选择-2",
+      "layout": "title-bullets",
+      "eyebrow": "OPTION A · 垂直深度",
+      "title": "选择 A · 金融 + 法律垂直深度",
+      "lead": "把现有的 Agent 编排能力深度适配两个高 ARPU 行业，特别是金融的合规审查与法律的文档检索。",
+      "bullets": [
+        { "text": "客单价提升 25-30%（两个季度内）" },
+        { "text": "客户已存量，不需要新拓展" },
+        { "text": "工程团队已积累领域上下文" },
+        { "text": "风险：法律行业的监管审查需要 6-9 个月窗口期" }
+      ],
+      "notes": "风险：法律行业的监管审查需要 6-9 个月窗口期。"
+    },
+    {
+      "id": "战略选择-3",
+      "layout": "title-bullets",
+      "eyebrow": "OPTION B · 横向扩张",
+      "title": "选择 B · 更多工作空间",
+      "lead": "继续当前增长曲线，把工作空间数量推至 30,000。",
+      "bullets": [
+        { "text": "风险最低，已验证的增长机制" },
+        { "text": "不需要新雇人" },
+        { "text": "风险：ARPU 持续偏低，长期模型受限" }
+      ],
+      "notes": "风险：ARPU 持续偏低，长期模型受限。"
+    },
+    {
+      "id": "战略选择-4",
+      "layout": "title-bullets",
+      "eyebrow": "OPTION C · 开放平台",
+      "title": "选择 C · SDK + 应用市场",
+      "lead": "把 Agent 编排能力开放给第三方开发者，建立应用市场。",
+      "bullets": [
+        { "text": "18 个月内 TAM 扩大 10 倍（乐观估计）" },
+        { "text": "网络效应一旦启动难以复制" },
+        { "text": "风险：需要净新增 8 个工程师" },
+        { "text": "风险：市场运营是一项全新的肌肉，资本回报周期 12-18 个月" }
+      ],
+      "notes": "风险：需要净新增 8 个工程师，市场运营是一项全新的肌肉，资本回报周期 12-18 个月。"
+    },
+    {
+      "id": "section-03",
+      "layout": "section-divider",
+      "section": "03",
+      "title": "三、决议与融资请求",
+      "subtitle": "经过 12 周的内部辩论与客户访谈，董事会一致推荐方向 A——垂直深度。",
+      "notes": ""
+    },
+    {
+      "id": "决议-1",
+      "layout": "title-bullets",
+      "eyebrow": "决议理由",
+      "title": "为什么是 A 而不是 C",
+      "lead": "我们请求 1200 万美元 B 轮融资，估值 8000 万（pre-money）。",
+      "bullets": [
+        { "text": "现金回报最快（2 季度），最小化稀释" },
+        { "text": "与现有客户和团队能力最贴合" },
+        { "text": "选择 C 的 J-curve 在当前规模下无法吸收" }
+      ],
+      "notes": "选择 C 在 18 个月后可能仍是合理路径，但现在不行。"
+    },
+    {
+      "id": "决议-2",
+      "layout": "title-bullets",
+      "eyebrow": "资金用途",
+      "title": "$12M 的分配方式",
+      "lead": "75% 投入垂直深化，15% 补充工程，10% 战略储备。",
+      "bullets": [
+        { "text": "50% 投入金融垂直的合规与产品深化" },
+        { "text": "25% 投入法律垂直的早期客户拓展" },
+        { "text": "15% 补充工程团队" },
+        { "text": "10% 战略储备" }
+      ],
+      "notes": "战略储备是必备项——不要为了显得激进而把储备砍到 0。"
+    },
+    {
+      "id": "section-04",
+      "layout": "section-divider",
+      "section": "04",
+      "title": "四、风险与限制",
+      "subtitle": "我们诚实交代三个不能忽视的风险。",
+      "notes": ""
+    },
+    {
+      "id": "风险-1",
+      "layout": "title-bullets",
+      "eyebrow": "诚实风险清单",
+      "title": "三个不能忽视的风险",
+      "lead": "如有进一步问题，请联系：investors@zimablueai.com",
+      "bullets": [
+        { "text": "监管不确定性 · 金融行业 2026 年下半年可能出台新的 AI 监管细则", "note": "已在跟进" },
+        { "text": "大厂下场 · 阿里、字节都在做类似的 Agent 平台", "note": "聚焦消费场景，B 端差异化窗口仍开放" },
+        { "text": "客户集中度 · Top 5 客户占 ARR 的 42%", "note": "用方向 A 的 ARPU 提升降低这个数字" }
+      ],
+      "notes": "对每一个风险都给一个 mitigation 句子——不要只列风险不给应对。"
+    },
+    {
+      "id": "closing",
+      "layout": "closing",
+      "title": "Thank you",
+      "subtitle": "Q & A",
+      "contacts": [
+        "investors@zimablueai.com",
+        "https://decisions.zimablueai.com/q4-2026"
+      ],
+      "notes": "Open the floor."
+    }
+  ]
+}

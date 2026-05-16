@@ -1,12 +1,12 @@
 ---
 name: viz-deck
-description: Generate keynote-grade HTML deliverables — five output modes (keynote-report, hi-fi prototype, slide deck, motion-stage video, editable-pptx) sharing one deep-space cyan/blue/gold design language. v2 bridges to huashu-design for HTML→MP4/GIF/PPTX export; v3 adds a second bridge to hugohe3/ppt-master for true native DrawingML PPTX with clickable shapes, master slides, real animations, and per-slide TTS narration. Includes 20 design philosophies (Pentagram / Field.io / Kenya Hara / Sagmeister etc.) and a 5-dimension expert critique (philosophy alignment / visual hierarchy / craft quality / functionality / originality, each 0-10 with radar). Use for stage reports, architecture deep-dives, competitive landscapes (live web research), iOS/Android/macOS hi-fi prototypes, presentation slide decks, hero/explainer motion videos, and editable native PPTX with narration + animations. NOT for engineering scan-reads or printable sign-off documents — those use biz-html-viz. Trigger on "讲演 / 演示报告 / keynote / 阶段报告 / 架构深研 / 竞品对比 / 高保真原型 / hi-fi prototype / iOS 原型 / 幻灯片 / 演讲 PPT / 动画 demo / hero video / 导出 MP4 / 导出 PPTX / 可编辑 PPT / native PPTX / 母版 / 旁白 / TTS narration / 5 维评审 / 设计风格 / 20 哲学".
+description: Generate keynote-grade HTML deliverables — five output modes (keynote-report, hi-fi prototype, slide deck, motion-stage video, editable-pptx) sharing one deep-space cyan/blue/gold design language. v2 bridges to huashu-design for HTML→MP4/GIF/PPTX export; v3 adds a second bridge to hugohe3/ppt-master for true native DrawingML PPTX with clickable shapes, master slides, real animations, and per-slide TTS narration. v4 cross-pollinates from the 26-skill PPT landscape — adds a real Speaker Mode (S key opens a draggable presenter window with current/next preview + teleprompter + timer, BroadcastChannel-synced), Show-Don't-Tell 3-variant direction preview (frontend-slides), Doc→Deck converter (.md/.docx/.pdf via odin-slides + colloquium lineage), an academic-talk template (action-titles + citations + Q&A, academic-pptx-skill lineage), bento-grid layout (Apple-inspired), and a reflective per-page critique loop (PPTAgent lineage). Includes 20 design philosophies (Pentagram / Field.io / Kenya Hara / Sagmeister etc.) and a 5-dimension expert critique (philosophy alignment / visual hierarchy / craft quality / functionality / originality, each 0-10 with radar). Use for stage reports, architecture deep-dives, competitive landscapes (live web research), iOS/Android/macOS hi-fi prototypes, presentation slide decks with presenter mode, hero/explainer motion videos, editable native PPTX with narration + animations, and academic conference talks. NOT for engineering scan-reads or printable sign-off documents — those use biz-html-viz. Trigger on "讲演 / 演示报告 / keynote / 阶段报告 / 架构深研 / 竞品对比 / 高保真原型 / hi-fi prototype / iOS 原型 / 幻灯片 / 演讲 PPT / 演讲者模式 / speaker mode / 提词器 / 动画 demo / hero video / 导出 MP4 / 导出 PPTX / 可编辑 PPT / native PPTX / 母版 / 旁白 / TTS narration / 学术报告 / 论文答辩 / academic talk / action title / Doc 转 PPT / Markdown 转 PPT / Word 转 PPT / 长文转幻灯片 / bento / 苹果风 / 设计方向 / 三选一预览 / show don't tell / reflective critique / 5 维评审 / 设计风格 / 20 哲学".
 license: MIT
 ---
 
-# viz-deck: 讲演级可视化 · 五模产出
+# viz-deck: 讲演级可视化 · 五模产出 + 六项增强
 
-为客户演示、投资人路演、团队 keynote、客户原型评审、对外宣传视频、可编辑 PPT 交付提供**五种产出**，共享一套视觉语言。v2 通过 huashu-design 获得 HTML→MP4/PPTX 导出、20 哲学、5 维评审；**v3 新增 ppt-master 桥接**，获得真正可编辑的 native DrawingML PPTX（每个元素可点、母版可继承、TTS 旁白可嵌入）。
+为客户演示、投资人路演、团队 keynote、客户原型评审、对外宣传视频、可编辑 PPT 交付提供**五种产出**，共享一套视觉语言。v2 通过 huashu-design 获得 HTML→MP4/PPTX 导出、20 哲学、5 维评审；**v3** 新增 ppt-master 桥接（真正可编辑 native DrawingML PPTX、母版继承、TTS 旁白）。**v4** 取长补短自 26 个开源 PPT skill：Speaker Mode（html-ppt-skill）/ Show-Don't-Tell 三变体（frontend-slides）/ Doc→Deck（odin-slides + colloquium）/ Academic Talk（academic-pptx-skill）/ Bento Grid（apple-bento-grid）/ Reflective Loop（PPTAgent）。
 
 ## 五种产出模式
 
@@ -54,29 +54,58 @@ license: MIT
 
 按上表关键词判断走哪个模式。**含混不清时主动确认**（"这是要 60 分钟讲演稿还是分页 PPT 还是动画视频？"），不要默认。
 
-### Step 3 — （仅 v2）询问哲学方向（可选）
+### Step 3 — 询问哲学方向（v2 / v2.1 升级）
 
-如果用户的输入暗示视觉品味偏好（例如"日系"、"严肃"、"硅谷风"、"奢华"、"科幻感"），或主动说"用 XX 风格"，先读 `references/design-philosophies.md`，从 20 哲学里选定 1 个写进生成参数。**没说就用 viz-deck 默认深空风**——不要为了用而用。
+**情况 A**：用户明确指定哲学（"用 Kenya Hara 风" / "用 18"）→ 直接读 `references/design-philosophies.md` 对应条目。
+
+**情况 B**：用户上传参考图 / brand URL → 进顾问模式（同 v2）。
+
+**情况 C（v2.1 新增）**：用户**含混表达**（"高级一点"、"专业一点"、"做个 keynote 给 board 看"）→ 跑 Show-Don't-Tell 三变体预览：
+
+```bash
+node ~/.claude/skills/viz-deck/scripts/preview-shotgun.mjs \
+  --topic "项目主题" \
+  --scene "investor-pitch" \   # 或 product-launch / tech-deepdive / academic / default
+  --output ./previews/
+# 浏览器打开 ./previews/preview-board.html → 用户点 PICK 按钮选向 → 拿到 slug 写进生成参数
+```
+
+灵感来自 frontend-slides（17.5k Star）的 "show, don't tell" — 用户描述不清楚自己想要的视觉风格，但看到 3 张缩略图却能一眼分辨。
+
+**情况 D**：用户没说也没上传 → 用 viz-deck 默认深空风。**不要为了用而用 20 哲学**。
 
 ### Step 4 — 按模式执行
 
 #### 模式 1（keynote-report）
 
-| 子类型 | 模板 |
-|---|---|
-| 阶段汇报 / 项目状态 / Roadmap / 对外里程碑 | `stage-report.html` |
-| 系统架构 / 治理模型 / 技术纵深 / ADR | `architecture-deep.html` |
-| 竞品对比 / 技术雷达 / 市场格局 | `competitive-landscape.html` |
+| 子类型 | 模板 | 触发 |
+|---|---|---|
+| 阶段汇报 / 项目状态 / Roadmap / 对外里程碑 | `stage-report.html` | 商业、产品、季度 |
+| 系统架构 / 治理模型 / 技术纵深 / ADR | `architecture-deep.html` | 技术评审 |
+| 竞品对比 / 技术雷达 / 市场格局 | `competitive-landscape.html` | 必先调研 |
+| **学术报告 / 论文答辩 / 会议演讲**（v4 新增） | `academic-talk.html` | 学术、政府、研究 |
+| **Bento 卡片 / 特性总览**（v4 新增 · 可插入任意模式 1 报告中） | `bento-layout.html` | Apple 风功能/数字一览页 |
 
 **Competitive-Landscape 必须先调研**——读 `references/research-playbook.md`，严禁仅凭训练数据写竞品对比。
+
+**学术模式必读**：`references/academic-mode.md`。强制 action title（"市场翻倍" 而非"市场分析"）+ 引用规范 + Q&A 页 + Limitations。灵感来自 academic-pptx-skill。
 
 #### 模式 2（prototype）
 
 读 `references/prototype-mode.md` → 复制 `templates/prototype-shell.html` → 选设备外壳（iOS / Android / macOS / browser）→ 填 AppPhone 状态 → 真实素材（Wikimedia / Met / Unsplash）→ Playwright 点击测试。
 
-#### 模式 3（slide-deck）
+#### 模式 3（slide-deck）+ v4 Speaker Mode
 
 读 `references/slide-mode.md` → 复制 `templates/slide-deck.html` → 章节 3-5 / 总页 12-25 / 单页 ≤ 60 字 → 写 Speaker Notes → 用 `scripts/export-pptx.sh` 出可编辑 PPTX。
+
+**v4 Speaker Mode**（灵感来自 html-ppt-skill）：
+
+- `slide-deck.html` 旁边自动放 `speaker-window.html`
+- 按 **S** 弹出独立演讲者窗口，4 张磁吸卡片（CURRENT / NEXT / SPEAKER NOTES / TIMER）
+- BroadcastChannel 双窗同步翻页
+- 三档 LAYOUT 预设：GRID（2×2）/ PROMPTER（提词器占 70%）/ DUO（双屏对比）
+- TIMER 有 elapsed / countdown 双模式，> 90% 黄色警告
+- URL 加 `?present=true` 自动开演讲者窗口
 
 #### 模式 4（motion-stage）
 
@@ -86,9 +115,26 @@ license: MIT
 
 读 `references/pptx-master-bridge.md` → 复制 `templates/pptx-deck-spec.example.json` → 改字段（每页 layout + 数据）→ 跑 `scripts/export-editable-pptx.sh deck.json --theme deep-space --anim fade --trans fade`。
 
-支持 8 个布局：`title-cover`、`agenda`、`section-divider`、`title-bullets`、`two-column`、`kpi-grid`、`pullquote`、`closing`。
+支持 **9 个布局**（v4 新增 `bento-grid`）：`title-cover`、`agenda`、`section-divider`、`title-bullets`、`two-column`、`kpi-grid`、`pullquote`、**`bento-grid`**、`closing`。
 
 主题 3 选 1：`deep-space`（viz-deck 默认）、`terminal`（给 biz-decision-stack 用）、`deck-light`（公司模板友好）。
+
+**v4 新增前置工具：Doc→Deck**
+
+如果用户已经写好了一份长报告（.md/.docx/.pdf），不需要手写 JSON：
+
+```bash
+# .md 直接转
+node ~/.claude/skills/viz-deck/scripts/doc-to-spec.mjs \
+  --input report.md --output deck.json \
+  --theme deep-space --max-slides 25 --target-min 30
+
+# .docx 先 pandoc
+pandoc report.docx -o report.md --wrap=none
+node ~/.claude/skills/viz-deck/scripts/doc-to-spec.mjs --input report.md --output deck.json
+```
+
+详细见 `references/doc-to-deck.md`。灵感来自 odin-slides + colloquium。
 
 要旁白？加 `--with-notes` 让脚本写 `speaker_notes/`，再跑 `scripts/embed-narration.sh ./<build_dir> --voice zh-CN-XiaoxiaoNeural` → 生成 `*_narrated.pptx`。在 PowerPoint 里走 File → Export → Create a Video 出 MP4，画面+动画+旁白自动对齐。
 
@@ -118,15 +164,27 @@ license: MIT
 | 4 | 录制画布 1920×1080；时长 ≤ 12s（无解说）；first-frame 不空；末帧 hold 0.5s |
 | 5 | PPTX 用 unzip 检查 `ppt/slides/slide1.xml` 含多个 `<p:sp>`；PowerPoint 里 Tab 能逐个 shape 遍历；旁白模式下每页都有对应 mp3 |
 
-### Step 7 —（v2 可选）5 维评审
+### Step 7 —（v2 / v4 可选）5 维评审 + 反思循环
 
-读 `references/critique-5dim.md` → 对照 5 维给分 → 写 scores.json → 跑 `scripts/review-5dim.mjs` 生成评审 HTML（含雷达图）：
+**手动 5 维评审**（v2）：读 `references/critique-5dim.md` → 写 scores.json → 跑 `scripts/review-5dim.mjs` 生成 HTML 评审报告（含雷达图）：
 
 ```bash
 node scripts/review-5dim.mjs --input scores.json --output critique.html
 ```
 
 **触发场景**：用户问"好不好看"、"再优化"、"做对了吗"、"评一下"。
+
+**v4 自动反思循环（Reflective Loop）**（灵感来自 PPTAgent 4.4k Star）：对模式 5 生成的 spec 自动跑页面级客观评分：
+
+```bash
+node ~/.claude/skills/viz-deck/scripts/reflect-and-redo.mjs \
+  --spec deck.json --output ./reflect-report.html --threshold 7.0 \
+  --redo-prompts ./redo.txt
+```
+
+每页评 5 维（D2 视觉层级 / D3 细节执行 / D4 功能性 客观打分；D1 哲学一致性 / D5 创新性 默认 7.0 中性，需 LLM 人工审）。低于 threshold 的页 → 列入 redo-prompts.txt，对用户提议重做。
+
+**触发场景**：模式 5 生成完后**默认跑一次**；用户问"质量怎么样"、"还能再优化"。
 
 ## 桥接到 huashu-design（v2 模式 2/3/4 必要）
 
@@ -174,7 +232,7 @@ cd ~/.claude/skills/ppt-master && python -m venv .venv
 - **所有数字用真值**——估值标 `[ESTIMATED]`，缺失标 `[N/A]`，**严禁编造**
 - **竞品评价用对方的话**——不要用本项目术语去框对方
 
-## 文件结构
+## 文件结构（v4）
 
 ```
 viz-deck/
@@ -182,6 +240,8 @@ viz-deck/
 ├── references/
 │   ├── design-system-deck.md         视觉规范（必读）
 │   ├── research-playbook.md          竞品调研三档协议
+│   ├── academic-mode.md              v4 · 学术报告 action title + 引用规范
+│   ├── doc-to-deck.md                v4 · 长文档转 deck 协议
 │   ├── huashu-bridge.md              v2 · 桥接 huashu-design 的协议
 │   ├── design-philosophies.md        v2 · 20 哲学的 viz-deck 适配
 │   ├── critique-5dim.md              v2 · 5 维评审协议
@@ -196,17 +256,24 @@ viz-deck/
 │   ├── stage-report.html             阶段报告（v1）
 │   ├── architecture-deep.html        架构深研（v1）
 │   ├── competitive-landscape.html    竞品对比（v1）
+│   ├── academic-talk.html            v4 · 学术报告（action title + 引用 + Q&A）
+│   ├── bento-layout.html             v4 · Apple bento 卡片单页
 │   ├── prototype-shell.html          v2 · 高保真原型骨架
-│   ├── slide-deck.html               v2 · 幻灯片骨架
+│   ├── slide-deck.html               v2 · 幻灯片骨架（v4 加 Speaker Mode）
+│   ├── speaker-window.html           v4 · 演讲者窗口（4 张磁吸卡片）
 │   ├── motion-stage.html             v2 · 动画 stage 骨架
-│   └── pptx-deck-spec.example.json   v3 · 可编辑 PPTX 的 JSON spec 范例
+│   ├── preview-board.example.html    v4 · Show-Don't-Tell 三变体预览样板
+│   └── pptx-deck-spec.example.json   v3 · 可编辑 PPTX 的 JSON spec 范例（v4 加 bento-grid）
 └── scripts/
     ├── export-mp4.sh                 v2 · MP4 / 60fps / GIF 导出
     ├── export-pptx.sh                v2 · HTML→快速 PPTX
     ├── review-5dim.mjs               v2 · 5 维评审 HTML 生成器
-    ├── make-pptx-deck.mjs            v3 · JSON→SVG→ppt-master 编排
+    ├── make-pptx-deck.mjs            v3 · JSON→SVG→ppt-master 编排（v4 加 bento-grid）
     ├── export-editable-pptx.sh       v3 · 模式 5 入口
-    └── embed-narration.sh            v3 · TTS 旁白嵌入 + 重建 PPTX
+    ├── embed-narration.sh            v3 · TTS 旁白嵌入 + 重建 PPTX
+    ├── preview-shotgun.mjs           v4 · Show-Don't-Tell 三变体预览
+    ├── doc-to-spec.mjs               v4 · Markdown/Word/PDF → pptx-deck spec
+    └── reflect-and-redo.mjs          v4 · 页面级反思循环（PPTAgent 派）
 ```
 
 ## 反模式

@@ -1,0 +1,20 @@
+# viz-deck · Redo prompts
+# Deck: intentionally_flawed_demo_deck
+# Threshold: 7
+# Generated: 2026-05-16T04:40:11.631Z
+
+
+## Slide #2 — We will cover lorem ipsum many many many things and yet more things and then some more, this is way too long for a real cover
+Layout: agenda
+Mean: 6.2 / 10
+Issues:
+  - Title is very long (125 chars) — wrapping risk on 16:9
+  - Unfilled {{placeholder}} still in spec
+  - Lorem ipsum left behind
+
+Suggested redo prompt:
+  > Rewrite slide #2 ("We will cover lorem ipsum many many many things and yet more things and then some more, this is way too long for a real cover"). Fix:
+  >   - Title is very long (125 chars) — wrapping risk on 16:9
+  >   - Unfilled {{placeholder}} still in spec
+  >   - Lorem ipsum left behind
+  > Keep layout "agenda". Match the rest of the deck's tone.

@@ -1,0 +1,110 @@
+{
+  "name": "viz_deck_all_layouts_showcase",
+  "theme": "deep-space",
+  "format": "ppt169",
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "title-cover",
+      "eyebrow": "VIZ-DECK · LAYOUT GALLERY",
+      "title": "Eight layouts, one design language",
+      "subtitle": "Every pptx-deck layout demonstrated in one editable file.",
+      "author": "ZimaBlueAI · viz-deck mode 5",
+      "date": "v0.3"
+    },
+    {
+      "id": "agenda",
+      "layout": "agenda",
+      "eyebrow": "What you'll see",
+      "title": "Layout · description · best use",
+      "items": [
+        "title-cover — opening slide",
+        "agenda — numbered list",
+        "section-divider — chapter break",
+        "title-bullets — standard content slide",
+        "two-column — left/right compare",
+        "kpi-grid — 3–9 metric tiles",
+        "pullquote — attributed quote",
+        "closing — thank-you / contact"
+      ]
+    },
+    {
+      "id": "section-divider-demo",
+      "layout": "section-divider",
+      "section": "03",
+      "title": "Section divider",
+      "subtitle": "A chapter break — use 3 to 5 per deck so structure is visible at a glance"
+    },
+    {
+      "id": "title-bullets-demo",
+      "layout": "title-bullets",
+      "eyebrow": "Title-bullets layout",
+      "title": "Three to six points, with optional sub-notes",
+      "lead": "Use for the workhorse content slide — when you have a thesis sentence and 3–6 supporting points. Sub-notes shrink the cognitive load on each bullet.",
+      "bullets": [
+        { "text": "Bullet text uses 22 pt body weight", "note": "sub-note in muted 16 pt under the bullet" },
+        { "text": "Maximum 6 bullets per slide", "note": "more than 6 → split into two slides" },
+        { "text": "Bullets should be sentences, not phrases", "note": "fragments force the reader to fill gaps" },
+        { "text": "Lead line above is your one-sentence thesis", "note": "if you cut the bullets, the lead must still stand alone" }
+      ]
+    },
+    {
+      "id": "two-column-demo",
+      "layout": "two-column",
+      "eyebrow": "Two-column layout",
+      "title": "When you need an explicit compare-and-contrast",
+      "left": {
+        "heading": "Status quo",
+        "subheading": "What today looks like",
+        "items": [
+          "Up to 4 items per side",
+          "Side headings stay short (≤ 24 chars)",
+          "Subheading gives temporal context",
+          "Use bullet items, not paragraphs"
+        ]
+      },
+      "right": {
+        "heading": "Proposed",
+        "subheading": "What we're choosing",
+        "items": [
+          "Same item count on both sides",
+          "Pair items by row — visual scan rhythm",
+          "Each row should be a real contrast",
+          "Color the accent bar only on one side"
+        ]
+      }
+    },
+    {
+      "id": "kpi-grid-demo",
+      "layout": "kpi-grid",
+      "eyebrow": "KPI grid layout",
+      "title": "Three to nine metric tiles in a responsive grid",
+      "kpis": [
+        { "label": "Active workspaces", "value": "12,847", "delta": "+38% QoQ", "note": "ahead of plan" },
+        { "label": "ARPU", "value": "48", "unit": "/mo", "delta": "+1.2%", "note": "below plan" },
+        { "label": "Logo churn", "value": "2.1", "unit": "%", "delta": "-0.3pp", "note": "best ever" },
+        { "label": "NPS", "value": "62", "delta": "+4", "note": "world-class" },
+        { "label": "Gross margin", "value": "71", "unit": "%", "delta": "+2pp", "note": "infra savings" },
+        { "label": "Cash runway", "value": "26", "unit": "mo", "delta": "+3mo", "note": "post-bridge" }
+      ]
+    },
+    {
+      "id": "pullquote-demo",
+      "layout": "pullquote",
+      "quote": "A slide deck is the worst possible artifact — except for every other artifact stakeholders will actually open.",
+      "author": "Pulse industry truth",
+      "role": "Said by every CTO at every board meeting"
+    },
+    {
+      "id": "closing-demo",
+      "layout": "closing",
+      "title": "That's the full set",
+      "subtitle": "Eight layouts. One JSON spec format. Native DrawingML output.",
+      "contacts": [
+        "spec: templates/pptx-deck-spec.example.json",
+        "docs: references/pptx-master-bridge.md",
+        "issues: github.com/ZimaBlueAI/skills/issues"
+      ]
+    }
+  ]
+}

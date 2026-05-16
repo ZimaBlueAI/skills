@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920,initial-scale=1">
+<title>viz-deck · Direction Preview — Q4 投资人简报 · ZimaBlueAI Agents 平台</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --board-bg: #f4f4f0;
+    --board-fg: #0a0a0a;
+    --board-muted: #555;
+    --rail: #d5d5d0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--board-bg); color: var(--board-fg); font-family: "Inter", system-ui, sans-serif; }
+  .topbar {
+    padding: 28px 48px;
+    border-bottom: 1px solid var(--rail);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    background: var(--board-bg);
+  }
+  .topbar h1 {
+    font-family: "Newsreader", serif;
+    font-weight: 500;
+    font-size: 28px;
+    margin: 0;
+  }
+  .topbar .topic {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--board-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .topbar .topic strong { color: var(--board-fg); }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 32px 48px 64px;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+  .variant {
+    background: white;
+    border: 1px solid var(--rail);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .variant:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.10); }
+  .variant-meta {
+    padding: 16px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    border-bottom: 1px solid var(--rail);
+  }
+  .variant-num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--board-fg);
+    line-height: 1;
+  }
+  .variant-school {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--board-muted);
+  }
+  .variant-name {
+    font-family: "Newsreader", serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .hero, .inside {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-inner { transform: scale(0.62); transform-origin: 0 50%; width: 161%; }
+  .hero-eyebrow { font-size: 18px; text-transform: uppercase; opacity: 0.9; margin-bottom: 20px; }
+  .hero-title { line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 18px; max-width: 90%; }
+  .hero-lead { font-size: 22px; line-height: 1.4; margin: 0 0 22px; max-width: 80%; }
+  .hero-meta { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+
+  .inside { border-top: 1px solid var(--rail); }
+  .inside-eyebrow { font-size: 11px; text-transform: uppercase; margin-bottom: 14px; }
+  .inside-h { font-size: 28px; line-height: 1.2; margin-bottom: 22px; max-width: 92%; }
+  .inside-bar { width: 100%; height: 6px; background: rgba(127,127,127,0.18); border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+  .inside-bar-fill { height: 100%; }
+  .inside-row { font-size: 14px; }
+
+  .variant-tagline {
+    padding: 16px 20px;
+    font-size: 13px;
+    line-height: 1.5;
+    border-top: 1px solid var(--rail);
+  }
+  .pick-btn {
+    background: var(--board-fg);
+    color: var(--board-bg);
+    border: 0;
+    padding: 16px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .pick-btn:hover { background: #d60000; color: white; }
+  .pick-btn.picked { background: #009966; color: white; }
+
+  .picked-banner {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--board-fg);
+    color: var(--board-bg);
+    padding: 16px 28px;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .picked-banner.show { opacity: 1; }
+  .picked-banner kbd {
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+    padding: 2px 6px;
+    margin: 0 4px;
+  }
+
+  .footnote {
+    padding: 20px 48px 48px;
+    color: var(--board-muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    max-width: 1100px;
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Direction Preview</h1>
+    <div class="topic">TOPIC <strong>Q4 投资人简报 · ZimaBlueAI Agents 平台</strong> &nbsp;·&nbsp; SCENE <strong>investor-pitch</strong></div>
+  </div>
+
+  <div class="board">
+    
+  <article class="variant" data-slug="pentagram" style="
+    --bg:#ffffff; --fg:#0a0a0a; --muted:#555;
+    --accent:#d60000; --accent2:#0a0a0a;
+    --serif:Newsreader, Georgia, serif; --sans:Inter, Helvetica Neue, sans-serif;
+  ">
+    <header class="variant-meta">
+      <div class="variant-num">01</div>
+      <div class="variant-info">
+        <div class="variant-school">Information Architecture</div>
+        <div class="variant-name">Pentagram</div>
+      </div>
+    </header>
+
+    <!-- Mini hero — cover-page mockup of the chosen philosophy -->
+    <div class="hero" style="background: linear-gradient(180deg, #fff 0%, #fafafa 100%); background-color: #ffffff;">
+      <div class="hero-inner">
+        <div class="hero-eyebrow" style="font-family: Inter, Helvetica Neue, sans-serif; letter-spacing: 0.32em;">
+          KEYNOTE · 2026
+        </div>
+        <h1 class="hero-title" style="
+          font-family: Newsreader, Georgia, serif;
+          font-size: 96px;
+          font-weight: 600;
+          color: #0a0a0a;
+        ">Q4 投资人简报 · ZimaBlueAI Agents 平台</h1>
+        <p class="hero-lead" style="color: #555; font-family: Inter, Helvetica Neue, sans-serif;">
+          One paragraph captures the case. Stage-grade typography only.
+        </p>
+        <div class="hero-meta" style="font-family: Inter, Helvetica Neue, sans-serif; color: #555;">
+          <span style="color:#d60000">●</span> 30 min
+          &nbsp;·&nbsp; Pentagram
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini chapter inside-page mockup -->
+    <div class="inside" style="background: #ffffff; color: #0a0a0a;">
+      <div class="inside-eyebrow" style="color:#d60000; font-family:Inter, Helvetica Neue, sans-serif; letter-spacing:0.32em;">
+        CHAPTER 01 · MARKET
+      </div>
+      <div class="inside-h" style="font-family:Newsreader, Georgia, serif; color:#0a0a0a;">
+        12% of Chinese SMBs adopt domestic LLM tooling.
+      </div>
+      <div class="inside-bar">
+        <div class="inside-bar-fill" style="background:#d60000; width:62%"></div>
+      </div>
+      <div class="inside-row" style="color:#555; font-family:Inter, Helvetica Neue, sans-serif;">
+        <span style="color:#0a0a0a; font-weight:600">62%</span> growth YoY
+        &nbsp;·&nbsp; IDC 2026Q1
+      </div>
+    </div>
+
+    <footer class="variant-tagline" style="color:#555; font-family:Inter, Helvetica Neue, sans-serif;">
+      Disciplined typography, dense information hierarchy, near-zero ornament.
+    </footer>
+
+    <button class="pick-btn" data-slug="pentagram" data-label="Pentagram">
+      PICK · PENTAGRAM
+    </button>
+  </article>
+  
+  <article class="variant" data-slug="build" style="
+    --bg:#0e0e0e; --fg:#f5f0e6; --muted:#a89a85;
+    --accent:#d5b572; --accent2:#f5f0e6;
+    --serif:Newsreader, serif; --sans:Inter, sans-serif;
+  ">
+    <header class="variant-meta">
+      <div class="variant-num">02</div>
+      <div class="variant-info">
+        <div class="variant-school">Swiss Minimalism (Modern)</div>
+        <div class="variant-name">Build</div>
+      </div>
+    </header>
+
+    <!-- Mini hero — cover-page mockup of the chosen philosophy -->
+    <div class="hero" style="background: linear-gradient(135deg, #0e0e0e 0%, #1a1612 100%); background-color: #0e0e0e;">
+      <div class="hero-inner">
+        <div class="hero-eyebrow" style="font-family: Inter, sans-serif; letter-spacing: 0.28em;">
+          KEYNOTE · 2026
+        </div>
+        <h1 class="hero-title" style="
+          font-family: Newsreader, serif;
+          font-size: 92px;
+          font-weight: 300;
+          color: #f5f0e6;
+        ">Q4 投资人简报 · ZimaBlueAI Agents 平台</h1>
+        <p class="hero-lead" style="color: #a89a85; font-family: Inter, sans-serif;">
+          One paragraph captures the case. Stage-grade typography only.
+        </p>
+        <div class="hero-meta" style="font-family: Inter, sans-serif; color: #a89a85;">
+          <span style="color:#d5b572">●</span> 30 min
+          &nbsp;·&nbsp; Build
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini chapter inside-page mockup -->
+    <div class="inside" style="background: #0e0e0e; color: #f5f0e6;">
+      <div class="inside-eyebrow" style="color:#d5b572; font-family:Inter, sans-serif; letter-spacing:0.28em;">
+        CHAPTER 01 · MARKET
+      </div>
+      <div class="inside-h" style="font-family:Newsreader, serif; color:#f5f0e6;">
+        12% of Chinese SMBs adopt domestic LLM tooling.
+      </div>
+      <div class="inside-bar">
+        <div class="inside-bar-fill" style="background:#d5b572; width:62%"></div>
+      </div>
+      <div class="inside-row" style="color:#a89a85; font-family:Inter, sans-serif;">
+        <span style="color:#f5f0e6; font-weight:600">62%</span> growth YoY
+        &nbsp;·&nbsp; IDC 2026Q1
+      </div>
+    </div>
+
+    <footer class="variant-tagline" style="color:#a89a85; font-family:Inter, sans-serif;">
+      Premium silence — generous whitespace, mono labels, dignified type.
+    </footer>
+
+    <button class="pick-btn" data-slug="build" data-label="Build">
+      PICK · BUILD
+    </button>
+  </article>
+  
+  <article class="variant" data-slug="takram" style="
+    --bg:#f7f5f1; --fg:#171312; --muted:#5a544f;
+    --accent:#9c1e1e; --accent2:#171312;
+    --serif:Newsreader, "Noto Serif JP", serif; --sans:Inter, sans-serif;
+  ">
+    <header class="variant-meta">
+      <div class="variant-num">03</div>
+      <div class="variant-info">
+        <div class="variant-school">East-Asian Experimental</div>
+        <div class="variant-name">Takram</div>
+      </div>
+    </header>
+
+    <!-- Mini hero — cover-page mockup of the chosen philosophy -->
+    <div class="hero" style="background: radial-gradient(circle at 80% 80%, rgba(156,30,30,0.08), transparent 50%); background-color: #f7f5f1;">
+      <div class="hero-inner">
+        <div class="hero-eyebrow" style="font-family: Inter, sans-serif; letter-spacing: 0.30em;">
+          KEYNOTE · 2026
+        </div>
+        <h1 class="hero-title" style="
+          font-family: Newsreader, "Noto Serif JP", serif;
+          font-size: 84px;
+          font-weight: 400;
+          color: #171312;
+        ">Q4 投资人简报 · ZimaBlueAI Agents 平台</h1>
+        <p class="hero-lead" style="color: #5a544f; font-family: Inter, sans-serif;">
+          One paragraph captures the case. Stage-grade typography only.
+        </p>
+        <div class="hero-meta" style="font-family: Inter, sans-serif; color: #5a544f;">
+          <span style="color:#9c1e1e">●</span> 30 min
+          &nbsp;·&nbsp; Takram
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini chapter inside-page mockup -->
+    <div class="inside" style="background: #f7f5f1; color: #171312;">
+      <div class="inside-eyebrow" style="color:#9c1e1e; font-family:Inter, sans-serif; letter-spacing:0.30em;">
+        CHAPTER 01 · MARKET
+      </div>
+      <div class="inside-h" style="font-family:Newsreader, "Noto Serif JP", serif; color:#171312;">
+        12% of Chinese SMBs adopt domestic LLM tooling.
+      </div>
+      <div class="inside-bar">
+        <div class="inside-bar-fill" style="background:#9c1e1e; width:62%"></div>
+      </div>
+      <div class="inside-row" style="color:#5a544f; font-family:Inter, sans-serif;">
+        <span style="color:#171312; font-weight:600">62%</span> growth YoY
+        &nbsp;·&nbsp; IDC 2026Q1
+      </div>
+    </div>
+
+    <footer class="variant-tagline" style="color:#5a544f; font-family:Inter, sans-serif;">
+      Research-grade minimalism with hidden structure — concept-design DNA.
+    </footer>
+
+    <button class="pick-btn" data-slug="takram" data-label="Takram">
+      PICK · TAKRAM
+    </button>
+  </article>
+  
+  </div>
+
+  <p class="footnote">
+    Each variant shows a cover + chapter inside-page mockup, rendered with the chosen philosophy's
+    palette, typography, and rhythm. Click a "PICK" button to commit — the chosen slug is logged
+    to the console (and stored to <code>window.__viz_deck_picked</code> for the orchestrator to read).
+    To see the full design philosophy DNA, refer to <code>references/design-philosophies.md</code>.
+  </p>
+
+  <div class="picked-banner" id="banner">
+    PICKED <strong id="banner-name"></strong> &nbsp;·&nbsp; SLUG <kbd id="banner-slug"></kbd>
+  </div>
+
+<script>
+  document.querySelectorAll('.pick-btn').forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll('.pick-btn').forEach(x => x.classList.remove('picked'));
+      b.classList.add('picked');
+      const slug = b.dataset.slug, label = b.dataset.label;
+      window.__viz_deck_picked = { slug, label, at: new Date().toISOString() };
+      console.log('[viz-deck preview] picked:', window.__viz_deck_picked);
+      const banner = document.getElementById('banner');
+      document.getElementById('banner-name').textContent = label;
+      document.getElementById('banner-slug').textContent = slug;
+      banner.classList.add('show');
+      // Try to write to clipboard so the orchestrator can paste back the slug
+      if (navigator.clipboard) navigator.clipboard.writeText(slug).catch(()=>{});
+    };
+  });
+</script>
+</body>
+</html>

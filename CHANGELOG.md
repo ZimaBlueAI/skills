@@ -11,9 +11,119 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ### Planned
 
-- `codex-skills/` — port of the three claude-code skills to OpenAI Codex CLI
 - Cross-harness consistency test suite
 - Skill registry index (`skills.json`)
+
+---
+
+## [0.4.0] — 2026-05-16
+
+### Added — 26-skill landscape cross-pollination (取长补短)
+
+After a systematic review of the open-source Agent-Skill PPT landscape (26
+projects ≈ 70k+ aggregate stars), this release imports the highest-value
+patterns from peer skills into the three ZimaBlueAI skills. **All v0.3
+workflows remain unchanged**; every upgrade is additive.
+
+#### `claude-code-skills/viz-deck` — six v4 enhancements
+
+- **Speaker Mode** (inspired by `lewislulu/html-ppt-skill` — 3.8k★)
+  - New `templates/speaker-window.html`: independent draggable presenter
+    window with 4 magnetic cards (current preview / next preview /
+    teleprompter / timer)
+  - `templates/slide-deck.html` rewired: press **S** to pop the window;
+    BroadcastChannel `viz-deck-presenter` keeps both windows in sync;
+    `?present=true` URL flag auto-opens
+  - Timer has elapsed / countdown modes, >90% warn, >100% over-time alert
+  - Three layout presets: GRID / PROMPTER / DUO
+- **Show-Don't-Tell 3-variant preview** (inspired by `zarazhangrui/frontend-slides` — 17.5k★)
+  - New `scripts/preview-shotgun.mjs`: takes a topic + scene preset and
+    renders 3 contrasting hero mockups side-by-side
+  - 5 scene presets (`investor-pitch`, `product-launch`, `tech-deepdive`,
+    `academic`, `default`); each picks a cross-school triple from the
+    20-philosophy library
+  - New `templates/preview-board.example.html`: sample output
+  - `references/design-philosophies.md` extended with the contrast-triple
+    table and trigger rules
+- **Doc → Deck converter** (inspired by `leonid20000/odin-slides` — 147★ + `natolambert/colloquium` — 190★)
+  - New `scripts/doc-to-spec.mjs`: parses Markdown (and DOCX/PDF via pandoc
+    pre-flight) and emits a valid `pptx-deck-spec.json` ready for
+    `make-pptx-deck.mjs`
+  - Heading-level histogram picks the chapter boundary intelligently
+  - Tables → kpi-grid; bullet runs → title-bullets; quote blocks → pullquote
+  - New `references/doc-to-deck.md` documenting input formats, conversion
+    rules, and the difference from odin-slides / colloquium
+- **Academic Talk template** (inspired by `Gabberflast/academic-pptx-skill` — 387★)
+  - New `templates/academic-talk.html`: long-scroll keynote with action
+    titles (verb-driven), numbered citations, exhibit headers, anticipated
+    Q&A section, and a proper references bibliography
+  - Newsreader serif typography for academic gravitas
+  - New `references/academic-mode.md`: action-title rule, citation
+    discipline, exhibit caption guidelines, limitations checklist
+- **Bento Grid layout** (inspired by `hubeiqiao/apple-bento-grid` — 171★)
+  - New `templates/bento-layout.html`: 12-col responsive bento with
+    1×1 / 2×1 / 3×1 / 4×1 / 1×2 / 2×2 spans + hero accent halos
+  - `make-pptx-deck.mjs` adds `bento-grid` as the 9th native PPTX layout
+    (greedy row-packing, 3-col layout, accent variants `accent` / `accent2` /
+    `gold`)
+  - `templates/pptx-deck-spec.example.json` extended with a sample bento slide
+- **Reflective Loop** (inspired by `icip-cas/PPTAgent` — 4.4k★)
+  - New `scripts/reflect-and-redo.mjs`: per-page 5-dim critique pass; D2/D3/D4
+    scored objectively from the JSON spec; D1/D5 flagged as neutral
+    pending human/LLM review
+  - HTML report includes deck mean, dimension means, per-slide score table
+    (flagged rows red), and explicit issue list
+  - Optional `--redo-prompts redo.txt` emits human-readable redo proposals
+    per flagged slide
+  - `references/critique-5dim.md` extended with the reflective-loop protocol
+    and threshold rules
+
+#### `claude-code-skills/biz-decision-stack` — Template Router subagent
+
+- **Template Router** (inspired by `seulee26/mckinsey-pptx` — 426★)
+  - New `.claude/agents/08-template-router.md`: 9th subagent in the
+    biz-decision-stack
+  - Routes ambiguous user input ("做个 deck 给老板"、"做个汇报") to one of 8
+    templates by scoring against a 5-dimension rubric (audience fit ×3 /
+    decision type ×3 / temporal fit ×2 / density ×1 / trigger keywords ×1)
+  - Outputs a ROUTING DECISION block + writes a one-paragraph justification
+    into the generated HTML's header comment block — every choice is
+    defended, not silent
+  - Routes to user pick when top-1 and top-2 scores are within 3 points
+- **New reference**: `references/template-routing-rubric.md` — full scoring
+  rubric, threshold table, dual-candidate handling
+
+#### Repository-wide
+
+- `.work/repack-v3.py` updated to include the new 9th subagent
+  (`08-template-router.md`) in `biz-decision-stack.zip`
+- `.work/build-codex.py` updated symmetrically — the 9 subagents are now
+  converted to TOML and packaged into `codex-skills/biz-decision-stack.zip`
+- All three skills' `SKILL.md` `description` fields extended with the new
+  v4 trigger keywords (Speaker Mode, Doc→Deck, academic talk, bento, etc.)
+  so the harness's keyword router can find them
+
+### Compatibility
+
+- v0.3 workflows are **fully preserved**. Every v4 addition is additive:
+  - viz-deck: still 5 modes, all original templates/scripts intact
+  - biz-html-viz: still 8 templates (the new template-router *picks* among
+    them, doesn't replace any)
+  - viz-charts: not touched in v0.4 (no PPT-landscape peer outperforms it)
+- Speaker Mode requires same-origin context (both `slide-deck.html` and
+  `speaker-window.html` served from the same path)
+- Doc-to-spec for `.docx` / `.pdf` requires pandoc on PATH
+
+### Known constraints
+
+- Reflective Loop's D1 (philosophy alignment) and D5 (originality) cannot
+  be scored from JSON alone — the script flags them as neutral 7.0 and
+  delegates the actual judgement to an LLM review of the rendered output
+- Speaker Mode pop-up requires browser pop-up permissions for the deck
+  origin; the hint banner explains this when blocked
+- The `preview-shotgun.mjs` philosophy registry is a representative subset
+  (11 of the 20 huashu philosophies); the remaining 9 can still be invoked
+  by explicit slug
 
 ---
 
@@ -259,7 +369,8 @@ the **Claude Code** harness.
 
 ---
 
-[Unreleased]: https://github.com/ZimaBlueAI/skills/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/ZimaBlueAI/skills/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/ZimaBlueAI/skills/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/ZimaBlueAI/skills/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/ZimaBlueAI/skills/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/ZimaBlueAI/skills/releases/tag/v0.1.0

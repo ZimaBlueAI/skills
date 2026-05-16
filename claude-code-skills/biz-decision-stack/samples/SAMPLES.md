@@ -2,6 +2,16 @@
 
 Terminal-themed deliverables — HTML for scan-and-sign, editable PPTX for stakeholders who need to mark up in PowerPoint.
 
+## v4 · Template Router examples (NEW)
+
+| Sample | Demonstrates |
+|---|---|
+| **`template-router-examples.md`** | Three real routing cases — (1) strong-match route with full justification, (2) two-candidate tie kicked back to the user, (3) explicit user request that bypasses the router. Each case shows the 5-dim score breakdown, the ROUTING DECISION block users see, and the HTML comment header written into the chosen template. Inspired by [mckinsey-pptx](https://github.com/seulee26/mckinsey-pptx) (426★). |
+
+Behaviour: the `template-router` subagent (the 9th subagent in this stack) **only** activates when input is ambiguous. If the user explicitly says "做 board brief" or "make a retro report", router yields. The point is not to always-intercept — it's to defend choices when a choice is being made.
+
+---
+
 ## v3 · 决策 PPTX (终端风可编辑)
 
 All four samples lock to the terminal theme (black `#0A0A0A` + acid-yellow `#D4FF00` + JetBrains Mono, **zero motion**). Each visual element is an independently clickable native DrawingML shape.

@@ -110,6 +110,59 @@
 | 功能性 | 删一个元素 deck 会变差吗 | 至少 80% 元素必须通过 |
 | 创新性 | 是否复用了 deck-stage 的"轨道环"主视觉而无微调 | 完全复用 = ≤ 6 分 |
 
+## v2.1 · Reflective Loop（页面级自检）
+
+> 灵感来自 PPTAgent（4.4k Star）— "Agentic Framework for Reflective PowerPoint Generation"。AI 做的 PPT 之所以丑，是因为它**没有回头看**的环节。
+
+### 何时触发
+
+- 模式 5（pptx-deck）生成完 spec JSON 后**自动跑**一遍
+- 用户问"质量怎么样"、"还能再优化吗"
+- 走完 motion-stage 或 slide-deck 后准备交付前
+
+### 工作流
+
+```bash
+# 1. 生成 deck 后（spec 已写好），跑反思
+node ~/.claude/skills/viz-deck/scripts/reflect-and-redo.mjs \
+  --spec deck.json \
+  --output ./reflect-report.html \
+  --threshold 7.0 \
+  --redo-prompts ./redo.txt
+
+# 2. 看 reflect-report.html
+#    - Deck mean
+#    - 各维度均分
+#    - 每页打分表（flagged 行红色）
+#    - 每个 issue 是具体可修复的（"KPI 'X' 没有单位"）
+
+# 3. 编辑 deck.json 修每个 issue → 重跑 make-pptx-deck.mjs
+# 4. 再跑一次 reflect-and-redo.mjs 验证
+```
+
+### 客观打分 vs 主观打分
+
+| 维度 | 类型 | reflect-and-redo.mjs 处理 |
+|---|---|---|
+| D1 哲学一致性 | 主观 | 不打分，默认 7.0 中性 → 必须 LLM 看渲染后判 |
+| D2 视觉层级 | 客观 | bullet 数 / KPI 数 / 标题字数 |
+| D3 细节执行 | 客观 | placeholder 残留 / 缺单位 / Lorem ipsum |
+| D4 功能性 | 客观 | layout 与 fields 匹配（kpi-grid 没 kpis = -5） |
+| D5 创新性 | 主观 | 不打分，默认 7.0 中性 → 必须 LLM 看渲染后判 |
+
+### 阈值与处理
+
+- 单页 < 5.0 = **必须重做** → 加入 redo-prompts.txt
+- 单页 5.0-7.0 = **建议改进** → 在 report 表里红行
+- Deck 均分 < 6.0 = **全 deck 推倒重来**（哲学没对、节奏崩了）
+
+### 反模式
+
+- ❌ 跑 reflect 但**不读 report** → 没意义
+- ❌ 用 reflect 给 deck 打"自我表扬"的高分（脚本不会，但人写 LLM prompt 会）
+- ❌ Threshold 设到 4.0 让所有页过线 → 自欺欺人
+- ❌ 主观维度（D1/D5）默认按 7.0 算就完事——必须人工审
+
 ## 与设计方向顾问的闭环
 
 评审报告**末尾**永远提一句：

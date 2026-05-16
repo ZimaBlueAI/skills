@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920,initial-scale=1">
+<title>ZimaBlueAI Skills v0.4 · 走读 · Slide Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #030711;
+    --fg: #e7efff;
+    --muted: #8898b6;
+    --accent: #42e8ff;
+    --gold: #ffd987;
+    --serif: Newsreader, 'Times New Roman', serif;
+    --sans: Inter, system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); }
+  body { overflow: hidden; }
+
+  .slide {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    display: none; padding: 80px 100px; overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; justify-content: center; }
+  .slide.entering { display: flex; animation: slideIn 0.35s ease-out; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .slide.entering { animation: none; } }
+
+  .eyebrow {
+    color: var(--accent); font-family: var(--mono); font-size: 18px;
+    letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 32px;
+  }
+  .slide h1 {
+    font-family: var(--serif); font-size: 88px; font-weight: 500;
+    line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 32px;
+    max-width: 1400px;
+  }
+  .slide h2 {
+    font-size: 56px; font-weight: 600; line-height: 1.1; margin: 0 0 24px;
+  }
+  .slide .lead {
+    font-size: 32px; line-height: 1.4; color: var(--muted);
+    max-width: 1200px; margin: 0 0 48px;
+  }
+  .slide.cover { justify-content: center; align-items: flex-start; }
+  .slide.cover h1 { font-size: 128px; max-width: 100%; }
+  .slide.cover .subtitle { font-size: 36px; color: var(--muted); margin-bottom: 80px; }
+
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    margin-top: 24px; max-width: 1400px;
+  }
+  .kpi { background: rgba(255,255,255,0.04); border: 1px solid rgba(151,209,255,0.14); border-radius: 14px; padding: 28px 32px; }
+  .kpi .label { font-family: var(--mono); font-size: 14px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; }
+  .kpi .value { font-family: var(--mono); font-size: 64px; color: var(--accent); font-weight: 500; line-height: 1; margin: 10px 0; }
+  .kpi .note { color: var(--gold); font-size: 16px; font-family: var(--mono); }
+
+  .features-list {
+    list-style: none; padding: 0; margin: 24px 0 0; counter-reset: feat;
+    columns: 2; column-gap: 60px; max-width: 1500px;
+  }
+  .features-list li {
+    counter-increment: feat; padding: 18px 0 18px 60px; position: relative;
+    font-size: 24px; color: var(--fg); break-inside: avoid;
+    border-bottom: 1px solid rgba(151,209,255,0.10);
+  }
+  .features-list li::before {
+    content: counter(feat, decimal-leading-zero);
+    position: absolute; left: 0; top: 18px;
+    font-family: var(--mono); color: var(--gold); font-size: 28px; font-weight: 500;
+  }
+  .features-list li small {
+    display: block; font-size: 16px; color: var(--muted);
+    margin-top: 6px; font-family: var(--mono);
+  }
+
+  .progress {
+    position: fixed; bottom: 24px; right: 32px;
+    font-family: var(--mono); font-size: 14px; color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .progress strong { color: var(--gold); font-weight: 500; }
+
+  .speaker-notes-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.92); color: var(--fg);
+    padding: 80px 120px; z-index: 100; overflow-y: auto;
+    font-size: 24px; line-height: 1.6;
+  }
+  .speaker-notes-overlay.active { display: block; }
+  .speaker-notes-overlay h3 { color: var(--gold); margin-top: 0; }
+
+  .overview-mode {
+    display: none; position: fixed; inset: 0; background: var(--bg);
+    overflow-y: auto; padding: 40px; z-index: 50;
+  }
+  .overview-mode.active { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .overview-mode .thumb {
+    aspect-ratio: 16/9; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
+    padding: 16px; font-size: 11px; color: var(--muted); cursor: pointer;
+    transition: border-color 0.15s;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .overview-mode .thumb:hover { border-color: var(--accent); }
+  .overview-mode .thumb strong { color: var(--fg); font-size: 18px; font-weight: 500; }
+
+  .hint {
+    position: fixed; bottom: 24px; left: 32px;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--muted); opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Cover -->
+<section class="slide cover active" data-title="ZimaBlueAI Skills v0.4">
+  <div class="eyebrow">RELEASE WALKTHROUGH · 2026-05-16</div>
+  <h1>ZimaBlueAI<br/>Skills v0.4</h1>
+  <p class="subtitle">取长补短自 26 个开源 PPT skill — 7 项增强一次合入</p>
+  <aside class="speaker-notes">欢迎。这是 ZimaBlueAI Skills 仓库的 v0.4 走读，时长约 25 分钟。重点讲两件事：哪些 v0.3 工作流完全没变（让现有用户安心），以及七项 v4 新能力分别从哪个开源 skill 学来的。</aside>
+</section>
+
+<!-- Slide 2: Chapter 01 intro -->
+<section class="slide" data-title="第一章 · 为什么取长补短">
+  <div class="eyebrow">CHAPTER 01 · CONTEXT</div>
+  <h1>为什么要做<br/>v0.4？</h1>
+  <p class="lead">2026 年 5 月初，社区流传一篇文章：26 个开源 PPT skill 的系统梳理。我们读完发现——有 7 个能力本可以更早抄过来。</p>
+  <aside class="speaker-notes">读完文章后我们做的第一件事：把 26 个 skill 的特性逐一对照 viz-deck / biz-decision-stack / viz-charts。结果：8 个能力我们已经有，11 个不符合设计哲学（图像派违反"每元素可点"），7 个是真正能补的。这一章就是讲这 7 个为什么值得做。</aside>
+</section>
+
+<!-- Slide 3: KPI grid (the data) -->
+<section class="slide" data-title="生态数据">
+  <div class="eyebrow">DATA · ECOSYSTEM</div>
+  <h2>生态规模 · 一组关键数字</h2>
+  <p class="lead">PPT skill 赛道在 2026 年迎来爆发。这是我们决策的现实背景。</p>
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">总 Star 数</div>
+      <div class="value">70k+</div>
+      <div class="note">26 个 skill 合计</div>
+    </div>
+    <div class="kpi">
+      <div class="label">最高单 skill</div>
+      <div class="value">40.8k</div>
+      <div class="note">open-design</div>
+    </div>
+    <div class="kpi">
+      <div class="label">技术路线</div>
+      <div class="value">6</div>
+      <div class="note">HTML / PPTX / 图像 / MCP / 垂直 / 平台</div>
+    </div>
+    <div class="kpi">
+      <div class="label">我们已覆盖</div>
+      <div class="value">8</div>
+      <div class="note">v0.3 已实现</div>
+    </div>
+    <div class="kpi">
+      <div class="label">真正能补</div>
+      <div class="value">7</div>
+      <div class="note">v0.4 全部合入</div>
+    </div>
+    <div class="kpi">
+      <div class="label">主动放弃</div>
+      <div class="value">11</div>
+      <div class="note">违反设计哲学 / 跨域</div>
+    </div>
+  </div>
+  <aside class="speaker-notes">这一页是诚实交代：26 个里我们承认有 7 个能力学得来。剩下 11 个不是"做不到"，是"做了就破坏我们的设计哲学"——比如图像派每页一张图意味着没法点编辑，违反 ppt-master 的核心承诺。70k Star 这个数字提一下行业热度，但不要太久。</aside>
+</section>
+
+<!-- Slide 4: Chapter 02 intro -->
+<section class="slide" data-title="第二章 · 七项新能力">
+  <div class="eyebrow">CHAPTER 02 · WHAT SHIPPED</div>
+  <h1>七项<br/>v4 新能力</h1>
+  <p class="lead">每一项都标明灵感来源 + 落点 skill + 一句话价值。</p>
+  <aside class="speaker-notes">下一页是七项能力的列表。重点强调三个：Speaker Mode 是最直观的（按 S 弹独立窗口）；Doc→Deck 是最高频的（用户已经写好的报告直接转）；Template Router 是最有"AI 风骨"的（不沉默选择，每个选择都辩护）。</aside>
+</section>
+
+<!-- Slide 5: Features list -->
+<section class="slide" data-title="v4 七项能力">
+  <div class="eyebrow">SHIPPED · 2026-05-16</div>
+  <h2>v0.4 七项能力对照</h2>
+  <ol class="features-list">
+    <li>
+      <strong>Speaker Mode</strong>
+      <small>← html-ppt-skill 3.8k★ · viz-deck</small>
+    </li>
+    <li>
+      <strong>Show-Don't-Tell 三变体</strong>
+      <small>← frontend-slides 17.5k★ · viz-deck</small>
+    </li>
+    <li>
+      <strong>Doc→Deck 转换器</strong>
+      <small>← odin-slides + colloquium · viz-deck</small>
+    </li>
+    <li>
+      <strong>Academic Talk 模板</strong>
+      <small>← academic-pptx-skill 387★ · viz-deck</small>
+    </li>
+    <li>
+      <strong>Bento Grid 布局</strong>
+      <small>← apple-bento-grid 171★ · viz-deck</small>
+    </li>
+    <li>
+      <strong>Reflective Loop 反思循环</strong>
+      <small>← PPTAgent 4.4k★ · viz-deck</small>
+    </li>
+    <li>
+      <strong>Template Router 路由器</strong>
+      <small>← mckinsey-pptx 426★ · biz-decision-stack</small>
+    </li>
+  </ol>
+  <aside class="speaker-notes">这是核心一页。每个能力 30 秒以内讲完：（1）按 S 弹独立窗口，4 张磁吸卡片同步翻页。（2）用户描述不清风格时直接给 3 张缩略图让选。（3）Markdown 长报告直接转 PPT spec。（4）学术报告强制 action title 和引用。（5）Apple bento 卡片九宫格。（6）生成完自动跑页面级评分。（7）含混请求自动选模板还写辩护。讲完进下一页谈"v0.3 保留"。</aside>
+</section>
+
+<!-- Slide 6: Compatibility -->
+<section class="slide" data-title="v0.3 完全保留">
+  <div class="eyebrow">COMPATIBILITY</div>
+  <h2>v0.3 工作流 100% 保留</h2>
+  <p class="lead">
+    <em style="color:var(--gold); font-style:normal;">所有 v4 新增都是增量</em>——5 模产出、20 哲学、5 维评审、ppt-master 桥接、huashu-design 桥接全部不变。
+  </p>
+  <p style="font-family: var(--mono); color: var(--muted); font-size: 20px; max-width: 1200px; line-height: 1.7;">
+    viz-deck 依然 5 模（keynote-report / prototype / slide-deck / motion-stage / pptx-deck）<br/>
+    biz-html-viz 依然 8 模板（template-router 是<em style="color:var(--gold);font-style:normal">选用</em>这 8 个，不替换）<br/>
+    viz-charts 本轮零改动（没有对手强过它）
+  </p>
+  <aside class="speaker-notes">这一页是给老用户的安抚。强调三点：5 模产出全保留 / template-router 只是路由不是替换 / viz-charts 不动。如果有人问"我能不能跳过 v4 继续用 v0.3"，答：可以，所有 v0.3 命令都还在。</aside>
+</section>
+
+<!-- Slide 7: Speaker Mode demo (the meta moment) -->
+<section class="slide" data-title="Speaker Mode 现场演示">
+  <div class="eyebrow">DEMO · YOU ARE HERE</div>
+  <h1>这份 deck<br/>就在用 Speaker Mode。</h1>
+  <p class="lead">按一下 <strong style="color:var(--accent); font-family:var(--mono); padding:4px 12px; background:rgba(66,232,255,0.15); border-radius:6px;">S</strong> 键试试 — 演讲者窗口会弹出来。</p>
+  <p style="font-family: var(--mono); color: var(--muted); font-size: 18px; margin-top: 32px;">
+    Keyboard:  ← → 翻页 · <strong style="color:var(--gold);">S 演讲者窗口</strong> · n 备注 · o 概览 · Esc 关闭
+  </p>
+  <aside class="speaker-notes">这是 demo 时刻。讲到这里按 S，让观众看到弹出窗口的效果。如果是录屏交付（用户后看），就说"现在你可以在浏览器里按 S 试试"。这一页只有一个动作目标：让用户体验到独立演讲者窗口，胜过任何文字描述。</aside>
+</section>
+
+<!-- Slide 8: Takeaway -->
+<section class="slide" data-title="决议">
+  <div class="eyebrow">TAKEAWAY · DECISION</div>
+  <h1>v0.4 发布。<br/>v0.5 待定。</h1>
+  <p class="lead">仓库已打 tag。<em style="color:var(--gold); font-style:normal;">下一轮聚焦 viz-charts</em>——文章里 viz-charts 还没遇到对手，但内部有计划把 narrative chart explainer 加上。</p>
+  <aside class="speaker-notes">收尾页只讲三件事：v0.4 已 ship（确定）、v0.3 仍可用（兼容承诺）、v0.5 方向（narrative chart explainer · TTS 解说图表视频）。结束语："感谢，欢迎在 issue 区提反馈。" 不要拖。</aside>
+</section>
+
+<!-- HUD -->
+<div class="progress"><strong id="page-cur">1</strong> / <span id="page-total">8</span></div>
+<div class="hint">← → 翻页 · s 演讲者窗口 · n 备注 · o 概览 · Esc 关闭</div>
+
+<div class="speaker-notes-overlay" id="notes-overlay">
+  <h3>SPEAKER NOTES</h3>
+  <div id="notes-body"></div>
+</div>
+<div class="overview-mode" id="overview"></div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let current = 0;
+
+  function _show(i) {
+    if (i < 0 || i >= total) return;
+    slides.forEach(s => s.classList.remove('active', 'entering'));
+    slides[i].classList.add('active', 'entering');
+    current = i;
+    document.getElementById('page-cur').textContent = i + 1;
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+  document.getElementById('page-total').textContent = total;
+  _show(parseInt(location.hash?.slice(1) || '1') - 1 || 0);
+
+  function toggleNotes() {
+    const overlay = document.getElementById('notes-overlay');
+    const notes = slides[current].querySelector('.speaker-notes');
+    document.getElementById('notes-body').textContent = notes?.textContent || '（无备注）';
+    overlay.classList.toggle('active');
+  }
+  function toggleOverview() {
+    const overview = document.getElementById('overview');
+    if (!overview.dataset.built) {
+      overview.innerHTML = slides.map((s, i) => `
+        <div class="thumb" data-i="${i}">
+          <div class="eyebrow" style="font-size:9px">${s.dataset.title || 'slide ' + (i+1)}</div>
+          <strong>${s.querySelector('h1, h2')?.textContent || ''}</strong>
+        </div>
+      `).join('');
+      overview.dataset.built = '1';
+      overview.addEventListener('click', e => {
+        const i = parseInt(e.target.closest('.thumb')?.dataset.i ?? -1);
+        if (i >= 0) { show(i); overview.classList.remove('active'); }
+      });
+    }
+    overview.classList.toggle('active');
+  }
+
+  // ============ PRESENTER MODE ============
+  const bc = ('BroadcastChannel' in window) ? new BroadcastChannel('viz-deck-presenter') : null;
+  function slideMeta() {
+    return slides.map(s => ({
+      title: s.dataset.title || (s.querySelector('h1, h2')?.textContent || '').trim(),
+      notes: (s.querySelector('.speaker-notes')?.innerHTML || '').trim(),
+    }));
+  }
+  function broadcastState() {
+    if (!bc) return;
+    bc.postMessage({ type: 'state', current, total, slides: slideMeta() });
+  }
+  if (bc) {
+    bc.onmessage = e => {
+      const m = e.data || {};
+      if (m.type === 'hello') broadcastState();
+      else if (m.type === 'nav') show(current + (m.dir || 0));
+    };
+    setInterval(() => { if (bc) bc.postMessage({ type: 'beat' }); }, 1000);
+  }
+  function show(i) { _show(i); broadcastState(); }
+  function openPresenter() {
+    const w = 1280, h = 800;
+    const presenterWin = window.open('./speaker-window-sample.html', 'viz-deck-presenter', `width=${w},height=${h},menubar=no`);
+    if (!presenterWin) alert('演讲者窗口被浏览器拦截了。请允许 pop-up 后重试。');
+    else setTimeout(broadcastState, 300);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+    if (e.key === 's' || e.key === 'S') openPresenter();
+    if (e.key === 'n' || e.key === 'N') toggleNotes();
+    if (e.key === 'o' || e.key === 'O') toggleOverview();
+    if (e.key === 'Escape') {
+      document.getElementById('notes-overlay').classList.remove('active');
+      document.getElementById('overview').classList.remove('active');
+    }
+  });
+
+  const qs = new URLSearchParams(location.search);
+  if (qs.get('present') === 'true') setTimeout(openPresenter, 600);
+</script>
+</body>
+</html>

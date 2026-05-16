@@ -4,7 +4,7 @@
 > Write once, ship across harnesses.
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Release](https://img.shields.io/badge/release-v0.3.0-2b6cb0.svg)](./CHANGELOG.md)
+[![Release](https://img.shields.io/badge/release-v0.4.0-2b6cb0.svg)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-public_preview-orange.svg)](#9-roadmap)
 [![Harness](https://img.shields.io/badge/harness-Claude_Code-7c3aed.svg)](./claude-code-skills/)
 [![Maintainer](https://img.shields.io/badge/maintainer-ZimaBlueAI-111.svg)](https://github.com/ZimaBlueAI)
@@ -36,17 +36,29 @@ The agent loads a skill when a user expresses the matching intent, and produces 
 
 ---
 
-## 2. What ships in v0.3.0
+## 2. What ships in v0.4.0
 
 Three skills cover the full chain from **board brief to outbound keynote video to truly editable PPT**; **launches simultaneously on Claude Code and OpenAI Codex CLI**. All skills are independent — pick what you need.
 
 | Skill | One line | Output | Zip size |
 |---|---|---|---|
-| **biz-decision-stack** | 7 subagents · investor → CEO → architect → MRD → delivery → retro → critique; v3 adds 8 terminal-themed editable PPTX layouts | 8 terminal-grade HTML reports + editable PPTX (black + acid-yellow + mono + zero-motion) | 73 KB |
-| **viz-deck** | 5 production modes · keynote-report / hi-fi prototype / slide-deck / motion-stage / **pptx-deck** (v3 — true DrawingML) | HTML / editable PPTX (every element clickable) / MP4 / GIF / PDF (deep-space cyan/blue/gold) | 81 KB |
-| **viz-charts** | 6 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · motion video · **native PPTX charts** (v3 — data editable inside PowerPoint) | Inline HTML / offline SVG / MP4 / data-bound PPTX charts | 156 KB |
+| **biz-decision-stack** | 8 subagents · investor → CEO → architect → MRD → delivery → retro → critique + **template router** (v4) | 8 terminal-grade HTML reports + editable PPTX (black + acid-yellow + mono + zero-motion) | 83 KB |
+| **viz-deck** | 5 production modes + 6 v4 enhancements (Speaker Mode / 3-variant preview / Doc→Deck / academic talk / bento grid / reflective loop) | HTML / editable PPTX (every element clickable) / MP4 / GIF / PDF (deep-space cyan/blue/gold) | 130 KB |
+| **viz-charts** | 6 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · motion video · native PPTX charts | Inline HTML / offline SVG / MP4 / data-bound PPTX charts | 157 KB |
 
-### What's new in v0.3 (vs v0.2)
+### What's new in v0.4 (vs v0.3 — 26-skill cross-pollination)
+
+After studying [a comprehensive survey of 26 open-source PPT-generation Agent Skills](https://mp.weixin.qq.com/s/gaNsToTe33IPXIddesJs1g) (≈70k+ aggregate stars), this release imports the highest-value patterns from peer skills. **All v0.3 workflows preserved** — every addition is additive.
+
+- ✨ **viz-deck · Speaker Mode** (from [html-ppt-skill](https://github.com/lewislulu/html-ppt-skill) 3.8k★): press **S** to pop an independent presenter window with 4 magnetic cards (current / next preview / teleprompter / timer). BroadcastChannel keeps both windows in sync. Three layout presets (GRID / PROMPTER / DUO).
+- ✨ **viz-deck · Show-Don't-Tell 3-variant preview** (from [frontend-slides](https://github.com/zarazhangrui/frontend-slides) 17.5k★): when input is ambiguous, render 3 contrasting hero mockups side-by-side so users can pick a visual direction by sight. 5 scene presets pick a cross-school philosophy triple.
+- ✨ **viz-deck · Doc→Deck converter** (from [odin-slides](https://github.com/leonid20000/odin-slides) 147★ + [colloquium](https://github.com/natolambert/colloquium) 190★): convert `.md` / `.docx` / `.pdf` (via pandoc pre-flight) directly into `pptx-deck-spec.json`. Auto-detects chapters, tables → KPI grid, quote blocks → pullquote.
+- ✨ **viz-deck · Academic Talk template** (from [academic-pptx-skill](https://github.com/Gabberflast/academic-pptx-skill) 387★): mode-1 sub-template with mandatory action titles (verb-driven, not noun phrases), numbered citations, anticipated Q&A, and limitations.
+- ✨ **viz-deck · Bento Grid layout** (from [apple-bento-grid](https://github.com/hubeiqiao/apple-bento-grid) 171★): Apple-inspired feature-overview page, plus a 9th native PPTX layout `bento-grid` with 3-column responsive packing and three accent variants.
+- ✨ **viz-deck · Reflective Loop** (from [PPTAgent](https://github.com/icip-cas/PPTAgent) 4.4k★): after spec generation, auto-run per-page 5-dim critique. Pages below threshold get listed in `redo-prompts.txt`. HTML report includes radar + per-slide score table.
+- ✨ **biz-decision-stack · Template Router** (from [mckinsey-pptx](https://github.com/seulee26/mckinsey-pptx) 426★): the 9th subagent. Scores ambiguous user input against an 8-template, 5-dimension routing rubric, then writes a one-paragraph justification into the chosen HTML's header comment — never silent, always defended.
+
+### What was new in v0.3 (vs v0.2)
 
 - ✨ **ppt-master soft bridge**: via [`hugohe3/ppt-master`](https://github.com/hugohe3/ppt-master)'s python-pptx + SVG→DrawingML pipeline, every skill now exports `.pptx` files where **every visual element is an independently clickable native shape** — not flattened images
 - ✨ **viz-deck mode 5 · pptx-deck**: JSON deck spec → per-slide SVG → ppt-master → `.pptx`. 8 layouts (cover / agenda / section / bullets / two-column / kpi-grid / pullquote / closing), three themes (deep-space / terminal / deck-light)
@@ -270,7 +282,7 @@ skills/
 │   ├── biz-decision-stack/
 │   │   ├── biz-decision-stack.zip Installable archive
 │   │   ├── README.md              Per-skill notes
-│   │   └── samples/               v0.2 critique + v0.3 decision PPTX
+│   │   └── samples/               5-dim critique + decision PPTX + v0.4 template-router cases
 │   │
 │   ├── viz-deck/
 │   │   ├── viz-deck.zip
@@ -278,14 +290,14 @@ skills/
 │   │   ├── design-system-deck.md  Public design spec
 │   │   ├── research-playbook.md   Tier 1/2/3 competitive research protocol
 │   │   ├── sample-board-brief.html
-│   │   └── samples/               5-mode samples (v0.2 motion + v0.3 editable-deck)
+│   │   └── samples/               5-mode samples + v0.4 Speaker / 3-variant / Doc→Deck / Academic / Bento / Reflect
 │   │
 │   └── viz-charts/
 │       ├── viz-charts.zip
 │       ├── demo-*.html            Four interactive showcases
 │       └── samples/               motion chart (v0.2) + native PPTX chart (v0.3)
 │
-├── codex-skills/                  ★ OpenAI Codex CLI harness (v0.3, same content)
+├── codex-skills/                  ★ OpenAI Codex CLI harness (v0.4, same content)
 │   ├── README.md                  Codex-flavored intro
 │   ├── INSTALL.md                 Codex install guide
 │   ├── install.sh / install.ps1   One-shot install scripts
@@ -320,10 +332,11 @@ skills/
 |---|---|---|
 | v0.1 | Initial release of the claude-code-skills trio | ✅ Released |
 | v0.2 | 4 output modes · 20 philosophies · 5-dim critique · huashu-design bridge · samples | ✅ Released |
-| **v0.3** | **ppt-master soft bridge · viz-deck mode 5 pptx-deck · decision PPTX · data-bound native chart · TTS narration embed · codex-skills dual-harness launch** | ✅ **Released (current)** |
-| v0.4 | `openclaw-skills/` + tri-harness consistency tests | 🟡 Planned |
-| v0.5 | `hermes-skills/` | ⚪ Planned |
-| v0.6 | `octarus-skills/` | ⚪ Planned |
+| v0.3 | ppt-master soft bridge · viz-deck mode 5 pptx-deck · decision PPTX · data-bound native chart · TTS narration embed · codex-skills dual-harness launch | ✅ Released |
+| **v0.4** | **26-skill cross-pollination · Speaker Mode · 3-variant preview · Doc→Deck · Academic Talk · Bento Grid · Reflective Loop · Template Router** | ✅ **Released (current)** |
+| v0.5 | viz-charts narrative chart explainer (TTS-narrated chart videos) + `openclaw-skills/` port | 🟡 Planned |
+| v0.6 | `hermes-skills/` + tri-harness consistency tests | ⚪ Planned |
+| v0.7 | `octarus-skills/` | ⚪ Planned |
 | v1.0 | All 5 harnesses + skill registry (`skills.json` index) | ⚪ Planned |
 
 ---

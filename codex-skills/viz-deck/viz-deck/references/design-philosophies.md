@@ -111,3 +111,44 @@
 ## 与 5 维评审的联动
 
 每次完成 deck 后，调用 `references/critique-5dim.md` 给出 5 维评分，其中**第 1 项哲学一致性**就是检验"你是否真的按所选哲学执行"。打分 < 7 = 需要修复。
+
+## v2.1 · Show-Don't-Tell 三变体预览
+
+> 灵感来自 frontend-slides（17.5k Star）的 "show, don't tell" — 用户口头描述风格通常说不清，看到 3 张缩略图却能一眼分辨。
+
+### 何时触发
+
+| 用户输入特征 | 触发预览 |
+|---|:---:|
+| 完全没说视觉风格（"做个 keynote"） | ✅ 跑 shotgun |
+| 风格描述含混（"高级一点"、"专业一点"、"好看点"） | ✅ 跑 shotgun |
+| 明确指定哲学（"用 Kenya Hara 风" / "用 18"）| ❌ 直接用 |
+| 上传参考图 / brand URL | ❌ 进顾问模式（仍可生成 3 变体但优先匹配参考） |
+
+### 默认对照三联（contrast triples）
+
+按场景选不同三联，**强制跨流派**：
+
+| 场景关键词 | 安全选 | 对照选 | 野卡选 |
+|---|---|---|---|
+| 投资人 / 路演 / 严肃发布 | **01 Pentagram**（信息建筑） | **11 Build**（极简） | **17 Takram**（东方实验） |
+| 产品发布 / 品牌 / 创意机构 | **04 Fathom**（信息建筑·数据型） | **12 Sagmeister**（实验先锋） | **18 Kenya Hara**（东方极简） |
+| 技术深研 / 工程师演讲 | **10 Müller-Brockmann**（瑞士网格） | **07 Field.io**（运动诗学·算法） | **16 Territory**（实验·FUI） |
+| 学术 / 政府 / 研究 | **01 Pentagram** | **03 Information Architects** | **18 Kenya Hara** |
+| 默认（无关键词） | **viz-deck baseline**（深空青金） | **18 Kenya Hara**（东方极简） | **07 Field.io**（算法运动） |
+
+### Shotgun 工作流
+
+跑 `scripts/preview-shotgun.mjs`：
+
+```bash
+node ~/.claude/skills/viz-deck/scripts/preview-shotgun.mjs \
+  --topic "AI Agent 全景报告" \
+  --scene "投资人路演" \
+  --output ./previews/
+# 产出：./previews/preview-board.html（3 张 hero 缩略图横向并列 + Pick 按钮）
+```
+
+输出的 `preview-board.html` 让用户点击 "Pick this direction" → 把所选哲学编号写入下一步的 deck 生成参数。
+
+**不要并行生成完整 deck**——只生成 hero 缩略图（1 页封面 + 1 页章节内页），节省 token，专注于视觉决策。

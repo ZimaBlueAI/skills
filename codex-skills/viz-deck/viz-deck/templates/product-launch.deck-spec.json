@@ -1,0 +1,139 @@
+{
+  "name": "mingjing_public_launch",
+  "theme": "deck-light",
+  "format": "ppt169",
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "title-cover",
+      "eyebrow": "MINGJING · PUBLIC LAUNCH · MAY 2026",
+      "title": "Inspection that thinks like a senior engineer",
+      "subtitle": "GA today. Free tier live. Three integrations open.",
+      "author": "Mingjing AI · launch desk",
+      "date": "May 2026",
+      "notes": "Welcome. Today we GA. Three things to cover: what we built, who it's for, how to start using it in five minutes."
+    },
+    {
+      "id": "agenda",
+      "layout": "agenda",
+      "eyebrow": "Agenda",
+      "title": "Twelve minutes, five sections",
+      "items": [
+        "Who we built it for",
+        "What the product does today",
+        "The thinking, not just the feature list",
+        "Numbers from the closed beta",
+        "Five-minute getting started"
+      ],
+      "notes": "Pacing: 2 minutes on personas, 4 minutes on the product, 3 minutes on the thinking, 1 minute on numbers, 2 minutes on QuickStart."
+    },
+    {
+      "id": "section-01",
+      "layout": "section-divider",
+      "section": "01",
+      "title": "Who we built it for",
+      "subtitle": "Three personas, one shared pain"
+    },
+    {
+      "id": "personas",
+      "layout": "title-bullets",
+      "eyebrow": "Personas",
+      "title": "The senior engineer's review queue is unbounded",
+      "lead": "Mingjing was designed for the people who currently absorb the cost of slow, manual reviews — not for greenfield projects with budget to hire more.",
+      "bullets": [
+        { "text": "Senior backend leads doing 30+ PR reviews per week", "note": "drowning in context-switching" },
+        { "text": "Tech-debt focused teams with a 6-month migration backlog", "note": "needs depth, not speed" },
+        { "text": "Compliance-mandated code review (FinTech / Health)", "note": "needs audit trail, not just speed" }
+      ],
+      "notes": "We are NOT competing with Copilot. Copilot writes code. Mingjing reads it like a senior, the way a tech lead would on a Monday morning."
+    },
+    {
+      "id": "section-02",
+      "layout": "section-divider",
+      "section": "02",
+      "title": "What the product does today",
+      "subtitle": "Five capabilities, GA"
+    },
+    {
+      "id": "tradeoff",
+      "layout": "two-column",
+      "eyebrow": "How Mingjing thinks",
+      "title": "Sentence-level rules vs trajectory-aware review",
+      "left": {
+        "heading": "Most linters / SAST",
+        "subheading": "Sentence-level rules",
+        "items": [
+          "Flags exact patterns (unused var, var-naming)",
+          "Misses architecture-level smells",
+          "Drowns reviewer in noise (60% false positive)",
+          "Doesn't read intent, only syntax"
+        ]
+      },
+      "right": {
+        "heading": "Mingjing",
+        "subheading": "Trajectory-aware review",
+        "items": [
+          "Reads PR + 6-week commit lineage + open issues",
+          "Detects 'this fix breaks the contract from PR #441'",
+          "11% false positive in closed beta",
+          "Suggestions are diff-shaped, not text-shaped"
+        ]
+      },
+      "notes": "The biggest insight: a senior engineer reviews a PR by remembering what happened last quarter. A linter has no memory. We gave the model memory."
+    },
+    {
+      "id": "beta-kpis",
+      "layout": "kpi-grid",
+      "eyebrow": "Closed beta · Q1 + Q2 2026",
+      "title": "Beta numbers",
+      "kpis": [
+        { "label": "Engineering teams", "value": "187", "delta": "+38 / mo", "note": "ahead of plan" },
+        { "label": "PRs reviewed", "value": "41,288", "delta": "+12% WoW", "note": "compounding" },
+        { "label": "False-positive rate", "value": "11", "unit": "%", "delta": "-9pp", "note": "vs SonarQube" },
+        { "label": "Time-to-merge", "value": "−34", "unit": "%", "delta": "median", "note": "team-reported" },
+        { "label": "NPS (technical leads)", "value": "67", "delta": "+8", "note": "elite tier" },
+        { "label": "Logo retention", "value": "94", "unit": "%", "delta": "+0pp", "note": "as planned" }
+      ],
+      "notes": "Beta logos: Vercel, Linear, Sentry, four FinTechs we cannot name yet, two health-systems."
+    },
+    {
+      "id": "quote",
+      "layout": "pullquote",
+      "quote": "It caught a regression we would not have noticed for six weeks — and explained why, citing the PR that introduced the contract.",
+      "author": "Sara Chen",
+      "role": "Principal Engineer · TerraForge"
+    },
+    {
+      "id": "section-03",
+      "layout": "section-divider",
+      "section": "03",
+      "title": "Getting started",
+      "subtitle": "Five minutes, three integrations"
+    },
+    {
+      "id": "quickstart",
+      "layout": "title-bullets",
+      "eyebrow": "QuickStart",
+      "title": "From zero to first review in 5 minutes",
+      "lead": "Free tier covers personal repos and OSS up to 50 contributors. Paid plan starts at $99 / month / team.",
+      "bullets": [
+        { "text": "GitHub: install the Mingjing app", "note": "1 click; works on public + private" },
+        { "text": "GitLab: webhook + project token", "note": "self-hosted supported" },
+        { "text": "CLI (any Git host): `pip install mingjing-cli && mingjing review HEAD`", "note": "for shops with custom Git" }
+      ],
+      "notes": "Demo lives at mingjing.ai/demo — anyone can paste a PR URL and see a review in 8 seconds."
+    },
+    {
+      "id": "closing",
+      "layout": "closing",
+      "title": "Mingjing is live",
+      "subtitle": "Free tier open. Three integrations supported. Paid plans live at mingjing.ai/pricing.",
+      "contacts": [
+        "Try it: mingjing.ai/demo",
+        "Pricing: mingjing.ai/pricing",
+        "Enterprise: hello@mingjing.ai"
+      ],
+      "notes": "Closing the loop: free tier is permanent for OSS + personal. We made the bet that the people who feel the pain most will become our biggest advocates."
+    }
+  ]
+}
