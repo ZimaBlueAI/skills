@@ -1,7 +1,7 @@
-# codex-skills · one-shot installer (PowerShell, Windows)
+# codex-skills one-shot installer (PowerShell, Windows)
 #
-# Drops the three skills into $HOME\.agents\skills\ and the 8 subagents into $HOME\.codex\agents\.
-# Idempotent — re-running upgrades in place.
+# Drops the three skills into $HOME\.agents\skills\ and the 9 subagents into $HOME\.codex\agents\.
+# Idempotent: re-running upgrades in place.
 #
 # Usage:
 #   .\install.ps1                            # install all three + agents
@@ -43,7 +43,7 @@ Invoke-Step { New-Item -ItemType Directory -Force -Path $homeAgents | Out-Null }
 Invoke-Step { New-Item -ItemType Directory -Force -Path $homeCodexAgents | Out-Null }
 
 if ($Skill -eq "" -or $Skill -eq "biz-decision-stack") {
-    Expand-Skill "biz-decision-stack" "biz-html-viz + 8 subagents"
+    Expand-Skill "biz-decision-stack" "biz-html-viz + 9 subagents"
 }
 if ($Skill -eq "" -or $Skill -eq "viz-deck") {
     Expand-Skill "viz-deck" "viz-deck"
@@ -53,9 +53,9 @@ if ($Skill -eq "" -or $Skill -eq "viz-charts") {
 }
 
 if ($NoAgents) {
-    Write-Host "[codex-skills] -NoAgents passed, removing freshly-extracted agents …"
+    Write-Host "[codex-skills] -NoAgents passed, removing freshly-extracted agents"
     if (-not $DryRun) {
-        Get-ChildItem -Path $homeCodexAgents -Filter "0[0-7]-*.toml" -ErrorAction SilentlyContinue | Remove-Item -Force
+        Get-ChildItem -Path $homeCodexAgents -Filter "0[0-8]-*.toml" -ErrorAction SilentlyContinue | Remove-Item -Force
     }
 }
 
@@ -63,7 +63,7 @@ Write-Host ""
 Write-Host "[codex-skills] installed at:"
 Write-Host "  $homeAgents  (skill bodies)"
 if (-not $NoAgents) {
-    Write-Host "  $homeCodexAgents  (8 TOML subagents)"
+    Write-Host "  $homeCodexAgents  (9 TOML subagents)"
 }
 Write-Host ""
 Write-Host "Next steps:"

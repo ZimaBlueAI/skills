@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UI/UX Skills · 18 款精选目录 · ZimaBlueAI v0.4 提案</title>
+<meta name="description" content="为 Claude Code + Codex CLI 精选的 18 款 UI/UX skill 设计提案。基于 Pasquale Pillitteri 18 款推荐做有见解的取舍。" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030711;--bg-2:#07111f;
+  --panel:rgba(12,26,46,0.72);--panel-strong:rgba(16,36,62,0.92);
+  --line:rgba(151,209,255,0.16);--line-strong:rgba(151,209,255,0.34);
+  --text:#edf7ff;--muted:#a8bdd5;--faint:#688096;
+  --cyan:#42e8ff;--blue:#6ca5ff;--silver:#d8e8f4;--gold:#ffd987;
+  --green:#78f7c5;--red:#ff8c8c;--violet:#b893ff;--amber:#ffb648;
+  --shadow:0 28px 90px rgba(0,0,0,0.48);
+  --radius-xl:34px;--radius-lg:24px;--radius-md:16px;--radius-sm:8px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  margin:0;background:radial-gradient(ellipse at top,#0a1730 0%,#030711 60%);
+  color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.55;
+  min-height:100vh;font-size:15px;
+}
+::selection{background:var(--cyan);color:#000}
+
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--gold));z-index:100;transition:width 0.1s}
+
+.deck-nav{
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:90;
+  display:flex;gap:0.4rem;padding:0.5rem 0.8rem;
+  background:rgba(7,17,31,0.78);backdrop-filter:blur(20px);
+  border:1px solid var(--line);border-radius:999px;
+  font-size:0.78rem;font-weight:500;
+}
+.deck-nav a{color:var(--muted);text-decoration:none;padding:0.35rem 0.7rem;border-radius:999px;transition:all 0.2s;white-space:nowrap}
+.deck-nav a:hover{color:var(--text);background:rgba(255,255,255,0.06)}
+.deck-nav a.active{color:#000;background:var(--cyan);font-weight:600}
+
+main{max-width:1320px;margin:0 auto;padding:0 2rem 5rem}
+.section{padding:5rem 0;border-bottom:1px solid var(--line)}
+.section:last-of-type{border-bottom:none}
+
+.eyebrow{display:inline-block;font-family:JetBrains Mono,monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);font-weight:600;margin-bottom:0.8rem}
+.kicker-num{display:inline-block;font-family:JetBrains Mono,monospace;font-size:0.7rem;letter-spacing:0.15em;color:var(--faint);margin-right:0.7rem;font-weight:500}
+
+h1{font-family:Inter,sans-serif;font-weight:800;font-size:clamp(2.5rem,6vw,4.4rem);line-height:1.05;letter-spacing:-0.02em;margin:0 0 1.4rem}
+h2{font-family:Inter,sans-serif;font-weight:700;font-size:clamp(1.8rem,3.5vw,2.6rem);line-height:1.15;letter-spacing:-0.01em;margin:0 0 1.2rem}
+h3{font-family:Inter,sans-serif;font-weight:700;font-size:1.32rem;line-height:1.25;margin:0 0 0.8rem;color:var(--text)}
+h4{font-family:JetBrains Mono,monospace;font-weight:700;font-size:0.74rem;line-height:1.2;margin:1.5rem 0 0.6rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.12em}
+.headline-gradient{background:linear-gradient(120deg,var(--text) 0%,var(--cyan) 50%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{font-size:1.1rem;line-height:1.65;color:var(--muted);max-width:780px}
+
+p{margin:0 0 1rem;color:var(--muted)}
+strong{color:var(--text);font-weight:600}
+code{font-family:JetBrains Mono,monospace;font-size:0.85em;background:rgba(66,232,255,0.08);color:var(--cyan);padding:0.12em 0.4em;border-radius:4px;border:1px solid rgba(66,232,255,0.18)}
+.inline-link{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(66,232,255,0.4);transition:all 0.2s}
+.inline-link:hover{color:var(--gold);border-bottom-color:var(--gold)}
+
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.7s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── hero metrics ──────────────────────────────────────────────────── */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.metric{
+  padding:1.2rem 1.3rem;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);
+  display:flex;flex-direction:column;justify-content:space-between;min-height:130px;
+}
+.metric .label{font-family:JetBrains Mono,monospace;font-size:0.7rem;letter-spacing:0.14em;color:var(--faint);text-transform:uppercase}
+.metric .val{font-family:Inter,sans-serif;font-weight:800;font-size:2.6rem;letter-spacing:-0.02em;line-height:1;color:var(--cyan);margin:0.4rem 0 0.25rem}
+.metric .delta{font-family:JetBrains Mono,monospace;font-size:0.74rem;color:var(--muted)}
+@media (max-width:880px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+
+/* ── phase blocks ──────────────────────────────────────────────────── */
+.phase-header{
+  display:flex;align-items:baseline;gap:1.2rem;margin-bottom:1.6rem;
+  padding-bottom:0.8rem;border-bottom:1px solid var(--line);
+}
+.phase-header .phase-tag{
+  font-family:JetBrains Mono,monospace;font-weight:700;font-size:0.7rem;letter-spacing:0.18em;
+  color:var(--bg);background:var(--cyan);padding:0.3rem 0.6rem;border-radius:4px;
+}
+.phase-header h2{margin:0;flex:1}
+.phase-header .count{font-family:JetBrains Mono,monospace;font-size:0.85rem;color:var(--faint)}
+
+/* ── skill card ────────────────────────────────────────────────────── */
+.skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
+@media (max-width:980px){.skill-grid{grid-template-columns:1fr}}
+
+.skill-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:1.6rem 1.7rem;position:relative;overflow:hidden;
+  transition:all 0.3s;
+}
+.skill-card:hover{border-color:var(--line-strong);background:var(--panel-strong);transform:translateY(-2px)}
+
+.skill-card.p0{border-color:rgba(255,217,135,0.42)}
+.skill-card.p0::before{
+  content:"";position:absolute;left:0;top:0;width:4px;height:100%;
+  background:linear-gradient(180deg,var(--gold),var(--amber));
+}
+.skill-card.p0:hover{border-color:var(--gold)}
+
+.skill-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:0.6rem;margin-bottom:0.6rem}
+.skill-head .num{
+  font-family:JetBrains Mono,monospace;font-weight:700;font-size:1.6rem;
+  color:var(--cyan);line-height:1;letter-spacing:-0.02em;min-width:1.8em;
+}
+.skill-card.p0 .num{color:var(--gold)}
+.skill-head .name{font-family:JetBrains Mono,monospace;font-weight:700;font-size:1.05rem;color:var(--text);letter-spacing:-0.01em}
+.skill-head .badges{display:flex;gap:0.35rem;margin-left:auto}
+
+.tag{
+  font-family:JetBrains Mono,monospace;font-size:0.65rem;font-weight:700;
+  padding:0.18rem 0.5rem;border-radius:999px;border:1px solid;letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.tag-p0{color:var(--gold);border-color:var(--gold);background:rgba(255,217,135,0.10)}
+.tag-p1{color:var(--cyan);border-color:rgba(66,232,255,0.5);background:rgba(66,232,255,0.08)}
+.tag-p2{color:var(--muted);border-color:var(--line);background:rgba(255,255,255,0.02)}
+.tag-new{color:var(--green);border-color:rgba(120,247,197,0.45);background:rgba(120,247,197,0.08)}
+.tag-kept{color:var(--violet);border-color:rgba(184,147,255,0.42);background:rgba(184,147,255,0.08)}
+.tag-ext{color:var(--amber);border-color:rgba(255,182,72,0.42);background:rgba(255,182,72,0.08)}
+
+.skill-purpose{font-size:0.96rem;color:var(--text);margin:0.4rem 0 1rem;line-height:1.55}
+
+.skill-meta-row{font-size:0.85rem;line-height:1.55;color:var(--muted);margin:0.3rem 0}
+.skill-meta-row strong{color:var(--silver);font-weight:600;display:inline-block;min-width:5.6em}
+.skill-meta-row code{font-size:0.78em}
+
+.skill-impl{
+  margin-top:1rem;padding-top:0.9rem;border-top:1px dashed var(--line);
+  font-family:JetBrains Mono,monospace;font-size:0.78rem;line-height:1.55;color:var(--faint);
+}
+.skill-impl strong{color:var(--cyan);font-weight:500}
+
+/* ── tables ────────────────────────────────────────────────────────── */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:1.6rem 1.8rem}
+
+table{width:100%;border-collapse:collapse;font-size:0.86rem;font-family:Inter,sans-serif}
+thead th{
+  font-family:JetBrains Mono,monospace;font-weight:700;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.14em;
+  color:var(--muted);text-align:left;padding:0.6rem 0.7rem;border-bottom:1px solid var(--line-strong);
+}
+tbody td{padding:0.65rem 0.7rem;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:hover{background:rgba(255,255,255,0.015)}
+tbody tr:last-child td{border-bottom:none}
+
+/* ── callout ───────────────────────────────────────────────────────── */
+.callout{
+  background:rgba(66,232,255,0.04);border:1px solid rgba(66,232,255,0.22);border-radius:var(--radius-md);
+  padding:1rem 1.2rem;margin:1.5rem 0;
+}
+.callout.warn{background:rgba(255,140,140,0.04);border-color:rgba(255,140,140,0.28)}
+.callout.gold{background:rgba(255,217,135,0.05);border-color:rgba(255,217,135,0.32)}
+.callout h4{margin-top:0;color:var(--cyan)}
+.callout.warn h4{color:var(--red)}
+.callout.gold h4{color:var(--gold)}
+
+footer{
+  padding:3rem 2rem;text-align:center;color:var(--faint);font-size:0.85rem;
+  border-top:1px solid var(--line);
+}
+.section-end{
+  margin-top:5rem;padding:2rem;text-align:center;
+  background:linear-gradient(135deg,rgba(66,232,255,0.06),rgba(255,217,135,0.04));
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+}
+.section-end h3{color:var(--text);margin-bottom:0.6rem}
+.section-end p{font-size:0.92rem}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav class="deck-nav reveal">
+  <a href="#opening">概览</a>
+  <a href="#curation">取舍</a>
+  <a href="#p1">Discover</a>
+  <a href="#p2">Define</a>
+  <a href="#p3">Ideate</a>
+  <a href="#p4">Critique</a>
+  <a href="#p5">Adapt</a>
+  <a href="#p6">State</a>
+  <a href="#p7">Meta</a>
+  <a href="#summary">汇总</a>
+  <a href="#next">下一步</a>
+</nav>
+
+<main id="main">
+
+<!-- ── OPENING ──────────────────────────────────────────────────────── -->
+<section class="section" id="opening">
+  <div class="reveal" style="padding-top:5rem">
+    <span class="eyebrow">UI/UX Catalog · v0.4 Design Proposal · 2026-05-13</span>
+    <h1><span class="headline-gradient">18 款 UI/UX Skill</span><br/>为 Claude Code + Codex 双 harness 精选</h1>
+    <p class="lead" style="margin-top:1.4rem;font-size:1.15rem">参考 <a class="inline-link" href="https://pasqualepillitteri.it/zh/news/889/claude-code-18-zuijia-skill-ui-ux-sheji-zhinan" target="_blank">Pasquale Pillitteri 的 18 款推荐</a>，做了**有见解的取舍**——删了 10 个重叠 / 过窄 / 偏 preset 的条目，新增 13 个填补你 repo 上下文的关键空白（a11y 专项、PRD→mockup、responsive、states library 等）。</p>
+  </div>
+  <div class="grid-4 reveal" style="margin-top:3.2rem">
+    <div class="metric"><span class="label">SKILLS</span><span class="val">18</span><span class="delta">7 phases · P0 × 6 · P1 × 9 · P2 × 3</span></div>
+    <div class="metric"><span class="label">原文保留</span><span class="val">5</span><span class="delta">design-sprint · refactoring-ui · heuristic · platform · skill-creator</span></div>
+    <div class="metric"><span class="label">新增填空</span><span class="val">13</span><span class="delta">a11y / PRD / tokens / responsive 等</span></div>
+    <div class="metric"><span class="label">建议先做</span><span class="val">6</span><span class="delta">P0 优先级</span></div>
+  </div>
+</section>
+
+<!-- ── CURATION ─────────────────────────────────────────────────────── -->
+<section class="section" id="curation">
+  <div class="reveal">
+    <span class="kicker-num">01</span>
+    <span class="eyebrow">Curation Framework</span>
+    <h2>策划框架：删什么 · 留什么 · 加什么</h2>
+    <p class="lead">原文章 18 个条目里有 5 个 Visual/Aesthetic 类严重重叠（都是"给点视觉灵感"）、3 个是静态预设而非工作流、1 个是 Figma plugin 范畴。我们合并 / 删除 / 新增，重排成 7 个设计阶段。</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:2rem" class="reveal">
+    <div class="panel">
+      <h4 style="color:var(--red)">删除（10 条 + "额外提到"3 条）</h4>
+      <table>
+        <thead><tr><th>原文条目</th><th>删除原因</th></tr></thead>
+        <tbody>
+          <tr><td>Pro Max / Taste / Interface / Pro Demo / Anthropic Frontend</td><td>5 个 Visual 类**严重重叠**——本质都是"视觉灵感"。合并 1 个 <code>design-direction-explorer</code> 足矣</td></tr>
+          <tr><td>Designer Skills (63-bundle)</td><td>"大而全" 违背 <strong>少而精</strong> 原则；值得保留的拆出来单独做</td></tr>
+          <tr><td>Bencium UX (28K 字)</td><td>是文档不是 skill；能力融入 <code>multi-heuristic-audit</code></td></tr>
+          <tr><td>Vercel Agent</td><td>性能 + a11y 混合；a11y 拆出，性能不在 UI/UX 范围</td></tr>
+          <tr><td>Hooked UX</td><td>适用面太窄；作为 <code>ux-research-synthesizer</code> 的分析框架而非独立 skill</td></tr>
+          <tr><td>Figma to Code</td><td>Figma plugin 范畴，不是 Claude Code skill 范畴</td></tr>
+          <tr><td>Theme Factory / Brand Guidelines / Canvas</td><td>静态预设 / AI 出图——非声明式工作流；合并入 <code>design-tokens-generator</code></td></tr>
+          <tr><td>App Store Screenshots</td><td>太窄，属 marketing asset 类</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h4 style="color:var(--green)">保留（5 条，原文）</h4>
+      <table>
+        <thead><tr><th>Skill</th><th>原文 #</th><th>保留理由</th></tr></thead>
+        <tbody>
+          <tr><td><code>design-sprint-facilitator</code></td><td>#13</td><td>GV 5-day sprint 是真方法论，跨场景适用</td></tr>
+          <tr><td><code>refactoring-ui-audit</code></td><td>#9</td><td>Refactoring UI 框架精准聚焦视觉细节</td></tr>
+          <tr><td><code>multi-heuristic-audit</code></td><td>#10（扩展）</td><td>Nielsen + Shneiderman + ISO 9241 多框架</td></tr>
+          <tr><td><code>platform-adaptation</code></td><td>#11（扩展）</td><td>从单 iOS 扩到 iOS+Material+Fluent+GNOME</td></tr>
+          <tr><td><code>ui-ux-skill-creator</code></td><td>#18</td><td>meta-skill——把设计系统蒸馏成 skill</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top:1.6rem">新增（13 条）</h4>
+      <p style="font-size:0.86rem">围绕原文章**没碰的** 4 个核心维度展开：<strong>研究合成</strong>（personas, JTBD）、<strong>设计前置</strong>（PRD→wireframe, tokens, IA）、<strong>组件 / 状态库</strong>（component lib, states lib）、<strong>关键审计</strong>（a11y, microcopy, responsive）。</p>
+    </div>
+  </div>
+
+  <div class="callout gold reveal" style="margin-top:2rem">
+    <h4>原则一致性</h4>
+    <p style="margin:0;font-size:0.92rem">所有 18 个 skill 都遵守 v0.3 已确立的工程惯例：<strong>声明式优先（SKILL.md + frontmatter）</strong>、<strong>少而精</strong>（一 skill 一职责）、<strong>桥接而非嵌入</strong>（视频用 huashu，PPTX 用 ppt-master，图表用 viz-charts，不重复造轮子）、<strong>双 harness 兼容</strong>（同一份 SKILL.md 跑在 Claude Code 和 Codex CLI）。</p>
+  </div>
+</section>
+
+<!-- ── PHASE 1 · DISCOVER ───────────────────────────────────────────── -->
+<section class="section" id="p1">
+  <div class="phase-header reveal">
+    <span class="phase-tag">PHASE 1</span>
+    <h2>Discover &amp; Research</h2>
+    <span class="count">3 skills</span>
+  </div>
+
+  <div class="skill-grid">
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">01</span>
+        <span class="name">ux-research-synthesizer</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">访谈逐字稿 / 问卷数据 / 客服 ticket → <strong>personas + Jobs-to-be-Done + opportunity map</strong>。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>用户研究 · 访谈整理 · personas · JTBD · interview synthesis</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 仅有定量数据（用 viz-charts）；纯桌面研究（用 viz-deck competitive-landscape）</p>
+      <p class="skill-impl"><strong>refs:</strong> jtbd-framework.md · persona-template.md · hook-model-overlay.md（吸收 Hooked UX）<br/><strong>templates:</strong> personas.html · jtbd-canvas.html · opportunity-tree.html<br/><strong>scripts:</strong> cluster-quotes.mjs</p>
+    </div>
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">02</span>
+        <span class="name">design-sprint-facilitator</span>
+        <div class="badges">
+          <span class="tag tag-p2">P2</span>
+          <span class="tag tag-kept">原文 #13</span>
+        </div>
+      </div>
+      <p class="skill-purpose">GV 5-day sprint 编排——<strong>Understand → Sketch → Decide → Prototype → Test</strong>，五天每天产出物清单 + 时盒表 + 决策投票模板。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>design sprint · 5-day sprint · GV sprint · lightning decision · 设计冲刺</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 已有明确需求（不需 ideation）；时间 &lt; 3 天（用 lightning version）</p>
+      <p class="skill-impl"><strong>refs:</strong> gv-sprint-playbook.md · day-by-day-agenda.md · decision-vote-protocols.md<br/><strong>templates:</strong> sprint-board.html（5 列看板）· decision-doc.html · prototype-brief.html</p>
+    </div>
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">03</span>
+        <span class="name">info-architect</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">产品功能列表 → <strong>sitemap + navigation tree + taxonomy</strong> + URL/route 命名建议。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>信息架构 · IA · sitemap · 导航结构 · taxonomy · navigation design</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 单页应用（无导航）；已有 IA 想做评审（用 multi-heuristic-audit）</p>
+      <p class="skill-impl"><strong>refs:</strong> card-sorting-output-to-tree.md · ia-anti-patterns.md · naming-conventions.md<br/><strong>templates:</strong> sitemap-tree.html（接 viz-charts mermaid）· route-table.html<br/><strong>scripts:</strong> validate-depth.mjs（标记 &gt;3 层嵌套）</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PHASE 2 · DEFINE ─────────────────────────────────────────────── -->
+<section class="section" id="p2">
+  <div class="phase-header reveal">
+    <span class="phase-tag">PHASE 2</span>
+    <h2>Define &amp; Specify</h2>
+    <span class="count">3 skills · 含 2 个 P0 🔥</span>
+  </div>
+
+  <div class="skill-grid">
+
+    <div class="skill-card p0 reveal">
+      <div class="skill-head">
+        <span class="num">04</span>
+        <span class="name">prd-to-mockup</span>
+        <div class="badges">
+          <span class="tag tag-p0">P0 🔥</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">文本 PRD / 用户故事 → <strong>低保真 wireframe HTML</strong>（手绘风 SVG）。Bridge 设计前最关键的一步。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>PRD 出图 · 把需求画出来 · wireframe from PRD · 低保真原型 · 草图 · 线框图</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 已有 wireframe 要做 hi-fi（用 #09 wireframe-to-hifi）；marketing landing（用 viz-deck）</p>
+      <p class="skill-impl"><strong>refs:</strong> prd-parsing-protocol.md · wireframe-vocabulary.md（box / line / placeholder grammar）<br/><strong>templates:</strong> wireframe-mobile.html · wireframe-desktop.html · wireframe-tablet.html<br/><strong>scripts:</strong> prd-to-elements.mjs（NLP-light 提取 nouns → UI elements）<br/><strong>Why P0:</strong> viz-deck 的 prototype 模式是 hi-fi 起步，缺了从 PRD 到低保真这一步——这是产品 / 设计协作的真正断层。</p>
+    </div>
+
+    <div class="skill-card p0 reveal">
+      <div class="skill-head">
+        <span class="num">05</span>
+        <span class="name">design-tokens-generator</span>
+        <div class="badges">
+          <span class="tag tag-p0">P0</span>
+          <span class="tag tag-new">合并 #15/#16</span>
+        </div>
+      </div>
+      <p class="skill-purpose">品牌输入（logo / 关键词 / 行业）→ <strong>完整 design tokens JSON</strong>（颜色 / 字号 / 间距 / 圆角 / 阴影），可直接喂 Figma Tokens / Tailwind / CSS variables。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>design tokens · 设计 token · 主题变量 · brand guidelines · theme system · Tailwind 主题</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 只是想换一两个颜色（直接改 CSS）；已有 tokens 要审计（用 #11 refactoring-ui-audit）</p>
+      <p class="skill-impl"><strong>refs:</strong> tokens-schema.md（W3C design-tokens-format-module）· color-palette-generation.md（perceptual uniform）· type-scale-systems.md<br/><strong>templates:</strong> tokens.json · tokens.tailwind.config.js · tokens.css · tokens-preview.html<br/><strong>scripts:</strong> palette-from-brand.mjs（HSL hue rotation + a11y check）· validate-contrast.mjs<br/><strong>Why P0:</strong> 原文 Theme Factory + Brand Guidelines 是弱预设——合并成一个**真正生成 tokens 的 skill** 更强。</p>
+    </div>
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">06</span>
+        <span class="name">user-flow-mapper</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">用户故事 → <strong>user flow diagram</strong>（含决策分支 + 错误路径 + 状态机）。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>user flow · 用户流程图 · 决策分支 · state machine · 状态机 · flowchart</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 纯展示性流程（用 viz-charts mermaid 即可，不需要这套语义）</p>
+      <p class="skill-impl"><strong>refs:</strong> flow-vocabulary.md（start / action / decision / error / exit）· state-machine-patterns.md<br/><strong>templates:</strong> user-flow.mmd · state-machine.mmd<br/><strong>scripts:</strong> story-to-flow.mjs（语句 → mermaid 节点）</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PHASE 3 · IDEATE ─────────────────────────────────────────────── -->
+<section class="section" id="p3">
+  <div class="phase-header reveal">
+    <span class="phase-tag">PHASE 3</span>
+    <h2>Ideate &amp; Generate</h2>
+    <span class="count">4 skills</span>
+  </div>
+
+  <div class="skill-grid">
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">07</span>
+        <span class="name">design-direction-explorer</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-ext">合并 #1/#2/#3/#4/#5</span>
+        </div>
+      </div>
+      <p class="skill-purpose">一次性产出 <strong>3 个对比鲜明的视觉方向</strong>——Swiss Minimalism / Glassmorphism / Brutalist / Editorial / Tech-Noir 等，各含 hero shot + 配色 + 字体组合。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>设计方向 · 视觉风格 · 风格探索 · design exploration · 多版本 · 给我几个选项</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 已有明确品牌系统（直接用 #05 design-tokens-generator）；只要一份产出（用 viz-deck）</p>
+      <p class="skill-impl"><strong>refs:</strong> style-vocabulary.md（12 种 cataloged style：typography signature / color discipline / spacing rhythm）· direction-presentation-format.md<br/><strong>templates:</strong> direction-card.html × 12 风格 · comparison-board.html（3 方向并列）<br/><strong>scripts:</strong> render-three-directions.mjs<br/><strong>与原文章关系：</strong>把 Pro Max + Taste + Interface + Pro Demo + Theme Factory 5 个 Visual 类合并成 1 个——**有选择有对比** 比 "66 种 preset 砸脸" 更有用。</p>
+    </div>
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">08</span>
+        <span class="name">ui-component-library</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">给定 tokens + 框架（React / Vue / Svelte / plain HTML），生成 <strong>完整 UI 组件库</strong>——22 核心组件 × 全部状态（default / hover / focus / disabled / loading / error）。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>组件库 · component library · UI kit · shadcn 风格 · Radix-based · headless</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 一次性单个组件（直接让 Claude 写）；要 mockup 不要代码（用 #09）</p>
+      <p class="skill-impl"><strong>refs:</strong> component-checklist.md（22 组件清单 + 必备 states）· a11y-baseline.md（每组件最低 ARIA）· headless-vs-styled.md<br/><strong>templates:</strong> 22 × 3 框架 = 66 起点文件<br/><strong>scripts:</strong> gen-component.mjs --type button --framework react</p>
+    </div>
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">09</span>
+        <span class="name">wireframe-to-hifi</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">低保真 wireframe（来自 #04）+ design tokens → <strong>高保真可点击 HTML mockup</strong>。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>wireframe to hi-fi · 高保真原型 · mockup polish · fill in the boxes</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 从零开始（先用 #04 出线框）；要真代码（用 #08 ui-component-library）</p>
+      <p class="skill-impl"><strong>refs:</strong> content-population-rules.md（不能 lorem ipsum——用真实候选）· image-sourcing.md（Wikimedia / Met / Unsplash）<br/><strong>templates:</strong> hifi-shell.html（含 design-token CSS var 占位）<br/><strong>scripts:</strong> populate-content.mjs · swap-placeholders.mjs</p>
+    </div>
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">10</span>
+        <span class="name">prototype-interaction-flow</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">高保真 mockup × 多页 → <strong>可点击交互原型</strong>（页面间跳转 + 表单状态 + modal / toast / loading 演示）。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>interactive prototype · 点击原型 · 可交互 demo · 流程演示 · click-through</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 单页 demo（用 viz-deck prototype 模式）；要真代码（用 #08）</p>
+      <p class="skill-impl"><strong>refs:</strong> interaction-grammar.md（hover / focus / press / drag 的 visual signal）· microinteraction-patterns.md<br/><strong>templates:</strong> prototype-shell.html（含 state manager）· flow-controller.js<br/><strong>scripts:</strong> link-pages.mjs（多页 mockup 自动注入路由）</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PHASE 4 · CRITIQUE ───────────────────────────────────────────── -->
+<section class="section" id="p4">
+  <div class="phase-header reveal">
+    <span class="phase-tag">PHASE 4</span>
+    <h2>Critique &amp; Refine</h2>
+    <span class="count">4 skills · 含 3 个 P0 🔥</span>
+  </div>
+
+  <div class="skill-grid">
+
+    <div class="skill-card p0 reveal">
+      <div class="skill-head">
+        <span class="num">11</span>
+        <span class="name">refactoring-ui-audit</span>
+        <div class="badges">
+          <span class="tag tag-p0">P0</span>
+          <span class="tag tag-kept">原文 #9</span>
+        </div>
+      </div>
+      <p class="skill-purpose">用 Refactoring UI 框架审计：<strong>视觉层级 · 间距节奏 · 阴影 / 边框 · 颜色用度</strong>。生成 Keep / Fix / Quick-Win 清单。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>视觉评审 · Refactoring UI · 视觉细节 · 间距问题 · hierarchy review · "my UI looks off"</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 哲学层面评审（用 viz-deck 的 5 维评审 design-critic）；可访问性（用 #13 a11y-audit）</p>
+      <p class="skill-impl"><strong>refs:</strong> refactoring-ui-principles.md（21 条 Adam Wathan + Steve Schoger 原则）· spacing-systems.md · shadow-elevation.md<br/><strong>templates:</strong> audit-report.html（按 4 维分组）<br/><strong>scripts:</strong> audit-screenshot.mjs（接 Playwright 截图 + 标注）</p>
+    </div>
+
+    <div class="skill-card p0 reveal">
+      <div class="skill-head">
+        <span class="num">12</span>
+        <span class="name">multi-heuristic-audit</span>
+        <div class="badges">
+          <span class="tag tag-p0">P0</span>
+          <span class="tag tag-ext">原文 #10 扩展</span>
+        </div>
+      </div>
+      <p class="skill-purpose">用 <strong>三套启发式</strong>——Nielsen 10 + Shneiderman 8 Golden Rules + ISO 9241-110——审计可用性，每条违反给严重度（Cosmetic / Minor / Major / Catastrophic）。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>usability audit · 启发式评审 · Nielsen · heuristic review · 可用性问题</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 视觉问题（用 #11 refactoring-ui-audit）；可访问性（用 #13 a11y-audit）</p>
+      <p class="skill-impl"><strong>refs:</strong> nielsen-10.md · shneiderman-8.md · iso-9241-110.md · severity-scoring.md<br/><strong>templates:</strong> heuristic-audit-report.html（按 18 条原则的违反清单）</p>
+    </div>
+
+    <div class="skill-card p0 reveal">
+      <div class="skill-head">
+        <span class="num">13</span>
+        <span class="name">a11y-audit</span>
+        <div class="badges">
+          <span class="tag tag-p0">P0 🔥</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">WCAG 2.2 AA 全维度审计：<strong>色彩对比 · ARIA 完整度 · 键盘导航 · 屏幕阅读器叙事 · focus order · prefers-reduced-motion</strong>。每条违反给优先级 + 修复建议。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>a11y · accessibility · WCAG · 无障碍 · 残障可达 · screen reader · 色彩对比</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 仅想做色彩对比（用 #05 内置的 contrast checker）</p>
+      <p class="skill-impl"><strong>refs:</strong> wcag-22-aa-checklist.md（50 条具体准则）· aria-patterns.md（按组件类型）· screen-reader-stories.md（VoiceOver / NVDA / TalkBack 实测脚本）<br/><strong>templates:</strong> a11y-audit-report.html（按 4 大类——Perceivable / Operable / Understandable / Robust）<br/><strong>scripts:</strong> axe-integration.mjs（Playwright + axe-core）· contrast-checker.mjs<br/><strong>Why P0:</strong> 你 repo 完全没有 a11y 专项 skill——这是企业 / 政府客户的 <strong>must-have</strong>。</p>
+    </div>
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">14</span>
+        <span class="name">microcopy-polish</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">UX writing 全篇过一遍——<strong>按钮文案 · 错误提示 · 空状态 · tooltip · placeholder · loading 短语</strong>——用品牌语调一致化（Friendly / Formal / Playful / Authoritative）。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>microcopy · UX writing · 文案修改 · 错误提示文案 · 按钮文案 · tone of voice</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> marketing 长文案；纯翻译（用 translation skill）</p>
+      <p class="skill-impl"><strong>refs:</strong> voice-tone-matrix.md（4 tone × 5 emotion = 20 voice profiles）· error-message-patterns.md · button-microcopy.md<br/><strong>templates:</strong> microcopy-audit.html（按位置分组）<br/><strong>scripts:</strong> extract-strings.mjs（从 HTML 抽出所有 user-visible text）</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PHASE 5 · PLATFORM ───────────────────────────────────────────── -->
+<section class="section" id="p5">
+  <div class="phase-header reveal">
+    <span class="phase-tag">PHASE 5</span>
+    <h2>Platform &amp; Adapt</h2>
+    <span class="count">2 skills · 含 1 个 P0 🔥</span>
+  </div>
+
+  <div class="skill-grid">
+
+    <div class="skill-card reveal">
+      <div class="skill-head">
+        <span class="num">15</span>
+        <span class="name">platform-adaptation</span>
+        <div class="badges">
+          <span class="tag tag-p2">P2</span>
+          <span class="tag tag-ext">原文 #11 扩展</span>
+        </div>
+      </div>
+      <p class="skill-purpose">同一份设计，按 <strong>4 端规范</strong>输出差异版本——iOS HIG / Material 3 / Fluent 2 / GNOME HIG。每端给出 navigation / typography / spacing / motion 的差异点。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>iOS HIG · Material 3 · Fluent · 跨平台 · cross-platform · platform-specific</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 单平台 web（用 #08 ui-component-library）；只需 native 截图（用 #09 + 设备外壳）</p>
+      <p class="skill-impl"><strong>refs:</strong> ios-hig-distilled.md · material-3-distilled.md · fluent-2-distilled.md · gnome-hig-distilled.md<br/><strong>templates:</strong> cross-platform-comparison.html（4 列对照）<br/><strong>scripts:</strong> adapt-spacing.mjs（按平台 base unit 换算）</p>
+    </div>
+
+    <div class="skill-card p0 reveal">
+      <div class="skill-head">
+        <span class="num">16</span>
+        <span class="name">responsive-foldability</span>
+        <div class="badges">
+          <span class="tag tag-p0">P0 🔥</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">单一设计 → <strong>6 端 reflow 规则</strong>（desktop / tablet / phone / fold / watch / TV）。含 breakpoint 表 + 内容优先级降级路径 + 折叠屏 dual-screen 提示。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>响应式 · responsive · 多端适配 · fold · 折叠屏 · breakpoint · mobile-first</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 已用 #08（已内置 responsive）；纯 desktop-only 工具</p>
+      <p class="skill-impl"><strong>refs:</strong> breakpoint-systems.md（Tailwind / Material / Bootstrap 对比）· content-priority-degradation.md · foldable-patterns.md（Samsung Galaxy Fold / Surface Duo）<br/><strong>templates:</strong> responsive-preview.html（含 5 端 viewport 切换器）<br/><strong>scripts:</strong> simulate-foldback.mjs<br/><strong>Why P0:</strong> 原文章完全没提响应式——这是 web 设计 ABC。</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PHASE 6 · STATE ──────────────────────────────────────────────── -->
+<section class="section" id="p6">
+  <div class="phase-header reveal">
+    <span class="phase-tag">PHASE 6</span>
+    <h2>State &amp; Interaction Library</h2>
+    <span class="count">1 skill</span>
+  </div>
+
+  <div class="skill-grid">
+
+    <div class="skill-card reveal" style="grid-column:span 2;max-width:760px">
+      <div class="skill-head">
+        <span class="num">17</span>
+        <span class="name">states-library</span>
+        <div class="badges">
+          <span class="tag tag-p1">P1</span>
+          <span class="tag tag-new">NEW</span>
+        </div>
+      </div>
+      <p class="skill-purpose">给定核心组件（Page / List / Table / Form / Chart），生成完整 <strong>状态库</strong>——Empty / Loading / Error / Partial data / Unauthenticated / Disabled / Locked，每个状态含 illustration + microcopy + CTA。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>empty state · loading state · error state · 空状态 · 加载状态 · 错误状态 · 状态库</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 只缺一个 empty state（直接让 Claude 画一个）</p>
+      <p class="skill-impl"><strong>refs:</strong> state-priority-matrix.md（哪些状态对哪类组件强制）· illustration-patterns.md（避免 Corporate Memphis）· state-microcopy.md<br/><strong>templates:</strong> state-set-page.html · state-set-list.html · state-set-table.html · state-set-form.html · state-set-chart.html<br/><strong>scripts:</strong> gen-state-pack.mjs</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PHASE 7 · META ───────────────────────────────────────────────── -->
+<section class="section" id="p7">
+  <div class="phase-header reveal">
+    <span class="phase-tag">PHASE 7</span>
+    <h2>Meta</h2>
+    <span class="count">1 skill</span>
+  </div>
+
+  <div class="skill-grid">
+
+    <div class="skill-card reveal" style="grid-column:span 2;max-width:760px">
+      <div class="skill-head">
+        <span class="num">18</span>
+        <span class="name">ui-ux-skill-creator</span>
+        <div class="badges">
+          <span class="tag tag-p2">P2</span>
+          <span class="tag tag-kept">原文 #18</span>
+        </div>
+      </div>
+      <p class="skill-purpose"><strong>Meta-skill</strong>——把一个品牌 / 设计系统 / 客户视觉规范蒸馏成一个新的 Claude Code skill。输入是设计系统文档 + 几张样例截图，输出是完整的 <code>.claude/skills/&lt;brand&gt;/</code> 包。</p>
+      <p class="skill-meta-row"><strong>Trigger</strong> <code>create skill · 蒸馏 skill · 把这套设计系统做成 skill · brand-to-skill · skill scaffolding</code></p>
+      <p class="skill-meta-row"><strong>不用于</strong> 改现有 skill（直接编辑文件）；通用 skill 创建（用 Claude Code 内置 /skill-create）</p>
+      <p class="skill-impl"><strong>refs:</strong> skill-anatomy.md（SKILL.md frontmatter + references / templates / scripts 必备结构）· frontmatter-protocol.md（trigger keyword 怎样命名才被 Claude 命中）· extraction-protocol.md<br/><strong>templates:</strong> skill-skeleton/（完整空 skill 骨架）<br/><strong>scripts:</strong> extract-from-design-system.mjs · validate-skill-structure.mjs</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SUMMARY ──────────────────────────────────────────────────────── -->
+<section class="section" id="summary">
+  <div class="reveal">
+    <span class="kicker-num">08</span>
+    <span class="eyebrow">Summary Table</span>
+    <h2>18 款汇总 · 一眼看完</h2>
+    <p class="lead">按设计阶段排列。<strong style="color:var(--gold)">P0</strong>（6 个）建议先实现——填了 repo 上下文的关键缺口。<strong style="color:var(--cyan)">P1</strong> 9 个，第二批。<strong style="color:var(--muted)">P2</strong> 3 个，第三批。</p>
+  </div>
+
+  <div class="panel reveal" style="margin-top:1.6rem">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Phase</th>
+          <th>Skill</th>
+          <th>优先级</th>
+          <th>来源</th>
+          <th>一句话定位</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>01</td><td>Discover</td><td><code>ux-research-synthesizer</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">NEW</span></td><td>访谈 → personas + JTBD</td></tr>
+        <tr><td>02</td><td>Discover</td><td><code>design-sprint-facilitator</code></td><td><span class="tag tag-p2">P2</span></td><td><span class="tag tag-kept">原 #13</span></td><td>GV 5-day sprint 编排</td></tr>
+        <tr><td>03</td><td>Discover</td><td><code>info-architect</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">NEW</span></td><td>功能列表 → sitemap</td></tr>
+        <tr><td>04</td><td>Define</td><td><code>prd-to-mockup</code></td><td><span class="tag tag-p0">P0 🔥</span></td><td><span class="tag tag-new">NEW</span></td><td>PRD → 低保真 wireframe</td></tr>
+        <tr><td>05</td><td>Define</td><td><code>design-tokens-generator</code></td><td><span class="tag tag-p0">P0</span></td><td><span class="tag tag-new">合并</span></td><td>品牌输入 → 完整 tokens</td></tr>
+        <tr><td>06</td><td>Define</td><td><code>user-flow-mapper</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">NEW</span></td><td>用户故事 → flow + 状态机</td></tr>
+        <tr><td>07</td><td>Ideate</td><td><code>design-direction-explorer</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">合 5 个</span></td><td>3 方向并列对比</td></tr>
+        <tr><td>08</td><td>Ideate</td><td><code>ui-component-library</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">NEW</span></td><td>22 组件 × 3 框架</td></tr>
+        <tr><td>09</td><td>Ideate</td><td><code>wireframe-to-hifi</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">NEW</span></td><td>低保真 → 高保真</td></tr>
+        <tr><td>10</td><td>Ideate</td><td><code>prototype-interaction-flow</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">NEW</span></td><td>多页可点击原型</td></tr>
+        <tr><td>11</td><td>Critique</td><td><code>refactoring-ui-audit</code></td><td><span class="tag tag-p0">P0</span></td><td><span class="tag tag-kept">原 #9</span></td><td>视觉层级 / 间距 / 阴影</td></tr>
+        <tr><td>12</td><td>Critique</td><td><code>multi-heuristic-audit</code></td><td><span class="tag tag-p0">P0</span></td><td><span class="tag tag-ext">原 #10 扩</span></td><td>Nielsen + Shneiderman + ISO</td></tr>
+        <tr><td>13</td><td>Critique</td><td><code>a11y-audit</code></td><td><span class="tag tag-p0">P0 🔥</span></td><td><span class="tag tag-new">NEW</span></td><td>WCAG 2.2 AA 全维度</td></tr>
+        <tr><td>14</td><td>Critique</td><td><code>microcopy-polish</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">NEW</span></td><td>UX writing 一致化</td></tr>
+        <tr><td>15</td><td>Adapt</td><td><code>platform-adaptation</code></td><td><span class="tag tag-p2">P2</span></td><td><span class="tag tag-ext">原 #11 扩</span></td><td>iOS+Material+Fluent+GNOME</td></tr>
+        <tr><td>16</td><td>Adapt</td><td><code>responsive-foldability</code></td><td><span class="tag tag-p0">P0 🔥</span></td><td><span class="tag tag-new">NEW</span></td><td>6 端 reflow 规则</td></tr>
+        <tr><td>17</td><td>State Lib</td><td><code>states-library</code></td><td><span class="tag tag-p1">P1</span></td><td><span class="tag tag-new">NEW</span></td><td>Empty / Loading / Error 全状态</td></tr>
+        <tr><td>18</td><td>Meta</td><td><code>ui-ux-skill-creator</code></td><td><span class="tag tag-p2">P2</span></td><td><span class="tag tag-kept">原 #18</span></td><td>设计系统 → skill 蒸馏器</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout reveal" style="margin-top:2rem">
+    <h4>与 v0.3 已发布 skill 的关系</h4>
+    <p style="margin:0;font-size:0.92rem"><strong>biz-decision-stack</strong>：UI/UX skill 不做决策类报告——当 a11y / heuristic 审计要交付给 stakeholder 时，可以走 biz-decision 的 design-critique HTML。<br/>
+    <strong>viz-deck</strong>：viz-deck 的 prototype 模式（mode 2）是单页高保真；新 #10 prototype-interaction-flow 是多页交互流——互补不冲突。<br/>
+    <strong>viz-charts</strong>：新 #03 info-architect 和 #06 user-flow-mapper 直接调用 viz-charts 的 mermaid 渲染。<br/>
+    <strong>总原则：</strong> ui-ux-skills 不重复 v0.3 任何能力，只填覆盖空白。</p>
+  </div>
+</section>
+
+<!-- ── NEXT STEPS ───────────────────────────────────────────────────── -->
+<section class="section" id="next">
+  <div class="reveal">
+    <span class="kicker-num">09</span>
+    <span class="eyebrow">Next Steps</span>
+    <h2>从 6 个 P0 里挑 2-4 个，我按 v0.3 标准实现</h2>
+    <p class="lead">这份目录是 <strong>设计提案</strong>，不是发布。决定下一步前，挑你最想要的 P0 告诉我，我按 v0.3 已确立的工程标准实现——<code>SKILL.md</code> + <code>references/*.md</code> + <code>templates/*.html</code> + <code>scripts/*.mjs</code> + <code>samples/</code> 一套齐全，并加入双 harness 矩阵（claude-code-skills + codex-skills）。</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem">
+    <div class="panel reveal">
+      <h4 style="color:var(--gold)">P0 候选</h4>
+      <ul style="margin:0;padding-left:1.2rem;font-size:0.88rem;line-height:1.7">
+        <li><code>prd-to-mockup</code> 🔥</li>
+        <li><code>design-tokens-generator</code></li>
+        <li><code>refactoring-ui-audit</code></li>
+        <li><code>multi-heuristic-audit</code></li>
+        <li><code>a11y-audit</code> 🔥</li>
+        <li><code>responsive-foldability</code> 🔥</li>
+      </ul>
+    </div>
+    <div class="panel reveal">
+      <h4 style="color:var(--cyan)">建议组合 A · 设计前置</h4>
+      <p style="font-size:0.88rem">PRD-to-mockup + design-tokens-generator + responsive-foldability。<strong>把"从想法到能演示的低保真原型"这条路打通</strong>——产品 / 设计协作场景最痛。</p>
+    </div>
+    <div class="panel reveal">
+      <h4 style="color:var(--cyan)">建议组合 B · 设计审计</h4>
+      <p style="font-size:0.88rem">refactoring-ui-audit + multi-heuristic-audit + a11y-audit。<strong>三种维度同时给 stakeholder 一份审计报告</strong>——可直接对接 biz-decision 的 design-critique 模板。</p>
+    </div>
+  </div>
+
+  <div class="section-end reveal" style="margin-top:3rem">
+    <h3>挑你的下一步</h3>
+    <p style="margin:0.6rem 0">回复："实现组合 A" / "实现组合 B" / "我要这几个：<code>name1 name2 name3</code>" / "再调整一下目录"</p>
+    <p style="margin:0.6rem 0;color:var(--faint);font-size:0.82rem">如果完全没头绪：我推荐先做 <strong>组合 B</strong>——审计类 skill 立刻能产生 value，不依赖前置 skill 链。</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p><strong>UI/UX Skills Catalog · v0.4 design proposal</strong> · 2026-05-13 · ZimaBlueAI · Apache 2.0</p>
+  <p style="margin-top:0.4rem;font-size:0.78rem">基于 <a class="inline-link" href="https://pasqualepillitteri.it/zh/news/889/claude-code-18-zuijia-skill-ui-ux-sheji-zhinan" target="_blank">Pasquale Pillitteri 的 18 款 UI/UX skill 推荐</a> · 有见解地取舍 · 与 v0.3 互补</p>
+</footer>
+
+<script>
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = pct + '%';
+}, { passive: true });
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const sections = Array.from(document.querySelectorAll('section[id]'));
+const navLinks = Array.from(document.querySelectorAll('.deck-nav a'));
+const navIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sections.forEach(s => navIO.observe(s));
+</script>
+
+</body>
+</html>
