@@ -1,0 +1,174 @@
+<!doctype html>
+<!--
+  ZimaBlue Editorial · 频道默认风格起步模板
+  ==========================================
+  这是 viz-channel 的默认 HTML 骨架(暖纸编辑风,参考 D1-破局与进化.html)。
+  用法:把 {{占位}} 换成真实内容,按需复制 .slide 块。颜色/组件/图表默认值已就绪。
+  设计系统说明见 references/default-style.md。单文件、可离线(仅 Chart.js 走 CDN)。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{{标题}}</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --ink:#15211f;--muted:#5e6b64;--faint:#758078;--bg:#f7f4ee;--paper:#fffdf8;--line:#d9ded6;
+  --teal:#1b5e5a;--green:#2c7a66;--gold:#d59a3a;--red:#a24e3e;--cream:#efe8da;
+  --soft-teal:#eef7f4;--soft-gold:#fbf3e2;--soft-red:#fdf0ea;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",Arial,sans-serif}
+body{overflow:hidden}
+.deck{height:100vh;width:100vw;position:relative}
+.slide{position:absolute;inset:0;padding:3.6vh 4.4vw 4.6vh;display:grid;
+  grid-template-rows:auto 1fr auto;opacity:0;transform:translateX(36px) scale(.985);
+  pointer-events:none;transition:opacity .42s ease,transform .42s ease;
+  background:linear-gradient(90deg,rgba(27,94,90,.10),transparent 30%,rgba(213,154,58,.10)),
+    radial-gradient(circle at 14% 84%,rgba(44,122,102,.10),transparent 22%),var(--bg)}
+.slide.active{opacity:1;transform:translateX(0) scale(1);pointer-events:auto}
+.slide::before{content:"";position:absolute;inset:0 0 auto;height:7px;
+  background:linear-gradient(90deg,var(--teal),var(--gold),var(--red))}
+header{max-width:1240px}
+.kicker{color:var(--teal);font-weight:700;font-size:clamp(12px,1.05vw,15px);
+  margin-bottom:6px;letter-spacing:.05em}
+h1{margin:0;max-width:1120px;font-size:clamp(32px,4.4vw,64px);line-height:1.05;font-weight:800}
+h2{margin:0;font-size:clamp(26px,3.4vw,46px);line-height:1.1;font-weight:800}
+.sub{margin-top:8px;color:var(--muted);font-size:clamp(14px,1.3vw,19px);line-height:1.45;max-width:1080px}
+.stage{align-self:center;width:min(1280px,100%);margin:0 auto}
+.grid{display:grid;gap:14px}
+.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;
+  box-shadow:0 14px 38px rgba(39,45,42,.06)}
+.metric{min-height:120px;display:flex;flex-direction:column;justify-content:center}
+.metric strong{color:var(--teal);font-size:clamp(30px,3.4vw,48px);line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.metric span{margin-top:8px;color:var(--muted);font-size:clamp(13px,1.15vw,16px);line-height:1.4}
+.metric.red strong{color:var(--red)}.metric.gold strong{color:var(--gold)}.metric.green strong{color:var(--green)}
+.bigline{font-size:clamp(26px,3.4vw,50px);line-height:1.14;font-weight:800;max-width:1080px}
+.pill{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;
+  background:#e7f0ec;color:var(--teal);font-weight:700;font-size:12px;margin:0 6px 6px 0}
+.pill.gold{background:#f6ecd5;color:#8a6212}.pill.red{background:#f4e0d8;color:#7a2e2e}
+.bar{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;margin:10px 0}
+.bar b{font-weight:700;color:var(--ink);font-size:13px}
+.track{height:11px;background:#e3e8e1;border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;border-radius:99px;background:var(--teal);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.active .fill{width:var(--w)}
+.list{margin:0;padding:0;list-style:none}
+.list li{padding:7px 0;border-bottom:1px solid var(--line);color:var(--muted);
+  font-size:clamp(13px,1.2vw,16px);line-height:1.5}
+.list li:last-child{border-bottom:none}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.tbl th,table.tbl td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.tbl th{color:var(--teal);font-weight:700}
+.chart-wrap{position:relative;height:100%;min-height:280px}
+.chart-wrap canvas{max-width:100%}
+.source{font-size:11px;color:var(--faint);margin-top:8px}
+.footer{display:flex;justify-content:space-between;align-items:center;color:var(--faint);font-size:11px}
+.progress{position:fixed;left:0;right:0;bottom:0;height:5px;background:rgba(0,0,0,.08);z-index:20}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .25s ease}
+.nav{position:fixed;right:18px;bottom:14px;z-index:30;display:flex;gap:8px;align-items:center}
+.nav .idx{color:var(--muted);font-size:12px;margin-right:4px;font-variant-numeric:tabular-nums}
+button.nav-btn{width:38px;height:34px;border:1px solid var(--line);background:rgba(255,253,248,.92);
+  color:var(--ink);border-radius:8px;font-size:16px;cursor:pointer}
+button.nav-btn:hover{background:var(--cream)}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 封面 -->
+  <section class="slide active" data-min="2">
+    <header>
+      <div class="kicker">{{KICKER · 如 季度汇报 / 2026 Q2}}</div>
+      <h1>{{主标题}}</h1>
+      <p class="sub">{{一句话副标题 / 价值主张}}</p>
+    </header>
+    <div class="stage">
+      <div class="grid cols-4">
+        <div class="card metric"><strong>3.2亿</strong><span>{{KPI 1 营收}}</span></div>
+        <div class="card metric green"><strong>+38%</strong><span>{{KPI 2 同比}}</span></div>
+        <div class="card metric gold"><strong>61%</strong><span>{{KPI 3 毛利率}}</span></div>
+        <div class="card metric"><strong>128%</strong><span>{{KPI 4 NRR}}</span></div>
+      </div>
+    </div>
+    <div class="footer"><span>{{演讲者 / 团队}}</span><span>{{日期}}</span></div>
+  </section>
+
+  <!-- 内容页:图表 + 要点 -->
+  <section class="slide" data-min="4">
+    <header>
+      <div class="kicker">{{小标}}</div>
+      <h2>{{页标题 · 用结论句而非名词,如"营收四个季度翻倍"}}</h2>
+    </header>
+    <div class="stage">
+      <div class="grid cols-2">
+        <div class="card"><div class="chart-wrap"><canvas id="ch_demo"></canvas></div></div>
+        <div class="card">
+          <span class="pill">要点</span><span class="pill gold">关注</span>
+          <ul class="list">
+            <li>{{要点一}}</li><li>{{要点二}}</li><li>{{要点三}}</li>
+          </ul>
+          <div class="bar"><b>{{维度A}}</b><div class="track"><i class="fill" style="--w:72%"></i></div><span>72%</span></div>
+          <div class="bar"><b>{{维度B}}</b><div class="track"><i class="fill" style="--w:54%;background:var(--gold)"></i></div><span>54%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="source">来源:{{出处}}</span><span>{{页脚}}</span></div>
+  </section>
+
+  <!-- 收尾页 -->
+  <section class="slide" data-min="1">
+    <header><div class="kicker">{{小标}}</div></header>
+    <div class="stage"><p class="bigline">{{一句话结论 / 行动号召}}</p></div>
+    <div class="footer"><span>{{联系方式}}</span><span>谢谢</span></div>
+  </section>
+
+</div>
+
+<div class="progress"><i id="progress"></i></div>
+<div class="nav">
+  <span class="idx" id="idx">1 / 3</span>
+  <button class="nav-btn" onclick="go(-1)">‹</button>
+  <button class="nav-btn" onclick="go(1)">›</button>
+</div>
+
+<script>
+Chart.defaults.font.family='"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",Arial,sans-serif';
+Chart.defaults.color='#5e6b64';
+const C={teal:'#1b5e5a',green:'#2c7a66',gold:'#d59a3a',red:'#a24e3e',muted:'#cfd6cd'};
+
+const slides=[...document.querySelectorAll('.slide')];
+const idxEl=document.getElementById('idx'), prog=document.getElementById('progress');
+let index=0; const charts={};
+
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===index));
+  idxEl.textContent=(index+1)+' / '+slides.length;
+  prog.style.width=((index+1)/slides.length*100)+'%';
+  buildCharts();
+}
+function go(d){ index=Math.max(0,Math.min(slides.length-1,index+d)); render(); }
+document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key===' ')go(1); if(e.key==='ArrowLeft')go(-1); });
+
+function buildCharts(){
+  if(!charts.demo && document.getElementById('ch_demo') && slides[index].contains(document.getElementById('ch_demo'))){
+    charts.demo=new Chart(document.getElementById('ch_demo'),{
+      type:'bar',
+      data:{labels:['Q1','Q2','Q3','Q4'],
+        datasets:[{label:'营收(亿)',data:[1.8,2.3,2.8,3.2],
+          backgroundColor:[C.muted,C.gold,C.green,C.teal],borderRadius:6}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},
+          title:{display:true,text:'{{图表标题}}',font:{size:13,weight:'700'},color:'#15211f'}},
+        scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.06)'}}}}
+    });
+  }
+}
+render();
+</script>
+</body>
+</html>

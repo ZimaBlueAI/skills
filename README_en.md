@@ -4,18 +4,21 @@
 > Write once, ship across harnesses.
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Release](https://img.shields.io/badge/release-v0.4.0-2b6cb0.svg)](./CHANGELOG.md)
+[![Release](https://img.shields.io/badge/release-v0.5.0-2b6cb0.svg)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-public_preview-orange.svg)](#9-roadmap)
-[![Harness](https://img.shields.io/badge/harness-Claude_Code-7c3aed.svg)](./claude-code-skills/)
+[![Harness](https://img.shields.io/badge/harness-Claude_Code_·_Codex-7c3aed.svg)](./claude-code-skills/)
+[![Channel](https://img.shields.io/badge/channel-OpenClaw_·_Hermes-0E7C66.svg)](./openclaw-skills/)
 [![Maintainer](https://img.shields.io/badge/maintainer-ZimaBlueAI-111.svg)](https://github.com/ZimaBlueAI)
 
-[中文版](./README.md) · [Install guide](./claude-code-skills/skills-install-guide.md) · [Changelog](./CHANGELOG.md) · [Contributing](./CONTRIBUTING.md)
+[中文版](./README.md) · [Install guide](./claude-code-skills/skills-install-guide.md) · [Channel delivery · OpenClaw](./openclaw-skills/USAGE.md) / [Hermes](./hermes-skills/USAGE.md) · [Changelog](./CHANGELOG.md) · [Contributing](./CONTRIBUTING.md)
 
 ---
 
 ## 1. What is this
 
-**ZimaBlueAI Agent Skills** is a curated set of **declarative capability packs** for modern AI coding agents — launching with **Claude Code + OpenAI Codex CLI dual-harness** support, planned ports to OpenClaw / Hermes / Octarus.
+**ZimaBlueAI Agent Skills** is a curated set of **declarative capability packs** for modern AI agents — launching with **Claude Code + OpenAI Codex CLI dual-harness** support, and **as of v0.5 a "channel delivery layer" on OpenClaw / Hermes** that lets the same generation power **converse, generate, and deliver the artifact back into an IM channel** (Feishu and friends). Octarus is still on the roadmap.
+
+> Three ways to use it, one sentence: in **Claude Code / Codex** it's a capability pack for your coding agent; in **OpenClaw / Hermes** it's the Feishu-group bot that, when you @-mention it, builds an animated report / PPT / chart and sends it right back. Same generators, two delivery surfaces.
 
 Each skill ships as a self-contained `.zip` archive. **The same content** is installed into each harness's expected directory:
 
@@ -45,6 +48,27 @@ Three skills cover the full chain from **board brief to outbound keynote video t
 | **biz-decision-stack** | 8 subagents · investor → CEO → architect → MRD → delivery → retro → critique + **template router** (v4) | 8 terminal-grade HTML reports + editable PPTX (black + acid-yellow + mono + zero-motion) | 83 KB |
 | **viz-deck** | 5 production modes + 6 v4 enhancements (Speaker Mode / 3-variant preview / Doc→Deck / academic talk / bento grid / reflective loop) | HTML / editable PPTX (every element clickable) / MP4 / GIF / PDF (deep-space cyan/blue/gold) | 130 KB |
 | **viz-charts** | 6 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · motion video · native PPTX charts | Inline HTML / offline SVG / MP4 / data-bound PPTX charts | 157 KB |
+
+### 🆕 Channel delivery layer · OpenClaw / Hermes (new in v0.5)
+
+The three skills above only **generate**. v0.5 adds a **conversation + delivery** layer on the **OpenClaw** and **Hermes** IM-gateway agents via the new **`viz-channel`** skill: a user says one line in a Feishu channel, and the agent **clarifies the request → generates with viz-deck/viz-charts → sends the file back into the same chat**.
+
+```
+User @-mentions the bot in Feishu: "make me an animated Q2 deck"
+   → clarify in-channel (≤2 questions, sensible defaults)
+   → viz-deck builds animated HTML (charts / 3D KG from viz-charts)
+   → deliver deck.html back to the current chat ("download & open in a browser")
+```
+
+| | Details |
+|---|---|
+| **Default style** | **ZimaBlue Editorial** — warm paper background + deep-teal primary + gold/terracotta accents + hairline cards + a teal→gold→red top rule; clean, professional, presentation-ready (switchable in one sentence); see `viz-channel/references/default-style.md` |
+| **Form** | Default animated HTML; "make it editable" → PPTX; "play it in the group" → MP4; "draw a chart / knowledge graph" → chart / 3D KG |
+| **Transport** | Channel adapter, **current impl = Feishu / Lark** (prefers a lark-cli token, falls back to REST); seam left for WeCom / Slack / Telegram |
+| **Packaging** | Thin bridge + installer: viz-deck/viz-charts bodies are vendored from `claude-code-skills/` into the target platform — no duplication |
+| **Hermes-only** | The same chain can run as a **cron / webhook** routine (scheduled weekly deck to a group, event-triggered chart push) |
+
+📦 [`openclaw-skills/`](./openclaw-skills/) · [`hermes-skills/`](./hermes-skills/) — each ships the `viz-channel` skill, one-command installers (`.sh`/`.ps1`), and a **[USAGE.md](./openclaw-skills/USAGE.md) case library** (quarterly deck / editable PPT / 3D knowledge graph / launch hero video / competitive landscape / in-group revisions / custom brand style; Hermes adds 2 automation cases).
 
 ### What's new in v0.4 (vs v0.3 — 26-skill cross-pollination)
 
@@ -305,11 +329,25 @@ skills/
 │   ├── viz-deck/                  Includes .agents/skills/viz-deck/
 │   └── viz-charts/                Includes .agents/skills/viz-charts/
 │
-├── codex-skills/                  ☐ OpenAI Codex CLI (planned)
-├── openclaw-skills/               ☐ OpenClaw (planned)
-├── hermes-skills/                 ☐ Hermes (planned)
+├── codex-skills/                  ★ OpenAI Codex CLI harness (released v0.4, same source as Claude)
+│
+├── openclaw-skills/               ★ OpenClaw channel-delivery layer (released v0.5)
+│   ├── README.md · USAGE.md (9 cases)
+│   ├── install-openclaw-skills.sh / .ps1   one-command installer (thin bridge)
+│   └── skills/viz-channel/        conversation + channel delivery skill
+│       ├── SKILL.md               trigger + clarify→generate→deliver workflow
+│       ├── references/            channel-protocol · delivery-matrix · openclaw-channel
+│       └── scripts/               channel_deliver.py · channel_send.sh/.ps1 · resolve_chat.py
+│
+├── hermes-skills/                 ★ Hermes channel-delivery layer (released v0.5, + cron/webhook)
+│   ├── README.md · USAGE.md (11 cases)
+│   ├── install-hermes-skills.sh / .ps1
+│   └── skills/viz-channel/        same as OpenClaw; references use hermes-channel (+automation)
+│
 └── octarus-skills/                ☐ Octarus (planned)
 ```
+
+> `viz-deck` / `viz-charts` / `biz-html-viz` bodies are **not** inside the openclaw/hermes dirs — the installer vendors them from `claude-code-skills/*.zip`, so the heavy skills stay single-source.
 
 ---
 
@@ -323,6 +361,7 @@ skills/
 | **Investor / FA** | viz-deck (competitive-landscape) + viz-charts + viz-charts (native chart pptx) | Live competitive research + animated data for roadshows + LP monthly data PPT |
 | **Design / brand lead** | viz-deck (all 5 modes) + huashu-design + ppt-master | One toolchain for prototype / slides / video / critique / shippable PPT |
 | **Engineering lead** | biz-decision-stack (dev-test) + viz-charts (3D KG) | Status reporting + project structure visualization |
+| **Anyone in a Feishu group** (ops/sales/exec) | OpenClaw / Hermes + `viz-channel` | No CLI — @-mention the bot in chat and an animated report / PPT / chart comes back |
 
 ---
 
@@ -333,10 +372,10 @@ skills/
 | v0.1 | Initial release of the claude-code-skills trio | ✅ Released |
 | v0.2 | 4 output modes · 20 philosophies · 5-dim critique · huashu-design bridge · samples | ✅ Released |
 | v0.3 | ppt-master soft bridge · viz-deck mode 5 pptx-deck · decision PPTX · data-bound native chart · TTS narration embed · codex-skills dual-harness launch | ✅ Released |
-| **v0.4** | **26-skill cross-pollination · Speaker Mode · 3-variant preview · Doc→Deck · Academic Talk · Bento Grid · Reflective Loop · Template Router** | ✅ **Released (current)** |
-| v0.5 | viz-charts narrative chart explainer (TTS-narrated chart videos) + `openclaw-skills/` port | 🟡 Planned |
-| v0.6 | `hermes-skills/` + tri-harness consistency tests | ⚪ Planned |
-| v0.7 | `octarus-skills/` | ⚪ Planned |
+| v0.4 | 26-skill cross-pollination · Speaker Mode · 3-variant preview · Doc→Deck · Academic Talk · Bento Grid · Reflective Loop · Template Router | ✅ Released |
+| **v0.5** | **OpenClaw / Hermes channel-delivery layer · `viz-channel` (in-channel conversational generation + delivery · Feishu adapter · cron/webhook automation · USAGE case library)** | ✅ **Released (current)** |
+| v0.6 | viz-charts narrative chart explainer (TTS-narrated chart videos) + channel adapters (WeCom / Slack / Telegram) | 🟡 Planned |
+| v0.7 | `octarus-skills/` + tri-harness consistency tests | ⚪ Planned |
 | v1.0 | All 5 harnesses + skill registry (`skills.json` index) | ⚪ Planned |
 
 ---

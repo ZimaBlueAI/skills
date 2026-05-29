@@ -11,8 +11,82 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ### Planned
 
+- viz-charts narrative chart explainer (TTS-narrated chart video)
+- Channel adapters beyond Feishu/Lark (WeCom / Slack / Telegram) in `viz-channel`
 - Cross-harness consistency test suite
 - Skill registry index (`skills.json`)
+
+---
+
+## [0.5.0] — 2026-05-29
+
+### Added — channel delivery layer for OpenClaw & Hermes (`viz-channel`)
+
+The three skills only ever **generated** artifacts. This release adds a
+**conversational orchestration + channel-delivery** layer so the same
+generation power works *inside an IM channel*: a user @-mentions the bot in
+Feishu (or any gateway channel), and the agent **clarifies the request →
+generates via viz-deck/viz-charts → sends the finished file back to the same
+chat**. Feishu was the user's example; the transport is framed as a
+pluggable adapter.
+
+#### New top-level directories — `openclaw-skills/` & `hermes-skills/`
+
+- Each ships the new **`viz-channel`** skill (frontmatter trigger + body =
+  `clarify → generate → deliver` workflow), a one-command installer
+  (`.sh` + `.ps1`), and a **`USAGE.md` case library** (OpenClaw: 9 cases;
+  Hermes: 11, incl. 2 automation cases).
+- **Thin-bridge packaging**: the heavy generators (`viz-deck` / `viz-charts`
+  / optional `biz-html-viz`) are **not duplicated** — the installer vendors
+  them from `claude-code-skills/*.zip` (or `--from-github`) into the target
+  platform's skills dir. Single source of truth, no four-way drift.
+- Installers **never hard-delete**: a re-install moves any existing skill to
+  `.zima-replaced/` rather than removing it.
+
+#### `viz-channel` skill
+
+- **`SKILL.md`** — channel-agnostic trigger (做PPT / 做汇报 / 做图表 /
+  知识图谱 / 发给我 / 发群里 …); default deliverable = **animated HTML**,
+  with PPTX (editable) / MP4 (in-chat playback) / chart / 3D KG on demand.
+- **`references/`**
+  - `default-style.md` — **default visual system: ZimaBlue Editorial** (warm
+    paper bg, deep-teal primary, gold/terracotta accents, hairline cards,
+    teal→gold→red top rule, bold tabular-nums metrics; Chart.js palette +
+    PPTX warm-paper theme mapping; modeled on `D1-破局与进化.html`). Applied
+    by default to all channel HTML/PPTX; overridable per request.
+  - `channel-protocol.md` — conversation state machine, ≤2-question clarify
+    rule, multi-turn iteration, group-vs-DM, human-readable failure handling
+  - `delivery-matrix.md` — form decision table (HTML / PPTX / MP4 / chart /
+    3D KG), HTML-vs-PNG rules, Feishu size/permission limits, pre-send checklist
+  - `openclaw-channel.md` / `hermes-channel.md` — platform specifics:
+    chat_id resolution, skills load paths, why delivery shells out to a
+    script; Hermes adds cron/webhook automation recipes
+- **`scripts/`**
+  - `channel_deliver.py` — the current channel adapter (**Feishu/Lark**):
+    upload + send via open.feishu.cn REST; `--via auto` prefers a lark-cli
+    token (reuses an existing `~/.lark-cli` config) and falls back to REST;
+    `--to-current` resolves the active chat from injected env vars; ffprobe
+    duration probing for nicer MP4 video messages
+  - `channel_send.sh` / `.ps1` — one-line delivery entrypoint (wraps
+    `channel_deliver.py --via auto`)
+  - `resolve_chat.py` — prints/validates the current channel chat_id
+- **`templates/zima-editorial-deck.html`** — ready-to-fill HTML skeleton in
+  the default ZimaBlue Editorial style (tokens, components, Chart.js defaults
+  pre-wired) so default channel HTML looks polished out of the box
+
+#### Platform notes
+
+- **OpenClaw**: native Feishu channel over WebSocket long-connection; skills
+  load from `<workspace>/skills/` → `~/.openclaw/skills/`.
+- **Hermes**: Feishu gateway adapter binds inbound messages to a session;
+  the same generate→deliver chain can run unattended as a **cron or webhook
+  routine** (e.g. auto weekly deck to a group, event-triggered chart push).
+
+### Docs
+
+- Top-level `README.md` / `README_en.md`: new "channel delivery layer"
+  section, refreshed harness/badge framing, repo-structure block now lists
+  the shipped `openclaw-skills/` & `hermes-skills/`, roadmap updated.
 
 ---
 
