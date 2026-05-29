@@ -108,6 +108,25 @@
 
 ---
 
+### zima-html-ppt 🆕
+
+ZimaBlueAI **现场讲演 deck** skill —— 暖纸编辑风（ZimaBlue Editorial）单文件 HTML 幻灯片 +
+招牌**演讲者模式**。提炼自实战母版 `D1-破局与进化` / `D2-三场战役` / `D3-训练方案`。
+
+| 组件 | 内容 |
+|---|---|
+| `SKILL.md` | 何时用/不用（与终端风 biz-html-viz、深空风 viz-deck 划清边界）、工作流、反模式 |
+| `references/design-system.md` | ZimaBlue Editorial 规范：令牌、字体层级、6 个签名元素、组件、Chart.js 调性、自检 |
+| `references/speaker-mode.md` | 演讲者模式：`.notes` 逐字稿 + 5 标签语义（cue/say/do/data/bridge）+ `data-min` 计时 + 提词器窗口 |
+| `templates/zima-ppt-starter.html` | 全引擎单文件骨架，复制即用（S 键提词器、F 全屏、键盘翻页、配额计时、数字滚动、品牌签名） |
+
+**输出风格**：暖纸 #f7f4ee + 深青 #1b5e5a + 金/赭点缀 + 发丝卡片 + 顶部 teal→gold→red 三色条。
+**现场操作标识**：右上角常驻 `按 F 全屏 · 按 S 演讲者模式 · ← → 翻页 · 空格 下一页`。
+**包大小**：约 23 KB（纯文件夹，无需 zip；安装 = 直接放进 `.claude/skills/`）。**零运行时依赖**（仅 Chart.js 走 CDN）。
+
+> 安装：把 `zima-html-ppt/` 整个文件夹放进 `~/.claude/skills/`（全局）或项目根 `.claude/skills/`（项目级）即可，
+> `claude /skills` 列表里应能看到 `zima-html-ppt`。
+
 ### 三者依赖关系
 
 ```

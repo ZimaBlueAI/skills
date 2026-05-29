@@ -9,6 +9,28 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ## [Unreleased]
 
+### Added — `zima-html-ppt` skill (ZimaBlueAI 现场讲演 deck)
+
+A new generation skill capturing the **ZimaBlue Editorial (暖纸编辑风)** presentation
+style and its signature **Speaker Mode**, distilled from the production decks
+`D1-破局与进化` / `D2-三场战役` / `D3-训练方案`.
+
+- `references/design-system.md` — full visual spec: warm-paper tokens, type scale,
+  signature elements (top tri-color bar, hairline cards, tabular-nums numerals),
+  component recipes, Chart.js tuning, restrained motion, anti-AI-slop rules.
+- `references/speaker-mode.md` — the presenter engine: `.notes` speaker-script
+  convention with a 5-tag taxonomy (cue / say / do / data / bridge, read-aloud lines
+  auto-highlighted orange via `:has()`), per-slide `data-min` time budgeting, the
+  keyboard map, and the postMessage-synced presenter window architecture.
+- `templates/zima-ppt-starter.html` — one fork-ready single file with the whole
+  engine baked in: deck/slide scaffold, top tri-color bar, progress + timer bars,
+  on-screen hint badge (`按 F 全屏 · 按 S 演讲者模式 · ← → 翻页`), `✦ ZimaBlueAI`
+  brand-mark, count-up numerals, Chart.js defaults, and the S-key presenter window.
+- Replicated into all four ecosystems: `claude-code-skills/`, `codex-skills/`,
+  `openclaw-skills/skills/`, `hermes-skills/skills/`. Cross-linked from
+  `viz-channel/references/default-style.md` so the channel workflow can reach
+  speaker mode when a deck needs to be presented live.
+
 ### Planned
 
 - viz-charts narrative chart explainer (TTS-narrated chart video)
@@ -277,14 +299,14 @@ Was 4 modes (keynote-report / prototype / slide-deck / motion-stage), now 5.
 #### `codex-skills/` — dual-harness launch (NEW top-level directory)
 
 - All three skills (biz-decision-stack, viz-deck, viz-charts) now ship a
-  second flavor tailored to **OpenAI Codex CLI**'s `.agents/skills/` and
+  second flavor tailored to **OpenAI Codex CLI**'s `.codex/skills/` and
   `.codex/agents/` conventions. **Skill content (SKILL.md, references,
   templates, scripts, specs) is byte-for-byte identical** to the Claude
   Code version; only the install path and subagent serialization differ.
 - 8 subagents converted from Claude Code's markdown frontmatter → Codex's
   TOML format (`name`, `description`, `developer_instructions`)
 - `codex-skills/install.sh` + `codex-skills/install.ps1` — one-shot
-  installer that extracts the three zips to `$HOME/.agents/skills/` and
+  installer that extracts the three zips to `$HOME/.codex/skills/` and
   TOML agents to `$HOME/.codex/agents/`
 - `codex-skills/README.md` — explains the harness mapping
 - `codex-skills/INSTALL.md` — Codex-flavored install / config / use guide
@@ -298,7 +320,7 @@ The four ppt-master bridge scripts now detect their backing install via a
 three-tier search — same script runs on either harness:
 
 ```
-$PPT_MASTER_HOME → ~/.agents/skills/ppt-master → ~/.claude/skills/ppt-master
+$PPT_MASTER_HOME → ~/.codex/skills/ppt-master → ~/.claude/skills/ppt-master
 ```
 
 Patched files: `make-pptx-deck.mjs`, `make-decision-pptx.mjs`,

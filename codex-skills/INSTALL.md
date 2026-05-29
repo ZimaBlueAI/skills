@@ -2,13 +2,13 @@
 
 **OpenAI Codex CLI 版** · v3.0 · 2026-05-13
 
-> 与 [`claude-code-skills/skills-install-guide.md`](../claude-code-skills/skills-install-guide.md) 同源同构，仅适配到 Codex CLI 的 `.agents/skills/` + `.codex/agents/` 目录结构。skill 内容一字不差。
+> 与 [`claude-code-skills/skills-install-guide.md`](../claude-code-skills/skills-install-guide.md) 同源同构，仅适配到 Codex CLI 的 `.codex/skills/` + `.codex/agents/` 目录结构。skill 内容一字不差。
 
 ---
 
 ## 📋 目录
 
-- [01 · 三个 skill 是什么](#01--三个-skill-是什么)
+- [01 · skills 是什么](#01--skills-是什么)
 - [02 · 前置要求](#02--前置要求)
 - [03 · 安装步骤](#03--安装步骤)
 - [04 · subagent 触发协议](#04--subagent-触发协议)
@@ -20,11 +20,11 @@
 
 ---
 
-## 01 · 三个 skill 是什么
+## 01 · skills 是什么
 
-完全等同于 Claude Code 版。三个 skill 互不依赖，可选装。
+完全等同于 Claude Code 版。各 skill 互不依赖，可选装。
 
-### biz-decision-stack（73 KB zip）
+### biz-decision-stack（约 223 KB zip）
 
 终端风决策链 7 subagents + 1 skill：
 
@@ -41,7 +41,7 @@
 
 **v3 起**：可选 ppt-master 桥接出口 8 个决策 layout 的可编辑 PPTX。
 
-### viz-deck（81 KB zip）
+### viz-deck（约 416 KB zip）
 
 讲演风深度报告，**v3 起 5 模产出**：
 
@@ -53,11 +53,15 @@
 | 4 · motion-stage 🆕 v2 | hero / 解说视频 | HTML + MP4 + GIF + BGM |
 | 5 · pptx-deck 🆕 v3 | 给 stakeholder 编辑的 PPT | 真编辑 PPTX + TTS 旁白 |
 
-### viz-charts（156 KB zip）
+### viz-charts（约 403 KB zip）
 
 被前两者调用的能力 skill，**v3 起 6 类视觉**：
 
 Mermaid · ECharts · SVG 组件 · 3D KG · Motion · **Native PPTX chart 🆕 v3**
+
+### zima-html-ppt（约 18 KB zip）
+
+ZimaBlueAI 现场讲演 deck：暖纸编辑风单文件 HTML 幻灯片 + 演讲者模式（S 键提词器、逐字稿、计时、议程）。适合内训课件、路演稿、训战材料和上台讲的 HTML PPT。
 
 ---
 
@@ -96,15 +100,17 @@ bash codex-skills/install.sh
 unzip -o codex-skills/biz-decision-stack/biz-decision-stack.zip -d ~/
 unzip -o codex-skills/viz-deck/viz-deck.zip -d ~/
 unzip -o codex-skills/viz-charts/viz-charts.zip -d ~/
+unzip -o codex-skills/zima-html-ppt/zima-html-ppt.zip -d ~/
 ```
 
 落点：
 
 ```
-~/.agents/skills/biz-html-viz/
-~/.agents/skills/viz-deck/
-~/.agents/skills/viz-charts/
-~/.codex/agents/00-..07-*.toml
+~/.codex/skills/biz-html-viz/
+~/.codex/skills/viz-deck/
+~/.codex/skills/viz-charts/
+~/.codex/skills/zima-html-ppt/
+~/.codex/agents/00-..08-*.toml
 ```
 
 **项目级**（仅在某个项目里启用）：
@@ -113,9 +119,10 @@ unzip -o codex-skills/viz-charts/viz-charts.zip -d ~/
 unzip -o codex-skills/biz-decision-stack/biz-decision-stack.zip -d /path/to/project/
 unzip -o codex-skills/viz-deck/viz-deck.zip -d /path/to/project/
 unzip -o codex-skills/viz-charts/viz-charts.zip -d /path/to/project/
+unzip -o codex-skills/zima-html-ppt/zima-html-ppt.zip -d /path/to/project/
 ```
 
-落点：`/path/to/project/.agents/skills/` + `/path/to/project/.codex/agents/`。
+落点：`/path/to/project/.codex/skills/` + `/path/to/project/.codex/agents/`。
 
 ### 验证
 
@@ -123,7 +130,7 @@ unzip -o codex-skills/viz-charts/viz-charts.zip -d /path/to/project/
 codex> /skills
 ```
 
-应能看到 `biz-html-viz` · `viz-deck` · `viz-charts`。
+应能看到 `biz-html-viz` · `viz-deck` · `viz-charts` · `zima-html-ppt`。
 
 ```
 codex> /agents
@@ -166,7 +173,7 @@ orchestrator 会按顺序串调：board → CEO → architect → PM(MRD) → PM
 
 | 维度 | 项目级 | 全局 |
 |---|---|---|
-| 落点 | `<project>/.agents/skills/` + `<project>/.codex/agents/` | `~/.agents/skills/` + `~/.codex/agents/` |
+| 落点 | `<project>/.codex/skills/` + `<project>/.codex/agents/` | `~/.codex/skills/` + `~/.codex/agents/` |
 | 受影响范围 | 仅该项目 | 所有项目 |
 | 升级 | 重解 zip 到该项目 | 重解 zip 到 `~/` |
 | 推荐场景 | 团队仓库附带 skill 给协作者 | 个人长期使用 |
@@ -180,8 +187,8 @@ orchestrator 会按顺序串调：board → CEO → architect → PM(MRD) → PM
 解锁动画 / 视频 / 设计哲学 / 5 维评审。
 
 ```bash
-git clone --depth=1 https://github.com/alchaincyf/huashu-design.git ~/.agents/skills/huashu-design
-cd ~/.agents/skills/huashu-design
+git clone --depth=1 https://github.com/alchaincyf/huashu-design.git ~/.codex/skills/huashu-design
+cd ~/.codex/skills/huashu-design
 
 cat > package.json <<'JSON'
 {
@@ -203,7 +210,7 @@ ffmpeg -version || echo "请先安装 ffmpeg"
 
 > 不要给 huashu 的 `package.json` 加 `"type": "module"`——会破坏它的 CommonJS 脚本（如 `render-video.js`）。
 
-**桥接调用**：所有路径走 `$HOME/.agents/skills/huashu-design/scripts/...`，HTML stage 必须在首次渲染后设 `window.__ready = true`。
+**桥接调用**：所有路径走 `$HOME/.codex/skills/huashu-design/scripts/...`，HTML stage 必须在首次渲染后设 `window.__ready = true`。
 
 **许可证**：huashu-design 个人免费，**商用独立授权**（USD 1,800/年 或 USD 3,500 永久）。
 
@@ -214,8 +221,8 @@ ffmpeg -version || echo "请先安装 ffmpeg"
 解锁：真编辑 PPTX / TTS 旁白 / 母版继承 / 数据绑定 chart。MIT 协议，无商用限制。
 
 ```bash
-git clone --depth=1 https://github.com/hugohe3/ppt-master.git ~/.agents/skills/ppt-master
-cd ~/.agents/skills/ppt-master
+git clone --depth=1 https://github.com/hugohe3/ppt-master.git ~/.codex/skills/ppt-master
+cd ~/.codex/skills/ppt-master
 python -m venv .venv
 
 # Linux / macOS
@@ -233,7 +240,7 @@ python -m venv .venv
 .venv/bin/pip install openai google-genai elevenlabs
 ```
 
-### 三个 skill 的 v3 调用约定
+### v3 调用约定
 
 | Skill | 入口 | 输入 | 输出 |
 |---|---|---|---|
@@ -245,7 +252,7 @@ python -m venv .venv
 ### 验证脚本
 
 ```bash
-PPTM="$HOME/.agents/skills/ppt-master"
+PPTM="$HOME/.codex/skills/ppt-master"
 PY="$PPTM/.venv/bin/python"
 [ -f "$PY" ] || PY="$PPTM/.venv/Scripts/python.exe"
 
@@ -275,20 +282,20 @@ unzip -l deck.pptx | grep "ppt/charts/chart"
 
 | | Claude Code | Codex |
 |---|---|---|
-| skill 目录 | `~/.claude/skills/<name>/` | `~/.agents/skills/<name>/` |
+| skill 目录 | `~/.claude/skills/<name>/` | `~/.codex/skills/<name>/` |
 | subagent 目录 | `~/.claude/agents/<name>.md` | `~/.codex/agents/<name>.toml` |
-| 桥接 ppt-master | 装到 `~/.claude/skills/ppt-master/` 或 `~/.agents/skills/ppt-master/`（脚本自动探测） | 同 |
+| 桥接 ppt-master | 装到 `~/.claude/skills/ppt-master/` 或 `~/.codex/skills/ppt-master/`（脚本自动探测） | 同 |
 | 桥接 huashu-design | 同上 | 同 |
 
 **ppt-master 桥接脚本** (`make-pptx-deck.mjs` / `make-decision-pptx.mjs` / 几个 `.sh`) 已加入三档探测：
 
 ```
-$PPT_MASTER_HOME → ~/.agents/skills/ppt-master → ~/.claude/skills/ppt-master
+$PPT_MASTER_HOME → ~/.codex/skills/ppt-master → ~/.agents/skills/ppt-master → ~/.claude/skills/ppt-master
 ```
 
 所以**只装一份桥接、两个 harness 都能用**，不需要重复安装。
 
-唯一忌：**别同一个项目同时解两份 zip**（一个 `.claude/`、一个 `.agents/`）——不冲突但没意义，且会让维护混乱。
+唯一忌：**别同一个项目同时解两份 zip**（一个 `.claude/`、一个 `.codex/`）——不冲突但没意义，且会让维护混乱。
 
 ---
 
@@ -297,8 +304,8 @@ $PPT_MASTER_HOME → ~/.agents/skills/ppt-master → ~/.claude/skills/ppt-master
 ### Codex 看不到 skill
 
 ```bash
-ls -la ~/.agents/skills/         # 应有 biz-html-viz / viz-deck / viz-charts
-ls -la ~/.codex/agents/          # 应有 00-..07-*.toml
+ls -la ~/.codex/skills/         # 应有 biz-html-viz / viz-deck / viz-charts / zima-html-ppt
+ls -la ~/.codex/agents/          # 应有 00-..08-*.toml
 ```
 
 如目录为空：重跑 `install.sh` / `install.ps1`。
@@ -326,8 +333,8 @@ Codex 跑 `viz-deck pptx-deck` 报错？最常见原因：
 手动指定：
 
 ```bash
-export PPT_MASTER_HOME="$HOME/.agents/skills/ppt-master"
-~/.agents/skills/viz-deck/scripts/export-editable-pptx.sh my-deck.json
+export PPT_MASTER_HOME="$HOME/.codex/skills/ppt-master"
+~/.codex/skills/viz-deck/scripts/export-editable-pptx.sh my-deck.json
 ```
 
 如果路径正确仍报错 → 检查 venv 是否在该目录下（`.venv/bin/python` 或 `.venv/Scripts/python.exe`）。

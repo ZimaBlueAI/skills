@@ -1,0 +1,394 @@
+<!doctype html>
+<!--
+  ZimaBlueAI · HTML-PPT 起步模板（ZimaBlue Editorial · 暖纸编辑风 + 演讲者模式）
+  ============================================================================
+  这是 ZimaBlueAI 现场讲演 deck 的母版骨架，提炼自 D1-破局与进化 / D2-三场战役 /
+  D3-训练方案。单文件、可离线（仅 Chart.js 走 CDN）。
+
+  用法
+    1. 复制本文件，把 {{占位}} 换成真实内容；
+    2. 按需复制 <section class="slide"> 块，每页用 data-min 标注配额分钟数；
+    3. 每页配一个同级 <div class="notes" data-min="..."> 写逐字稿（只在演讲者窗口可见）。
+
+  现场快捷键
+    ← → / 空格 / PageUp·PageDown  翻页      Home / End  首页 / 末页
+    F  全屏                                   S  演讲者模式（弹出逐字稿窗口）
+
+  设计系统见 references/design-system.md；演讲者模式见 references/speaker-mode.md。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{{标题}}</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  /* —— ZimaBlue Editorial 令牌（勿改，保证跨 deck 一致）—— */
+  --ink:#15211f;        /* 标题/正文，近黑带青 */
+  --muted:#5e6b64;      /* 次要文字 */
+  --faint:#758078;      /* 脚注/来源/页脚 */
+  --bg:#f7f4ee;         /* 页面底，暖纸 */
+  --paper:#fffdf8;      /* 卡片底，更亮的纸 */
+  --line:#d9ded6;       /* 发丝描边 */
+  --teal:#1b5e5a;       /* 主强调（深青） */
+  --green:#2c7a66;      /* 正向/增长 */
+  --gold:#d59a3a;       /* 高亮/关注 */
+  --red:#a24e3e;        /* 风险/下降（赭红，非刺眼红） */
+  --cream:#efe8da;      /* hover/底纹 */
+  --soft-teal:#eef7f4;--soft-gold:#fbf3e2;--soft-red:#fdf0ea;
+  --term-bg:#15211f;--term-fg:#d6e6e1;--term-accent:#f1c977; /* 终端/代码块 */
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",Arial,sans-serif}
+body{overflow:hidden}
+
+/* —— 舞台骨架 —— */
+.deck{height:100vh;width:100vw;position:relative}
+.slide{position:absolute;inset:0;padding:3.6vh 4.4vw 4.6vh;display:grid;
+  grid-template-rows:auto 1fr auto;opacity:0;transform:translateX(36px) scale(.985);
+  pointer-events:none;transition:opacity .42s ease,transform .42s ease;
+  background:linear-gradient(90deg,rgba(27,94,90,.10),transparent 30%,rgba(213,154,58,.10)),
+    radial-gradient(circle at 14% 84%,rgba(44,122,102,.10),transparent 22%),var(--bg)}
+.slide.active{opacity:1;transform:translateX(0) scale(1);pointer-events:auto}
+.slide::before{content:"";position:absolute;inset:0 0 auto;height:7px;        /* 签名：顶部三色条 */
+  background:linear-gradient(90deg,var(--teal),var(--gold),var(--red))}
+
+/* —— 文字层级 —— */
+header{max-width:1240px}
+.kicker{color:var(--teal);font-weight:700;font-size:clamp(12px,1.05vw,15px);
+  margin-bottom:6px;letter-spacing:.05em}
+h1{margin:0;max-width:1120px;font-size:clamp(32px,4.4vw,64px);line-height:1.05;font-weight:800}
+h2{margin:0;font-size:clamp(26px,3.4vw,46px);line-height:1.1;font-weight:800}
+.sub{margin-top:8px;color:var(--muted);font-size:clamp(14px,1.3vw,19px);line-height:1.45;max-width:1080px}
+.stage{align-self:center;width:min(1280px,100%);margin:0 auto}
+.bigline{font-size:clamp(26px,3.4vw,50px);line-height:1.14;font-weight:800;max-width:1080px}
+.quote{font-size:clamp(16px,1.6vw,22px);line-height:1.4;color:var(--ink);font-weight:600;
+  border-left:4px solid var(--gold);padding-left:14px;margin:0}
+
+/* —— 栅格 —— */
+.grid{display:grid;gap:14px}
+.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.split{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:stretch}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* —— 组件 —— */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;
+  box-shadow:0 14px 38px rgba(39,45,42,.06)}
+.metric{min-height:120px;display:flex;flex-direction:column;justify-content:center}
+.metric strong{color:var(--teal);font-size:clamp(30px,3.4vw,48px);line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.metric span{margin-top:8px;color:var(--muted);font-size:clamp(13px,1.15vw,16px);line-height:1.4}
+.metric.red strong{color:var(--red)}.metric.gold strong{color:var(--gold)}.metric.green strong{color:var(--green)}
+.pill{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;
+  background:#e7f0ec;color:var(--teal);font-weight:700;font-size:12px;margin:0 6px 6px 0}
+.pill.gold{background:#f6ecd5;color:#8a6212}.pill.red{background:#f4e0d8;color:#7a2e2e}
+.pill.dark{background:var(--term-bg);color:var(--term-accent)}
+.bar{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;margin:10px 0}
+.bar b{font-weight:700;color:var(--ink);font-size:13px}
+.track{height:11px;background:#e3e8e1;border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;border-radius:99px;background:var(--teal);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.active .fill{width:var(--w)}                                /* 进入当前页才填充 */
+.list{margin:0;padding:0;list-style:none}
+.list li{padding:7px 0;border-bottom:1px solid var(--line);color:var(--muted);
+  font-size:clamp(13px,1.2vw,16px);line-height:1.5}
+.list li:last-child{border-bottom:none}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.tbl th,table.tbl td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.tbl th{color:var(--teal);font-weight:700;background:rgba(231,240,236,.4)}
+table.tbl td.num{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700}
+pre.term{margin:12px 0;background:var(--term-bg);color:var(--term-fg);border-radius:10px;padding:14px 16px;
+  font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:12.5px;line-height:1.55;white-space:pre-wrap;overflow:auto}
+.chart-wrap{position:relative;height:100%;min-height:280px}
+.chart-wrap canvas{max-width:100%}
+.source{font-size:11px;color:var(--faint);margin-top:8px}
+.footer{display:flex;justify-content:space-between;align-items:center;color:var(--faint);font-size:11px}
+
+/* —— 演讲者逐字稿：舞台上隐藏，仅在演讲者窗口可见 —— */
+.notes{display:none}
+
+/* —— 固定 UI —— */
+.progress{position:fixed;left:0;right:0;bottom:0;height:5px;background:rgba(0,0,0,.08);z-index:20}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .25s ease}
+.timer-bar{position:fixed;left:0;right:0;bottom:5px;height:2px;background:transparent;z-index:19}
+.timer-bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s linear}
+.timer-bar.over i{background:var(--red)}                     /* 超时变赭红 */
+.nav{position:fixed;right:18px;bottom:14px;z-index:30;display:flex;gap:8px;align-items:center}
+.nav .idx,.nav .timer{color:var(--muted);font-size:12px;margin-right:4px;font-variant-numeric:tabular-nums}
+button.nav-btn{width:38px;height:34px;border:1px solid var(--line);background:rgba(255,253,248,.92);
+  color:var(--ink);border-radius:8px;font-size:16px;cursor:pointer}
+button.nav-btn:hover{background:var(--cream)}
+.hint{position:fixed;right:18px;top:18px;z-index:30;background:rgba(255,253,248,.92);border:1px solid var(--line);
+  border-radius:6px;padding:4px 9px;font-size:11px;color:var(--muted)}
+.hint b{color:var(--teal);font-weight:700}                  /* 高亮按键字母，一眼可辨 */
+/* 品牌签名（底部居中）。有本地 logo 时取消下面 img 注释并删掉纯文字 ✦ */
+.brand-mark{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;display:flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--faint);text-decoration:none;opacity:.78;z-index:25}
+.brand-mark:hover{opacity:1}
+.brand-mark img{height:16px;width:auto;display:block}
+
+/* —— 窄屏：纵向滚动降级 —— */
+@media (max-width:900px){
+  body{overflow:auto}.deck{height:auto}
+  .slide{position:relative;min-height:100vh;display:none;padding:30px 16px}
+  .slide.active{display:grid}
+  .cols-2,.cols-3,.cols-4,.split,.compare{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .slide{transition:none}.fill{transition:none}.progress i,.timer-bar i{transition:none}
+}
+</style>
+</head>
+<body>
+<main class="deck" id="deck">
+
+  <!-- ============ 01 · 封面 ============ -->
+  <section class="slide active" data-min="2">
+    <header>
+      <div class="kicker">{{KICKER · 如 DAY 1 上午 · 破局与进化}}</div>
+      <h1>{{主标题 · 一句金句}}</h1>
+      <p class="sub">{{副标题 / 价值主张}} · 按 F 全屏 · 按 S 演讲者模式 · ← → 翻页</p>
+    </header>
+    <div class="stage">
+      <div class="grid cols-4">
+        <div class="card metric"><strong data-count="10">0</strong><span>{{KPI 1}}</span></div>
+        <div class="card metric green"><strong data-count="93" data-suffix="%">0</strong><span>{{KPI 2}}</span></div>
+        <div class="card metric gold"><strong data-count="3.7" data-suffix="×" data-dec="1">0</strong><span>{{KPI 3}}</span></div>
+        <div class="card metric red"><strong data-count="74" data-suffix="%">0</strong><span>{{KPI 4}}</span></div>
+      </div>
+    </div>
+    <div class="footer"><span>{{演讲者 / 团队}}</span><span>{{日期}}</span></div>
+  </section>
+  <div class="notes" data-min="2">
+    <p><b class="tag-cue">2 分钟 · 节奏</b> 自我介绍 30s → 主标题金句 30s → 四个数字 60s。四个数字从兴奋砸到不安，节奏要明显。</p>
+    <p><b class="tag-say">【开场话术】</b>"各位老总，欢迎。今天不讲 AI 基础概念，直接讨论一个绕不开的问题——<b>{{核心命题}}</b>。"</p>
+    <p><b class="tag-data">【数字 ①】</b>"先看一个数——<b>{{数字含义}}</b>。"</p>
+    <p><b class="tag-bridge">【过渡 → 02】</b>"今天分 N 段，先从第一段开始。"</p>
+  </div>
+
+  <!-- ============ 02 · 图表 + 要点 ============ -->
+  <section class="slide" data-min="4" data-chart="demo">
+    <header>
+      <div class="kicker">{{小标}}</div>
+      <h2>{{用结论句而非名词，如"营收四个季度翻倍"}}</h2>
+    </header>
+    <div class="stage">
+      <div class="grid cols-2">
+        <div class="card"><div class="chart-wrap"><canvas id="ch_demo"></canvas></div></div>
+        <div class="card">
+          <span class="pill">要点</span><span class="pill gold">关注</span>
+          <ul class="list"><li>{{要点一}}</li><li>{{要点二}}</li><li>{{要点三}}</li></ul>
+          <div class="bar"><b>{{维度A}}</b><div class="track"><i class="fill" style="--w:72%"></i></div><span>72%</span></div>
+          <div class="bar"><b>{{维度B}}</b><div class="track"><i class="fill" style="--w:54%;background:var(--gold)"></i></div><span>54%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="source">来源：{{出处}}</span><span>{{页脚}}</span></div>
+  </section>
+  <div class="notes" data-min="4">
+    <p><b class="tag-cue">4 分钟 · 节奏</b> 先念图表结论，再点三个要点，最后落到对比条。</p>
+    <p><b class="tag-say">【话术】</b>"看这张图——<b>{{结论}}</b>。"</p>
+    <p><b class="tag-do">【动作】</b>指向 gold 那根条，停顿，扫全场。</p>
+  </div>
+
+  <!-- ============ 03 · 收尾 ============ -->
+  <section class="slide" data-min="1">
+    <header><div class="kicker">{{小标}}</div></header>
+    <div class="stage"><p class="bigline">{{一句话结论 / 行动号召}}</p></div>
+    <div class="footer"><span>{{联系方式}}</span><span>谢谢</span></div>
+  </section>
+  <div class="notes" data-min="1">
+    <p><b class="tag-say">【收束】</b>"今天就讲到这里，一句话带走——<b>{{金句}}</b>。"</p>
+  </div>
+
+</main>
+
+<!-- 现场操作提示：常驻右上角，让演讲者/接手的人一眼知道有全屏和演讲者模式 -->
+<div class="hint">按 <b>F</b> 全屏 · 按 <b>S</b> 演讲者模式 · <b>← →</b> 翻页 · <b>空格</b> 下一页</div>
+<div class="nav">
+  <span class="timer" id="timer">00:00 / 00:00</span>
+  <span class="idx" id="idx">01 / 03</span>
+  <button class="nav-btn" id="prev" aria-label="上一页">‹</button>
+  <button class="nav-btn" id="next" aria-label="下一页">›</button>
+</div>
+<div class="progress"><i id="progress"></i></div>
+<div class="timer-bar" id="timerbar"><i></i></div>
+<a class="brand-mark" href="https://www.zimablueai.com" target="_blank" rel="noopener">
+  <!-- <img src="logo/logo.png" alt="ZimaBlueAI"/> -->
+  <span>✦ ZimaBlueAI</span>
+</a>
+
+<script>
+/* ========== Chart.js 统一调性 ========== */
+Chart.defaults.font.family='"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",Arial,sans-serif';
+Chart.defaults.color='#5e6b64';
+const COL={teal:'#1b5e5a',green:'#2c7a66',gold:'#d59a3a',red:'#a24e3e',muted:'#cfd6cd'};
+
+/* ========== 舞台引擎 ========== */
+const slides=[...document.querySelectorAll('.slide')];
+const progress=document.getElementById('progress');
+const timerBar=document.getElementById('timerbar');
+const timerBarFill=timerBar.querySelector('i');
+const idxEl=document.getElementById('idx');
+const timerEl=document.getElementById('timer');
+let index=0, slideStartTs=Date.now();
+const charts={};
+const totalMinutes=slides.reduce((s,el)=>s+Number(el.dataset.min||5),0);
+timerEl.textContent='00:00 / '+String(Math.floor(totalMinutes/60)).padStart(2,'0')+':'+String(totalMinutes%60).padStart(2,'0');
+
+function show(i){
+  index=(i+slides.length)%slides.length;
+  slides.forEach((s,n)=>s.classList.toggle('active',n===index));
+  progress.style.width=((index+1)/slides.length*100)+'%';
+  idxEl.textContent=String(index+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  history.replaceState(null,'','#'+(index+1));
+  slideStartTs=Date.now(); timerBar.classList.remove('over');
+  const slide=slides[index];
+  if(slide.dataset.chart) requestAnimationFrame(()=>buildChart(slide.dataset.chart));
+  animateCounters(slide);
+  if(presenterWin && !presenterWin.closed){ try{presenterWin.postMessage({type:'slide',i:index},'*');}catch(e){} }
+}
+
+/* —— 数字滚动（带 data-count / data-suffix / data-dec）—— */
+function animateCounters(slide){
+  slide.querySelectorAll('[data-count]').forEach(el=>{
+    const target=parseFloat(el.dataset.count), dec=Number(el.dataset.dec||0), suf=el.dataset.suffix||'';
+    const t0=performance.now(), dur=900;
+    function step(t){
+      const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);   // easeOutCubic
+      el.textContent=(target*e).toFixed(dec)+suf;
+      if(k<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+/* —— 计时（当前页配额 + 总累计；超时变红）—— */
+function totalElapsedSec(){
+  let past=0; for(let i=0;i<index;i++) past+=Number(slides[i].dataset.min||5);
+  return past*60+(Date.now()-slideStartTs)/1000;
+}
+function tick(){
+  const allotted=Number(slides[index].dataset.min||5)*60;
+  const elapsed=(Date.now()-slideStartTs)/1000;
+  timerBarFill.style.width=Math.min(1,elapsed/allotted)*100+'%';
+  if(elapsed>allotted) timerBar.classList.add('over');
+  const te=totalElapsedSec(), m=Math.floor(te/60), s=Math.floor(te%60);
+  const tm=Math.floor(totalMinutes/60), ts=totalMinutes%60;
+  timerEl.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+' / '+String(tm).padStart(2,'0')+':'+String(ts).padStart(2,'0');
+}
+setInterval(tick,500);
+
+/* ========== 图表（按 data-chart 名建一次）========== */
+function buildChart(name){
+  if(name==='demo' && !charts.demo){
+    const el=document.getElementById('ch_demo'); if(!el) return;
+    charts.demo=new Chart(el,{type:'bar',
+      data:{labels:['Q1','Q2','Q3','Q4'],datasets:[{label:'营收(亿)',data:[1.8,2.3,2.8,3.2],
+        backgroundColor:[COL.muted,COL.gold,COL.green,COL.teal],borderRadius:6}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},title:{display:true,text:'{{图表标题}}',font:{size:13,weight:'700'},color:'#15211f'}},
+        scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.06)'}}}}});
+  }
+}
+
+/* ========== 演讲者模式（S）：弹窗显示逐字稿 + 计时 + 议程 ========== */
+let presenterWin=null;
+function togglePresenter(){
+  if(presenterWin && !presenterWin.closed){ presenterWin.close(); presenterWin=null; return; }
+  presenterWin=window.open('','presenter','width=720,height=920');
+  if(!presenterWin) return;
+  const decks=slides.map(s=>({
+    kicker:s.querySelector('.kicker')?.textContent||'',
+    title:s.querySelector('h1, h2')?.textContent||'',
+    min:Number(s.dataset.min||5),
+    notes:s.nextElementSibling?.classList.contains('notes')
+      ? s.nextElementSibling.innerHTML
+      : '<p style="color:#9aa39d;">（本页未撰写逐字稿）</p>'
+  }));
+  presenterWin.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>演讲者模式 · 逐字稿</title>
+<style>
+ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#f7f4ee;color:#15211f;margin:0;padding:16px}
+ .head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:14px}
+ .head-left{min-width:0;flex:1}
+ .kicker{font-size:11px;color:#1b5e5a;letter-spacing:.08em;margin-bottom:4px;text-transform:uppercase;font-weight:700}
+ h2{font-size:20px;margin:0;line-height:1.25}
+ .head-right{text-align:right;flex-shrink:0}
+ .big{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;color:#a24e3e;line-height:1}
+ .small{font-size:11px;color:#5e6b64;margin-top:4px}
+ .next{background:#fffdf8;border:1px solid #d9ded6;border-radius:8px;padding:10px 12px;margin-bottom:14px}
+ .next .label{font-size:11px;color:#8a6212;letter-spacing:.08em;margin-bottom:3px;font-weight:700}
+ .next h3{font-size:14px;margin:0;color:#15211f;font-weight:600}
+ .notes-panel{background:#fffdf8;border:1px solid #c3cdd6;border-radius:8px;padding:14px 16px;max-height:380px;overflow:auto;font-size:14px;line-height:1.65}
+ .notes-panel p{margin:6px 0;color:#5e6b64}
+ .notes-panel p:has(b.tag-say),.notes-panel p:has(b.tag-data){color:#c8731e;font-weight:500}    /* 可直接念=橙字 */
+ .notes-panel b{color:#15211f}
+ .notes-panel p:has(b.tag-say)>b:not(.tag-say):not(.tag-data),
+ .notes-panel p:has(b.tag-data)>b:not(.tag-say):not(.tag-data){color:#c8731e}
+ .notes-panel b.tag-cue{color:#fff;background:#5e6b64;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .notes-panel b.tag-say{color:#fff;background:#1b5e5a;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .notes-panel b.tag-do{color:#fff;background:#a24e3e;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .notes-panel b.tag-data{color:#fff;background:#1b5e5a;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .notes-panel b.tag-bridge{color:#fff;background:#2c7a66;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .all{margin-top:14px;max-height:220px;overflow:auto;border-top:1px solid #d9ded6;padding-top:10px}
+ .item{padding:6px 8px;border-radius:4px;font-size:12px;display:grid;grid-template-columns:26px 1fr 40px;gap:6px;color:#5e6b64}
+ .item:hover{background:rgba(27,94,90,.06)}
+ .item.active{background:rgba(27,94,90,.18);color:#15211f;font-weight:600}
+ .item .n{color:#9aa39d;font-variant-numeric:tabular-nums}
+ .item .m{color:#8a6212;text-align:right}
+ .legend{font-size:10px;color:#5e6b64;margin-top:8px;display:flex;gap:14px;flex-wrap:wrap}
+</style></head><body>
+<div class="head">
+  <div class="head-left"><div class="kicker" id="pkicker">—</div><h2 id="ph2">—</h2></div>
+  <div class="head-right"><div class="big" id="ptime">00:00</div>
+    <div class="small">总配额 ${String(Math.floor(totalMinutes/60)).padStart(2,'0')}:${String(totalMinutes%60).padStart(2,'0')}</div></div>
+</div>
+<div class="next"><div class="label">下一页</div><h3 id="ph3">—</h3></div>
+<div class="notes-panel" id="pnotes">—</div>
+<div class="legend">
+  <span><b style="color:#fff;background:#5e6b64;padding:1px 6px;border-radius:3px;">节奏</b> 灰底·不念</span>
+  <span><b style="color:#fff;background:#1b5e5a;padding:1px 6px;border-radius:3px;">话术/数据</b> 青底·后面<b style="color:#c8731e;">橙字</b>直接念</span>
+  <span><b style="color:#fff;background:#a24e3e;padding:1px 6px;border-radius:3px;">动作</b> 红底·不念</span>
+  <span><b style="color:#fff;background:#2c7a66;padding:1px 6px;border-radius:3px;">过渡</b> 翠底·不念</span>
+</div>
+<div class="all" id="plist"></div>
+<script>
+  const decks=${JSON.stringify(decks)};
+  const list=document.getElementById('plist');
+  decks.forEach((t,i)=>{const el=document.createElement('div');el.className='item';el.dataset.i=i;
+    el.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span><span>'+(t.title||'')+'</span><span class="m">'+t.min+' min</span>';list.appendChild(el);});
+  let start=Date.now(),cur=0;
+  function render(){const t=decks[cur]||{};
+    document.getElementById('pkicker').textContent=t.kicker||'';
+    document.getElementById('ph2').textContent=t.title||'';
+    document.getElementById('ph3').textContent=(decks[cur+1]||{}).title||'— 收束 —';
+    const np=document.getElementById('pnotes');np.innerHTML=t.notes||'';np.scrollTop=0;
+    document.querySelectorAll('.item').forEach(el=>el.classList.toggle('active',Number(el.dataset.i)===cur));
+    const a=document.querySelector('.item.active'); if(a) a.scrollIntoView({block:'nearest'});}
+  function tickT(){const s=Math.floor((Date.now()-start)/1000);
+    document.getElementById('ptime').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+  window.addEventListener('message',e=>{if(e.data&&e.data.type==='slide'){cur=e.data.i;start=Date.now();render();}});
+  render();setInterval(tickT,500);
+<\/script></body></html>`);
+  presenterWin.document.close();
+  setTimeout(()=>{try{presenterWin.postMessage({type:'slide',i:index},'*');}catch(e){}},200);
+}
+
+/* ========== 导航 ========== */
+document.getElementById('prev').onclick=()=>show(index-1);
+document.getElementById('next').onclick=()=>show(index+1);
+window.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(index+1);}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(index-1);}
+  else if(e.key==='Home') show(0);
+  else if(e.key==='End') show(slides.length-1);
+  else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  else if(e.key==='s'||e.key==='S') togglePresenter();
+});
+show(Math.max(0,Math.min(slides.length-1,Number(location.hash.slice(1))-1||0)));
+</script>
+</body>
+</html>

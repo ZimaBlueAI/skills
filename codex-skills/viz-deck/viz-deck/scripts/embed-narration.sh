@@ -17,15 +17,17 @@ if [ -z "$PROJECT_DIR" ] || [ ! -d "$PROJECT_DIR" ]; then
   exit 2
 fi
 
-# ppt-master detection: $PPT_MASTER_HOME → ~/.agents/skills/ppt-master (Codex) → ~/.claude/skills/ppt-master (Claude Code)
+# ppt-master detection: $PPT_MASTER_HOME -> ~/.codex/skills/ppt-master (Codex) -> ~/.agents/skills/ppt-master (legacy Codex) -> ~/.claude/skills/ppt-master (Claude Code)
 if [ -n "${PPT_MASTER_HOME:-}" ] && [ -d "$PPT_MASTER_HOME" ]; then
   PPT_MASTER="$PPT_MASTER_HOME"
+elif [ -d "$HOME/.codex/skills/ppt-master" ]; then
+  PPT_MASTER="$HOME/.codex/skills/ppt-master"
 elif [ -d "$HOME/.agents/skills/ppt-master" ]; then
   PPT_MASTER="$HOME/.agents/skills/ppt-master"
 elif [ -d "$HOME/.claude/skills/ppt-master" ]; then
   PPT_MASTER="$HOME/.claude/skills/ppt-master"
 else
-  echo "ERROR: ppt-master not installed. Looked in: \$PPT_MASTER_HOME, ~/.agents/skills/ppt-master, ~/.claude/skills/ppt-master" >&2
+  echo "ERROR: ppt-master not installed. Looked in: \$PPT_MASTER_HOME, ~/.codex/skills/ppt-master, ~/.agents/skills/ppt-master, ~/.claude/skills/ppt-master" >&2
   exit 1
 fi
 

@@ -23,11 +23,12 @@ import os from "node:os";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const HOME = os.homedir();
 
-// ppt-master detection: $PPT_MASTER_HOME → ~/.agents/skills/ppt-master (Codex) → ~/.claude/skills/ppt-master (Claude Code)
+// ppt-master detection: $PPT_MASTER_HOME -> ~/.codex/skills/ppt-master (Codex) -> ~/.agents/skills/ppt-master (legacy Codex) -> ~/.claude/skills/ppt-master (Claude Code)
 function findPptMaster() {
   const env = process.env.PPT_MASTER_HOME;
   if (env && fs.existsSync(env)) return env;
   const candidates = [
+    path.join(HOME, ".codex", "skills", "ppt-master"),
     path.join(HOME, ".agents", "skills", "ppt-master"),
     path.join(HOME, ".claude", "skills", "ppt-master"),
   ];

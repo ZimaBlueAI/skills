@@ -1,6 +1,6 @@
-# codex-skills · ZimaBlueAI 三件套（OpenAI Codex CLI 版）
+# codex-skills · ZimaBlueAI skills（OpenAI Codex CLI 版）
 
-> 这是 `claude-code-skills/` 的 **Codex CLI 对等版本**。三个 skill 的内容（SKILL.md、references、templates、scripts、specs）和 Claude Code 版**完全相同**——只是装到 Codex 期望的位置，且 8 个 subagent 改用 TOML 格式。
+> 这是 `claude-code-skills/` 的 **Codex CLI 对等版本**。skill 内容（SKILL.md、references、templates、scripts、specs）和 Claude Code 版**完全相同**——只是装到 Codex 期望的位置，且 9 个 subagent 改用 TOML 格式。
 >
 > 想了解项目全貌、设计哲学、桥接关系，请读仓库根 `README.md` / `README_en.md`。这里只讲 Codex 安装与差异。
 
@@ -25,8 +25,9 @@ cd skills\codex-skills
 - `biz-html-viz` — 决策链 8 模板 + 决策 PPTX
 - `viz-deck` — 五模产出（keynote / prototype / slide / motion / pptx-deck）
 - `viz-charts` — 6 类视觉表达 + 原生 PPTX 图表
+- `zima-html-ppt` — ZimaBlueAI 现场讲演 deck + 演讲者模式
 
-8 个 subagent 通过 `$<name>` 或自然语言触发：`$all-hands-orchestrator`、`$board-advisor`、`$ceo-decision`、`$chief-architect`、`$product-manager`、`$dev-test-lead`、`$acceptance-retro`、`$design-critic`。
+9 个 subagent 通过 `$<name>` 或自然语言触发：`$all-hands-orchestrator`、`$board-advisor`、`$ceo-decision`、`$chief-architect`、`$product-manager`、`$dev-test-lead`、`$acceptance-retro`、`$design-critic`、`$template-router`。
 
 ---
 
@@ -36,32 +37,35 @@ cd skills\codex-skills
 
 | 维度 | Claude Code | OpenAI Codex CLI | 差异类型 |
 |---|---|---|---|
-| 用户 skill 目录 | `~/.claude/skills/<name>/` | `~/.agents/skills/<name>/` | **路径不同**（内容完全相同） |
+| 用户 skill 目录 | `~/.claude/skills/<name>/` | `~/.codex/skills/<name>/` | **路径不同**（内容完全相同） |
 | SKILL.md frontmatter | `name:` + `description:` + 可选 `license:` | `name:` + `description:` | **完全兼容**（Codex 会忽略未知字段） |
-| 项目级 skill 目录 | `.claude/skills/<name>/` | `.agents/skills/<name>/` | **路径不同** |
+| 项目级 skill 目录 | `.claude/skills/<name>/` | `.codex/skills/<name>/` | **路径不同** |
 | Subagent 文件 | `~/.claude/agents/<name>.md`（YAML frontmatter） | `~/.codex/agents/<name>.toml`（TOML） | **格式不同 → 已预转好** |
 | Subagent 字段 | `name` / `description` / `tools` | `name` / `description` / `developer_instructions` / 可选 `model`/`sandbox_mode` | TOML 化时自动适配 |
 | 触发 | 自然语言 + 隐式 SKILL.md 加载 | 自然语言 + 隐式加载 + 显式 `$skill-name` + `/skills` | 行为等价 |
-| 桥接（ppt-master / huashu-design） | 安装到 `~/.claude/skills/<bridge>` | 安装到 `~/.agents/skills/<bridge>` | 脚本**双路径自动探测**（无需配置） |
+| 桥接（ppt-master / huashu-design） | 安装到 `~/.claude/skills/<bridge>` | 安装到 `~/.codex/skills/<bridge>` | 脚本**双路径自动探测**（无需配置） |
 
-凡 SKILL.md 中含 `~/.claude/skills/` 的字面描述（少数地方），Codex 也能识别——脚本本身（make-pptx-deck.mjs / make-decision-pptx.mjs / 几个 .sh）已加入 `$PPT_MASTER_HOME` → `~/.agents/skills/ppt-master` → `~/.claude/skills/ppt-master` 的探测链，所以同一份脚本两个 harness 都能用。
+凡 SKILL.md 中含 `~/.claude/skills/` 的字面描述（少数地方），Codex 也能识别——脚本本身（make-pptx-deck.mjs / make-decision-pptx.mjs / 几个 .sh）已加入 `$PPT_MASTER_HOME` → `~/.codex/skills/ppt-master` → `~/.agents/skills/ppt-master` → `~/.claude/skills/ppt-master` 的探测链，所以同一份脚本两个 harness 都能用。
 
 ---
 
-## 三个 zip 的内容
+## zip 的内容
 
 每个 zip 都按 Codex 的 install 布局组织：
 
 ```
 biz-decision-stack.zip
-├── .agents/skills/biz-html-viz/      # SKILL.md + references + templates + scripts + specs
-└── .codex/agents/00-..07-*.toml      # 8 TOML subagents（v0.3 终端风评审为第 7 个）
+├── .codex/skills/biz-html-viz/      # SKILL.md + references + templates + scripts + specs
+└── .codex/agents/00-..08-*.toml      # 9 TOML subagents（含 template-router）
 
 viz-deck.zip
-└── .agents/skills/viz-deck/          # 5 模 + 11 references + 7 templates + 6 scripts
+└── .codex/skills/viz-deck/          # 5 模 + 11 references + 7 templates + 6 scripts
 
 viz-charts.zip
-└── .agents/skills/viz-charts/        # 6 类视觉 + 3D KG builders + native PPTX chart script
+└── .codex/skills/viz-charts/        # 6 类视觉 + 3D KG builders + native PPTX chart script
+
+zima-html-ppt.zip
+└── .codex/skills/zima-html-ppt/      # 暖纸编辑风现场 deck + speaker mode
 ```
 
 解压到 `$HOME/` 即落到位。`install.sh` / `install.ps1` 就是封装了这步。
@@ -76,6 +80,7 @@ viz-charts.zip
 unzip -o biz-decision-stack/biz-decision-stack.zip -d ~/
 unzip -o viz-deck/viz-deck.zip -d ~/
 unzip -o viz-charts/viz-charts.zip -d ~/
+unzip -o zima-html-ppt/zima-html-ppt.zip -d ~/
 ```
 
 ### 项目级安装（只在某项目里启用）
@@ -86,9 +91,10 @@ unzip -o viz-charts/viz-charts.zip -d ~/
 unzip -o codex-skills/biz-decision-stack/biz-decision-stack.zip -d /path/to/your-project/
 unzip -o codex-skills/viz-deck/viz-deck.zip -d /path/to/your-project/
 unzip -o codex-skills/viz-charts/viz-charts.zip -d /path/to/your-project/
+unzip -o codex-skills/zima-html-ppt/zima-html-ppt.zip -d /path/to/your-project/
 ```
 
-Codex 会同时识别项目级 `.agents/skills/` 和用户级 `~/.agents/skills/`。
+Codex 会同时识别项目级 `.codex/skills/` 和用户级 `~/.codex/skills/`。
 
 ### 验证
 
@@ -96,13 +102,13 @@ Codex 会同时识别项目级 `.agents/skills/` 和用户级 `~/.agents/skills/
 > /skills
 ```
 
-应能看到 `biz-html-viz`、`viz-deck`、`viz-charts`。
+应能看到 `biz-html-viz`、`viz-deck`、`viz-charts`、`zima-html-ppt`。
 
 ```
 > /agents
 ```
 
-应能看到 8 个 subagent。
+应能看到 9 个 subagent。
 
 ---
 
@@ -115,8 +121,8 @@ Codex 会同时识别项目级 `.agents/skills/` 和用户级 `~/.agents/skills/
 解锁：viz-deck 模式 5 真编辑 PPTX、biz-decision 决策 PPTX、viz-charts 数据绑定 chart、TTS 旁白。
 
 ```bash
-git clone --depth=1 https://github.com/hugohe3/ppt-master.git ~/.agents/skills/ppt-master
-cd ~/.agents/skills/ppt-master
+git clone --depth=1 https://github.com/hugohe3/ppt-master.git ~/.codex/skills/ppt-master
+cd ~/.codex/skills/ppt-master
 python -m venv .venv
 
 # Linux/macOS
@@ -130,8 +136,8 @@ python -m venv .venv
 解锁：HTML→MP4/60fps/GIF/PPTX 导出、20 设计哲学、5 维评审。
 
 ```bash
-git clone --depth=1 https://github.com/alchaincyf/huashu-design.git ~/.agents/skills/huashu-design
-cd ~/.agents/skills/huashu-design
+git clone --depth=1 https://github.com/alchaincyf/huashu-design.git ~/.codex/skills/huashu-design
+cd ~/.codex/skills/huashu-design
 
 cat > package.json <<'JSON'
 {
@@ -162,7 +168,7 @@ ffmpeg -version || echo "请先安装 ffmpeg"
 
 ---
 
-## 三个 zip 的关系图
+## zip 的关系图
 
 ```
 ┌──────────────────────────┐     ┌────────────────────────────┐
@@ -184,7 +190,7 @@ ffmpeg -version || echo "请先安装 ffmpeg"
 └─────────┘ └──────────────┘ └──────────────────┘
 ```
 
-`huashu-design` / `ppt-master` 都是软依赖；两个都在 `~/.agents/skills/` 下安装即可，三个 skill 会自动桥接。
+`huashu-design` / `ppt-master` 都是软依赖；两个都在 `~/.codex/skills/` 下安装即可，相关 skill 会自动桥接。
 
 ---
 
@@ -193,7 +199,7 @@ ffmpeg -version || echo "请先安装 ffmpeg"
 完全支持。在同一台机上：
 
 - Claude Code 跑 `~/.claude/skills/` 下的同名 skill 们
-- Codex 跑 `~/.agents/skills/` 下的同名 skill 们
+- Codex 跑 `~/.codex/skills/` 下的同名 skill 们
 - 两个 harness 共享同一份 `ppt-master` 和 `huashu-design`（只装一份，脚本会自动检测）
 
 唯一要注意的：**别同时把两份 zip 都解压到同一个项目根**——只会冲突，没有好处。一个项目选一个 harness。

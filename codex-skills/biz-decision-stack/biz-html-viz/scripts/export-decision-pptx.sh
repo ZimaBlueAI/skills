@@ -16,8 +16,10 @@ if [ $# -lt 1 ]; then
   exit 2
 fi
 
-# Detect ppt-master across both harness install locations
+# Detect ppt-master across current and legacy harness install locations
 if [ -n "${PPT_MASTER_HOME:-}" ] && [ -d "$PPT_MASTER_HOME" ]; then
+  :
+elif [ -d "$HOME/.codex/skills/ppt-master" ]; then
   :
 elif [ -d "$HOME/.agents/skills/ppt-master" ]; then
   :
@@ -25,6 +27,7 @@ elif [ -d "$HOME/.claude/skills/ppt-master" ]; then
   :
 else
   echo "ERROR: ppt-master not installed. Run one of:"
+  echo "  git clone https://github.com/hugohe3/ppt-master ~/.codex/skills/ppt-master   # Codex"
   echo "  git clone https://github.com/hugohe3/ppt-master ~/.agents/skills/ppt-master   # Codex"
   echo "  git clone https://github.com/hugohe3/ppt-master ~/.claude/skills/ppt-master   # Claude Code"
   echo "Then create the venv:"

@@ -132,3 +132,7 @@ const C={teal:'#1b5e5a',green:'#2c7a66',gold:'#d59a3a',red:'#a24e3e',muted:'#cfd
 
 > **起步模板**:`templates/zima-editorial-deck.html` 已内置全部令牌、组件与 Chart.js 默认值。
 > 默认 HTML 直接以它为骨架填内容,最省事、最稳出片。
+>
+> **要现场上台讲(带演讲者模式/逐字稿/计时)** → 用 `zima-html-ppt` 技能的
+> `templates/zima-ppt-starter.html`(同款暖纸风,额外内置:S 键提词器窗口、逐字稿标签、
+> 每页配额计时、F 全屏、键盘翻页)。完整规范见 `zima-html-ppt/references/speaker-mode.md`。
