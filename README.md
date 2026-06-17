@@ -4,7 +4,7 @@
 > Production-grade skill packs for modern AI coding agents.
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Release](https://img.shields.io/badge/release-v0.5.0-2b6cb0.svg)](./CHANGELOG.md)
+[![Release](https://img.shields.io/badge/release-v0.6.0-2b6cb0.svg)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-public_preview-orange.svg)](#九路线图--roadmap)
 [![Harness](https://img.shields.io/badge/harness-Claude_Code_·_Codex-7c3aed.svg)](./claude-code-skills/)
 [![Channel](https://img.shields.io/badge/channel-OpenClaw_·_Hermes-0E7C66.svg)](./openclaw-skills/)
@@ -47,8 +47,26 @@ v0.4.0 起覆盖**从董事会简报到对外讲演视频再到真正可编辑 P
 |---|---|---|---|
 | **biz-decision-stack** | 8 subagents · 投资人 → CEO → 架构 → MRD → 交付 → 验收 → 评审 + **路由器**（v4）决策链 | 8 份终端风 HTML + 编辑级 PPTX（黑底 + 酸黄 + 等宽 + 零动效） | 83 KB |
 | **viz-deck** | 5 模产出 + 六项 v4 增强（演讲者模式 / 三变体预览 / 长文转 deck / 学术模板 / Bento / 反思循环） | HTML / 可编辑 PPTX（每元素可点） / MP4 / GIF / PDF（深空蓝紫青） | 130 KB |
-| **viz-charts** | 6 类视觉表达 · Mermaid · ECharts · SVG 组件 · 3D 知识图谱 · Motion 视频 · Native PPTX 图表 | 内嵌 HTML / 离线 SVG / MP4 / 数据绑定 PPTX 图表 | 157 KB |
-| **zima-html-ppt** 🆕 | ZimaBlueAI 现场讲演 deck · 暖纸编辑风 + **演讲者模式**（S 键弹提词器 / 逐字稿 / 计时 / 议程）· 母版 D1/D2/D3 | 单文件 HTML 幻灯片（暖纸 + 深青 + 金赭 + 三色条），复制起步模板填内容 | 23 KB |
+| **viz-charts** | 7 类视觉表达 · Mermaid · ECharts · SVG 组件 · 3D 知识图谱 · **SVG 环形/Circos KG**（可交互）· Motion 视频 · Native PPTX 图表 | 内嵌 HTML / 离线 SVG / 交互 SVG KG / MP4 / 数据绑定 PPTX 图表 | 157 KB |
+| **zima-html-ppt** | ZimaBlueAI 现场讲演 deck · 暖纸编辑风 + **演讲者模式**（S 键弹提词器 / 逐字稿 / 计时 / 议程）· 母版 D1/D2/D3 | 单文件 HTML 幻灯片（暖纸 + 深青 + 金赭 + 三色条），复制起步模板填内容 | 23 KB |
+| **taste-engine** 🆕 | 共享"口味层"· 三档 dial（DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY）+ 反 slop 预检 + 选材/文案规则 | 设计令牌 + 自检清单 + 两支样片（暗色电影感 web · 暖纸编辑 deck） | 文档 + 样片 |
+
+### 🆕 Taste 层 + 交互 SVG 知识图谱
+
+新增 **`taste-engine`**——一层可叠加在任何 HTML/PPT 产出之上的"口味层"：**三档 dial**
+（`DESIGN_VARIANCE` / `MOTION_INTENSITY` / `VISUAL_DENSITY`，写在 `<html>` 上由 CSS + JS 读取）
++ **反 AI slop 预检清单** + **选材 / 文案规则**。它不是渲染器、不是依赖，是一组设计令牌与约束；
+各交付物有默认档（报告 `0/0/1` · 讲演 `1/1/1` · 发布 `2/2/1`），口味是"加"出来的、不覆盖既有基调。
+
+两支可跑样片：
+
+- `taste-engine/demo/taste-demo.html` —— 暗色电影感 web 报告：实时三档面板 · 滚动动效 · 图表 ·
+  **三种知识图谱**（3D 力导向 / **SVG 环形 Context Graph**：拖拽·滚轮缩放·拖背景平移·点节点 BFS·搜索 / **Circos 弦图**：ideogram + 外圈 track + 内部 ribbon，可悬停高亮）。
+- `taste-engine/demo/zima-ppt-demo.html` —— 暖纸编辑风现场讲演 deck：三色条 · 发丝卡片 · 计时条 ·
+  **演讲者模式（按 S）**，可作 MP4 / 可编辑 PPTX 导出的输入态。
+
+其中两种**纯 SVG、可交互**的知识图谱（环形 Context Graph / Circos 弦图）已并入 **`viz-charts`**
+的"七类视觉表达"，可矢量缩放、可嵌报告主流、可打印——见 `viz-charts/references/svg-kg-guide.md`。
 
 ### 🆕 频道交付层 · OpenClaw / Hermes（v0.5 新增）
 
@@ -376,9 +394,10 @@ skills/
 | v0.2 | 4 模产出 · 20 哲学 · 5 维评审 · huashu-design 桥接 · samples | ✅ 已发布 |
 | v0.3 | ppt-master 软桥接 · viz-deck 模式 5 pptx-deck · 决策 PPTX · 数据绑定原生 chart · TTS 旁白嵌入 · codex-skills 双 harness 首发 | ✅ 已发布 |
 | v0.4 | 26-skill 取长补短 · Speaker Mode · 三变体预览 · Doc→Deck · 学术模板 · Bento Grid · Reflective Loop · Template Router | ✅ 已发布 |
-| **v0.5** | **OpenClaw / Hermes 频道交付层 · `viz-channel`（IM 频道对话生成 + 投递 · 飞书 adapter · cron/webhook 自动化 · USAGE 案例库）** | ✅ **已发布（当前）** |
-| v0.6 | viz-charts narrative chart explainer（TTS 解说图表视频）+ 频道适配器扩展（企业微信 / Slack / Telegram） | 🟡 规划中 |
-| v0.7 | octarus-skills 移植 + 三 harness 一致性测试 | ⚪ 规划中 |
+| v0.5 | OpenClaw / Hermes 频道交付层 · `viz-channel`（IM 频道对话生成 + 投递 · 飞书 adapter · cron/webhook 自动化 · USAGE 案例库） | ✅ 已发布 |
+| **v0.6** | **`taste-engine` 口味层（三档 dial + 反 slop + 选材/文案）· `viz-charts` 交互 SVG 环形/Circos 知识图谱 · `zima-html-ppt` 现场讲演 deck（暖纸编辑风 + 演讲者模式）** | ✅ **已发布（当前）** |
+| v0.7 | viz-charts narrative chart explainer（TTS 解说图表视频）+ 频道适配器扩展（企业微信 / Slack / Telegram） | 🟡 规划中 |
+| v0.8 | octarus-skills 移植 + 三 harness 一致性测试 | ⚪ 规划中 |
 | v1.0 | 5 harness 全覆盖 + skill registry（`skills.json` 索引） | ⚪ 规划中 |
 
 ---

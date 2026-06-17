@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ZimaBlueAI Agent Skills · 现场讲演 deck（暖纸编辑风 · Taste）</title>
+<!--
+  zima-html-ppt 暖纸编辑风 deck — Taste 升级版样片。
+  风格基准: D3-训练方案.html / design-system.md（暖纸底 + 深青主色 + 金赭点缀 + 顶部三色条 + 发丝卡片 + 大号 tabular 数字）。
+  现场讲演用: 按 F 全屏 · 按 S 演讲者模式（独立窗口 · 逐字稿 · 计时 · 议程 · postMessage 同步）· ← → / 空格翻页。
+  导出: HTML→MP4/GIF 经 huashu-design（render-video.js）; HTML→可编辑 PPTX 经 ppt-master（SVG→DrawingML）。本片即两条管线的输入态。
+-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --ink:#15211f; --muted:#5e6b64; --faint:#758078; --bg:#f7f4ee; --paper:#fffdf8; --line:#d9ded6;
+  --teal:#1b5e5a; --green:#2c7a66; --gold:#d59a3a; --red:#a24e3e; --cream:#efe8da;
+  --soft-teal:#eef7f4; --soft-gold:#fbf3e2; --soft-red:#fdf0ea;
+}
+*{ box-sizing:border-box; }
+html,body{ margin:0; height:100%; background:var(--bg); color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",Arial,sans-serif; }
+body{ overflow:hidden; }
+.deck{ height:100vh; width:100vw; position:relative; }
+.slide{ position:absolute; inset:0; padding:3.6vh 4.4vw 4.6vh; display:grid; grid-template-rows:auto 1fr auto;
+  opacity:0; transform:translateX(36px) scale(.985); pointer-events:none; transition:opacity .42s ease, transform .42s ease;
+  background:linear-gradient(90deg, rgba(27,94,90,.10), transparent 30%, rgba(213,154,58,.10)),
+    radial-gradient(circle at 14% 84%, rgba(44,122,102,.10), transparent 22%), var(--bg); }
+.slide.active{ opacity:1; transform:translateX(0) scale(1); pointer-events:auto; }
+.slide::before{ content:""; position:absolute; inset:0 0 auto; height:7px; background:linear-gradient(90deg,var(--teal),var(--gold),var(--red)); }
+header{ max-width:1240px; }
+.kicker{ color:var(--teal); font-weight:700; font-size:clamp(12px,1.05vw,15px); margin-bottom:6px; letter-spacing:.05em; }
+h1{ margin:0; max-width:1120px; font-size:clamp(32px,4.4vw,64px); line-height:1.05; }
+h2{ margin:0; font-size:clamp(26px,3.4vw,46px); line-height:1.1; }
+.sub{ margin-top:8px; color:var(--muted); font-size:clamp(14px,1.3vw,19px); line-height:1.45; max-width:1080px; }
+.stage{ align-self:center; width:min(1280px,100%); margin:0 auto; }
+.grid{ display:grid; gap:14px; } .cols-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+.cols-3{ grid-template-columns:repeat(3,minmax(0,1fr)); } .cols-4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+.card{ background:rgba(255,253,248,.92); border:1px solid var(--line); border-radius:10px; padding:18px; box-shadow:0 14px 38px rgba(39,45,42,.06); }
+.metric{ min-height:118px; display:flex; flex-direction:column; justify-content:center; }
+.metric strong{ color:var(--teal); font-size:clamp(28px,3.2vw,46px); line-height:1; font-weight:800; font-variant-numeric:tabular-nums; }
+.metric span{ margin-top:8px; color:var(--muted); font-size:clamp(12.5px,1.1vw,15px); line-height:1.42; }
+.metric.red strong{ color:var(--red); } .metric.gold strong{ color:var(--gold); } .metric.green strong{ color:var(--green); }
+.bigline{ font-size:clamp(24px,3vw,46px); line-height:1.14; font-weight:800; max-width:1080px; }
+.pill{ display:inline-flex; align-items:center; height:28px; padding:0 11px; border-radius:999px; background:#e7f0ec; color:var(--teal); font-weight:700; font-size:12px; margin:0 6px 6px 0; }
+.pill.gold{ background:#f6ecd5; color:#8a6212; } .pill.red{ background:#f4e0d8; color:#7a2e2e; }
+.list{ margin:0; padding:0; list-style:none; }
+.list li{ padding:7px 0; border-bottom:1px solid var(--line); color:var(--muted); font-size:clamp(13px,1.2vw,16px); line-height:1.5; }
+.list li:last-child{ border-bottom:none; } .list li b{ color:var(--ink); }
+.footer{ display:flex; justify-content:space-between; align-items:center; color:var(--faint); font-size:11px; }
+.cellb{ background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:14px; }
+.cellb b{ color:var(--teal); display:block; margin-bottom:5px; font-size:15px; } .cellb p{ margin:0; color:var(--muted); font-size:12.5px; line-height:1.45; }
+.kb{ font-size:clamp(22px,2.4vw,34px); font-weight:800; color:var(--gold); font-variant-numeric:tabular-nums; }
+.flow-step{ background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:11px 13px; margin-bottom:8px; display:grid; grid-template-columns:30px 1fr; gap:10px; align-items:center; }
+.flow-step .num{ background:var(--teal); color:#fff; width:24px; height:24px; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:700; }
+.flow-step .txt{ font-size:13.5px; color:var(--ink); } .flow-step .txt b{ color:var(--teal); }
+.quote{ font-size:clamp(16px,1.6vw,22px); line-height:1.4; color:var(--ink); font-weight:600; border-left:4px solid var(--gold); padding-left:12px; margin:0; }
+.split{ display:grid; grid-template-columns:1.15fr 1fr; gap:16px; align-items:stretch; }
+.lane-h{ display:flex; align-items:center; gap:9px; font-size:15px; font-weight:800; margin-bottom:6px; }
+.lane-h .tag{ font-size:11px; padding:2px 9px; border-radius:999px; background:var(--soft-gold); color:#8a6212; font-weight:700; }
+.chart-wrap{ position:relative; height:340px; background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:14px 14px 8px; }
+.source{ font-size:11px; color:var(--faint); margin-top:8px; }
+.progress{ position:fixed; left:0; right:0; bottom:0; height:5px; background:rgba(0,0,0,.08); z-index:20; }
+.progress i{ display:block; height:100%; width:0; background:linear-gradient(90deg,var(--teal),var(--gold)); transition:width .25s ease; }
+.timer-bar{ position:fixed; left:0; right:0; bottom:5px; height:2px; background:transparent; z-index:19; }
+.timer-bar i{ display:block; height:100%; width:0; background:var(--gold); transition:width .25s linear; }
+.timer-bar.over i{ background:var(--red); }
+.nav{ position:fixed; right:18px; bottom:14px; z-index:30; display:flex; gap:8px; align-items:center; }
+.nav .idx,.nav .timer{ color:var(--muted); font-size:12px; font-variant-numeric:tabular-nums; } .nav .timer{ margin-right:8px; } .nav .idx{ margin-right:4px; }
+button.nav-btn{ width:38px; height:34px; border:1px solid var(--line); background:rgba(255,253,248,.92); color:var(--ink); border-radius:8px; font-size:16px; cursor:pointer; }
+button.nav-btn:hover{ background:var(--cream); }
+.hint{ position:fixed; right:18px; top:18px; z-index:30; background:rgba(255,253,248,.92); border:1px solid var(--line); border-radius:6px; padding:5px 10px; font-size:11px; color:var(--muted); }
+.hint b{ color:var(--teal); font-weight:800; }
+.brand-mark{ position:fixed; left:50%; transform:translateX(-50%); bottom:10px; display:flex; align-items:center; gap:6px; font-size:11px; color:var(--faint); text-decoration:none; opacity:.8; z-index:25; }
+.brand-mark:hover{ opacity:1; }
+.notes{ display:none; }
+@media (max-width:900px){
+  body{ overflow:auto; } .deck{ height:auto; }
+  .slide{ position:relative; min-height:100vh; display:none; padding:30px 16px; } .slide.active{ display:grid; }
+  .cols-2,.cols-3,.cols-4,.split{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<main class="deck" id="deck">
+
+  <!-- 01 封面 -->
+  <section class="slide active" data-min="2">
+    <header>
+      <div class="kicker">ZIMABLUEAI AGENT SKILLS · TASTE</div>
+      <h1>一次编写，<span style="color:var(--teal)">多 harness 复用</span><br>的<span style="color:var(--gold)">有口味</span>能力包</h1>
+      <div class="sub">从董事会简报到对外讲演视频，再到真正可编辑的 PPT——<b>同一套生成能力</b>，在 Claude Code、Codex、飞书频道里换一张交付面。</div>
+    </header>
+    <div class="stage">
+      <div class="bigline" style="font-size:clamp(18px,2vw,30px); color:var(--ink); margin-bottom:18px;">
+        不是开发库，不是 npm 包——<span style="color:var(--teal)">是给 agent 用的声明式能力</span>。一句话意图，<span style="color:var(--gold)">一次结构化交付</span>。
+      </div>
+      <div style="margin-bottom:18px;">
+        <span class="pill">5 生成技能</span><span class="pill">2 harness</span><span class="pill gold">2 频道交付</span>
+        <span class="pill gold">2 软桥接</span><span class="pill red">26-skill 取长补短</span>
+      </div>
+      <div class="grid cols-4">
+        <div class="card metric"><strong>5</strong><span>相互独立的生成技能<br>按一句话意图<b>按需加载</b></span></div>
+        <div class="card metric green"><strong>2 × 1</strong><span>双 harness（Claude Code · Codex）<br>skill 内容<b>一字不差共享</b></span></div>
+        <div class="card metric gold"><strong>v0.5</strong><span>新增频道交付层<br>飞书 @一下<b>把成品发回会话</b></span></div>
+        <div class="card metric red"><strong>0</strong><span>新依赖<br>软桥接未装时<b>核心能力不受影响</b></span></div>
+      </div>
+    </div>
+    <div class="footer"><span>ZimaBlueAI · 现场讲演样片 · 按 F 全屏 · 按 S 演讲者模式</span><span>01 / 09</span></div>
+    <div class="notes" data-min="2">
+      <p><b class="tag-cue">节奏</b> 封面 120s：关键一句 40s → 主标题金句 20s → 4 个数字 45s → 议程预告 15s。</p>
+      <p><b class="tag-say">话术</b> <span class="say">这套东西的定位很简单：<b>一次编写、多 harness 复用</b>。同一份生成能力，在编辑器里它是 coding agent 的能力包，在飞书群里它是那个"@一下就把动效报告做好发回来"的机器人。</span></p>
+      <p><b class="tag-data">数据</b> <span class="say">5 个独立技能、2 个 harness、2 个交付频道，v0.5 起补齐频道交付层。</span></p>
+      <p><b class="tag-do">动作</b> 念第 4 个数字"0 新依赖"时停一拍——这是与同类工具的关键区别。</p>
+    </div>
+  </section>
+
+  <!-- 02 能力矩阵 -->
+  <section class="slide" data-min="2">
+    <header><div class="kicker">能力矩阵</div><h2>五个技能，<span style="color:var(--teal)">各管一段交付</span></h2></header>
+    <div class="stage">
+      <div class="grid cols-3">
+        <div class="card"><div class="lane-h">biz-decision-stack <span class="kb">83</span></div><p style="color:var(--muted);font-size:13px;margin:0;line-height:1.5">8 subagent 决策链：投资人 → CEO → 架构 → MRD → 交付 → 验收 → 评审 + 路由器。终端风黑底酸黄，<b>零动效守扫读</b>。</p></div>
+        <div class="card"><div class="lane-h">viz-deck <span class="kb">130</span></div><p style="color:var(--muted);font-size:13px;margin:0;line-height:1.5">5 模产出：keynote / 原型 / 幻灯片 / 动效视频 / 可编辑 PPTX。深空蓝紫青，<b>演讲者模式按 S</b>。</p></div>
+        <div class="card"><div class="lane-h">viz-charts <span class="kb">157</span></div><p style="color:var(--muted);font-size:13px;margin:0;line-height:1.5">6 类视觉：Mermaid · ECharts · SVG 组件 · 3D 知识图谱 · Motion 视频 · <b>数据绑定原生 PPTX 图表</b>。</p></div>
+        <div class="card"><div class="lane-h">zima-html-ppt <span class="kb">23</span></div><p style="color:var(--muted);font-size:13px;margin:0;line-height:1.5">现场讲演 deck：暖纸编辑风 + 深青 + 金赭三色条。<b>复制起步模板填内容即出片</b>。本片即此风。</p></div>
+        <div class="card"><div class="lane-h">viz-channel <span class="kb" style="font-size:18px">v0.5</span></div><p style="color:var(--muted);font-size:13px;margin:0;line-height:1.5">频道交付层：飞书问清需求 → 调 viz-deck/charts 生成 → <b>把成品当附件发回会话</b>。</p></div>
+        <div class="card" style="background:var(--soft-teal)"><div class="lane-h" style="color:var(--teal)">取数原则</div><p style="color:var(--muted);font-size:13px;margin:0;line-height:1.5">数字用真值：估值标 <b>[估]</b>，缺失标 <b>[N/A]</b>，<b>严禁编造</b>。竞品用对方的话。</p></div>
+      </div>
+    </div>
+    <div class="footer"><span>每个技能是一份自洽的 .zip · 内容跨 harness 共享</span><span>02 / 09</span></div>
+    <div class="notes" data-min="2">
+      <p><b class="tag-cue">节奏</b> 120s：5 张卡一句话带过（各 15s），最后"取数原则"卡停 25s 强调诚实。</p>
+      <p><b class="tag-say">话术</b> <span class="say">右下角包体积——23KB 到 157KB——说明一件事：<b>能力密度高，不是堆代码</b>。zima-html-ppt 只有 23KB，但你现在看的这页就是它做的。</span></p>
+      <p><b class="tag-do">动作</b> 指向"取数原则"卡：<b>这条是反 AI 味的底线，编数字一次，信任就没了。</b></p>
+    </div>
+  </section>
+
+  <!-- 03 双交付面 -->
+  <section class="slide" data-min="2">
+    <header><div class="kicker">双交付面</div><h2>同一份生成能力，<span style="color:var(--gold)">两种落地方式</span></h2></header>
+    <div class="stage">
+      <div class="split">
+        <div class="card">
+          <div class="lane-h">编码 agent 能力包 <span class="tag">Claude Code · Codex</span></div>
+          <div class="flow-step"><span class="num">1</span><span class="txt"><b>说出意图</b>：在编辑器里描述要做的报告 / deck / 图表。</span></div>
+          <div class="flow-step"><span class="num">2</span><span class="txt"><b>按需加载</b>：SKILL.md 触发条件命中，references + templates 进入上下文。</span></div>
+          <div class="flow-step"><span class="num">3</span><span class="txt"><b>结构化交付</b>：HTML / 可编辑 PPTX / MP4，落点路径随 harness 自动适配。</span></div>
+        </div>
+        <div class="card" style="background:var(--soft-gold)">
+          <div class="lane-h">频道里的机器人 <span class="tag">OpenClaw · Hermes</span></div>
+          <div class="flow-step"><span class="num">1</span><span class="txt"><b>@机器人</b>：「做个云度 Q2 的动效汇报发我」。</span></div>
+          <div class="flow-step"><span class="num">2</span><span class="txt"><b>问清需求</b>：≤2 问给默认，viz-channel 编排 viz-deck/charts。</span></div>
+          <div class="flow-step"><span class="num">3</span><span class="txt"><b>发回会话</b>：deck.html 作为附件回到 chat，附"用浏览器打开"。</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span>Hermes 还能把同一链路做成 cron / webhook 自动化</span><span>03 / 09</span></div>
+    <div class="notes" data-min="2">
+      <p><b class="tag-cue">节奏</b> 120s：左 45s 右 45s，结尾"自动化"30s。</p>
+      <p><b class="tag-say">话术</b> <span class="say">左边是给开发者的，右边是给业务的。同一份能力，<b>编辑器里它是技能，飞书里它是同事</b>。Hermes 那条还能定时——每周一早上自动出周报发群。</span></p>
+      <p><b class="tag-bridge">过渡</b> 这两种落地靠什么撑起来？看下一页的演进。</p>
+    </div>
+  </section>
+
+  <!-- 04 演进 · 图表 -->
+  <section class="slide" data-min="2">
+    <header><div class="kicker">演进</div><h2>五个版本，<span style="color:var(--teal)">把扫读哲学长成全链路</span></h2></header>
+    <div class="stage">
+      <div class="split">
+        <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
+        <div class="card">
+          <ul class="list">
+            <li><b>v0.1</b> 单模原阶段报告</li>
+            <li><b>v0.2</b> viz-deck 扩到 4 模 + 20 设计哲学 + 5 维评审</li>
+            <li><b>v0.3</b> ppt-master 软桥接 → 真可编辑 PPTX + TTS 旁白</li>
+            <li><b>v0.4</b> 26-skill 取长补短：演讲者模式 / 三变体 / 长文转 deck / 学术模板 / Bento / 路由器</li>
+            <li><b>v0.5</b> OpenClaw / Hermes 频道交付层 + viz-channel</li>
+          </ul>
+          <p class="source">来源：CHANGELOG.md · 输出形态累积计数</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span>每一版只增不减——所有旧工作流完整保留</span><span>04 / 09</span></div>
+    <div class="notes" data-min="2">
+      <p><b class="tag-cue">节奏</b> 120s：图 40s 解读柱子怎么叠高，右侧清单 60s，结论 20s。</p>
+      <p><b class="tag-data">数据</b> <span class="say">输出形态从 1 种长到 13 种：报告/Deck、图表/3D、可编辑 PPTX 三类逐版叠加。</span></p>
+      <p><b class="tag-say">话术</b> <span class="say">关键是<b>只增不减</b>——v0.5 的人，v0.1 的工作流一行没动。这是能用得久的前提。</span></p>
+    </div>
+  </section>
+
+  <!-- 05 软桥接 -->
+  <section class="slide" data-min="1">
+    <header><div class="kicker">两个软桥接</div><h2>需要时接上，<span style="color:var(--gold)">不装也不影响</span></h2></header>
+    <div class="stage">
+      <div class="grid cols-2">
+        <div class="card"><div class="lane-h" style="color:var(--teal)">huashu-design</div><p style="color:var(--muted);font-size:13.5px;line-height:1.55;margin:0">Node + Playwright + ffmpeg。<b>HTML → MP4 / 60fps / GIF</b>、设备外壳、动画引擎、20 设计哲学、5 维专家评审。viz-deck 模式 2–4 与 viz-charts motion 模式调用。</p></div>
+        <div class="card"><div class="lane-h" style="color:var(--teal)">ppt-master</div><p style="color:var(--muted);font-size:13.5px;line-height:1.55;margin:0">Python + python-pptx + svglib + edge-tts。<b>SVG → DrawingML 真可编辑 PPTX</b>——不是图片嵌入，是原生 OOXML shapes，stakeholder 能右键"Edit Data"。</p></div>
+      </div>
+      <p class="quote" style="margin-top:16px">软依赖：未安装时 v1 / v2 能力完全不受影响——上游各按各自许可证发布。</p>
+    </div>
+    <div class="footer"><span>本片可经这两条管线导出 MP4 与可编辑 PPTX</span><span>05 / 09</span></div>
+    <div class="notes" data-min="1">
+      <p><b class="tag-cue">节奏</b> 60s：左右各 22s，引言 16s。</p>
+      <p><b class="tag-say">话术</b> <span class="say">这页本身就能<b>导成视频、导成可编辑 PPT</b>——HTML 是源，两条管线分别出 MP4 和 OOXML。</span></p>
+    </div>
+  </section>
+
+  <!-- 06 频道交付实战 -->
+  <section class="slide" data-min="1">
+    <header><div class="kicker">频道交付 · 实战</div><h2>飞书里一句话，<span style="color:var(--teal)">成品回到会话</span></h2></header>
+    <div class="stage">
+      <div class="flow-step"><span class="num">1</span><span class="txt">用户 @机器人：<b>「做个云度 Q2 的动效汇报发我」</b></span></div>
+      <div class="flow-step"><span class="num">2</span><span class="txt">频道里问清需求（<b>≤2 问，给默认</b>）：要不要能改？群里直接播还是发文件？</span></div>
+      <div class="flow-step"><span class="num">3</span><span class="txt">viz-deck 生成动效 HTML，<b>图表 / 3D KG 由 viz-charts 提供</b></span></div>
+      <div class="flow-step"><span class="num">4</span><span class="txt">把 deck.html 发回当前 chat，附<b>"下载用浏览器打开"</b>；要改→可编辑 PPTX，要播→MP4</span></div>
+    </div>
+    <div class="footer"><span>默认风格 = ZimaBlue Editorial（暖纸编辑风），可一句话切换</span><span>06 / 09</span></div>
+    <div class="notes" data-min="1">
+      <p><b class="tag-cue">节奏</b> 60s：四步各 12s，结尾形态切换 12s。</p>
+      <p><b class="tag-say">话术</b> <span class="say">注意第二步——<b>最多问两个问题，而且都给默认</b>。不让用户填表，这是频道体验的关键。</span></p>
+    </div>
+  </section>
+
+  <!-- 07 反 AI slop -->
+  <section class="slide" data-min="1">
+    <header><div class="kicker">Taste · 反 AI slop</div><h2>更有口味，<span style="color:var(--gold)">靠的是减法</span></h2></header>
+    <div class="stage">
+      <div class="grid cols-3">
+        <div class="cellb"><b>配色</b><p>一页强调色 ≤ 2 种；语义色只给语义（红=风险/降，绿=正向），不当装饰。</p></div>
+        <div class="cellb"><b>排版</b><p>靠留白和发丝描边撑结构；大面积铺色是反模式；数字 tabular + 800 粗体。</p></div>
+        <div class="cellb"><b>选材</b><p>真图真数；估值标 [估]、缺失标 [N/A]；不用 lorem，不编造。</p></div>
+        <div class="cellb"><b>文案</b><p>用结论句不用名词（"营收四季翻倍"非"营收分析"）；不堆黑话，不写"不是 X 而是 Y"。</p></div>
+        <div class="cellb"><b>动效</b><p>只做入场不炫技；禁无限循环 / 霓虹辉光 / 粒子；带 reduced-motion 降级。</p></div>
+        <div class="cellb"><b>图标</b><p>emoji 不当图标用；用几何符号或发丝描边小图，统一调性。</p></div>
+      </div>
+    </div>
+    <div class="footer"><span>专业 = 安静 · 标准取自 huashu-design critique-guide</span><span>07 / 09</span></div>
+    <div class="notes" data-min="1">
+      <p><b class="tag-cue">节奏</b> 60s：六格各 8s 扫过，落在"动效"和"文案"两格。</p>
+      <p><b class="tag-say">话术</b> <span class="say">"有口味"不是加东西，是<b>会做减法</b>。一页两种强调色封顶、数字用真值、动效只做入场——克制本身就是高级。</span></p>
+    </div>
+  </section>
+
+  <!-- 08 三档 dial -->
+  <section class="slide" data-min="1">
+    <header><div class="kicker">Taste Engine · 三档可调</div><h2>同一套内容，<span style="color:var(--teal)">三个旋钮调出三种气质</span></h2></header>
+    <div class="stage">
+      <div class="grid cols-3">
+        <div class="card"><div class="lane-h" style="color:var(--teal)">DESIGN_VARIANCE</div><p style="color:var(--muted);font-size:13px;line-height:1.55;margin:0"><b>0</b> 居中对称安全栅格<br><b>1</b> 非对称黄金分割、错位标题<br><b>2</b> 编辑式破格、对角流向、超大字</p></div>
+        <div class="card"><div class="lane-h" style="color:var(--teal)">MOTION_INTENSITY</div><p style="color:var(--muted);font-size:13px;line-height:1.55;margin:0"><b>0</b> 静止（reduced-motion）<br><b>1</b> 入场揭示、数字滚动、条形填充<br><b>2</b> 滚动视差、弹簧物理、3D 漂移</p></div>
+        <div class="card"><div class="lane-h" style="color:var(--teal)">VISUAL_DENSITY</div><p style="color:var(--muted);font-size:13px;line-height:1.55;margin:0"><b>0</b> 一屏一念、大留白<br><b>1</b> Bento 平衡<br><b>2</b> 仪表盘密度、多面板、紧行距</p></div>
+      </div>
+      <p class="quote" style="margin-top:16px">每个技能有默认档：biz 报告 = 0/0/1（守零动效扫读）· zima 讲演 = 1/1/1 · viz 发布 = 2/2/1。</p>
+    </div>
+    <div class="footer"><span>taste 是"加"出来的——各技能既有基调不被覆盖</span><span>08 / 09</span></div>
+    <div class="notes" data-min="1">
+      <p><b class="tag-cue">节奏</b> 60s：三个旋钮各 14s，默认档 18s。</p>
+      <p><b class="tag-say">话术</b> <span class="say">三个旋钮：张力、动效、密度。同一份内容，biz 报告调成 0/0/1 守扫读，发布会调成 2/2/1 出片。<b>风格是加出来的，不是覆盖出来的。</b></span></p>
+    </div>
+  </section>
+
+  <!-- 09 收尾 -->
+  <section class="slide" data-min="1">
+    <header><div class="kicker">收束</div><h2 style="font-size:clamp(30px,4.4vw,60px);max-width:1000px">一句话意图，<br><span style="color:var(--teal)">一次结构化交付。</span></h2></header>
+    <div class="stage">
+      <div class="bigline" style="color:var(--ink)">能力写一次，<span style="color:var(--gold)">在 Claude Code、Codex、飞书里换一张交付面</span>——报告、deck、视频、可编辑 PPT，按需取用。</div>
+      <div style="margin-top:18px"><span class="pill">动效 HTML</span><span class="pill gold">可编辑 PPTX</span><span class="pill red">MP4 / GIF</span><span class="pill">3D / 环形 / Circos KG</span></div>
+    </div>
+    <div class="footer"><span><a href="https://zimablueai.com" style="color:var(--teal);text-decoration:none">✦ ZimaBlueAI</a> · zimablueai.com</span><span>09 / 09</span></div>
+    <div class="notes" data-min="1">
+      <p><b class="tag-cue">节奏</b> 60s：金句 25s → 形态药丸 20s → 收 15s。</p>
+      <p><b class="tag-say">话术</b> <span class="say">一句话收尾：<b>能力写一次，交付面随场景换</b>。今天这片就是它自己做的——这就是答案。</span></p>
+    </div>
+  </section>
+
+</main>
+
+<div class="hint">按 <b>F</b> 全屏 · 按 <b>S</b> 演讲者模式 · <b>← →</b> 翻页 · <b>空格</b> 下一页</div>
+<div class="progress"><i id="progress"></i></div>
+<div class="timer-bar" id="timerbar"><i></i></div>
+<div class="nav">
+  <span class="timer" id="timer">00:00</span><span class="idx" id="idx">01 / 09</span>
+  <button class="nav-btn" id="prev">‹</button><button class="nav-btn" id="next">›</button>
+</div>
+<a class="brand-mark" href="https://zimablueai.com">✦ ZimaBlueAI</a>
+
+<script>
+/* ---- chart (暖纸调性) ---- */
+let growthBuilt=false;
+function buildGrowth(){
+  if(growthBuilt || typeof Chart==='undefined') return; growthBuilt=true;
+  Chart.defaults.font.family='"Microsoft YaHei","PingFang SC",Arial,sans-serif';
+  Chart.defaults.color='#5e6b64';
+  const COL={teal:'#1b5e5a',gold:'#d59a3a',red:'#a24e3e'};
+  new Chart(document.getElementById('growthChart'),{ type:'bar',
+    data:{ labels:['v0.1','v0.2','v0.3','v0.4','v0.5'], datasets:[
+      { label:'报告/Deck', data:[1,4,5,5,5], backgroundColor:COL.teal, stack:'a', borderRadius:3 },
+      { label:'图表/3D', data:[0,2,3,4,4], backgroundColor:COL.gold, stack:'a', borderRadius:3 },
+      { label:'可编辑 PPTX', data:[0,0,3,3,4], backgroundColor:COL.red, stack:'a', borderRadius:{topLeft:5,topRight:5} } ] },
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'top', labels:{ boxWidth:10, font:{size:12} } }, title:{ display:true, text:'输出形态累积 · v0.1 → v0.5', font:{size:13,weight:'700'}, color:'#15211f' } },
+      scales:{ x:{ grid:{ display:false } }, y:{ grid:{ color:'rgba(0,0,0,.06)' }, ticks:{ stepSize:4 } } } } });
+}
+
+/* ---- nav + timer (zima-html-ppt 标准) ---- */
+const slides=[...document.querySelectorAll('.slide')];
+const progress=document.getElementById('progress'), timerBar=document.getElementById('timerbar'), timerBarFill=timerBar.querySelector('i');
+const idxEl=document.getElementById('idx'), timerEl=document.getElementById('timer');
+let index=0, slideStartTs=Date.now();
+const totalMinutes=slides.reduce((s,el)=>s+Number(el.dataset.min||5),0);
+function show(i){ index=(i+slides.length)%slides.length;
+  slides.forEach((s,n)=>s.classList.toggle('active',n===index));
+  progress.style.width=`${((index+1)/slides.length)*100}%`;
+  idxEl.textContent=String(index+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  history.replaceState(null,'',`#${index+1}`); slideStartTs=Date.now(); timerBar.classList.remove('over');
+  if(slides[index].querySelector('#growthChart')) buildGrowth();
+  if(presenterWin && !presenterWin.closed){ try{ presenterWin.postMessage({type:'slide',i:index,total:slides.length},'*'); }catch(e){} }
+}
+function totalElapsedSec(){ let past=0; for(let i=0;i<index;i++) past+=Number(slides[i].dataset.min||5); return past*60+(Date.now()-slideStartTs)/1000; }
+function tick(){ const allotted=Number(slides[index].dataset.min||5)*60, elapsed=(Date.now()-slideStartTs)/1000;
+  timerBarFill.style.width=Math.min(1,elapsed/allotted)*100+'%'; if(elapsed>allotted) timerBar.classList.add('over');
+  const te=totalElapsedSec(), m=Math.floor(te/60), s=Math.floor(te%60), tm=Math.floor(totalMinutes/60), ts=totalMinutes%60;
+  timerEl.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+' / '+String(tm).padStart(2,'0')+':'+String(ts).padStart(2,'0'); }
+setInterval(tick,500);
+
+/* ---- 演讲者模式 ---- */
+let presenterWin=null;
+function togglePresenter(){
+  if(presenterWin && !presenterWin.closed){ presenterWin.close(); presenterWin=null; return; }
+  presenterWin=window.open('','presenter','width=720,height=920'); if(!presenterWin) return;
+  const decks=slides.map(s=>({ kicker:s.querySelector('.kicker')?.textContent||'', title:s.querySelector('h1,h2')?.textContent||'',
+    min:Number(s.dataset.min||5), notes:s.querySelector('.notes')?.innerHTML||'<p style="color:#9aa39d">（本页未撰写逐字稿）</p>' }));
+  presenterWin.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>演讲者模式 · 逐字稿</title>
+<style>
+  body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#f7f4ee;color:#15211f;margin:0;padding:16px;}
+  .head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:14px;}
+  .head-left{min-width:0;flex:1;} .kicker{font-size:11px;color:#1b5e5a;letter-spacing:.08em;margin-bottom:4px;text-transform:uppercase;font-weight:700;}
+  h2{font-size:20px;margin:0;line-height:1.25;} .head-right{text-align:right;flex-shrink:0;}
+  .big{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;color:#a24e3e;line-height:1;} .small{font-size:11px;color:#5e6b64;margin-top:4px;}
+  .next{background:#fffdf8;border:1px solid #d9ded6;border-radius:8px;padding:10px 12px;margin-bottom:14px;}
+  .next .label{font-size:11px;color:#8a6212;letter-spacing:.08em;margin-bottom:3px;font-weight:700;} .next h3{font-size:14px;margin:0;font-weight:600;}
+  .notes-panel{background:#fffdf8;border:1px solid #c3cdd6;border-radius:8px;padding:14px 16px;max-height:360px;overflow:auto;font-size:14px;line-height:1.65;}
+  .notes-panel p{margin:6px 0;color:#5e6b64;} .notes-panel .say{color:#c8731e;}
+  .notes-panel b.tag-cue{color:#fff;background:#5e6b64;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700;}
+  .notes-panel b.tag-say{color:#fff;background:#1b5e5a;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700;}
+  .notes-panel b.tag-do{color:#fff;background:#a24e3e;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700;}
+  .notes-panel b.tag-data{color:#fff;background:#1b5e5a;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700;}
+  .notes-panel b.tag-bridge{color:#fff;background:#2c7a66;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700;}
+  .all{margin-top:14px;max-height:200px;overflow:auto;border-top:1px solid #d9ded6;padding-top:10px;}
+  .item{padding:6px 8px;border-radius:4px;font-size:12px;display:grid;grid-template-columns:26px 1fr 42px;gap:6px;color:#5e6b64;}
+  .item.active{background:rgba(27,94,90,.18);color:#15211f;font-weight:600;} .item .n{color:#9aa39d;} .item .m{color:#8a6212;text-align:right;}
+  .legend{font-size:10px;color:#5e6b64;margin-top:8px;display:flex;gap:12px;flex-wrap:wrap;}
+</style></head><body>
+<div class="head"><div class="head-left"><div class="kicker" id="pk">—</div><h2 id="ph2">—</h2></div>
+  <div class="head-right"><div class="big" id="pt">00:00</div><div class="small" id="ptot">总累计 00:00 / ${String(Math.floor(totalMinutes/60)).padStart(2,'0')}:${String(totalMinutes%60).padStart(2,'0')}</div></div></div>
+<div class="next"><div class="label">下一页</div><h3 id="ph3">—</h3></div>
+<div class="notes-panel" id="pn">—</div>
+<div class="legend"><span><b style="color:#fff;background:#5e6b64;padding:1px 6px;border-radius:3px">节奏</b> 不念</span>
+  <span><b style="color:#fff;background:#1b5e5a;padding:1px 6px;border-radius:3px">话术/数据</b> <b style="color:#c8731e">橙色可念</b></span>
+  <span><b style="color:#fff;background:#a24e3e;padding:1px 6px;border-radius:3px">动作</b> 不念</span></div>
+<div class="all" id="pl"></div>
+<script>
+  const decks=${JSON.stringify(decks)}; const list=document.getElementById('pl');
+  decks.forEach((t,i)=>{ const el=document.createElement('div'); el.className='item'; el.dataset.i=i;
+    el.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span><span>'+(t.title||'')+'</span><span class="m">'+t.min+'m</span>'; list.appendChild(el); });
+  let start=Date.now(), cur=0;
+  function render(){ const t=decks[cur]||{}; document.getElementById('pk').textContent=t.kicker||''; document.getElementById('ph2').textContent=t.title||'';
+    document.getElementById('ph3').textContent=(decks[cur+1]||{}).title||'— 收束 —'; document.getElementById('pn').innerHTML=t.notes||'';
+    document.getElementById('pn').scrollTop=0; document.querySelectorAll('.item').forEach(el=>el.classList.toggle('active',Number(el.dataset.i)===cur));
+    const a=document.querySelector('.item.active'); if(a) a.scrollIntoView({block:'nearest'}); }
+  function tickT(){ const s=Math.floor((Date.now()-start)/1000); document.getElementById('pt').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+  window.addEventListener('message',e=>{ if(e.data&&e.data.type==='slide'){ cur=e.data.i; start=Date.now(); render(); } });
+  render(); setInterval(tickT,500);
+<\/script></body></html>`);
+  presenterWin.document.close();
+  setTimeout(()=>{ try{ presenterWin.postMessage({type:'slide',i:index,total:slides.length},'*'); }catch(e){} },200);
+}
+
+document.getElementById('prev').onclick=()=>show(index-1);
+document.getElementById('next').onclick=()=>show(index+1);
+window.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){ e.preventDefault(); show(index+1); }
+  else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); show(index-1); }
+  else if(e.key==='Home') show(0); else if(e.key==='End') show(slides.length-1);
+  else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  else if(e.key==='s'||e.key==='S') togglePresenter();
+});
+const startHash=Math.max(0,Math.min(slides.length-1,Number(location.hash.slice(1))-1||0));
+show(startHash);
+</script>
+</body>
+</html>

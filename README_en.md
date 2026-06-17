@@ -4,7 +4,7 @@
 > Write once, ship across harnesses.
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Release](https://img.shields.io/badge/release-v0.5.0-2b6cb0.svg)](./CHANGELOG.md)
+[![Release](https://img.shields.io/badge/release-v0.6.0-2b6cb0.svg)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-public_preview-orange.svg)](#9-roadmap)
 [![Harness](https://img.shields.io/badge/harness-Claude_Code_·_Codex-7c3aed.svg)](./claude-code-skills/)
 [![Channel](https://img.shields.io/badge/channel-OpenClaw_·_Hermes-0E7C66.svg)](./openclaw-skills/)
@@ -47,7 +47,9 @@ Three skills cover the full chain from **board brief to outbound keynote video t
 |---|---|---|---|
 | **biz-decision-stack** | 8 subagents · investor → CEO → architect → MRD → delivery → retro → critique + **template router** (v4) | 8 terminal-grade HTML reports + editable PPTX (black + acid-yellow + mono + zero-motion) | 83 KB |
 | **viz-deck** | 5 production modes + 6 v4 enhancements (Speaker Mode / 3-variant preview / Doc→Deck / academic talk / bento grid / reflective loop) | HTML / editable PPTX (every element clickable) / MP4 / GIF / PDF (deep-space cyan/blue/gold) | 130 KB |
-| **viz-charts** | 6 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · motion video · native PPTX charts | Inline HTML / offline SVG / MP4 / data-bound PPTX charts | 157 KB |
+| **viz-charts** | 7 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · **interactive SVG ring/Circos KG** · motion video · native PPTX charts | Inline HTML / offline SVG / interactive SVG KG / MP4 / data-bound PPTX charts | 157 KB |
+| **zima-html-ppt** | ZimaBlueAI live-talk deck · warm-paper editorial + **Speaker Mode** (S key → teleprompter / script / timer / agenda) · masters D1/D2/D3 | single-file HTML slides (warm paper + deep teal + gold + tri-color bar), fork the starter template | 23 KB |
+| **taste-engine** 🆕 | shared taste layer · three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY) + anti-slop preflight + material/copy rules | design tokens + preflight checklist + two demos (dark-cinematic web · warm-paper deck) | docs + demos |
 
 ### 🆕 Channel delivery layer · OpenClaw / Hermes (new in v0.5)
 
@@ -373,9 +375,10 @@ skills/
 | v0.2 | 4 output modes · 20 philosophies · 5-dim critique · huashu-design bridge · samples | ✅ Released |
 | v0.3 | ppt-master soft bridge · viz-deck mode 5 pptx-deck · decision PPTX · data-bound native chart · TTS narration embed · codex-skills dual-harness launch | ✅ Released |
 | v0.4 | 26-skill cross-pollination · Speaker Mode · 3-variant preview · Doc→Deck · Academic Talk · Bento Grid · Reflective Loop · Template Router | ✅ Released |
-| **v0.5** | **OpenClaw / Hermes channel-delivery layer · `viz-channel` (in-channel conversational generation + delivery · Feishu adapter · cron/webhook automation · USAGE case library)** | ✅ **Released (current)** |
-| v0.6 | viz-charts narrative chart explainer (TTS-narrated chart videos) + channel adapters (WeCom / Slack / Telegram) | 🟡 Planned |
-| v0.7 | `octarus-skills/` + tri-harness consistency tests | ⚪ Planned |
+| v0.5 | OpenClaw / Hermes channel-delivery layer · `viz-channel` (in-channel conversational generation + delivery · Feishu adapter · cron/webhook automation · USAGE case library) | ✅ Released |
+| **v0.6** | **`taste-engine` shared taste layer (three dials + anti-slop + material/copy) · `viz-charts` interactive SVG ring/Circos KG · `zima-html-ppt` live-talk deck (warm-paper editorial + Speaker Mode)** | ✅ **Released (current)** |
+| v0.7 | viz-charts narrative chart explainer (TTS-narrated chart videos) + channel adapters (WeCom / Slack / Telegram) | 🟡 Planned |
+| v0.8 | `octarus-skills/` + tri-harness consistency tests | ⚪ Planned |
 | v1.0 | All 5 harnesses + skill registry (`skills.json` index) | ⚪ Planned |
 
 ---

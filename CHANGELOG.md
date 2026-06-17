@@ -9,6 +9,52 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-06-18
+
+**Taste 升级 + 现场讲演 deck。** 新增 `taste-engine` 口味层（三档 dial + 反 slop 预检 +
+选材/文案规则）；`viz-charts` 扩到七类视觉，补两种可交互纯 SVG 知识图谱（环形 Context
+Graph + Circos 弦图）；`zima-html-ppt` 现场讲演 deck（暖纸编辑风 + 演讲者模式）正式纳入，
+默认 Taste 档位 `1/1/1`。
+
+### Added — `taste-engine` (shared taste layer) + interactive SVG knowledge graphs
+
+A cross-cutting **taste layer** that elevates any HTML/PPT deliverable's color, layout,
+motion, material and copy — applied as tokens and constraints, not a renderer or dependency.
+
+- `taste-engine/SKILL.md` — the layer: three dials (`DESIGN_VARIANCE` / `MOTION_INTENSITY`
+  / `VISUAL_DENSITY`) set on `<html>` and read by CSS + JS, per-deliverable default dials
+  (report `0/0/1` · deck `1/1/1` · keynote `2/2/1`), workflow, and worked demos.
+- `references/taste-dials.md` — dial → token/behavior mapping + copy-paste CSS/JS recipe
+  (density spacing/scale/columns, variance rhythm/grid, motion gating with progressive
+  enhancement + `prefers-reduced-motion`).
+- `references/anti-slop-preflight.md` — the pre-ship kill-list (color ≤ 2 accents, hairline
+  craft, tabular numerals, no lorem/emoji-as-icon/fabricated numbers, conclusion-titles,
+  no "不是 X 而是 Y" / jargon).
+- `references/material-and-copy.md` — sourcing (real assets, `[估]`/`[N/A]` honesty) and
+  wording rules.
+- `demo/taste-demo.html` — dark-cinematic web report with live dials, scroll motion, charts,
+  and **three knowledge-graph forms**: 3D force-directed, **interactive SVG 环形 Context
+  Graph** (drag · wheel-zoom · background-pan · click-BFS · search · ring↔force · filters),
+  and **Circos 弦图** (ideogram + outer histogram track + inner ribbons, hover-highlight).
+- `demo/zima-ppt-demo.html` — warm-paper editorial deck (tri-color bar, hairline cards,
+  per-slide timer, **speaker mode**), export-ready as input for MP4 / editable-PPTX pipelines.
+
+### Changed — `viz-charts` gains two interactive SVG KG forms (now 七类视觉表达)
+
+- New `references/svg-kg-guide.md`: the shared `{categories, entities, relationships}` data
+  model plus both pure-SVG forms — **环形 Context Graph** (per-category rings, Bézier
+  cross-links, full drag/zoom/pan/BFS/search/filter, ring↔force) and **Circos 弦图**
+  (segmented ideogram + weight track + chord ribbons, hover-highlight). No WebGL, no chart
+  lib; vector-scalable, embeddable in report main flow, printable. SKILL table + step added.
+- 3D WebGL KG when nodes are many and spatial; SVG ring/Circos when embedding, interacting,
+  exporting or printing.
+
+### Changed — `zima-html-ppt` documents its Taste dial default (`1/1/1`)
+
+- SKILL.md adds a 风格档位 · Taste section: the deck's house dial is `variance=1 · motion=1
+  · density=1`, with the three guardrails (≤ 2 accent colors, entrance-only motion with
+  reduced-motion downgrade, conclusion-titles + true numbers).
+
 ### Added — `zima-html-ppt` skill (ZimaBlueAI 现场讲演 deck)
 
 A new generation skill capturing the **ZimaBlue Editorial (暖纸编辑风)** presentation

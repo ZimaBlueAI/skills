@@ -6,9 +6,9 @@ license: MIT
 
 # viz-charts: 报告内嵌图表与 3D 知识图谱
 
-为 `biz-html-viz`（终端风）和 `viz-deck`（讲演风）两个报告 skill 提供图表渲染与项目可视化能力。**五类视觉表达 + 双模渲染 + 双主题 + MP4 视频导出**。
+为 `biz-html-viz`（终端风）和 `viz-deck`（讲演风）两个报告 skill 提供图表渲染与项目可视化能力。**七类视觉表达 + 双模渲染 + 双主题 + MP4 视频导出**。
 
-## 六类视觉表达
+## 七类视觉表达
 
 | 类型 | 类型数 | 路径 |
 |---|---|---|
@@ -16,6 +16,7 @@ license: MIT
 | **ECharts** 数据图表 | 25+ | `templates/echarts/*.json` |
 | **轻量自研组件** SVG/CSS | 5 | `components/{kpi,sparkline,gauge,progress,tag-cloud}/` |
 | **3D 知识图谱** WebGL | 3 viewer | `templates/kg3d/{code,doc,data}-graph.html` |
+| **SVG 知识图谱** 环形 Context Graph / Circos 弦图 | 2 form | `references/svg-kg-guide.md` |
 | **Motion 图表 → MP4/GIF** | 3 模式 | `templates/motion/*.html` + `references/motion-charts.md` |
 | **Native PPTX 图表**（v3） | 8 chart types | `scripts/echarts_to_pptx.py` + `references/pptx-charts.md` |
 
@@ -84,6 +85,15 @@ node builders/doc-kg.mjs --input ./docs --output doc-kg.json
 # 渲染：把 JSON 替换进 viewer 模板的 {{KG_DATA_JSON}}
 # 见 kg-builder-guide.md 的 "一键渲染脚本"
 ```
+
+### Step 4b — SVG 知识图谱（环形 Context Graph / Circos · 纯 SVG · 可交互）
+
+当关系图要**嵌进报告主流且要可交互**、或需要**矢量可缩放 / 可导出**而非 WebGL 时，用纯 SVG 两形态（读 `references/svg-kg-guide.md`）：
+
+- **环形 Context Graph** —— 每个 category 一个独立环，节点排在环周，跨类贝塞尔连线、同类环内弧。数据/渲染解耦的 `{categories, entities, relationships}` 模型。交互：**拖拽节点 · 滚轮缩放 · 拖背景平移 · 点节点 BFS 邻域高亮 · 搜索定位**，外加环形 ↔ 力导向切换、按类过滤。适合"读类内结构 + 跨类关系密度"。
+- **Circos 弦图** —— 一个大环切成扇区（每类一段 ideogram），外圈柱状 track 记权重，内部 ribbon 连关系。交互：悬停实体/扇区高亮其全部 ribbon。适合"在一张图里读全局关系 + 每实体权重"。
+
+两者都是单段 SVG + 原生 JS（无 WebGL、无第三方图库），可直接落进 HTML 报告或 deck 的 `<section>`。何时用 3D vs SVG：节点多、要空间感 → 3D WebGL；要嵌报告、要交互/可导出/打印 → SVG 环形或 Circos。
 
 ### Step 5 — Motion → MP4（讲演 / 路演 / 演示视频）
 
@@ -182,6 +192,7 @@ viz-charts/
 │   ├── chart-cookbook.md             36+ 视觉的数据契约
 │   ├── integration-guide.md          如何集成进 biz-html-viz / viz-deck
 │   ├── kg-builder-guide.md           3D KG 构建指南
+│   ├── svg-kg-guide.md               环形 Context Graph + Circos 弦图（纯 SVG · 可交互）
 │   ├── motion-charts.md              v2 新增 · motion 图表三类模式
 │   └── mp4-export.md                 v2 新增 · 视频导出工具链桥接
 ├── themes/
