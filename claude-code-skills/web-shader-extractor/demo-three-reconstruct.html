@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>web-shader-extractor · Demo 3 · Three.js Shader Reconstruction</title>
+<!--
+  web-shader-extractor · 自包含样例复现 Demo 3/3
+  Backend: WebGL (three) · Replay route: PIPELINE_REPLAY
+  对应 references/three-shader-reconstruction.md：自定义 ShaderMaterial
+  顶点位移 (simplex noise) + 菲涅尔边缘 + 虹彩调色。Three.js via ESM CDN。
+-->
+<style>
+  :root{
+    --src:#37f5a3; --partial:#ffc24b; --guess:#ff5c6c;
+    --ink:#dfe7f2; --dim:#8595ad; --line:rgba(255,255,255,.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#04060f}
+  #app{position:fixed;inset:0}
+  .hud{
+    position:fixed;top:18px;left:18px;z-index:10;width:332px;max-width:calc(100vw - 36px);
+    font:12px/1.55 ui-monospace,"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;color:var(--ink);
+    background:linear-gradient(180deg,rgba(8,12,26,.80),rgba(8,12,26,.62));
+    border:1px solid var(--line);border-radius:12px;
+    backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:0 18px 60px -20px rgba(0,0,0,.85);overflow:hidden;
+  }
+  .hud header{display:flex;align-items:center;gap:8px;padding:11px 14px;
+    border-bottom:1px solid var(--line);background:rgba(255,255,255,.025)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--src);
+    box-shadow:0 0 10px var(--src);animation:pulse 1.8s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .hud header b{font-size:12px;letter-spacing:.04em;font-weight:600}
+  .hud header .badge{margin-left:auto;font-size:10px;color:var(--src);
+    border:1px solid color-mix(in srgb,var(--src) 50%,transparent);padding:2px 7px;border-radius:999px}
+  .body{padding:12px 14px}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0}
+  .row .k{color:var(--dim)} .row .v{text-align:right;word-break:break-all}
+  .tag{display:inline-block;font-size:9.5px;line-height:1;padding:3px 6px;border-radius:5px;
+    font-weight:600;letter-spacing:.03em;vertical-align:middle}
+  .t-src{color:#04130c;background:var(--src)} .t-par{color:#1c1300;background:var(--partial)}
+  .t-gss{color:#1a0306;background:var(--guess)}
+  .fid{margin-top:10px}
+  .fid .lbl{display:flex;justify-content:space-between;color:var(--dim);margin-bottom:5px}
+  .bar{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+  .bar>i{display:block;height:100%;width:85%;border-radius:999px;
+    background:linear-gradient(90deg,var(--src),#7a5cff)}
+  .foot{display:flex;gap:14px;padding:9px 14px;border-top:1px solid var(--line);color:var(--dim);font-size:11px}
+  .foot b{color:var(--ink);font-weight:600}
+  .hint{position:fixed;bottom:14px;left:0;right:0;text-align:center;z-index:10;
+    font:11px ui-monospace,monospace;color:rgba(223,231,242,.45);pointer-events:none}
+  .err{position:fixed;inset:0;display:grid;place-items:center;color:#fff;
+    font:13px/1.6 ui-monospace,monospace;padding:2rem;text-align:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div class="hud">
+  <header><span class="dot"></span><b>extraction-report</b><span class="badge">REPLAY ✓</span></header>
+  <div class="body">
+    <div class="row"><span class="k">source.url</span><span class="v">demo://three-iridescent</span></div>
+    <div class="row"><span class="k">runtime.backend</span><span class="v">WebGL <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">runtime.framework</span><span class="v">three r160 <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">renderGraph</span><span class="v">ShaderMaterial <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">vertex</span><span class="v">simplex displace <span class="tag t-par">PARTIAL</span></span></div>
+    <div class="row"><span class="k">fragment</span><span class="v">fresnel + iridescence <span class="tag t-par">PARTIAL</span></span></div>
+    <div class="row"><span class="k">output.toneMapping</span><span class="v">ACESFilmic <span class="tag t-gss">GUESS</span></span></div>
+    <div class="row"><span class="k">replay.route</span><span class="v">PIPELINE_REPLAY</span></div>
+    <div class="fid">
+      <div class="lbl"><span>replay.fidelityTier</span><span>TIER&nbsp;A · 85%</span></div>
+      <div class="bar"><i></i></div>
+    </div>
+  </div>
+  <div class="foot"><span>fps <b id="fps">–</b></span><span>tris <b id="tris">–</b></span><span>framework <b>three</b></span></div>
+</div>
+<div class="hint">拖动旋转 · 自定义 ShaderMaterial 重建（对应 three-shader-reconstruction.md）</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+}}
+</script>
+<script type="module">
+let THREE;
+try { THREE = await import('three'); }
+catch(e){ document.getElementById('app').innerHTML =
+  '<div class="err">Three.js CDN 加载失败（需联网）。<br>其余两个 demo 为零依赖，可离线打开。</div>'; throw e; }
+
+const app = document.getElementById('app');
+const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false});
+renderer.setPixelRatio(Math.min(devicePixelRatio||1, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+app.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#04060f');
+const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 100);
+camera.position.set(0, 0, 4.2);
+
+// 背景星点
+const stars = new THREE.Points(
+  (()=>{ const g=new THREE.BufferGeometry(); const a=new Float32Array(1500*3);
+    for(let i=0;i<a.length;i++) a[i]=(Math.random()-0.5)*40;
+    g.setAttribute('position', new THREE.BufferAttribute(a,3)); return g; })(),
+  new THREE.PointsMaterial({color:0x5566aa, size:0.03, transparent:true, opacity:0.55})
+);
+scene.add(stars);
+
+const uniforms = {
+  u_time:   { value: 0 },
+  u_amp:    { value: 0.32 },
+};
+
+const NOISE = `
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x,289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+float snoise(vec3 v){
+  const vec2 C = vec2(1.0/6.0, 1.0/3.0); const vec4 D = vec4(0.0,0.5,1.0,2.0);
+  vec3 i = floor(v + dot(v, C.yyy));
+  vec3 x0 = v - i + dot(i, C.xxx);
+  vec3 g = step(x0.yzx, x0.xyz); vec3 l = 1.0 - g;
+  vec3 i1 = min(g.xyz, l.zxy); vec3 i2 = max(g.xyz, l.zxy);
+  vec3 x1 = x0 - i1 + 1.0 * C.xxx;
+  vec3 x2 = x0 - i2 + 2.0 * C.xxx;
+  vec3 x3 = x0 - 1.0 + 3.0 * C.xxx;
+  i = mod(i, 289.0);
+  vec4 p = permute(permute(permute(
+       i.z + vec4(0.0, i1.z, i2.z, 1.0))
+     + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+     + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+  float n_ = 1.0/7.0; vec3 ns = n_ * D.wyz - D.xzx;
+  vec4 j = p - 49.0 * floor(p * ns.z *ns.z);
+  vec4 x_ = floor(j * ns.z); vec4 y_ = floor(j - 7.0 * x_);
+  vec4 x = x_ *ns.x + ns.yyyy; vec4 y = y_ *ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+  vec4 b0 = vec4(x.xy, y.xy); vec4 b1 = vec4(x.zw, y.zw);
+  vec4 s0 = floor(b0)*2.0 + 1.0; vec4 s1 = floor(b1)*2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy; vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+  vec3 p0 = vec3(a0.xy, h.x); vec3 p1 = vec3(a0.zw, h.y);
+  vec3 p2 = vec3(a1.xy, h.z); vec3 p3 = vec3(a1.zw, h.w);
+  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+  p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
+  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+  m = m*m;
+  return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+}`;
+
+const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader: `
+    ${NOISE}
+    uniform float u_time; uniform float u_amp;
+    varying vec3 v_normal; varying float v_disp; varying vec3 v_pos;
+    void main(){
+      float n = snoise(normal*1.4 + u_time*0.25);
+      n += 0.5*snoise(normal*3.0 - u_time*0.15);
+      float disp = n * u_amp;
+      vec3 p = position + normal * disp;
+      v_disp = n; v_normal = normalize(normalMatrix * normal);
+      vec4 mv = modelViewMatrix * vec4(p,1.0);
+      v_pos = -mv.xyz;
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    precision highp float;
+    varying vec3 v_normal; varying float v_disp; varying vec3 v_pos;
+    vec3 irid(float t){
+      return 0.5 + 0.5*cos(6.28318*(vec3(1.0,1.0,1.0)*t + vec3(0.0,0.33,0.66)));
+    }
+    void main(){
+      vec3 N = normalize(v_normal); vec3 V = normalize(v_pos);
+      float fres = pow(1.0 - max(dot(N,V),0.0), 2.4);
+      vec3 base = irid(v_disp*0.6 + 0.45);
+      base = mix(vec3(0.04,0.06,0.16), base, 0.6 + 0.4*v_disp);
+      vec3 col = base + fres * vec3(0.55,0.78,1.0) * 1.5;
+      col += smoothstep(0.4,1.0,v_disp) * vec3(0.5,0.3,0.9) * 0.6;
+      gl_FragColor = vec4(col, 1.0);
+    }`
+});
+
+const geo = new THREE.IcosahedronGeometry(1.25, 64);
+const mesh = new THREE.Mesh(geo, material);
+scene.add(mesh);
+document.getElementById('tris').textContent = (geo.attributes.position.count/3|0).toLocaleString();
+
+// 拖拽旋转
+let drag=false, px=0, py=0, rx=0, ry=0, trx=0, tryy=0;
+addEventListener('pointerdown', e=>{ drag=true; px=e.clientX; py=e.clientY; });
+addEventListener('pointerup', ()=> drag=false);
+addEventListener('pointermove', e=>{ if(!drag) return;
+  tryy += (e.clientX-px)*0.005; trx += (e.clientY-py)*0.005; px=e.clientX; py=e.clientY; });
+
+addEventListener('resize', ()=>{
+  camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+const fpsEl=document.getElementById('fps');
+let last=performance.now(), frames=0, acc=0, t0=performance.now();
+function animate(now){
+  frames++; acc+=now-last; last=now;
+  if(acc>=500){ fpsEl.textContent=Math.round(frames/(acc/1000)); frames=0; acc=0; }
+  uniforms.u_time.value = (now-t0)/1000;
+  tryy += 0.0016;
+  rx += (trx-rx)*0.08; ry += (tryy-ry)*0.08;
+  mesh.rotation.x = rx; mesh.rotation.y = ry;
+  stars.rotation.y = ry*0.15;
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

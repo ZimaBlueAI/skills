@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>web-shader-extractor · Demo 2 · Canvas2D Flow Replay</title>
+<!--
+  web-shader-extractor · 自包含样例复现 Demo 2/3
+  Backend: Canvas2D · Replay route: BEHAVIOR_REBUILD
+  2D Canvas 抠取路线鸣谢 @HeyHuazi。粒子流场 + 拖尾，零依赖。
+-->
+<style>
+  :root{
+    --src:#37f5a3; --partial:#ffc24b; --guess:#ff5c6c;
+    --ink:#dfe7f2; --dim:#8595ad; --line:rgba(255,255,255,.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#060507}
+  canvas{position:fixed;inset:0;display:block}
+  .hud{
+    position:fixed;top:18px;left:18px;z-index:10;width:332px;max-width:calc(100vw - 36px);
+    font:12px/1.55 ui-monospace,"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;color:var(--ink);
+    background:linear-gradient(180deg,rgba(14,9,12,.80),rgba(14,9,12,.62));
+    border:1px solid var(--line);border-radius:12px;
+    backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:0 18px 60px -20px rgba(0,0,0,.85);overflow:hidden;
+  }
+  .hud header{display:flex;align-items:center;gap:8px;padding:11px 14px;
+    border-bottom:1px solid var(--line);background:rgba(255,255,255,.025)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--partial);
+    box-shadow:0 0 10px var(--partial);animation:pulse 1.8s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .hud header b{font-size:12px;letter-spacing:.04em;font-weight:600}
+  .hud header .badge{margin-left:auto;font-size:10px;color:var(--partial);
+    border:1px solid color-mix(in srgb,var(--partial) 50%,transparent);padding:2px 7px;border-radius:999px}
+  .body{padding:12px 14px}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0}
+  .row .k{color:var(--dim)} .row .v{text-align:right;word-break:break-all}
+  .tag{display:inline-block;font-size:9.5px;line-height:1;padding:3px 6px;border-radius:5px;
+    font-weight:600;letter-spacing:.03em;vertical-align:middle}
+  .t-src{color:#04130c;background:var(--src)} .t-par{color:#1c1300;background:var(--partial)}
+  .t-gss{color:#1a0306;background:var(--guess)}
+  .fid{margin-top:10px}
+  .fid .lbl{display:flex;justify-content:space-between;color:var(--dim);margin-bottom:5px}
+  .bar{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+  .bar>i{display:block;height:100%;width:78%;border-radius:999px;
+    background:linear-gradient(90deg,var(--partial),#ff8a5a)}
+  .foot{display:flex;gap:14px;padding:9px 14px;border-top:1px solid var(--line);color:var(--dim);font-size:11px}
+  .foot b{color:var(--ink);font-weight:600}
+  .hint{position:fixed;bottom:14px;left:0;right:0;text-align:center;z-index:10;
+    font:11px ui-monospace,monospace;color:rgba(223,231,242,.45);pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="hud">
+  <header><span class="dot"></span><b>extraction-report</b><span class="badge">REPLAY ~</span></header>
+  <div class="body">
+    <div class="row"><span class="k">source.url</span><span class="v">demo://flow-field-2d</span></div>
+    <div class="row"><span class="k">runtime.backend</span><span class="v">Canvas2D <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">renderGraph</span><span class="v">trail + particles <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">resources</span><span class="v">1600 agents <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">field</span><span class="v">value-noise curl <span class="tag t-par">PARTIAL</span></span></div>
+    <div class="row"><span class="k">timeline.deltaRule</span><span class="v">rAF dt <span class="tag t-par">PARTIAL</span></span></div>
+    <div class="row"><span class="k">composite.fade</span><span class="v">globalAlpha 0.06 <span class="tag t-gss">GUESS</span></span></div>
+    <div class="row"><span class="k">replay.route</span><span class="v">BEHAVIOR_REBUILD</span></div>
+    <div class="fid">
+      <div class="lbl"><span>replay.fidelityTier</span><span>TIER&nbsp;B · 78%</span></div>
+      <div class="bar"><i></i></div>
+    </div>
+  </div>
+  <div class="foot"><span>fps <b id="fps">–</b></span><span>res <b id="res">–</b></span><span>credit <b>@HeyHuazi</b></span></div>
+</div>
+<div class="hint">鼠标 = 吸引子 · BEHAVIOR_REBUILD：肉眼行为重建（非源码 replay），故 fidelity 标 TIER B</div>
+
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const DPR = Math.min(devicePixelRatio||1, 2);
+let W, H;
+function resize(){
+  W = cv.width = Math.floor(innerWidth*DPR);
+  H = cv.height = Math.floor(innerHeight*DPR);
+  ctx.fillStyle = '#060507'; ctx.fillRect(0,0,W,H);
+  document.getElementById('res').textContent = innerWidth+'×'+innerHeight;
+}
+addEventListener('resize', resize);
+
+// value noise
+const perm = new Uint8Array(512);
+(function(){ const p=[...Array(256).keys()];
+  for(let i=255;i>0;i--){ const j=(Math.sin(i*12.9898)*43758.5453%1+1)%1*(i+1)|0; [p[i],p[j]]=[p[j],p[i]]; }
+  for(let i=0;i<512;i++) perm[i]=p[i&255];
+})();
+function vnoise(x,y){
+  const xi=Math.floor(x)&255, yi=Math.floor(y)&255;
+  const xf=x-Math.floor(x), yf=y-Math.floor(y);
+  const u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+  const h=(a,b)=>perm[(perm[a&255]+b)&255]/255;
+  const tl=h(xi,yi), tr=h(xi+1,yi), bl=h(xi,yi+1), br=h(xi+1,yi+1);
+  return (tl*(1-u)+tr*u)*(1-v) + (bl*(1-u)+br*u)*v;
+}
+
+const N = 1600;
+const ps = [];
+function seed(){ ps.length=0; for(let i=0;i<N;i++) ps.push({
+  x:Math.random()*W, y:Math.random()*H, px:0, py:0, life:Math.random()*200|0,
+  h: 150 + Math.random()*120 }); }
+
+let mx=-1e4, my=-1e4;
+addEventListener('pointermove', e=>{ mx=e.clientX*DPR; my=e.clientY*DPR; });
+addEventListener('pointerleave', ()=>{ mx=my=-1e4; });
+
+resize(); seed();
+
+const SCALE = 0.0016, SPEED = 2.4*DPR;
+let t=0, last=performance.now(), frames=0, acc=0;
+const fpsEl=document.getElementById('fps');
+function frame(now){
+  frames++; acc+=now-last; last=now;
+  if(acc>=500){ fpsEl.textContent=Math.round(frames/(acc/1000)); frames=0; acc=0; }
+  t += 0.0016;
+
+  // 拖尾衰减
+  ctx.fillStyle = 'rgba(6,5,7,0.06)';
+  ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation = 'lighter';
+
+  for(const p of ps){
+    p.px=p.x; p.py=p.y;
+    const ang = vnoise(p.x*SCALE, p.y*SCALE + t) * Math.PI * 4.0;
+    let vx=Math.cos(ang), vy=Math.sin(ang);
+    // 鼠标吸引子
+    const dx=mx-p.x, dy=my-p.y, d2=dx*dx+dy*dy;
+    if(d2 < (260*DPR)*(260*DPR)){ const d=Math.sqrt(d2)+1; vx+=dx/d*1.6; vy+=dy/d*1.6; }
+    const l=Math.hypot(vx,vy)||1;
+    p.x += vx/l*SPEED; p.y += vy/l*SPEED;
+
+    if(p.x<0||p.x>W||p.y<0||p.y>H||--p.life<0){
+      p.x=Math.random()*W; p.y=Math.random()*H; p.px=p.x; p.py=p.y; p.life=120+Math.random()*180|0;
+    }
+    ctx.strokeStyle = `hsla(${p.h}, 90%, 62%, 0.55)`;
+    ctx.lineWidth = 1.1*DPR;
+    ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

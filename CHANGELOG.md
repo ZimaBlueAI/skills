@@ -9,6 +9,24 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ## [Unreleased]
 
+### Added — `web-shader-extractor`（移植自 [lixiaolin94/skills](https://github.com/lixiaolin94/skills)，MIT）
+
+网页 **WebGL / WebGPU / Canvas 着色器动效抠取与本地证据匹配复现** skill，**逐字节原样移植**
+上游 22 文件（`SKILL.md` + 13 references + 2 scripts + 6 templates），未改动上游内容。
+落位 `claude-code-skills/web-shader-extractor/` 并同步进 `.claude/skills/`。
+
+- `NOTICE.md` — 来源/作者（@lixiaolin94，2D Canvas 路线鸣谢 @HeyHuazi）/License/升级方式。
+- `web-shader-extractor-README.md` — 中文使用说明（何时用/触发词/Recon Kernel 状态机/能力清单/边界）。
+- 3 个**自包含样例复现 demo**（按 `templates/replay-manifest.json` schemaVersion 3 +
+  `extraction-report.md` 组装 HUD 面板，演示抠取产物形态）：
+  - `demo-webgl-fragment.html` — WebGL 片元 shader（domain-warped fBM 极光场，零依赖）
+  - `demo-canvas2d-flow.html` — Canvas2D 粒子流场（BEHAVIOR_REBUILD 路线，零依赖）
+  - `demo-three-reconstruct.html` — Three.js 自定义 ShaderMaterial 重建（顶点位移 + 菲涅尔 + 虹彩）
+- 1 个**完整生成用例** `demo-logo-fold-generative.html` + 矢量源 `logo-vector.svg`：
+  项目 logo 经 `vtracer` 矢量化 → 网格折翼，每块走「生成→生长→收缩→消失」生命周期 3D 折叠
+  （绕铰链刚性翻折 + 解析法线，凸/凹各异），**中心对称自转** + 3 层无限递归。Three.js，矢量源 data URI 内联自包含。
+- 与本仓库分工：**抠取/复现**用本 skill；**生成动效/视频**用 huashu-design / viz-deck motion 模式。
+
 ## [0.6.0] — 2026-06-18
 
 **Taste 升级 + 现场讲演 deck。** 新增 `taste-engine` 口味层（三档 dial + 反 slop 预检 +

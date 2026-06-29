@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>web-shader-extractor · Demo 1 · WebGL Fragment Replay</title>
+<!--
+  web-shader-extractor · 自包含样例复现 Demo 1/3
+  Backend: WebGL · Replay route: SOURCE_REPLAY
+  这是「该 skill 抠取产物长什么样」的演示，非真实抠取。
+  片元着色器：domain-warped fBM 极光场（raw WebGL，零依赖）。
+-->
+<style>
+  :root{
+    --src:#37f5a3; --partial:#ffc24b; --guess:#ff5c6c;
+    --ink:#dfe7f2; --dim:#8595ad; --line:rgba(255,255,255,.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#03040a}
+  canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+  .hud{
+    position:fixed;top:18px;left:18px;z-index:10;
+    width:332px;max-width:calc(100vw - 36px);
+    font:12px/1.55 ui-monospace,"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;
+    color:var(--ink);
+    background:linear-gradient(180deg,rgba(8,12,24,.78),rgba(8,12,24,.62));
+    border:1px solid var(--line);border-radius:12px;
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:0 18px 60px -20px rgba(0,0,0,.8);
+    overflow:hidden;
+  }
+  .hud header{
+    display:flex;align-items:center;gap:8px;
+    padding:11px 14px;border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.025);
+  }
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--src);
+    box-shadow:0 0 10px var(--src);animation:pulse 1.8s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .hud header b{font-size:12px;letter-spacing:.04em;font-weight:600}
+  .hud header .badge{margin-left:auto;font-size:10px;color:var(--src);
+    border:1px solid color-mix(in srgb,var(--src) 50%,transparent);
+    padding:2px 7px;border-radius:999px}
+  .body{padding:12px 14px}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0}
+  .row .k{color:var(--dim)}
+  .row .v{text-align:right;word-break:break-all}
+  .tag{display:inline-block;font-size:9.5px;line-height:1;padding:3px 6px;
+    border-radius:5px;font-weight:600;letter-spacing:.03em;vertical-align:middle}
+  .t-src{color:#04130c;background:var(--src)}
+  .t-par{color:#1c1300;background:var(--partial)}
+  .t-gss{color:#1a0306;background:var(--guess)}
+  .fid{margin-top:10px}
+  .fid .lbl{display:flex;justify-content:space-between;color:var(--dim);margin-bottom:5px}
+  .bar{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+  .bar>i{display:block;height:100%;width:92%;border-radius:999px;
+    background:linear-gradient(90deg,var(--src),#5ad7ff)}
+  .foot{display:flex;gap:14px;padding:9px 14px;border-top:1px solid var(--line);
+    color:var(--dim);font-size:11px}
+  .foot b{color:var(--ink);font-weight:600}
+  .hint{position:fixed;bottom:14px;left:0;right:0;text-align:center;z-index:10;
+    font:11px ui-monospace,monospace;color:rgba(223,231,242,.45);pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div class="hud">
+  <header>
+    <span class="dot"></span><b>extraction-report</b>
+    <span class="badge">REPLAY ✓</span>
+  </header>
+  <div class="body">
+    <div class="row"><span class="k">source.url</span><span class="v">demo://aurora-field</span></div>
+    <div class="row"><span class="k">runtime.backend</span><span class="v">WebGL <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">renderGraph</span><span class="v">1 pass · fullscreen quad <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">resources</span><span class="v">0 tex · 2 uniform <span class="tag t-src">SOURCE</span></span></div>
+    <div class="row"><span class="k">timeline.unit</span><span class="v">u_time (s) <span class="tag t-par">PARTIAL</span></span></div>
+    <div class="row"><span class="k">inputs.pointer</span><span class="v">u_mouse <span class="tag t-par">PARTIAL</span></span></div>
+    <div class="row"><span class="k">output.colorSpace</span><span class="v">srgb <span class="tag t-gss">GUESS</span></span></div>
+    <div class="row"><span class="k">replay.route</span><span class="v">SOURCE_REPLAY</span></div>
+    <div class="fid">
+      <div class="lbl"><span>replay.fidelityTier</span><span>TIER&nbsp;A · 92%</span></div>
+      <div class="bar"><i></i></div>
+    </div>
+  </div>
+  <div class="foot">
+    <span>fps <b id="fps">–</b></span>
+    <span>res <b id="res">–</b></span>
+    <span>backend <b>webgl</b></span>
+  </div>
+</div>
+<div class="hint">移动鼠标 → 扰动极光场 · 这是 web-shader-extractor 复现产物的样例形态</div>
+
+<script>
+const canvas = document.getElementById('gl');
+const gl = canvas.getContext('webgl', {antialias:false, premultipliedAlpha:false});
+if(!gl){ document.body.innerHTML = '<p style="color:#fff;font-family:monospace;padding:2rem">WebGL 不可用</p>'; }
+
+const VERT = `
+attribute vec2 p;
+void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
+
+// domain-warped fBM 极光场
+const FRAG = `
+precision highp float;
+uniform vec2  u_res;
+uniform float u_time;
+uniform vec2  u_mouse;
+
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+float noise(vec2 p){
+  vec2 i=floor(p), f=fract(p);
+  vec2 u=f*f*(3.0-2.0*f);
+  return mix(mix(hash(i+vec2(0,0)),hash(i+vec2(1,0)),u.x),
+             mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);
+}
+float fbm(vec2 p){
+  float v=0.0, a=0.5;
+  for(int i=0;i<6;i++){ v+=a*noise(p); p*=2.02; a*=0.5; }
+  return v;
+}
+vec3 palette(float t){
+  vec3 a=vec3(0.18,0.22,0.40), b=vec3(0.45,0.40,0.55);
+  vec3 c=vec3(1.0,1.0,1.0),   d=vec3(0.10,0.33,0.62);
+  return a + b*cos(6.28318*(c*t + d));
+}
+void main(){
+  vec2 uv = (gl_FragCoord.xy - 0.5*u_res) / u_res.y;
+  float t = u_time*0.06;
+  vec2 m = (u_mouse - 0.5);
+
+  // domain warp
+  vec2 q = vec2(fbm(uv*1.6 + t), fbm(uv*1.6 + vec2(5.2,1.3) - t));
+  vec2 r = vec2(fbm(uv*1.6 + 3.0*q + vec2(1.7,9.2) + 0.35*m),
+                fbm(uv*1.6 + 3.0*q + vec2(8.3,2.8) - 0.35*m));
+  float f = fbm(uv*1.6 + 4.0*r + t*1.5);
+
+  vec3 col = palette(f + 0.15*length(uv));
+  col = mix(col, vec3(0.02,0.03,0.09), smoothstep(0.0,1.1,length(uv*vec2(0.7,1.0))));
+  col += pow(f, 4.0)*vec3(0.35,0.85,1.0)*1.4;       // 极光高光
+  col += 0.05*hash(gl_FragCoord.xy + u_time);        // 颗粒
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+function compile(type, src){
+  const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s);
+  return s;
+}
+const prog = gl.createProgram();
+gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+gl.linkProgram(prog); gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(prog, 'p');
+gl.enableVertexAttribArray(loc);
+gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+const uRes = gl.getUniformLocation(prog,'u_res');
+const uTime = gl.getUniformLocation(prog,'u_time');
+const uMouse = gl.getUniformLocation(prog,'u_mouse');
+
+let mouse = [0.5,0.5], mt = [0.5,0.5];
+addEventListener('pointermove', e => { mt = [e.clientX/innerWidth, 1.0 - e.clientY/innerHeight]; });
+
+const DPR = Math.min(devicePixelRatio||1, 2);
+function resize(){
+  const w = Math.floor(innerWidth*DPR), h = Math.floor(innerHeight*DPR);
+  canvas.width=w; canvas.height=h; gl.viewport(0,0,w,h);
+  document.getElementById('res').textContent = innerWidth+'×'+innerHeight;
+}
+addEventListener('resize', resize); resize();
+
+const fpsEl = document.getElementById('fps');
+let last = performance.now(), frames = 0, acc = 0, t0 = performance.now();
+function frame(now){
+  frames++; acc += now-last; last = now;
+  if(acc>=500){ fpsEl.textContent = Math.round(frames/(acc/1000)); frames=0; acc=0; }
+  mouse[0]+=(mt[0]-mouse[0])*0.06; mouse[1]+=(mt[1]-mouse[1])*0.06;
+  gl.uniform2f(uRes, canvas.width, canvas.height);
+  gl.uniform1f(uTime, (now-t0)/1000);
+  gl.uniform2f(uMouse, mouse[0], mouse[1]);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

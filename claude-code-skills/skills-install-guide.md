@@ -127,6 +127,25 @@ ZimaBlueAI **现场讲演 deck** skill —— 暖纸编辑风（ZimaBlue Editori
 > 安装：把 `zima-html-ppt/` 整个文件夹放进 `~/.claude/skills/`（全局）或项目根 `.claude/skills/`（项目级）即可，
 > `claude /skills` 列表里应能看到 `zima-html-ppt`。
 
+---
+
+### web-shader-extractor 🆕（移植 · 非 ZimaBlue 套件）
+
+网页 **WebGL / WebGPU / Canvas 着色器动效抠取与本地复现** skill —— **原样移植**自
+[`lixiaolin94/skills`](https://github.com/lixiaolin94/skills)（MIT）。与上面 4 个「生成型」
+skill 互补：它是**逆向侦察型**——从真实 URL 抠 shader 证据 → 证据匹配复现 → 工程化。
+
+| 组件 | 内容 |
+|---|---|
+| `SKILL.md` | 路由索引 + Recon Kernel 状态机 + 六条铁律（目标绑定/证据优先/基线优先/诚实标签…） |
+| `references/`（13 篇） | 按状态加载：operating-contract / recon-kernel / capture-backends / replay-policy / three-shader-reconstruction … |
+| `scripts/`（2 个） | `fetch-rendered-dom.mjs`（Playwright 清单助手）+ `scan-bundle.sh`（bundle 切片扫描） |
+| `templates/`（6 个） | schema 而非自由笔记：`replay-manifest.json`（v3）/ `extraction-report.md` / `scout-card.json` … |
+| demo（本仓库追加） | 3 个自包含样例复现：`demo-webgl-fragment.html` / `demo-canvas2d-flow.html` / `demo-three-reconstruct.html` |
+
+**何时用**：给定 URL + shader/canvas 目标想抠取复现。**何时不用**：DOM/CSS 克隆、或「只想要好看动效」（那是生成需求，走 huashu-design / viz-deck motion）。
+**包大小**：纯文件夹，零必需依赖（高阶帧捕获可选 Playwright）。详见 `web-shader-extractor/web-shader-extractor-README.md` 与 `NOTICE.md`。
+
 ### 三者依赖关系
 
 ```
