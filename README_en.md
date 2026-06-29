@@ -50,6 +50,7 @@ Three skills cover the full chain from **board brief to outbound keynote video t
 | **viz-charts** | 7 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · **interactive SVG ring/Circos KG** · motion video · native PPTX charts | Inline HTML / offline SVG / interactive SVG KG / MP4 / data-bound PPTX charts | 157 KB |
 | **zima-html-ppt** | ZimaBlueAI live-talk deck · warm-paper editorial + **Speaker Mode** (S key → teleprompter / script / timer / agenda) · masters D1/D2/D3 | single-file HTML slides (warm paper + deep teal + gold + tri-color bar), fork the starter template | 23 KB |
 | **taste-engine** 🆕 | shared taste layer · three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY) + anti-slop preflight + material/copy rules | design tokens + preflight checklist + two demos (dark-cinematic web · warm-paper deck) | docs + demos |
+| **web-shader-extractor** 🆕 (ported · not ZimaBlue suite) | **Extract & evidence-matched local replay** of webpage WebGL/WebGPU/Canvas shader effects (Recon Kernel state machine + 6 core rules) · ported from [lixiaolin94/skills](https://github.com/lixiaolin94/skills) (MIT) | extraction/replay project + 4 self-contained demos (incl. a logo-vectorized generative-fold 3D use case) | folder · zero hard deps |
 
 ### 🆕 Channel delivery layer · OpenClaw / Hermes (new in v0.5)
 

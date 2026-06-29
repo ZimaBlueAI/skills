@@ -50,6 +50,7 @@ v0.4.0 起覆盖**从董事会简报到对外讲演视频再到真正可编辑 P
 | **viz-charts** | 7 类视觉表达 · Mermaid · ECharts · SVG 组件 · 3D 知识图谱 · **SVG 环形/Circos KG**（可交互）· Motion 视频 · Native PPTX 图表 | 内嵌 HTML / 离线 SVG / 交互 SVG KG / MP4 / 数据绑定 PPTX 图表 | 157 KB |
 | **zima-html-ppt** | ZimaBlueAI 现场讲演 deck · 暖纸编辑风 + **演讲者模式**（S 键弹提词器 / 逐字稿 / 计时 / 议程）· 母版 D1/D2/D3 | 单文件 HTML 幻灯片（暖纸 + 深青 + 金赭 + 三色条），复制起步模板填内容 | 23 KB |
 | **taste-engine** 🆕 | 共享"口味层"· 三档 dial（DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY）+ 反 slop 预检 + 选材/文案规则 | 设计令牌 + 自检清单 + 两支样片（暗色电影感 web · 暖纸编辑 deck） | 文档 + 样片 |
+| **web-shader-extractor** 🆕（移植 · 非 ZimaBlue 套件） | 网页 WebGL/WebGPU/Canvas 着色器动效**抠取与本地证据匹配复现**（Recon Kernel 状态机 + 6 铁律）· 移植自 [lixiaolin94/skills](https://github.com/lixiaolin94/skills)（MIT） | 抠取/复现项目 + 4 个自包含 demo（含 logo 矢量化生灭折叠 3D 用例） | 纯文件夹 · 零必需依赖 |
 
 ### 🆕 Taste 层 + 交互 SVG 知识图谱
 
