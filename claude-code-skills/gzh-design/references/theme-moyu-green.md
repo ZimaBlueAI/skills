@@ -415,12 +415,12 @@
 
 ## 组件 9 引用与亮点
 
-### 9a. quote-box（灰色虚线引用框）
+### 9a. quote-box（灰色引用框）
 
-所有引用、补充说明的**默认组件**（虚线框是本主题的风格特征，仅此组件与 9b 保留 dashed）：
+所有引用、补充说明的**默认组件**：
 
 ```html
-<section style="background:#F9FAFB;border:1px dashed #D1D5DB;border-radius:8px;padding:12px 16px;margin-bottom:24px;text-align:justify;">
+<section style="background:#F9FAFB;border:1px solid #D1D5DB;border-radius:8px;padding:12px 16px;margin-bottom:24px;text-align:justify;">
   <p style="font-size:13px;color:#374151;margin:0;line-height:1.6;">
     {{引用内容，可嵌入绿色加粗等内联样式}}
   </p>

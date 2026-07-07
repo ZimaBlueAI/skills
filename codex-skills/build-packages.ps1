@@ -47,3 +47,4 @@ New-SkillPackage "biz-decision-stack" "biz-html-viz" "biz-html-viz" -IncludeAgen
 New-SkillPackage "viz-deck" "viz-deck" "viz-deck"
 New-SkillPackage "viz-charts" "viz-charts" "viz-charts"
 New-SkillPackage "zima-html-ppt" "." "zima-html-ppt"
+New-SkillPackage "gzh-design" "." "gzh-design"

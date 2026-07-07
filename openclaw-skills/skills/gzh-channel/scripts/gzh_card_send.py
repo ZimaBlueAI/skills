@@ -22,7 +22,7 @@ gzh-channel 技能的自包含发送脚本,三种模式:
 
   # 确认后发排版产物
   python3 gzh_card_send.py --file 文章_排版_摸鱼绿(moyu-green)_预览.html --to-current \
-      --note "下载后浏览器打开 → 点右上角「复制到公众号」→ 到公众号编辑器粘贴"
+      --note "下载后浏览器打开 → 点右上角「一键复制」→ 到公众号编辑器粘贴"
 
   # 解析不到当前频道时显式指定
   python3 gzh_card_send.py --draft draft.md --to oc_xxx --to-type chat_id

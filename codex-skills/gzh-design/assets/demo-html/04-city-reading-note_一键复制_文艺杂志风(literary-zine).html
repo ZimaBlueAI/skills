@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04-city-reading-note - 公众号排版预览</title>
+<style>
+  body{margin:0;background:#eef0f2;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;-webkit-text-size-adjust:100%;}
+  .gzh-toolbar{position:fixed;top:0;left:0;right:0;min-height:56px;background:#fff;box-shadow:0 1px 12px rgba(15,23,42,.12);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px;z-index:99;box-sizing:border-box;}
+  .gzh-hint{font-size:13px;color:#64748b;line-height:1.45;}
+  .gzh-hint b{color:#0f172a;}
+  .gzh-copy{background:#059669;color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(5,150,105,.28);white-space:nowrap;}
+  .gzh-copy:hover{background:#047857;}
+  .gzh-copy:active{transform:translateY(1px);}
+  .gzh-toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:88vw;text-align:center;}
+  .gzh-toast.show{opacity:1;}
+  .gzh-stage{max-width:700px;margin:84px auto 64px;padding:0 8px;}
+  @media(max-width:560px){.gzh-toolbar{align-items:flex-start;flex-direction:column}.gzh-copy{width:100%}.gzh-stage{margin-top:118px}}
+</style>
+</head>
+<body>
+<div class="gzh-toolbar">
+  <span class="gzh-hint">下方是排版效果。点击 <b>一键复制</b> 后，到微信公众号编辑器直接粘贴。</span>
+  <button class="gzh-copy" id="gzhCopyBtn" onclick="gzhCopy()">一键复制</button>
+</div>
+<div class="gzh-toast" id="gzhToast"></div>
+<div class="gzh-stage">
+  <div id="gzh-content">
+<section style="max-width:677px;margin:0 auto;padding:0 12px;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;">
+<section style="margin:0 auto 24px;padding:26px 22px;border-radius:16px;background:#FFFBEB;border:1px solid #E5E7EB;"><p style="margin:0 0 10px;font-size:13px;color:#B45309;font-weight:900;"><span leaf="">LITERARY ZINE</span></p><h1 style="margin:0 0 14px;font-size:24px;line-height:1.35;color:#292524;font-weight:900;"><span leaf="">在城市里读一本慢书</span></h1><p style="margin:0;font-size:14px;line-height:1.8;color:#57534E;"><span leaf="">Demo 主题：文艺杂志风。这是一份可复制到公众号编辑器的预览样张。</span></p></section>
+<section style="margin:18px 0;padding:16px 18px;border-radius:12px;background:#FFFBEB;border-left:4px solid #B45309;"><p style="margin:0;font-size:15px;line-height:1.9;color:#292524;font-weight:600;"><span leaf="">有些书不是用来解决问题的，而是让人重新听见自己的生活。</span></p></section>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #B45309;"><p style="margin:0 0 4px;font-size:12px;color:#B45309;font-weight:800;"><span leaf="">01 / LITERARY ZINE</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#292524;font-weight:900;"><span leaf="">地铁上的第一页</span></h2></section>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#57534E;"><span leaf="">我是在早高峰的地铁上翻开这本书的。车厢里每个人都在赶路，屏幕亮着，消息跳着，只有纸页的声音显得格外慢。那一刻我突然意识到，阅读不是逃离城市，而是在城市里给自己留一个小房间。</span></p>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #B45309;"><p style="margin:0 0 4px;font-size:12px;color:#B45309;font-weight:800;"><span leaf="">02 / LITERARY ZINE</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#292524;font-weight:900;"><span leaf="">咖啡店里的停顿</span></h2></section>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#57534E;"><span leaf="">读到第三章时，窗外开始下雨。书里写到一个人反复走过同一条街，却每次都看见不同的光。我把这句话划下来，不是因为它多么新奇，而是因为它提醒我：熟悉的地方也可以重新被看见。</span></p>
+<section style="margin:18px 0;padding:16px 18px;border-radius:12px;background:#FFFBEB;border-left:4px solid #B45309;"><p style="margin:0;font-size:15px;line-height:1.9;color:#292524;font-weight:600;"><span leaf="">我们不是缺少远方，而是太快经过身边的一切。</span></p></section>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #B45309;"><p style="margin:0 0 4px;font-size:12px;color:#B45309;font-weight:800;"><span leaf="">03 / LITERARY ZINE</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#292524;font-weight:900;"><span leaf="">关于慢的误解</span></h2></section>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#57534E;"><span leaf="">慢不是效率的反面。慢是一种把注意力放回来的方式。读慢书时，我不急着总结观点，也不急着输出笔记，只是在某个句子旁边停一会儿。</span></p>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#57534E;"><span leaf="">这种停顿让人恢复一种细小的判断：什么是真的重要，什么只是看起来很紧急。</span></p>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #B45309;"><p style="margin:0 0 4px;font-size:12px;color:#B45309;font-weight:800;"><span leaf="">04 / LITERARY ZINE</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#292524;font-weight:900;"><span leaf="">合上书以后</span></h2></section>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#57534E;"><span leaf="">离开咖啡店时，雨已经停了。街边的树叶被洗得很亮，车灯从水面上滑过去。我没有得到一个答案，但我带走了一个问题：如果生活只能被不断加速，我们还怎么记住自己来过这里？</span></p>
+<section style="margin:28px 0 0;padding:18px;border-radius:14px;background:#F9FAFB;border:1px solid #E5E7EB;"><p style="margin:0;font-size:14px;line-height:1.9;color:#57534E;"><span leaf="">我是 {{作者名}}，{{一句话简介}}。如果这篇文章对你有帮助，欢迎点赞、在看、转发。</span></p></section>
+</section>
+  </div>
+</div>
+<script>
+  function gzhShowToast(msg){
+    var t=document.getElementById("gzhToast");
+    t.textContent=msg;
+    t.classList.add("show");
+    clearTimeout(t._timer);
+    t._timer=setTimeout(function(){t.classList.remove("show");},2600);
+  }
+  function gzhPlainText(el){
+    return el.innerText || el.textContent || "";
+  }
+  async function gzhCopy(){
+    var el=document.getElementById("gzh-content");
+    var btn=document.getElementById("gzhCopyBtn");
+    var old=btn.textContent;
+    var html=el.innerHTML.trim();
+    var copied=false;
+
+    if(navigator.clipboard && window.ClipboardItem){
+      try{
+        var item=new ClipboardItem({
+          "text/html": new Blob([html], {type:"text/html"}),
+          "text/plain": new Blob([gzhPlainText(el)], {type:"text/plain"})
+        });
+        await navigator.clipboard.write([item]);
+        copied=true;
+      }catch(e){copied=false;}
+    }
+
+    if(!copied){
+      var range=document.createRange();
+      range.selectNodeContents(el);
+      var sel=window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      try{copied=document.execCommand("copy");}catch(e){copied=false;}
+      sel.removeAllRanges();
+    }
+
+    if(copied){
+      btn.textContent="已复制";
+      gzhShowToast("已复制。到微信公众号编辑器按 Ctrl/⌘+V 粘贴。");
+      setTimeout(function(){btn.textContent=old;},2200);
+    }else{
+      gzhShowToast("自动复制失败，请手动选中正文后复制。");
+    }
+  }
+</script>
+</body>
+</html>

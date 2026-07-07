@@ -6,7 +6,7 @@
 # 用法:
 #   bash gzh_send.sh --draft draft.md --to-current                     # 草稿确认卡片
 #   bash gzh_send.sh --file 文章_排版_摸鱼绿(moyu-green)_预览.html --to-current \
-#       --note "下载后浏览器打开 → 点右上角「复制到公众号」→ 到公众号编辑器粘贴"
+#       --note "下载后浏览器打开 → 点右上角「一键复制」→ 到公众号编辑器粘贴"
 #
 # 所有参数透传给 gzh_card_send.py。默认补 --via auto(可被显式 --via 覆盖)。
 

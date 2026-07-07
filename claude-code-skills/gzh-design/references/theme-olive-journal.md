@@ -85,7 +85,7 @@
         </section>
         <p style="font-size:13px;color:#65675e;margin:0;line-height:1.7;"><span leaf="">{{副标题说明}}</span></p>
       </section>
-      <section style="flex-shrink:0;width:112px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eeefe9;border:1px dashed #bfc1b7;border-radius:6px;padding:8px;">
+      <section style="flex-shrink:0;width:112px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eeefe9;border:1px solid #bfc1b7;border-radius:6px;padding:8px;">
         <svg width="72" height="72" viewBox="0 0 64 64" aria-hidden="true" style="display:block;">
           <ellipse cx="32" cy="36" rx="22" ry="18" fill="none" stroke="#4d4f46" stroke-width="2"></ellipse>
           <circle cx="26" cy="30" r="3" fill="#4d4f46"></circle>
@@ -483,7 +483,7 @@
 <section style="margin-top:24px;">
   <section style="padding:18px;border-radius:6px;background:#fdfdf8;border:1px solid #bfc1b7;text-align:center;font-family:'IBM Plex Sans',-apple-system,sans-serif;">
     <p style="margin:0 0 12px;font-size:12px;color:#65675e;font-weight:700;letter-spacing:1px;"><span leaf="">{{图表标签}}</span></p>
-    <section style="min-height:140px;border-radius:6px;background:#eeefe9;display:flex;align-items:center;justify-content:center;border:1px dashed #bfc1b7;">
+    <section style="min-height:140px;border-radius:6px;background:#eeefe9;display:flex;align-items:center;justify-content:center;border:1px solid #bfc1b7;">
       <span style="font-size:14px;color:#4d4f46;"><span leaf="">{{占位说明}}</span></span>
     </section>
   </section>

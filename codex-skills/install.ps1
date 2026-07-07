@@ -1,10 +1,10 @@
 # codex-skills one-shot installer (PowerShell, Windows)
 #
-# Drops the four skills into $HOME\.codex\skills\ and the 9 subagents into $HOME\.codex\agents\.
+# Drops the five skills into $HOME\.codex\skills\ and the 9 subagents into $HOME\.codex\agents\.
 # Idempotent: re-running upgrades in place.
 #
 # Usage:
-#   .\install.ps1                            # install all four + agents
+#   .\install.ps1                            # install all five + agents
 #   .\install.ps1 -Skill viz-deck            # install just one skill
 #   .\install.ps1 -NoAgents                  # all skills, but skip the TOML agents
 #   .\install.ps1 -DryRun                    # show what would be done
@@ -54,6 +54,9 @@ if ($Skill -eq "" -or $Skill -eq "viz-charts") {
 if ($Skill -eq "" -or $Skill -eq "zima-html-ppt") {
     Expand-Skill "zima-html-ppt" "zima-html-ppt"
 }
+if ($Skill -eq "" -or $Skill -eq "gzh-design") {
+    Expand-Skill "gzh-design" "gzh-design"
+}
 
 if ($NoAgents) {
     Write-Host "[codex-skills] -NoAgents passed, archiving freshly-extracted agents"
@@ -73,7 +76,7 @@ if (-not $NoAgents) {
 }
 Write-Host ""
 Write-Host "Next steps:"
-Write-Host "  1) In Codex CLI run /skills to confirm the four skills appear"
+Write-Host "  1) In Codex CLI run /skills to confirm the five skills appear"
 Write-Host "  2) (Optional) Install ppt-master to unlock v3 editable-PPTX:"
 Write-Host "       git clone https://github.com/hugohe3/ppt-master `"$homeSkills\ppt-master`""
 Write-Host "       cd `"$homeSkills\ppt-master`"; python -m venv .venv"

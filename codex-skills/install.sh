@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # codex-skills · one-shot installer
 #
-# Drops the four skills into $HOME/.codex/skills/ and the 9 subagents into $HOME/.codex/agents/.
+# Drops the five skills into $HOME/.codex/skills/ and the 9 subagents into $HOME/.codex/agents/.
 # Idempotent — re-running upgrades in place.
 #
 # Usage:
-#   bash install.sh                    # install all four + agents
+#   bash install.sh                    # install all five + agents
 #   bash install.sh --skill viz-deck   # install just one skill (no agents)
 #   bash install.sh --no-agents        # all skills, but skip the TOML agents
 #   bash install.sh --dry-run          # show what would be done
@@ -81,6 +81,10 @@ if [ -z "$ONLY_SKILL" ] || [ "$ONLY_SKILL" = "zima-html-ppt" ]; then
   install_skill "zima-html-ppt" "zima-html-ppt"
 fi
 
+if [ -z "$ONLY_SKILL" ] || [ "$ONLY_SKILL" = "gzh-design" ]; then
+  install_skill "gzh-design" "gzh-design"
+fi
+
 if [ "$WANT_AGENTS" -eq 0 ]; then
   echo "[codex-skills] --no-agents passed, archiving freshly-extracted agents ..."
   if [ "$DRY_RUN" -eq 0 ]; then
@@ -100,7 +104,7 @@ if [ "$WANT_AGENTS" -eq 1 ]; then
 fi
 echo ""
 echo "Next steps:"
-echo "  1) In Codex CLI run /skills to confirm the four skills appear"
+echo "  1) In Codex CLI run /skills to confirm the five skills appear"
 echo "  2) (Optional) Install ppt-master to unlock v3 editable-PPTX:"
 echo "       git clone https://github.com/hugohe3/ppt-master ~/.codex/skills/ppt-master"
 echo "       cd ~/.codex/skills/ppt-master && python -m venv .venv"

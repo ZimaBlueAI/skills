@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06-product-launch-note - 公众号排版预览</title>
+<style>
+  body{margin:0;background:#eef0f2;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;-webkit-text-size-adjust:100%;}
+  .gzh-toolbar{position:fixed;top:0;left:0;right:0;min-height:56px;background:#fff;box-shadow:0 1px 12px rgba(15,23,42,.12);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px;z-index:99;box-sizing:border-box;}
+  .gzh-hint{font-size:13px;color:#64748b;line-height:1.45;}
+  .gzh-hint b{color:#0f172a;}
+  .gzh-copy{background:#059669;color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(5,150,105,.28);white-space:nowrap;}
+  .gzh-copy:hover{background:#047857;}
+  .gzh-copy:active{transform:translateY(1px);}
+  .gzh-toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:88vw;text-align:center;}
+  .gzh-toast.show{opacity:1;}
+  .gzh-stage{max-width:700px;margin:84px auto 64px;padding:0 8px;}
+  @media(max-width:560px){.gzh-toolbar{align-items:flex-start;flex-direction:column}.gzh-copy{width:100%}.gzh-stage{margin-top:118px}}
+</style>
+</head>
+<body>
+<div class="gzh-toolbar">
+  <span class="gzh-hint">下方是排版效果。点击 <b>一键复制</b> 后，到微信公众号编辑器直接粘贴。</span>
+  <button class="gzh-copy" id="gzhCopyBtn" onclick="gzhCopy()">一键复制</button>
+</div>
+<div class="gzh-toast" id="gzhToast"></div>
+<div class="gzh-stage">
+  <div id="gzh-content">
+<section style="max-width:677px;margin:0 auto;padding:0 12px;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;">
+<section style="margin:0 auto 24px;padding:26px 22px;border-radius:16px;background:#F0F9FF;border:1px solid #E5E7EB;"><p style="margin:0 0 10px;font-size:13px;color:#0EA5E9;font-weight:900;"><span leaf="">PRODUCT LAUNCH</span></p><h1 style="margin:0 0 14px;font-size:24px;line-height:1.35;color:#0F172A;font-weight:900;"><span leaf="">FlowPilot 2.0 发布：把团队例会变成自动推进的行动清单</span></h1><p style="margin:0;font-size:14px;line-height:1.8;color:#475569;"><span leaf="">Demo 主题：产品宣发风。这是一份可复制到公众号编辑器的预览样张。</span></p></section>
+<section style="margin:18px 0;padding:16px 18px;border-radius:12px;background:#F0F9FF;border-left:4px solid #0EA5E9;"><p style="margin:0;font-size:15px;line-height:1.9;color:#0F172A;font-weight:600;"><span leaf="">这次更新的目标很简单：少开会，少丢事，让每个决定都能被跟进。</span></p></section>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #0EA5E9;"><p style="margin:0 0 4px;font-size:12px;color:#0EA5E9;font-weight:800;"><span leaf="">01 / PRODUCT LAUNCH</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#0F172A;font-weight:900;"><span leaf="">新功能一：会议自动摘要</span></h2></section>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#475569;"><span leaf="">FlowPilot 2.0 会在会议结束后自动生成摘要，包括讨论主题、关键决定、风险点和待办事项。你不需要再从录音里反复回听，也不用担心重要结论散落在聊天记录里。</span></p>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#475569;"><span leaf="">对管理者来说，最重要的不是“记录更完整”，而是“下一步更明确”。</span></p>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #0EA5E9;"><p style="margin:0 0 4px;font-size:12px;color:#0EA5E9;font-weight:800;"><span leaf="">02 / PRODUCT LAUNCH</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#0F172A;font-weight:900;"><span leaf="">新功能二：行动项自动分配</span></h2></section>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#475569;"><span leaf="">系统会识别待办事项里的负责人、截止时间和依赖关系。如果缺少负责人，它会标记为待确认，而不是默认塞给会议组织者。</span></p>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#475569;"><span leaf="">过去：会议结束后，大家都觉得有人会跟进。</span></p>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#475569;"><span leaf="">现在：每个行动项都有负责人、截止时间和状态提醒。</span></p>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #0EA5E9;"><p style="margin:0 0 4px;font-size:12px;color:#0EA5E9;font-weight:800;"><span leaf="">03 / PRODUCT LAUNCH</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#0F172A;font-weight:900;"><span leaf="">新功能三：跨项目风险看板</span></h2></section>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#475569;"><span leaf="">多个项目的延期、阻塞和资源冲突会汇总到一个风险看板。你可以按团队、客户或优先级过滤，快速知道本周最需要处理的 3 个问题。</span></p>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #0EA5E9;"><p style="margin:0 0 4px;font-size:12px;color:#0EA5E9;font-weight:800;"><span leaf="">04 / PRODUCT LAUNCH</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#0F172A;font-weight:900;"><span leaf="">适合谁使用</span></h2></section>
+<section style="margin:14px 0 18px;padding:14px 16px;border-radius:12px;background:#FFFFFF;border:1px solid #E5E7EB;"><p style="margin:0 0 8px;font-size:15px;line-height:1.85;color:#475569;"><span leaf="" style="color:#0EA5E9;font-weight:800;">• </span><span leaf="">每周有多场项目例会的团队。</span></p><p style="margin:0 0 8px;font-size:15px;line-height:1.85;color:#475569;"><span leaf="" style="color:#0EA5E9;font-weight:800;">• </span><span leaf="">需要跟踪客户交付的项目经理。</span></p><p style="margin:0 0 8px;font-size:15px;line-height:1.85;color:#475569;"><span leaf="" style="color:#0EA5E9;font-weight:800;">• </span><span leaf="">想减少重复确认的创业团队。</span></p></section>
+<section style="margin:28px 0 14px;padding:0 0 0 12px;border-left:4px solid #0EA5E9;"><p style="margin:0 0 4px;font-size:12px;color:#0EA5E9;font-weight:800;"><span leaf="">05 / PRODUCT LAUNCH</span></p><h2 style="margin:0;font-size:20px;line-height:1.45;color:#0F172A;font-weight:900;"><span leaf="">立即开始</span></h2></section>
+<p style="margin:0 0 14px;font-size:15px;line-height:1.95;color:#475569;"><span leaf="">从今天起，新建一个会议空间，邀请团队成员加入。跑完第一场会，你就能看到摘要、行动项和风险提醒自动生成。</span></p>
+<section style="margin:28px 0 0;padding:18px;border-radius:14px;background:#F9FAFB;border:1px solid #E5E7EB;"><p style="margin:0;font-size:14px;line-height:1.9;color:#475569;"><span leaf="">我是 {{作者名}}，{{一句话简介}}。如果这篇文章对你有帮助，欢迎点赞、在看、转发。</span></p></section>
+</section>
+  </div>
+</div>
+<script>
+  function gzhShowToast(msg){
+    var t=document.getElementById("gzhToast");
+    t.textContent=msg;
+    t.classList.add("show");
+    clearTimeout(t._timer);
+    t._timer=setTimeout(function(){t.classList.remove("show");},2600);
+  }
+  function gzhPlainText(el){
+    return el.innerText || el.textContent || "";
+  }
+  async function gzhCopy(){
+    var el=document.getElementById("gzh-content");
+    var btn=document.getElementById("gzhCopyBtn");
+    var old=btn.textContent;
+    var html=el.innerHTML.trim();
+    var copied=false;
+
+    if(navigator.clipboard && window.ClipboardItem){
+      try{
+        var item=new ClipboardItem({
+          "text/html": new Blob([html], {type:"text/html"}),
+          "text/plain": new Blob([gzhPlainText(el)], {type:"text/plain"})
+        });
+        await navigator.clipboard.write([item]);
+        copied=true;
+      }catch(e){copied=false;}
+    }
+
+    if(!copied){
+      var range=document.createRange();
+      range.selectNodeContents(el);
+      var sel=window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      try{copied=document.execCommand("copy");}catch(e){copied=false;}
+      sel.removeAllRanges();
+    }
+
+    if(copied){
+      btn.textContent="已复制";
+      gzhShowToast("已复制。到微信公众号编辑器按 Ctrl/⌘+V 粘贴。");
+      setTimeout(function(){btn.textContent=old;},2200);
+    }else{
+      gzhShowToast("自动复制失败，请手动选中正文后复制。");
+    }
+  }
+</script>
+</body>
+</html>

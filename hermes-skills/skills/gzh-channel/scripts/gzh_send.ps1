@@ -5,7 +5,7 @@
 # 用法:
 #   ./gzh_send.ps1 --draft draft.md --to-current
 #   ./gzh_send.ps1 --file "文章_排版_摸鱼绿(moyu-green)_预览.html" --to-current `
-#       --note "下载后浏览器打开 → 点右上角「复制到公众号」→ 到公众号编辑器粘贴"
+#       --note "下载后浏览器打开 → 点右上角「一键复制」→ 到公众号编辑器粘贴"
 
 $ErrorActionPreference = "Stop"
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path

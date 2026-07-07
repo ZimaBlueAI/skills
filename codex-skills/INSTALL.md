@@ -63,6 +63,10 @@ Mermaid · ECharts · SVG 组件 · 3D KG · Motion · **Native PPTX chart 🆕 
 
 ZimaBlueAI 现场讲演 deck：暖纸编辑风单文件 HTML 幻灯片 + 演讲者模式（S 键提词器、逐字稿、计时、议程）。适合内训课件、路演稿、训战材料和上台讲的 HTML PPT。
 
+### gzh-design（公众号排版）
+
+微信公众号文章排版：Markdown / Word / PDF / 纯文本 → 可直接粘贴到公众号编辑器的 HTML。生成干净正文片段，并额外交付带“一键复制”按钮的预览页；内置 13 套主题模板，包括科技感、极客风、AI风、文艺风、自媒体、产品宣发推广、公益等。
+
 ---
 
 ## 02 · 前置要求
@@ -101,6 +105,7 @@ unzip -o codex-skills/biz-decision-stack/biz-decision-stack.zip -d ~/
 unzip -o codex-skills/viz-deck/viz-deck.zip -d ~/
 unzip -o codex-skills/viz-charts/viz-charts.zip -d ~/
 unzip -o codex-skills/zima-html-ppt/zima-html-ppt.zip -d ~/
+unzip -o codex-skills/gzh-design/gzh-design.zip -d ~/
 ```
 
 落点：
@@ -110,6 +115,7 @@ unzip -o codex-skills/zima-html-ppt/zima-html-ppt.zip -d ~/
 ~/.codex/skills/viz-deck/
 ~/.codex/skills/viz-charts/
 ~/.codex/skills/zima-html-ppt/
+~/.codex/skills/gzh-design/
 ~/.codex/agents/00-..08-*.toml
 ```
 
@@ -120,6 +126,7 @@ unzip -o codex-skills/biz-decision-stack/biz-decision-stack.zip -d /path/to/proj
 unzip -o codex-skills/viz-deck/viz-deck.zip -d /path/to/project/
 unzip -o codex-skills/viz-charts/viz-charts.zip -d /path/to/project/
 unzip -o codex-skills/zima-html-ppt/zima-html-ppt.zip -d /path/to/project/
+unzip -o codex-skills/gzh-design/gzh-design.zip -d /path/to/project/
 ```
 
 落点：`/path/to/project/.codex/skills/` + `/path/to/project/.codex/agents/`。
@@ -130,7 +137,7 @@ unzip -o codex-skills/zima-html-ppt/zima-html-ppt.zip -d /path/to/project/
 codex> /skills
 ```
 
-应能看到 `biz-html-viz` · `viz-deck` · `viz-charts` · `zima-html-ppt`。
+应能看到 `biz-html-viz` · `viz-deck` · `viz-charts` · `zima-html-ppt` · `gzh-design`。
 
 ```
 codex> /agents
@@ -304,7 +311,7 @@ $PPT_MASTER_HOME → ~/.codex/skills/ppt-master → ~/.agents/skills/ppt-master 
 ### Codex 看不到 skill
 
 ```bash
-ls -la ~/.codex/skills/         # 应有 biz-html-viz / viz-deck / viz-charts / zima-html-ppt
+ls -la ~/.codex/skills/         # 应有 biz-html-viz / viz-deck / viz-charts / zima-html-ppt / gzh-design
 ls -la ~/.codex/agents/          # 应有 00-..08-*.toml
 ```
 
