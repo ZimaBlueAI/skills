@@ -51,6 +51,7 @@ v0.4.0 起覆盖**从董事会简报到对外讲演视频再到真正可编辑 P
 | **zima-html-ppt** | ZimaBlueAI 现场讲演 deck · 暖纸编辑风 + **演讲者模式**（S 键弹提词器 / 逐字稿 / 计时 / 议程）· 母版 D1/D2/D3 | 单文件 HTML 幻灯片（暖纸 + 深青 + 金赭 + 三色条），复制起步模板填内容 | 23 KB |
 | **taste-engine** 🆕 | 共享"口味层"· 三档 dial（DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY）+ 反 slop 预检 + 选材/文案规则 | 设计令牌 + 自检清单 + 两支样片（暗色电影感 web · 暖纸编辑 deck） | 文档 + 样片 |
 | **web-shader-extractor** 🆕（移植 · 非 ZimaBlue 套件） | 网页 WebGL/WebGPU/Canvas 着色器动效**抠取与本地证据匹配复现**（Recon Kernel 状态机 + 6 铁律）· 移植自 [lixiaolin94/skills](https://github.com/lixiaolin94/skills)（MIT） | 抠取/复现项目 + 4 个自包含 demo（含 logo 矢量化生灭折叠 3D 用例） | 纯文件夹 · 零必需依赖 |
+| **gzh-design** 🆕（移植 · 非 ZimaBlue 套件） | **微信公众号文章排版**：Markdown/docx/PDF/纯文本 → 粘贴不掉格式的公众号 HTML（6 套主题 + 主题生成器 + 双关卡校验 + 一键复制预览）· 移植自 [isjiamu/gzh-design-skill](https://github.com/isjiamu/gzh-design-skill)（AGPL-3.0，甲木 × 摸鱼小李） | 干净正文 HTML + 带「复制到公众号」按钮的预览页 | 纯文件夹 · 零必需依赖 |
 
 ### 🆕 Taste 层 + 交互 SVG 知识图谱
 

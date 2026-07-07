@@ -9,6 +9,23 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ## [Unreleased]
 
+### Added — `gzh-design`（移植自 [isjiamu/gzh-design-skill](https://github.com/isjiamu/gzh-design-skill)，AGPL-3.0）
+
+**微信公众号文章排版** skill——Markdown / Word(.docx) / PDF / 纯文本 → 可直接粘贴进公众号
+编辑器、粘贴后样式不丢失的 HTML。**逐字节原样移植**上游 skill 本体 20 文件（`SKILL.md` +
+`LICENSE` + 11 references + 4 scripts + 3 assets，上游 commit `67c079e`，甲木 × 摸鱼小李联名），
+未移植上游 `archive/` 旧版归档与 `docs/` 展示图库。落位 `claude-code-skills/gzh-design/`
+并同步进 `.claude/skills/`。
+
+- 6 套内置主题（摸鱼绿 / 红白 / 石墨极简 / 留白禅意 / 摸鱼票据 / 橄榄手记）+ **主题生成器**
+  （一句话或参考图 → 新组件库落地本地复用）。
+- 智能排版：章节自动编号（末章 ∞）、每段 1–3 处关键词下划线、引言卡 + 目录提炼、签名占位、
+  中文全角标点；样式全内联 + `<span leaf="">` 包裹规避公众号过滤。
+- **双关卡校验**：`component_lint.py`（组件库源头）+ `validate_gzh_html.py`（最终产物）；
+  移植后已本地跑通（ERROR×0）。`wrap_preview.py` 产出带「复制到公众号」按钮的预览页。
+- `NOTICE.md` — 来源 / 上游 commit / License / 移植范围 / 升级方式；`gzh-design-README.md` — 中文使用说明。
+- 与本仓库分工：**公众号图文排版**用本 skill；网页 / 落地页 / PPT 仍走 huashu-design / viz-deck / biz-html-viz。
+
 ### Added — `web-shader-extractor`（移植自 [lixiaolin94/skills](https://github.com/lixiaolin94/skills)，MIT）
 
 网页 **WebGL / WebGPU / Canvas 着色器动效抠取与本地证据匹配复现** skill，**逐字节原样移植**
