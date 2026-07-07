@@ -116,6 +116,14 @@ install_skill() {  # <zip路径> <技能名>
 
 install_skill "$CCS/viz-deck/viz-deck.zip" "viz-deck"
 install_skill "$CCS/viz-charts/viz-charts.zip" "viz-charts"
+# gzh-design(公众号排版)是纯文件夹,无 zip,直接拷
+if [ -d "$CCS/gzh-design" ]; then
+    archive_existing "$TARGET/gzh-design"
+    cp -r "$CCS/gzh-design" "$TARGET/gzh-design"
+    echo -e "  ${GREEN}✓${RESET} gzh-design (公众号排版)"
+else
+    echo -e "  ${YELLOW}⚠${RESET} 找不到 $CCS/gzh-design(公众号排版跳过)"
+fi
 if [ $WITH_BIZ -eq 1 ]; then
     install_skill "$CCS/biz-decision-stack/biz-decision-stack.zip" "biz-html-viz"
     if [ -d "$EXTRACT/.claude/agents" ]; then
@@ -127,15 +135,17 @@ fi
 echo
 
 # ─── [3] 安装频道交付技能 ───
-echo -e "${BLUE}[3/5] 频道交付技能 viz-channel${RESET}"
-if [ -d "$HERE/skills/viz-channel" ]; then
-    archive_existing "$TARGET/viz-channel"
-    cp -r "$HERE/skills/viz-channel" "$TARGET/viz-channel"
-    chmod +x "$TARGET/viz-channel/scripts/"*.sh 2>/dev/null || true
-    echo -e "  ${GREEN}✓${RESET} viz-channel → $TARGET/viz-channel"
-else
-    echo -e "  ${RED}✗${RESET} 找不到 $HERE/skills/viz-channel"; exit 1
-fi
+echo -e "${BLUE}[3/5] 频道交付技能 viz-channel + gzh-channel${RESET}"
+for CH in viz-channel gzh-channel; do
+    if [ -d "$HERE/skills/$CH" ]; then
+        archive_existing "$TARGET/$CH"
+        cp -r "$HERE/skills/$CH" "$TARGET/$CH"
+        chmod +x "$TARGET/$CH/scripts/"*.sh 2>/dev/null || true
+        echo -e "  ${GREEN}✓${RESET} $CH → $TARGET/$CH"
+    else
+        echo -e "  ${RED}✗${RESET} 找不到 $HERE/skills/$CH"; exit 1
+    fi
+done
 echo
 
 # ─── [4] 依赖 ───
@@ -184,7 +194,7 @@ echo
 # ─── [5] 清理 + 自检 ───
 [ -d "$TMP" ] && { mkdir -p "$ARCHIVE"; mv "$TMP" "$ARCHIVE/_install-tmp.$$" 2>/dev/null || true; }
 echo -e "${BLUE}[5/5] 自检${RESET}"
-for s in viz-deck viz-charts viz-channel; do
+for s in viz-deck viz-charts viz-channel gzh-design gzh-channel; do
     [ -d "$TARGET/$s" ] \
         && echo -e "  ${GREEN}✓${RESET} $TARGET/$s" \
         || echo -e "  ${RED}✗${RESET} $TARGET/$s 缺失"
@@ -192,6 +202,9 @@ done
 python3 "$TARGET/viz-channel/scripts/channel_deliver.py" --help >/dev/null 2>&1 \
     && echo -e "  ${GREEN}✓${RESET} channel_deliver.py 可运行" \
     || echo -e "  ${YELLOW}⚠${RESET} channel_deliver.py 自检失败(检查 requests)"
+python3 "$TARGET/gzh-channel/scripts/gzh_card_send.py" --help >/dev/null 2>&1 \
+    && echo -e "  ${GREEN}✓${RESET} gzh_card_send.py 可运行" \
+    || echo -e "  ${YELLOW}⚠${RESET} gzh_card_send.py 自检失败(检查 requests)"
 echo
 echo -e "${BLUE}━━━ 完成 ━━━${RESET}"
 echo "在你的频道(如飞书)@机器人 试一句:"

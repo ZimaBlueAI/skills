@@ -26,6 +26,23 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 - `NOTICE.md` — 来源 / 上游 commit / License / 移植范围 / 升级方式；`gzh-design-README.md` — 中文使用说明。
 - 与本仓库分工：**公众号图文排版**用本 skill；网页 / 落地页 / PPT 仍走 huashu-design / viz-deck / biz-html-viz。
 
+### Added — `gzh-channel`（OpenClaw / Hermes 频道层 · 公众号排版对话交付）
+
+把 gzh-design 接进 **飞书 IM 频道**的编排技能，落位 `openclaw-skills/skills/gzh-channel/`
+与 `hermes-skills/skills/gzh-channel/`（平行镜像，仅平台称呼不同）：
+
+- **工作流**：收稿（文本/md/docx/PDF）→ 归一化 Markdown 草稿 → **飞书 interactive 卡片
+  （结构摘要 + 全文代码块）发回用户确认** → 确认后调 gzh-design 排版（校验 ERROR×0）→
+  发回 `_预览.html`（带「复制到公众号」按钮）+ 干净正文 HTML → 用户本地浏览器打开一键复制粘贴。
+- `scripts/gzh_card_send.py` — 自包含飞书发送器（与 viz-channel 凭证/令牌/chat 解析同源）：
+  `--draft` 发确认卡片（4 反引号围栏防文内代码块冲突；>6000 字符自动改「大纲卡片 + .md 附件」；
+  interactive 失败自动回退带代码围栏的文本消息）、`--file` 发产物、`--text` 发文本；
+  `gzh_send.sh` / `.ps1` 一行入口。
+- `references/gzh-card-protocol.md` — 卡片 JSON 协议 / 长稿策略 / 频道话术 / 排错速查。
+- 4 个安装器（openclaw/hermes × sh/ps1）默认一并安装 `gzh-design`（纯文件夹直拷）+
+  `gzh-channel`，自检覆盖 `gzh_card_send.py`；两侧 README / USAGE 补登用法与案例
+  （OpenClaw 案例 10 / Hermes 案例 12）。
+
 ### Added — `web-shader-extractor`（移植自 [lixiaolin94/skills](https://github.com/lixiaolin94/skills)，MIT）
 
 网页 **WebGL / WebGPU / Canvas 着色器动效抠取与本地证据匹配复现** skill，**逐字节原样移植**

@@ -88,8 +88,9 @@ v0.4.0 起覆盖**从董事会简报到对外讲演视频再到真正可编辑 P
 | **投递通道** | 频道适配器,**当前实现 = 飞书 / Lark**(优先复用 lark-cli 令牌,回退 REST);留有加企业微信 / Slack / Telegram 的 seam |
 | **打包** | 瘦桥接 + 安装器:viz-deck/viz-charts 本体由安装器从 `claude-code-skills/` 灌入目标平台,不重复维护 |
 | **Hermes 独有** | 同一链路可做成 **cron / webhook 自动化**(定时出周报发群 / 事件触发出图) |
+| **公众号排版** 🆕 | 新增 **`gzh-channel`** 技能:频道里发来文章 → Markdown 草稿 **interactive 卡片(代码块)** 发回确认 → 确认后调 `gzh-design` 排版 → 发回带「复制到公众号」按钮的预览 HTML,本地浏览器打开一键复制粘贴进公众号编辑器 |
 
-📦 [`openclaw-skills/`](./openclaw-skills/) · [`hermes-skills/`](./hermes-skills/) — 各含 `viz-channel` 技能、一键安装器(`.sh`/`.ps1`)、以及 **[USAGE.md](./openclaw-skills/USAGE.md) 实战案例库**(季度汇报 / 可编辑 PPT / 3D 知识图谱 / 发布会动画 / 竞品格局 / 群里改稿 / 自定义品牌风格,Hermes 另含 2 个自动化案例)。
+📦 [`openclaw-skills/`](./openclaw-skills/) · [`hermes-skills/`](./hermes-skills/) — 各含 `viz-channel` + `gzh-channel` 技能、一键安装器(`.sh`/`.ps1`)、以及 **[USAGE.md](./openclaw-skills/USAGE.md) 实战案例库**(季度汇报 / 可编辑 PPT / 3D 知识图谱 / 发布会动画 / 竞品格局 / 群里改稿 / 自定义品牌风格 / 公众号排版,Hermes 另含 2 个自动化案例)。
 
 ### v0.4 升级要点（vs v0.3 · 26-skill 取长补短）
 

@@ -71,8 +71,9 @@ User @-mentions the bot in Feishu: "make me an animated Q2 deck"
 | **Transport** | Channel adapter, **current impl = Feishu / Lark** (prefers a lark-cli token, falls back to REST); seam left for WeCom / Slack / Telegram |
 | **Packaging** | Thin bridge + installer: viz-deck/viz-charts bodies are vendored from `claude-code-skills/` into the target platform — no duplication |
 | **Hermes-only** | The same chain can run as a **cron / webhook** routine (scheduled weekly deck to a group, event-triggered chart push) |
+| **WeChat typesetting** 🆕 | New **`gzh-channel`** skill: user drops an article in the channel → the Markdown draft comes back as a Feishu **interactive card (code block)** for confirmation → on approval, `gzh-design` typesets it → a preview HTML with a "copy to WeChat" button is sent back; open locally, one click copies paste-safe rich text into the WeChat Official Account editor |
 
-📦 [`openclaw-skills/`](./openclaw-skills/) · [`hermes-skills/`](./hermes-skills/) — each ships the `viz-channel` skill, one-command installers (`.sh`/`.ps1`), and a **[USAGE.md](./openclaw-skills/USAGE.md) case library** (quarterly deck / editable PPT / 3D knowledge graph / launch hero video / competitive landscape / in-group revisions / custom brand style; Hermes adds 2 automation cases).
+📦 [`openclaw-skills/`](./openclaw-skills/) · [`hermes-skills/`](./hermes-skills/) — each ships the `viz-channel` + `gzh-channel` skills, one-command installers (`.sh`/`.ps1`), and a **[USAGE.md](./openclaw-skills/USAGE.md) case library** (quarterly deck / editable PPT / 3D knowledge graph / launch hero video / competitive landscape / in-group revisions / custom brand style / WeChat typesetting; Hermes adds 2 automation cases).
 
 ### What's new in v0.4 (vs v0.3 — 26-skill cross-pollination)
 

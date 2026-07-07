@@ -32,11 +32,11 @@ ZimaBlueAI 仓库的三个技能只管**生成**，不管**送达**，也没有*
 ```
 openclaw-skills/
 ├── README.md                        ← 你在看
-├── USAGE.md                         ← ★ 实战案例库(9 个案例 + 话术 + 排错速查)
+├── USAGE.md                         ← ★ 实战案例库(10 个案例 + 话术 + 排错速查)
 ├── install-openclaw-skills.sh       ← 一键安装(Linux / WSL / git-bash)
 ├── install-openclaw-skills.ps1      ← 一键安装(Windows PowerShell)
 └── skills/
-    └── viz-channel/         ← ★ 频道对话 + 交付编排技能
+    ├── viz-channel/         ← ★ 频道对话 + 交付编排技能
         ├── SKILL.md                 ← 触发器 + 工作流(clarify→generate→deliver)
         ├── references/
         │   ├── default-style.md     ← ★ 默认视觉风格 ZimaBlue Editorial(暖纸编辑风)
@@ -50,10 +50,18 @@ openclaw-skills/
             ├── resolve_chat.py      ← 解析当前频道 chat_id
             ├── channel_send.sh         ← 投递一行入口(Linux)
             └── channel_send.ps1        ← 投递一行入口(Windows)
+    └── gzh-channel/         ← ★ 公众号排版频道技能(收稿→卡片确认→排版→交付)
+        ├── SKILL.md                 ← 触发器 + 工作流(draft-confirm→gzh-design→deliver)
+        ├── references/
+        │   └── gzh-card-protocol.md ← 草稿确认 interactive 卡片协议 + 话术 + 排错
+        └── scripts/
+            ├── gzh_card_send.py     ← 草稿卡片(代码块) / 文本 / 文件 发送器(飞书)
+            ├── gzh_send.sh          ← 一行入口(Linux)
+            └── gzh_send.ps1         ← 一行入口(Windows)
 ```
 
-`viz-deck` / `viz-charts` / `biz-html-viz` 的本体**不在这里**——
-安装器从本仓库 `../claude-code-skills/*/*.zip` 取(或 `--from-github` 实时拉),
+`viz-deck` / `viz-charts` / `biz-html-viz` / `gzh-design` 的本体**不在这里**——
+安装器从本仓库 `../claude-code-skills/` 取(zip 或纯文件夹,或 `--from-github` 实时拉),
 装进 OpenClaw 的 `~/.openclaw/skills/`。这样大技能本体单一可维护、不重复。
 
 ## 安装
@@ -77,7 +85,8 @@ bash install-openclaw-skills.sh --with-biz
 ./install-openclaw-skills.ps1 -WithBridges
 ```
 
-装完自检会列出 `~/.openclaw/skills/` 下的 `viz-deck / viz-charts / viz-channel`。
+装完自检会列出 `~/.openclaw/skills/` 下的
+`viz-deck / viz-charts / viz-channel / gzh-design / gzh-channel`。
 
 ## 用法(在飞书里)
 
@@ -89,8 +98,11 @@ bash install-openclaw-skills.sh --with-biz
 | 「做个能改的 X PPT」 | 可编辑 PPTX | 下载→PowerPoint 改 |
 | 「做个 X 动画发群里」 | MP4 | 视频消息，点开就播 |
 | 「画个 X 的 3D 知识图谱」 | 3D KG（WebGL） | 下载→浏览器转着看 |
+| 发来文章 +「排成公众号发我」 | 公众号排版 HTML | 先回 Markdown 草稿卡片确认 → 确认后发预览页，下载→浏览器开→点「复制到公众号」→ 编辑器粘贴 |
 
 机器人会先问清 1-2 个关键点（主题/形态），再生成，再发回你正在聊的这个会话。
+公众号排版会**多一步草稿确认**：先把整理好的 Markdown 用卡片（代码块）发回给你，
+你回「确认」它才开排——结构错了排完全废，这一步省不得。
 
 > 📖 **完整实战案例（季度汇报 / 可编辑 PPT / 3D 知识图谱 / 发布会动画 / 竞品格局 /
 > 群里改稿 / 自定义品牌风格…）见 [USAGE.md](USAGE.md)** —— 每个都带真实对话和交付物。
@@ -118,7 +130,7 @@ bash install-openclaw-skills.sh --with-biz
 
 ## 更多
 
-- 🔥 实战案例库（9 个案例 + 话术 + 排错）→ [USAGE.md](USAGE.md)
+- 🔥 实战案例库（10 个案例 + 话术 + 排错）→ [USAGE.md](USAGE.md)
 - 🎨 默认视觉风格 → `skills/viz-channel/references/default-style.md`
 - 形态怎么选 → `skills/viz-channel/references/delivery-matrix.md`
 - 频道对话怎么编排 → `skills/viz-channel/references/channel-protocol.md`

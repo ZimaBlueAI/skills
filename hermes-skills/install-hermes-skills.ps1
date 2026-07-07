@@ -96,6 +96,13 @@ function Install-Skill($zip, $name){
 
 Install-Skill (Join-Path $Ccs "viz-deck\viz-deck.zip") "viz-deck"
 Install-Skill (Join-Path $Ccs "viz-charts\viz-charts.zip") "viz-charts"
+# gzh-design(公众号排版)是纯文件夹,无 zip,直接拷
+$gzhSrc = Join-Path $Ccs "gzh-design"
+if(Test-Path $gzhSrc){
+    Archive-Existing (Join-Path $Target "gzh-design")
+    Copy-Item $gzhSrc (Join-Path $Target "gzh-design") -Recurse -Force
+    Ok "gzh-design (公众号排版)"
+} else { Warn "找不到 $gzhSrc(公众号排版跳过)" }
 if($WithBiz){
     Install-Skill (Join-Path $Ccs "biz-decision-stack\biz-decision-stack.zip") "biz-html-viz"
     $agSrc = Join-Path $Extract ".claude\agents"
@@ -109,13 +116,15 @@ if($WithBiz){
 Write-Host ""
 
 # [3] 频道交付技能
-Head "[3/5] 频道交付技能 viz-channel"
-$fdcSrc = Join-Path $Here "skills\viz-channel"
-if(Test-Path $fdcSrc){
-    Archive-Existing (Join-Path $Target "viz-channel")
-    Copy-Item $fdcSrc (Join-Path $Target "viz-channel") -Recurse -Force
-    Ok "viz-channel → $Target\viz-channel"
-} else { Err "找不到 $fdcSrc"; exit 1 }
+Head "[3/5] 频道交付技能 viz-channel + gzh-channel"
+foreach($ch in @("viz-channel","gzh-channel")){
+    $fdcSrc = Join-Path $Here "skills\$ch"
+    if(Test-Path $fdcSrc){
+        Archive-Existing (Join-Path $Target $ch)
+        Copy-Item $fdcSrc (Join-Path $Target $ch) -Recurse -Force
+        Ok "$ch → $Target\$ch"
+    } else { Err "找不到 $fdcSrc"; exit 1 }
+}
 Write-Host ""
 
 # [4] 依赖
@@ -170,11 +179,13 @@ if(Test-Path $Tmp){
     Move-Item $Tmp (Join-Path $Archive "_install-tmp.$PID") -Force -ErrorAction SilentlyContinue
 }
 Head "[5/5] 自检"
-foreach($s in @("viz-deck","viz-charts","viz-channel")){
+foreach($s in @("viz-deck","viz-charts","viz-channel","gzh-design","gzh-channel")){
     if(Test-Path (Join-Path $Target $s)){ Ok "$Target\$s" } else { Err "$Target\$s 缺失" }
 }
 try { python (Join-Path $Target "viz-channel\scripts\channel_deliver.py") --help *> $null; Ok "channel_deliver.py 可运行" }
 catch { Warn "channel_deliver.py 自检失败(检查 requests)" }
+try { python (Join-Path $Target "gzh-channel\scripts\gzh_card_send.py") --help *> $null; Ok "gzh_card_send.py 可运行" }
+catch { Warn "gzh_card_send.py 自检失败(检查 requests)" }
 Write-Host ""
 Head "━━━ 完成 ━━━"
 Write-Host "在你的频道(如飞书)@机器人 试一句:「做一份云度科技 Q2 业绩的动效 HTML 汇报,做完发我」"
