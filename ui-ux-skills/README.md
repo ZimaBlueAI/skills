@@ -1,6 +1,11 @@
 # ui-ux-skills · v0.4 设计提案
 
 > **这是设计提案，尚未实现。** 与 v0.3 已发布的 biz-decision-stack / viz-deck / viz-charts **互补**，不替代。
+>
+> **v0.7 进展**：本提案的「视觉方向探索 / 视觉审计 / 设计选型」维度已由自有 skill
+> **`zima-design`**（设计合奏引擎）落地——其 database 引擎收编了本文评估过的 UI/UX Pro Max
+> 数据库（84 风格 / 192 配色 / 98 UX 准则），anti-slop 引擎覆盖 `refactoring-ui-audit`
+> 的视觉细节审计诉求。`a11y-audit` / `prd-to-mockup` / `responsive-foldability` 等条目仍待实现。
 
 ---
 

@@ -9,6 +9,69 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-07-16
+
+### Added — `zima-design`（自有设计合奏引擎，三引擎收编 + 原创路由协议）
+
+**设计合奏引擎**——一次好的设计交付需要三种互补智能：结构与主题的多样性、动效与手感、
+数据化的选型依据；没有单一体系同时做好三件事，zima-design 把它们编排成合奏。
+落位 `claude-code-skills/zima-design/`，同步 `.claude/skills/`，镜像 `codex-skills/zima-design/`
+并接线 `build-packages.ps1` 产出 `zima-design.zip`（354 文件）。
+
+- **原创 SKILL.md 路由协议**：三条铁律（多样性优先 / 诚实 / 验收前置）+ 任务路由表
+  （落地页 / 产品 UI / 去 AI 味 / 动效专项 / 方向未定 / 交付评审 → 各自的主导与辅助引擎）+
+  **五轴多样性协议**（宏结构 × 主题 × 动效人格 × 卡片物理 × 密度节奏，连续交付不得重复组合，
+  选择以 `zima-design signature` 注释盖章进交付物，形成台账）+ 四级交付验收栈。
+- **engines/anti-slop/**（源自 [nutlope/hallmark](https://github.com/nutlope/hallmark)，MIT，
+  commit `aeb42fb` v1.1.0，逐字节收编 106 文件）：21 种页面宏结构轮换、20 具名主题 +
+  custom OKLCH 分支、**57 条 slop-test 验收关卡**、`audit` / `redesign` / `study` 动词、
+  组件 cookbook（页脚 N1–N9 / 侧栏 S1–S5 / 引用统计 T1–T4）。
+- **engines/motion/**（源自 [emilkowalski/skills](https://github.com/emilkowalski/skills)，MIT，
+  commit `6bf2443`，逐字节收编 6 技能 10 文件）：动画决策框架（频率门 → 目的 → 缓动 → 时长，
+  键盘触发零动画 / UI 动效 <300ms / 禁 ease-in / 禁 scale(0) 入场）、弹簧物理与手势
+  （velocity 甩尾 / 边界阻尼 / 打断续动）、性能铁律（只动 transform/opacity）、
+  Apple 设计十七则、动效评审十条标准、动效词汇表。
+- **engines/database/**（源自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)，
+  MIT，commit `f8ac5e1`，逐字节收编 7 技能 229 文件）：**84 风格 / 192 配色 / 74 字体搭配 /
+  192 产品类型 / 98 UX 准则 / 25 图表类型 / 22 技术栈**的本地 CSV 数据库 + Python 检索脚本
+  （零第三方依赖），10 优先级规则分类（可访问性 CRITICAL → 图表 LOW）。
+- **外部联动**（不落库，探测到即征用）：impeccable（工程动词 + register 分流）、
+  huashu-design（3 方向并行 demo + 5 维评审）、taste-engine（口味档位）。
+- **demos/ 两组示范**：闭环三件套（虚构产品 Curio）——`demo-before-ai-slop.html`（故意堆
+  12 处 slop 特征，逐处 `[SLOP-N]` 注释）→ `demo-audit-report.md`（audit 动词示范：24 项
+  抽查 17 FAIL，逐关卡证据）→ `demo-after-redesign-hum.html`（redesign 动词示范）；
+  **多风格样片画廊**——`demo-style-cobalt-devtool.html`（Cobalt × dev-tool：代码即 hero、
+  可用的 ⌘K 命令面板、一条石墨暗带）、`demo-style-lumen-night.html`（Lumen·Night ×
+  marquee-hero：手工灯丝仪器 + 引线标注、蓝图网格、正弦包络读数条、小写/大写双声部）、
+  `demo-style-carnival-bento.html`（Carnival·Studio-Night × loud bento：青/梅双色对撞、
+  硬偏移阴影、半调网点、跑马灯）。四张页面四套「设计签名」，五轴零重叠——多样性协议的
+  实物证明；头部均带 signature + pre-emit critique 双盖章，320px 无横滚与
+  reduced-motion 降级全数实测通过（无头浏览器验证）。
+- `NOTICE.md`（三引擎溯源：仓库 / commit / 原作者 / 许可 / 移植范围 / 升级方式，
+  原创与收编边界明示）+ `LICENSES/`（三份上游 MIT 全文）+ `zima-design-README.md`（中文使用说明）。
+
+### Changed — 全线生成类 skills 内联「反 AI slop 硬闸」（zima-design 联动）
+
+`viz-deck` / `viz-charts` / `biz-html-viz`（biz-decision-stack）/ `zima-html-ppt` /
+`viz-channel`（OpenClaw + Hermes 两份）的 SKILL.md 统一追加「反 AI slop 硬闸 · zima-design 联动」
+章节——蒸馏 anti-slop 引擎六大纪律为交付前硬闸：
+
+1. 交付前六轴自评（P/H/E/S/R/V 各 1–5 分，任一 < 3 返工，分数注释盖章产物头部）；
+2. 诚实文案（禁编造 "+47% conversion" 式指标 / testimonial / logo 墙）；
+3. 令牌锁定（色值与字体只引 `:root` 令牌，禁内联 hex / OKLCH / 裸字体名）；
+4. 禁手绘假 chrome（假浏览器栏 / 假手机壳 / 假代码窗）；
+5. 响应式硬底线（320/375/414/768px 无横滚 · `overflow-x: clip` · `minmax(0,1fr)` ·
+   可点击文本不折两行）；
+6. 标题禁斜体（display 一律 roman，强调走字重 / 强调色 / 下划线）。
+
+外加**结构多样性**要求（连续同类交付物轮换版式骨架）与 zima-design 桥接（装有 zima-design 时
+交付前跑 `engines/anti-slop/references/slop-test.md` universal 子集）。`taste-engine` 同步升级：
+`anti-slop-preflight.md` 收编六大纪律为硬闸段，SKILL.md 新增「zima-design bridge」章节
+（轻量预检 ↔ 全量设计合奏的分工与升级路径）。claude 侧（`~/.claude/skills` 实装 +
+`claude-code-skills/*.zip`）与 codex 侧（`codex-skills/`）双侧同步并重打包；
+顺手把实装侧落后的 `viz-charts`（缺 SVG-KG 七类）与 `zima-html-ppt`（缺 taste 档位节）
+刷新到仓库最新。
+
 ### Added — `gzh-design`（移植自 [isjiamu/gzh-design-skill](https://github.com/isjiamu/gzh-design-skill)，AGPL-3.0）
 
 **微信公众号文章排版** skill——Markdown / Word(.docx) / PDF / 纯文本 → 可直接粘贴进公众号
@@ -563,7 +626,8 @@ the **Claude Code** harness.
 
 ---
 
-[Unreleased]: https://github.com/ZimaBlueAI/skills/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/ZimaBlueAI/skills/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/ZimaBlueAI/skills/compare/v0.6.0...v0.7.0
 [0.4.0]: https://github.com/ZimaBlueAI/skills/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/ZimaBlueAI/skills/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/ZimaBlueAI/skills/compare/v0.1.0...v0.2.0

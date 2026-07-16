@@ -2,3 +2,9 @@
 .work
 .codewhale/
 __pycache__/
+_trash/
+.work/
+.codewhale/
+.claude/
+.agents/
+.gstack/

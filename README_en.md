@@ -4,7 +4,7 @@
 > Write once, ship across harnesses.
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Release](https://img.shields.io/badge/release-v0.6.0-2b6cb0.svg)](./CHANGELOG.md)
+[![Release](https://img.shields.io/badge/release-v0.7.0-2b6cb0.svg)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-public_preview-orange.svg)](#9-roadmap)
 [![Harness](https://img.shields.io/badge/harness-Claude_Code_·_Codex-7c3aed.svg)](./claude-code-skills/)
 [![Channel](https://img.shields.io/badge/channel-OpenClaw_·_Hermes-0E7C66.svg)](./openclaw-skills/)
@@ -41,7 +41,7 @@ The agent loads a skill when a user expresses the matching intent, and produces 
 
 ## 2. What ships in v0.4.0
 
-Three skills cover the full chain from **board brief to outbound keynote video to truly editable PPT**; **launches simultaneously on Claude Code and OpenAI Codex CLI**. All skills are independent — pick what you need.
+Three skills cover the full chain from **board brief to outbound keynote video to truly editable PPT**; **launches simultaneously on Claude Code and OpenAI Codex CLI**. **v0.7 adds the in-house design ensemble engine `zima-design`** (three engines under one original routing protocol + a five-axis diversity protocol + a four-style demo gallery) and inlines a hard anti-slop gate across every generating skill. All skills are independent — pick what you need.
 
 | Skill | One line | Output | Zip size |
 |---|---|---|---|
@@ -52,6 +52,11 @@ Three skills cover the full chain from **board brief to outbound keynote video t
 | **taste-engine** 🆕 | shared taste layer · three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY) + anti-slop preflight + material/copy rules | design tokens + preflight checklist + two demos (dark-cinematic web · warm-paper deck) | docs + demos |
 | **web-shader-extractor** 🆕 (ported · not ZimaBlue suite) | **Extract & evidence-matched local replay** of webpage WebGL/WebGPU/Canvas shader effects (Recon Kernel state machine + 6 core rules) · ported from [lixiaolin94/skills](https://github.com/lixiaolin94/skills) (MIT) | extraction/replay project + 4 self-contained demos (incl. a logo-vectorized generative-fold 3D use case) | folder · zero hard deps |
 | **gzh-design** 🆕 (ported · not ZimaBlue suite) | **WeChat Official Account article typesetting**: Markdown/docx/PDF/plain text → paste-safe WeChat-editor HTML (6 themes + theme generator + dual-gate validation + one-click copy preview) · ported from [isjiamu/gzh-design-skill](https://github.com/isjiamu/gzh-design-skill) (AGPL-3.0) | clean body HTML + a preview page with a "copy to WeChat" button | folder · zero hard deps |
+| **zima-design** 🆕 | **Design ensemble engine**: an original routing protocol conducting three built-in engines — anti-slop (21 macrostructures × 20 themes × **57 slop-test gates**, from [nutlope/hallmark](https://github.com/nutlope/hallmark)) + motion (animation decision framework / spring physics / performance rules, from [emilkowalski/skills](https://github.com/emilkowalski/skills)) + database (**84 styles / 192 palettes / 74 font pairings / 98 UX guidelines / 22 stacks** searchable, from [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)) — bridging impeccable / huashu-design / taste-engine · **a five-axis diversity protocol guarantees no two deliveries share a skeleton** | pages double-stamped with a design signature + six-axis self-critique / audit reports / stack-aware style picks + a 3-piece demo set | folder · Python 3 for database search |
+
+### 🆕 zima-design: the design ensemble engine + anti-AI-slop upgrade across the line
+
+New in-house skill **`zima-design`** — three complementary design intelligences conducted by one original routing protocol: **structural & thematic variety** (anti-slop engine: 21 rotating macrostructures + 57 slop-test gates + audit/redesign verbs), **motion & feel** (motion engine: the frequency → purpose → easing → duration decision framework; "should it animate" comes before "how"), and **data-backed selection** (database engine: 84 styles / 192 palettes / 98 UX guidelines searched locally). A **five-axis diversity protocol** (macrostructure × theme × motion personality × card physics × density rhythm) forces consecutive deliveries to never share a template skeleton — the ensemble answer to AI-template sameness. All three engines are byte-for-byte MIT imports (provenance in `zima-design/NOTICE.md`), with external bridges to impeccable / huashu-design / taste-engine. Ships a 3-piece demo: a deliberately sloppy specimen page (12 tagged slop tells) → an audit report (17/24 gates FAIL) → the redesigned counterpart. In the same pass, every generating skill in this repo — `viz-deck` / `viz-charts` / `biz-html-viz` (biz-decision-stack) / `zima-html-ppt` / `viz-channel` — now inlines a **hard anti-slop gate** in its SKILL.md: six disciplines (pre-emit six-axis self-critique / no invented metrics / locked color+font tokens / no re-drawn fake chrome / 320–768 px responsive floor / no italic headers), auto-bridging to the full 57 gates when zima-design is installed. `taste-engine`'s preflight absorbs the same distillation.
 
 ### 🆕 Channel delivery layer · OpenClaw / Hermes (new in v0.5)
 

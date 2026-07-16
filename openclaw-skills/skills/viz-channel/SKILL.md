@@ -168,3 +168,36 @@ Windows 上把 `bash scripts/channel_send.sh` 换成 `pwsh scripts/channel_send.
 - ❌ 在频道里甩长问卷——最多 2 个关键问题,给足默认。
 - ❌ 自己硬写 HTML/PPTX 跳过 viz 系技能——会丢掉设计系统、出 AI slop。
 - ❌ 把 app_secret 写死进命令或提交进库。
+
+---
+
+## 反 AI slop 硬闸 · zima-design 联动
+
+交付前除本 skill 自身规范与反模式清单外，再过一遍下面六条**硬闸**——蒸馏自
+[nutlope/hallmark](https://github.com/nutlope/hallmark)（MIT · Anti-AI-slop design skill，
+已收编为本仓库 `zima-design` 的 anti-slop 引擎）的六大纪律，任何 HTML / deck / 图表产出都适用：
+
+1. **交付前六轴自评** — Philosophy / Hierarchy / Execution / Specificity / Restraint / Variety
+   各打 1–5 分，任一 < 3 先返工再交付；把分数以注释盖在产物头部
+   （`<!-- zima-design pre-emit critique: P5 H4 E5 S4 R5 V5 -->`）。
+2. **诚实文案** — 用户没给的指标一律不编：禁止 "+47% conversion"、"50,000+ teams"、
+   编造的 testimonial / logo 墙 / 案例数；缺数据用 `—` + 「待确认」灰块占位，或换一种版式。
+3. **令牌锁定** — 主题选定后，色值与 `font-family` 只许引用 `:root` 令牌
+   （`var(--color-accent)` / `var(--font-display)`）；禁止内联 hex / OKLCH / 裸字体名，
+   需要新值先入令牌块再引用。
+4. **禁手绘假 chrome** — 不画假浏览器栏（红黄绿点 + URL 胶囊）、假手机壳、
+   假代码窗标题栏、假 IDE 窗口；要么真截图包 `<figure>`（至多发丝描边），要么让内容裸站。
+5. **响应式硬底线** — 320 / 375 / 414 / 768px 四档无横向滚动（根上 `overflow-x: clip`，
+   不用 `hidden`）；带图网格轨道用 `minmax(0,1fr)` 不用裸 `1fr`；可点击文本（按钮 / 导航 /
+   CTA）不许折成两行；超长词标题加 `overflow-wrap: anywhere; min-width: 0`。
+6. **标题禁斜体** — 标题与 display 字一律 roman（`font-style: normal`）；
+   强调用字重 / 强调色 / 下划线承载，斜体只留正文强调。
+
+**结构多样性**：同一会话连续产出多份同类交付物时，轮换章节节奏与版式骨架——
+两份产出不允许共享同一套「hero → 三卡 → CTA」式模板节奏。
+
+若本机装有 **zima-design** skill（`~/.claude/skills/zima-design/`、项目 `.claude/skills/zima-design/`
+或 `.codex/skills/zima-design/`），交付前加载其 `engines/anti-slop/references/slop-test.md` 跑 **universal 子集**
+（视觉 / 排版 / 文案 / 对比度 / a11y / 微交互关卡；报告与 deck 类产出跳过整页宏结构轮换与
+`.hallmark/log.json` 项目记忆关卡）。口味档位与选材 / 文案细则见姊妹层 **taste-engine**
+（`references/anti-slop-preflight.md`）。

@@ -81,8 +81,22 @@ Both are the canonical reference for "what tasteful looks like" in this repo.
 ## 4. References
 
 - `references/taste-dials.md` — the three dials → token/behavior mapping + CSS/JS recipe
-- `references/anti-slop-preflight.md` — the pre-ship kill-list
+- `references/anti-slop-preflight.md` — the pre-ship kill-list（含 zima-design（anti-slop 引擎）六大纪律硬闸）
 - `references/material-and-copy.md` — 选材 + 文案 taste rules
+
+## 5. zima-design bridge — 升级到全量设计合奏
+
+本层的 preflight 是**轻量 kill-list**；当交付物是对外页面（落地页 / 官网 / 作品集），
+或用户要求「彻底反 AI 味 / audit / redesign」时，升级到姊妹 skill
+**zima-design**（本仓库自有设计合奏引擎，其 anti-slop 引擎源自 [nutlope/hallmark](https://github.com/nutlope/hallmark)，MIT）：
+
+- `zima-design/engines/anti-slop/references/slop-test.md` — 57 条验收关卡，逐条过闸；
+- `zima-design/engines/anti-slop/references/anti-patterns.md` — 反模式全清单（编造指标 / 假 chrome / 斜体标题…）；
+- `zima-design/engines/anti-slop/references/structure.md` + `macrostructures/` — 结构多样性：21 种页面宏结构轮换。
+
+分工：**taste-engine 管「已有产出的口味档位」**（dial + 预检，轻叠加）；
+**zima-design 管「从零设计的完整合奏」**（宏结构选型 → 主题路由 → slop-test）。
+两者同向不冲突：其六大纪律已蒸馏进本层 `anti-slop-preflight.md`。
 
 ## 参考（可选搭配）
 
