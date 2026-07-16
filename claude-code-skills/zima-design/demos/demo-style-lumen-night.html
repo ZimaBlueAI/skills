@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="lumen" data-drop="night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cinder — realtime inference, instrument-grade</title>
+<!--
+  zima-design demo · 风格样片 3/4（虚构产品 cinder，所有数字为示例数据 / all figures are demo data）
+  zima-design signature: 宏结构=marquee-hero 主题=lumen·night-foundry 动效=calm-editorial 物理=hairline+内发光 密度=通铺留白
+  zima-design pre-emit critique: P5 H4 E4 S4 R5 V5
+  协议出处：engines/anti-slop/references/themes/lumen.md
+  硬规则自查：手工仪器(灯丝腔体,非发光球) · 全小写正文+全大写mono标签双声部 · 动词地标(珊瑚色+划线,无斜体) ·
+  蓝图网格4% · 读数条(正弦包络,非均匀) · 发丝线卡片内发光 · 三格统计行(tabular-nums) · 仪器只脉动不旋转 ·
+  320px无横滚 · reduced-motion冻结在满亮度
+  说明：Lumen 的小写/大写双声部是拉丁字排版签名，正文以英文呈现原味。
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --color-paper: oklch(13% 0.014 265);
+    --color-ink: oklch(96% 0.006 262);
+    --color-ink-2: oklch(78% 0.008 262);
+    --color-muted: oklch(58% 0.01 262);
+    --color-accent: oklch(76% 0.17 50);          /* molten brass */
+    --color-accent-2: oklch(68% 0.16 18);        /* coral chord — the verb landmark */
+    --color-glow: oklch(80% 0.16 50 / 0.42);
+    --color-glow-2: oklch(80% 0.16 50 / 0.14);
+    --color-paper-emit: oklch(76% 0.17 50 / 0.04);
+    --color-rule: oklch(96% 0.006 262 / 0.12);
+    --color-rule-2: oklch(96% 0.006 262 / 0.20);
+    --rule-blueprint: oklch(96% 0.006 262 / 0.04);
+    --font-display: "Instrument Serif", "Tiempos Headline", ui-serif, Georgia, serif;
+    --font-body: "Geist", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --shell: 1040px;
+    --page-gutter: clamp(20px, 4vw, 44px);
+    --text-display: clamp(2.2rem, 4.8vw + 0.5rem, 4rem);
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-pulse: 4s;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { overflow-x: clip; }
+  body {
+    background: var(--color-paper); color: var(--color-ink-2);
+    font-family: var(--font-body); line-height: 1.7;
+    font-variant-numeric: tabular-nums;
+    text-transform: lowercase;                 /* prose default — the two-register foundation */
+    overflow-wrap: anywhere;
+  }
+  a { color: var(--color-ink); text-decoration: none; border-bottom: 1px solid var(--color-rule-2); }
+  a:hover { border-bottom-color: var(--color-accent-2); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+
+  .eyebrow, .callout, .meter-label, .stat-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.10em;
+    text-transform: uppercase;                 /* mono labels — the only uppercase surface */
+    color: var(--color-ink); opacity: 0.55;
+  }
+  .shell { max-width: var(--shell); margin-inline: auto; padding-inline: var(--page-gutter); }
+
+  .reveal { opacity: 0; transform: translateY(12px);
+            transition: opacity .6s var(--ease-soft), transform .6s var(--ease-soft); }
+  .reveal.is-in { opacity: 1; transform: none; }
+
+  /* ── hero: headline-left / apparatus-right, blueprint grid + emit wash ── */
+  .hero-section {
+    overflow: clip;                            /* halo stays inside the hero */
+    background:
+      linear-gradient(var(--rule-blueprint) 1px, transparent 1px) 0 0 / 48px 48px,
+      linear-gradient(90deg, var(--rule-blueprint) 1px, transparent 1px) 0 0 / 48px 48px,
+      radial-gradient(60% 50% at 78% 30%, var(--color-paper-emit) 0%, transparent 65%),
+      var(--color-paper);
+  }
+  .hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+          gap: clamp(28px, 5vw, 72px); align-items: center;
+          padding-block: clamp(56px, 9vw, 120px); }
+  .hero-title { font-family: var(--font-display); font-weight: 400; font-style: normal;
+                color: var(--color-ink); font-size: var(--text-display);
+                line-height: 1.02; letter-spacing: -0.032em; max-width: 16ch; margin: 16px 0 20px; }
+  .hero-title em { font-style: normal; color: var(--color-accent-2); position: relative; white-space: nowrap; }
+  .hero-title em::after {
+    content: ""; position: absolute; left: 0.05em; right: 0.05em; bottom: 0.04em; height: 1px;
+    background: var(--color-accent-2); transform-origin: left;
+    animation: verb-underline 320ms var(--ease-soft) 900ms backwards;
+  }
+  @keyframes verb-underline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .hero .lede { max-width: 44ch; margin-bottom: 26px; }
+  .btn-brass { display: inline-block; cursor: pointer; font-family: var(--font-body); font-weight: 500;
+               font-size: 0.95rem; text-transform: lowercase; color: oklch(16% 0.02 60);
+               background: var(--color-accent); border: 0; border-radius: 6px; padding: 10px 18px;
+               transition: filter 180ms var(--ease-soft); }
+  .btn-brass:hover { filter: brightness(1.07); }
+  .cta-quiet { font-family: var(--font-mono); font-size: 12.5px; margin-left: 16px; border: 0;
+               color: var(--color-muted); }
+  .cta-quiet:hover { color: var(--color-ink); }
+
+  /* ── the apparatus: filament chamber + leader callouts. pulses, never rotates ── */
+  .apparatus { position: relative; margin-inline: auto; width: fit-content; }
+  .chamber { position: relative; width: clamp(170px, 22vw, 260px); aspect-ratio: 0.55;
+             border: 1px solid var(--color-rule-2); border-radius: 999px;
+             background: oklch(17% 0.016 265 / 0.8); overflow: hidden; }
+  .chamber-electrode { position: absolute; left: 0; right: 0; top: var(--y); height: 1px;
+                       background: var(--color-rule-2); }
+  .chamber-filament { position: absolute; top: 8%; bottom: 8%; left: 50%; width: 2px; margin-left: -1px;
+    background: linear-gradient(to bottom, oklch(96% 0.05 50) 0%, oklch(80% 0.17 50) 50%, oklch(96% 0.05 50) 100%);
+    box-shadow: 0 0 16px 4px var(--color-glow), 0 0 48px 12px oklch(80% 0.16 50 / 0.22);
+    animation: filament-pulse var(--dur-pulse) ease-in-out infinite; }
+  .chamber-glow { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, var(--color-glow-2) 0%, transparent 70%); }
+  .chamber-stencil { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+                     font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em;
+                     text-transform: uppercase; color: var(--color-muted); }
+  @keyframes filament-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.86; } }
+  .callouts { list-style: none; margin: 0; padding: 0; }
+  .callout { position: absolute; top: var(--y); white-space: nowrap; }
+  .callout[data-side="left"]  { right: calc(100% + 14px); }
+  .callout[data-side="right"] { left: calc(100% + 14px); }
+  .callout::before { content: ""; position: absolute; top: 50%; width: 12px; height: 1px;
+                     background: var(--color-rule-2); }
+  .callout[data-side="left"]::before  { left: calc(100% + 2px); }
+  .callout[data-side="right"]::before { right: calc(100% + 2px); }
+
+  /* ── meter strip: printed readout, procedural sine envelope, static ── */
+  .meter { display: grid; grid-template-columns: auto 1fr auto; gap: 1.5rem; align-items: center;
+           padding: 0.75rem var(--page-gutter); border-block: 1px solid var(--color-rule); }
+  .meter-bars { display: flex; gap: 2px; align-items: end; height: 28px; min-width: 0; }
+  .meter-bars > span { flex: 1; min-width: 1px; background: var(--color-accent); border-radius: 0.5px; }
+  @media (max-width: 560px) { .meter { grid-template-columns: 1fr; gap: 0.5rem; } .meter-label { text-align: left; } }
+
+  /* ── sections ── */
+  .section { padding-block: clamp(48px, 8vw, 96px); }
+  .section h2 { font-family: var(--font-display); font-weight: 400; color: var(--color-ink);
+                font-size: clamp(1.5rem, 2.4vw + 0.5rem, 2.3rem); letter-spacing: -0.02em; margin: 12px 0 14px; }
+
+  /* hairline cards, lit from within — one wide + two narrow, never 3 equal */
+  .card-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+  .card { position: relative; border: 1px solid var(--color-rule); border-radius: 10px; padding: 22px 24px;
+          background: radial-gradient(120% 90% at 50% 0%, oklch(76% 0.17 50 / 0.05) 0%, transparent 60%);
+          transition: transform 220ms var(--ease-soft), background 220ms var(--ease-soft); }
+  .card:hover { transform: translateY(-4px);
+                background: radial-gradient(120% 90% at 50% 0%, oklch(76% 0.17 50 / 0.11) 0%, transparent 60%); }
+  .card--wide { grid-column: span 6; }
+  .card--half { grid-column: span 3; }
+  .card h3 { font-family: var(--font-body); font-weight: 500; color: var(--color-ink);
+             font-size: 1.02rem; margin: 8px 0 6px; }
+  .card p { font-size: 0.92rem; color: var(--color-muted); max-width: 60ch; }
+  @media (max-width: 640px) { .card--half { grid-column: span 6; } }
+
+  /* three-stat row — instrument serif numerals, hairline dividers, always three */
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 8px;
+           border-block: 1px solid var(--color-rule); }
+  .stat { padding: 26px 20px; }
+  .stat + .stat { border-left: 1px solid var(--color-rule); }
+  .stat b { display: block; font-family: var(--font-display); font-weight: 400; color: var(--color-ink);
+            font-size: clamp(2.2rem, 4vw + 0.6rem, 4rem); line-height: 1; letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums; margin-bottom: 8px; }
+  @media (max-width: 560px) { .stats { grid-template-columns: minmax(0, 1fr); }
+    .stat + .stat { border-left: 0; border-top: 1px solid var(--color-rule); } }
+
+  .footer { border-top: 1px solid var(--color-rule); }
+  .footer-row { display: flex; justify-content: space-between; align-items: center; gap: 14px;
+                flex-wrap: wrap; padding-block: 24px; }
+  .footer a { border: 0; font-size: 0.85rem; color: var(--color-muted); }
+  .footer a:hover { color: var(--color-ink); }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: minmax(0, 1fr); }
+    .apparatus { margin-top: 12px; }
+    .callout[data-side="left"]  { right: calc(100% + 6px); }
+    .callout[data-side="right"] { left: calc(100% + 6px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .chamber-filament { animation: none; }               /* freeze at full intensity */
+    .hero-title em::after { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .card, .btn-brass { transition: none; }
+    .card:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="shell" style="display: flex; justify-content: space-between; align-items: center; padding-block: 18px;">
+  <span style="font-family: var(--font-display); font-size: 1.3rem; color: var(--color-ink);">cinder</span>
+  <span class="eyebrow">DEMO · ZIMA-DESIGN / LUMEN</span>
+</header>
+
+<main>
+  <section class="hero-section">
+    <div class="shell hero">
+      <div class="reveal">
+        <p class="eyebrow">00 · INFERENCE</p>
+        <h1 class="hero-title">a runtime built to&nbsp;<em>think</em>&nbsp;while the request is still open.</h1>
+        <p class="lede">cinder keeps a model warm in the chamber and answers before your gateway times out. one primitive. scales to zero when the room goes quiet.</p>
+        <div>
+          <button class="btn-brass">open the console</button>
+          <a class="cta-quiet" href="#docs">read the docs →</a>
+        </div>
+      </div>
+      <figure class="apparatus reveal" aria-hidden="true">
+        <div class="chamber">
+          <span class="chamber-electrode" style="--y: 22%"></span>
+          <span class="chamber-electrode" style="--y: 42%"></span>
+          <span class="chamber-electrode" style="--y: 62%"></span>
+          <span class="chamber-electrode" style="--y: 82%"></span>
+          <span class="chamber-filament"></span>
+          <span class="chamber-glow"></span>
+          <span class="chamber-stencil">rx-04</span>
+        </div>
+        <ul class="callouts">
+          <li class="callout" data-side="left"  style="--y: 16%"><span>P50 · 28 MS</span></li>
+          <li class="callout" data-side="right" style="--y: 34%"><span>COLD-START · 0.4 S</span></li>
+          <li class="callout" data-side="left"  style="--y: 60%"><span>RPS · 12 K</span></li>
+          <li class="callout" data-side="right" style="--y: 80%"><span>RX-04 · DEMO RIG</span></li>
+        </ul>
+      </figure>
+    </div>
+  </section>
+
+  <aside class="meter" aria-label="signal readout (demo data)">
+    <p class="meter-label">SIGNAL · 12.4 KHZ</p>
+    <div class="meter-bars" id="meterBars"></div>
+    <p class="meter-label">DRIFT · 0.04 σ</p>
+  </aside>
+
+  <section class="shell section reveal">
+    <p class="eyebrow">01 · RUNTIME</p>
+    <h2>the chamber stays warm so you don't have to.</h2>
+    <p style="max-width: 56ch;">most inference stacks re-light the furnace on every burst. cinder holds a standing filament — requests land on a model that is already thinking.</p>
+    <div class="card-grid">
+      <div class="card card--wide">
+        <p class="eyebrow">SNAPSHOT RESTORE</p>
+        <h3>0.4 s cold starts, measured not promised</h3>
+        <p>the runtime freezes a booted model image and maps it back in pages. the demo rig restores an 8b model in under half a second — the number in the callout is the number in the log.</p>
+      </div>
+      <div class="card card--half">
+        <p class="eyebrow">SCALE-TO-ZERO</p>
+        <h3>quiet rooms cost nothing</h3>
+        <p>no traffic for 60 s and the chamber banks its fire. first request re-lights it.</p>
+      </div>
+      <div class="card card--half">
+        <p class="eyebrow">ONE PRIMITIVE</p>
+        <h3>a function, not a fleet</h3>
+        <p>you deploy a handler. replicas, routing and warmth are the runtime's problem.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell section reveal" id="docs" style="padding-top: 0;">
+    <p class="eyebrow">02 · READOUT</p>
+    <h2>numbers from the demo rig.</h2>
+    <div class="stats">
+      <div class="stat"><b>28 ms</b><span class="stat-label">P50 · CHAT COMPLETION</span></div>
+      <div class="stat"><b>0.4 s</b><span class="stat-label">COLD-START · 8B MODEL</span></div>
+      <div class="stat"><b>0 → 1000</b><span class="stat-label">REPLICAS · ONE FLAG</span></div>
+    </div>
+    <p style="font-size: 0.82rem; color: var(--color-muted); margin-top: 10px;">demo data — figures are from this fictional product's sample bench log, not a production claim.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="shell footer-row">
+    <span class="eyebrow">CINDER · DEMO BY ZIMA-DESIGN · 2026</span>
+    <nav style="display: flex; gap: 18px;" aria-label="footer">
+      <a href="#">docs</a><a href="#">pricing</a><a href="#">status</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // reveal on view-enter
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver((es) => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+  }), { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => reduced ? el.classList.add('is-in') : io.observe(el));
+
+  // meter strip — procedural sine-and-gaussian envelope, printed once, never animates
+  const bars = document.getElementById('meterBars');
+  const N = 64;
+  for (let i = 0; i < N; i++) {
+    const t = i / (N - 1);
+    const env = Math.exp(-Math.pow((t - 0.42) / 0.28, 2));          // gaussian centre
+    const ripple = 0.5 + 0.5 * Math.sin(t * Math.PI * 9 + 0.7);     // fine structure
+    const h = Math.max(0.08, env * (0.45 + 0.55 * ripple));
+    const s = document.createElement('span');
+    s.style.height = (h * 100).toFixed(1) + '%';
+    s.style.opacity = (0.35 + 0.65 * h).toFixed(2);
+    bars.appendChild(s);
+  }
+</script>
+
+</body>
+</html>

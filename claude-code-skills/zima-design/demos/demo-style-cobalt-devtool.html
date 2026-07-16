@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="cobalt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>relay — 本地 webhook 捕获与重放 CLI</title>
+<!--
+  zima-design demo · 风格样片 2/4（虚构产品 relay，所有数字为示例数据）
+  zima-design signature: 宏结构=dev-tool/CLI 主题=cobalt 动效=crisp-professional 物理=hairline扁平 密度=一段刻意密集
+  zima-design pre-emit critique: P4 H5 E4 S5 R5 V4
+  协议出处：engines/anti-slop/references/themes/cobalt.md
+  硬规则自查：冷白纸(非#fff) · 单一钴蓝信号<5% · 代码即hero(题左码右) · 真·⌘K面板 ·
+  一条石墨暗带 · 6px直尺圆角 · 无软阴影 · 320px无横滚 · reduced-motion全降级
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --color-paper: oklch(98.5% 0.004 250);
+    --color-ink: oklch(24% 0.02 258);
+    --color-ink-2: oklch(34% 0.018 257);
+    --color-muted: oklch(48% 0.015 255);
+    --color-rule: oklch(88% 0.008 252);
+    --color-rule-2: oklch(34% 0.02 258 / 0.25);
+    --color-accent: oklch(58% 0.20 256);
+    --color-accent-ink: oklch(98.5% 0.004 250);
+    --color-graphite: oklch(22% 0.016 260);
+    --color-graphite-2: oklch(20% 0.016 260);
+    --color-code-light: oklch(90% 0.01 255);
+    --color-code-muted: oklch(62% 0.015 255);
+    --font-display: "Space Grotesk", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --shell: 1060px;
+    --page-gutter: clamp(20px, 4vw, 44px);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { overflow-x: clip; }
+  body {
+    background: var(--color-paper); color: var(--color-ink-2);
+    font-family: var(--font-body); font-weight: 400; line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-style: normal; color: var(--color-ink); letter-spacing: -0.02em; }
+  a { color: var(--color-ink); text-decoration: none; border-bottom: 1px solid var(--color-rule); }
+  a:hover, a:focus-visible { border-bottom-color: var(--color-accent); color: var(--color-ink); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+  .mono-label {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-muted);
+  }
+  .shell { max-width: var(--shell); margin-inline: auto; padding-inline: var(--page-gutter); }
+
+  /* reveal — the whole motion engine (crisp, 600ms ease-out, once) */
+  .reveal { opacity: 0; transform: translateY(10px);
+            transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
+  .reveal.is-in { opacity: 1; transform: none; }
+
+  /* ── nav: flush bar, hairline bottom, working ⌘K ── */
+  .nav { position: sticky; top: 0; z-index: 20; background: oklch(98.5% 0.004 250 / 0.85);
+         border-bottom: 1px solid var(--color-rule); backdrop-filter: blur(8px); }
+  .nav-row { display: flex; align-items: center; gap: 20px; padding-block: 12px; }
+  .brand { font-family: var(--font-mono); font-weight: 600; font-size: 15px; color: var(--color-ink); border: 0; }
+  .brand b { color: var(--color-accent); font-weight: 600; }
+  .nav-links { display: flex; gap: 18px; margin-right: auto; }
+  .nav-links a { border: 0; font-size: 14px; color: var(--color-ink-2); }
+  .kbd-btn { display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+             font-family: var(--font-mono); font-size: 12px; color: var(--color-muted);
+             background: var(--color-paper); border: 1px solid var(--color-rule); border-radius: 6px;
+             padding: 6px 10px; transition: border-color 150ms var(--ease-out); }
+  .kbd-btn:hover { border-color: var(--color-accent); color: var(--color-ink); }
+  .kbd-btn kbd { font: inherit; }
+  .btn-primary { font-family: var(--font-body); font-weight: 500; font-size: 14px; cursor: pointer;
+                 background: var(--color-accent); color: var(--color-accent-ink);
+                 border: 1px solid var(--color-accent); border-radius: 6px; padding: 7px 14px;
+                 transition: filter 150ms var(--ease-out); }
+  .btn-primary:hover { filter: brightness(1.08); }
+
+  /* ── hero: title left / terminal right, never centred ── */
+  .hero { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+          gap: clamp(28px, 5vw, 64px); align-items: center; padding-block: clamp(48px, 8vw, 104px); }
+  .hero h1 { font-size: clamp(1.9rem, 3.4vw + 0.6rem, 3.1rem); font-weight: 600; line-height: 1.08; margin: 14px 0 16px; }
+  .hero .lede { font-size: 1.05rem; max-width: 44ch; margin-bottom: 24px; }
+  .hero-ctas { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .cta-secondary { font-family: var(--font-mono); font-size: 13px; border: 1px solid var(--color-rule);
+                   border-radius: 6px; padding: 8px 12px; color: var(--color-ink-2); }
+
+  /* terminal card — the hero. graphite, window bar, one hairline, whisper of lift */
+  .code-card { background: var(--color-graphite); border: 1px solid var(--color-rule-2);
+               border-radius: 10px; box-shadow: 0 1px 2px oklch(24% 0.02 258 / 0.05);
+               font-family: var(--font-mono); font-size: 13px; line-height: 1.7;
+               overflow: hidden; transition: border-color 150ms var(--ease-out); }
+  .code-card:hover { border-color: var(--color-accent); }
+  .code-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+              border-bottom: 1px solid oklch(90% 0.01 255 / 0.08); }
+  .code-bar i { width: 9px; height: 9px; border-radius: 50%; background: oklch(90% 0.01 255 / 0.18); }
+  .code-bar .fname { margin-left: 6px; font-size: 11.5px; color: var(--color-code-muted); }
+  .code-body { padding: 16px 18px; overflow-x: auto; color: var(--color-code-light); }
+  .code-body .ln { display: block; white-space: pre; }
+  .tok-cmd { color: var(--color-code-light); }
+  .tok-key { color: oklch(72% 0.14 256); }
+  .tok-dim { color: var(--color-code-muted); }
+  .tok-str { color: oklch(84% 0.06 160); }
+  .status-ok { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+               color: oklch(72% 0.14 256); border: 1px solid oklch(72% 0.14 256 / 0.4);
+               border-radius: 4px; padding: 1px 7px; }
+  .caret { display: inline-block; width: 7px; height: 14px; vertical-align: -2px;
+           background: oklch(72% 0.14 256); animation: caret-blink 1s steps(1) infinite; }
+  @keyframes caret-blink { 50% { opacity: 0; } }
+
+  /* ── the deliberately dense section: everything relay records, hairline table ── */
+  .dense { border-block: 1px solid var(--color-rule); padding-block: clamp(36px, 6vw, 64px); }
+  .dense-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+  .dense h2 { font-size: clamp(1.3rem, 2vw + 0.5rem, 1.8rem); font-weight: 600; }
+  .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); border: 1px solid var(--color-rule); }
+  .spec { border: 1px solid var(--color-rule); margin: -0.5px; padding: 16px 18px; }
+  .spec h3 { font-size: 0.95rem; font-weight: 600; margin: 8px 0 6px; }
+  .spec p { font-size: 0.88rem; color: var(--color-muted); }
+  .spec .mono-label b { color: var(--color-accent); font-weight: 600; }
+
+  /* ── graphite band: the page's one dark beat — watch mode walkthrough ── */
+  .band { background: var(--color-graphite-2); color: var(--color-code-light); }
+  .band-inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+                gap: clamp(24px, 4vw, 56px); padding-block: clamp(44px, 7vw, 80px); align-items: center; }
+  .band h2 { color: var(--color-code-light); font-size: clamp(1.4rem, 2.2vw + 0.5rem, 2rem); margin: 12px 0 14px; }
+  .band p { color: oklch(78% 0.012 255); font-size: 0.98rem; max-width: 40ch; }
+  .band .mono-label { color: oklch(62% 0.015 255); }
+  .band-steps { list-style: none; padding: 0; font-family: var(--font-mono); font-size: 13px; }
+  .band-steps li { display: flex; gap: 14px; padding: 13px 2px; border-bottom: 1px solid oklch(90% 0.01 255 / 0.08); }
+  .band-steps li:last-child { border-bottom: 0; }
+  .band-steps .n { color: var(--color-accent); }
+  .band-steps .k { color: oklch(72% 0.14 256); }
+
+  /* ── footer: hairline single row + docs links, no statement ── */
+  .footer { border-top: 1px solid var(--color-rule); }
+  .footer-row { display: flex; justify-content: space-between; align-items: center; gap: 14px;
+                flex-wrap: wrap; padding-block: 22px; }
+  .footer a { border: 0; font-size: 13px; color: var(--color-muted); }
+  .footer a:hover { color: var(--color-ink); }
+
+  /* ── ⌘K palette — real, focus-managed, Esc closes ── */
+  .palette-backdrop { position: fixed; inset: 0; z-index: 50; background: oklch(24% 0.02 258 / 0.32);
+                      display: none; align-items: flex-start; justify-content: center; padding: 12vh 16px 0; }
+  .palette-backdrop.open { display: flex; }
+  .palette { width: min(560px, 100%); background: var(--color-paper); border: 1px solid var(--color-rule);
+             border-radius: 10px; box-shadow: 0 1px 2px oklch(24% 0.02 258 / 0.05); overflow: hidden; }
+  .palette input { width: 100%; border: 0; border-bottom: 1px solid var(--color-rule); background: transparent;
+                   font-family: var(--font-mono); font-size: 14px; color: var(--color-ink);
+                   padding: 14px 16px; outline: none; }
+  .palette ul { list-style: none; margin: 0; padding: 6px; max-height: 40vh; overflow-y: auto; }
+  .palette li { display: flex; justify-content: space-between; gap: 12px; border-radius: 6px;
+                padding: 10px 12px; font-size: 13.5px; color: var(--color-ink-2); cursor: pointer; }
+  .palette li[aria-selected="true"] { background: oklch(58% 0.20 256 / 0.08); color: var(--color-ink); }
+  .palette li kbd { font-family: var(--font-mono); font-size: 11px; color: var(--color-muted); }
+  .palette li[hidden] { display: none; }
+
+  @media (max-width: 760px) {
+    .hero, .band-inner { grid-template-columns: minmax(0, 1fr); }
+    .nav-links { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .caret { animation: none; }
+    .code-card, .kbd-btn, .btn-primary { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="shell nav-row">
+    <a class="brand" href="#">relay<b>_</b></a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#capture">捕获</a><a href="#replay">重放</a><a href="#docs">文档</a>
+    </nav>
+    <button class="kbd-btn" id="openPalette" aria-haspopup="dialog">搜索命令 <kbd>⌘K</kbd></button>
+    <button class="btn-primary">npm i -g relay-cli</button>
+  </div>
+</header>
+
+<main>
+  <section class="shell hero">
+    <div class="reveal">
+      <p class="mono-label">WEBHOOK · LOCAL-FIRST</p>
+      <h1>把线上 webhook<br>接进你的 localhost。</h1>
+      <p class="lede">relay 捕获打到公网地址的每一个 webhook，落成本地文件，随时逐个重放到 localhost——断点调试第三方回调，不再部署十次才复现一次。</p>
+      <div class="hero-ctas">
+        <button class="btn-primary">开始使用</button>
+        <a class="cta-secondary" href="#docs">relay --help</a>
+      </div>
+    </div>
+    <div class="code-card reveal" role="img" aria-label="relay CLI 终端演示（示例数据）">
+      <div class="code-bar"><i></i><i></i><i></i><span class="fname">terminal — 示例会话</span></div>
+      <div class="code-body">
+<span class="ln"><span class="tok-dim">$</span> <span class="tok-cmd" id="typeLine"></span><span class="caret" id="typeCaret"></span></span>
+<span class="ln">&nbsp;</span>
+<span class="ln"><span class="tok-dim">→ 监听</span> <span class="tok-key">https://in.relay.dev/ze7q</span></span>
+<span class="ln"><span class="tok-dim">→ 转发</span> <span class="tok-key">http://localhost:3000/hooks</span></span>
+<span class="ln">&nbsp;</span>
+<span class="ln"><span class="tok-str">12:04:11</span> POST /hooks <span class="tok-dim">stripe.invoice.paid</span>   <span class="status-ok">200 OK</span></span>
+<span class="ln"><span class="tok-str">12:04:37</span> POST /hooks <span class="tok-dim">stripe.charge.failed</span> <span class="status-ok">200 OK</span></span>
+<span class="ln"><span class="tok-dim"># 断线期间的 2 条已落盘，`relay replay` 补发</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="dense shell reveal" id="capture">
+    <div class="dense-head">
+      <h2>一次捕获，处处重放</h2>
+      <p class="mono-label">RECORDED FIELDS · v0.9</p>
+    </div>
+    <div class="spec-grid">
+      <div class="spec"><p class="mono-label"><b>01</b> · BODY</p><h3>原始载荷</h3><p>字节级保存请求体，含压缩编码与分块传输的还原。</p></div>
+      <div class="spec"><p class="mono-label"><b>02</b> · HEADERS</p><h3>完整请求头</h3><p>签名头（Stripe-Signature 等）原样保留，重放时签名校验照常通过。</p></div>
+      <div class="spec"><p class="mono-label"><b>03</b> · TIMING</p><h3>到达时序</h3><p>毫秒级时间戳与到达顺序，`--realtime` 按原始间隔重放。</p></div>
+      <div class="spec"><p class="mono-label"><b>04</b> · RETRY</p><h3>重试链</h3><p>同一事件的多次投递归并为一条链，重放时可只取末次。</p></div>
+      <div class="spec"><p class="mono-label"><b>05</b> · FILTER</p><h3>事件过滤</h3><p>`relay replay --only stripe.invoice.*` 通配符选择性重放。</p></div>
+      <div class="spec"><p class="mono-label"><b>06</b> · DIFF</p><h3>响应对比</h3><p>每次重放记录本地响应，`relay diff` 对比两次代码改动的行为差异。</p></div>
+    </div>
+  </section>
+
+  <section class="band" id="replay">
+    <div class="shell band-inner">
+      <div class="reveal">
+        <p class="mono-label">03 · WATCH MODE</p>
+        <h2>改代码，自动重放。</h2>
+        <p>`relay watch` 盯住你的源码目录：每次保存，自动把选中的事件重放一遍，终端里直接看到断言结果。红了就改，绿了就提交。</p>
+      </div>
+      <ol class="band-steps reveal" aria-label="watch 模式步骤">
+        <li><span class="n">1</span><span><span class="k">relay capture</span> —— 录下这个下午的全部 webhook</span></li>
+        <li><span class="n">2</span><span><span class="k">relay watch --only stripe.*</span> —— 保存即重放</span></li>
+        <li><span class="n">3</span><span>断言写在 <span class="k">relay.assert.ts</span> —— 状态码 / 落库行数 / 幂等性</span></li>
+        <li><span class="n">4</span><span><span class="k">relay diff HEAD~1</span> —— 两个版本的行为差异一屏看完</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="shell reveal" id="docs" style="padding-block: clamp(40px, 6vw, 72px);">
+    <p class="mono-label">DOCS</p>
+    <h2 style="font-size: clamp(1.3rem, 2vw + 0.5rem, 1.8rem); margin: 10px 0 10px;">五分钟读完的文档</h2>
+    <p style="max-width: 52ch;">relay 一共 6 个子命令、14 个 flag，文档就一页。装完 <a href="#">跑一遍 quickstart</a>，或者直接按 <button class="kbd-btn" style="vertical-align: baseline;" data-open-palette>⌘K</button> 搜命令。</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="shell footer-row">
+    <span class="mono-label">RELAY · DEMO BY ZIMA-DESIGN · 2026</span>
+    <nav style="display: flex; gap: 18px;" aria-label="页脚导航">
+      <a href="#">GitHub</a><a href="#">更新日志</a><a href="#">许可（MIT）</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="palette-backdrop" id="paletteBackdrop">
+  <div class="palette" role="dialog" aria-modal="true" aria-label="命令面板">
+    <input id="paletteInput" type="text" placeholder="输入以过滤命令…" autocomplete="off" />
+    <ul id="paletteList" role="listbox">
+      <li role="option" aria-selected="true"><span>relay capture — 开始捕获</span><kbd>⏎</kbd></li>
+      <li role="option"><span>relay replay — 重放事件</span><kbd>⏎</kbd></li>
+      <li role="option"><span>relay watch — 保存即重放</span><kbd>⏎</kbd></li>
+      <li role="option"><span>relay diff — 对比两次行为</span><kbd>⏎</kbd></li>
+      <li role="option"><span>打开文档 quickstart</span><kbd>⏎</kbd></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  // reveal on view-enter — one observer, crisp ease-out, fires once
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver((es) => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+  }), { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => reduced ? el.classList.add('is-in') : io.observe(el));
+
+  // hero type-in — plays once, then static (cobalt.md signature 4)
+  const line = 'relay capture --forward localhost:3000/hooks';
+  const typeEl = document.getElementById('typeLine');
+  if (reduced) { typeEl.textContent = line; document.getElementById('typeCaret').remove(); }
+  else {
+    let i = 0;
+    (function tick() {
+      typeEl.textContent = line.slice(0, ++i);
+      if (i < line.length) setTimeout(tick, 22);
+      else setTimeout(() => document.getElementById('typeCaret').remove(), 1600);
+    })();
+  }
+
+  // ⌘K palette — open on click and ⌘K/Ctrl+K, Esc/backdrop closes, arrows select, type filters
+  const backdrop = document.getElementById('paletteBackdrop');
+  const input = document.getElementById('paletteInput');
+  const list = document.getElementById('paletteList');
+  let lastFocus = null;
+  function openPalette() { lastFocus = document.activeElement; backdrop.classList.add('open'); input.value = ''; filter(); input.focus(); }
+  function closePalette() { backdrop.classList.remove('open'); if (lastFocus) lastFocus.focus(); }
+  function items() { return [...list.querySelectorAll('li:not([hidden])')]; }
+  function select(li) { items().forEach(x => x.setAttribute('aria-selected', 'false')); if (li) li.setAttribute('aria-selected', 'true'); }
+  function filter() {
+    const q = input.value.trim().toLowerCase();
+    list.querySelectorAll('li').forEach(li => li.hidden = q && !li.textContent.toLowerCase().includes(q));
+    select(items()[0]);
+  }
+  document.getElementById('openPalette').addEventListener('click', openPalette);
+  document.querySelectorAll('[data-open-palette]').forEach(b => b.addEventListener('click', openPalette));
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closePalette(); });
+  input.addEventListener('input', filter);
+  list.addEventListener('click', e => { const li = e.target.closest('li'); if (li) { select(li); closePalette(); } });
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); backdrop.classList.contains('open') ? closePalette() : openPalette(); }
+    if (!backdrop.classList.contains('open')) return;
+    const cur = items().findIndex(li => li.getAttribute('aria-selected') === 'true');
+    if (e.key === 'Escape') closePalette();
+    if (e.key === 'ArrowDown') { e.preventDefault(); select(items()[Math.min(cur + 1, items().length - 1)]); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); select(items()[Math.max(cur - 1, 0)]); }
+    if (e.key === 'Enter') closePalette();
+  });
+</script>
+
+</body>
+</html>

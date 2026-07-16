@@ -1,10 +1,10 @@
 # codex-skills one-shot installer (PowerShell, Windows)
 #
-# Drops the five skills into $HOME\.codex\skills\ and the 9 subagents into $HOME\.codex\agents\.
+# Drops the six skills into $HOME\.codex\skills\ and the 9 subagents into $HOME\.codex\agents\.
 # Idempotent: re-running upgrades in place.
 #
 # Usage:
-#   .\install.ps1                            # install all five + agents
+#   .\install.ps1                            # install all six + agents
 #   .\install.ps1 -Skill viz-deck            # install just one skill
 #   .\install.ps1 -NoAgents                  # all skills, but skip the TOML agents
 #   .\install.ps1 -DryRun                    # show what would be done
@@ -56,6 +56,9 @@ if ($Skill -eq "" -or $Skill -eq "zima-html-ppt") {
 }
 if ($Skill -eq "" -or $Skill -eq "gzh-design") {
     Expand-Skill "gzh-design" "gzh-design"
+}
+if ($Skill -eq "" -or $Skill -eq "zima-design") {
+    Expand-Skill "zima-design" "zima-design"
 }
 
 if ($NoAgents) {

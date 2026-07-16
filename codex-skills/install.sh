@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # codex-skills · one-shot installer
 #
-# Drops the five skills into $HOME/.codex/skills/ and the 9 subagents into $HOME/.codex/agents/.
+# Drops the six skills into $HOME/.codex/skills/ and the 9 subagents into $HOME/.codex/agents/.
 # Idempotent — re-running upgrades in place.
 #
 # Usage:
-#   bash install.sh                    # install all five + agents
+#   bash install.sh                    # install all six + agents
 #   bash install.sh --skill viz-deck   # install just one skill (no agents)
 #   bash install.sh --no-agents        # all skills, but skip the TOML agents
 #   bash install.sh --dry-run          # show what would be done
@@ -83,6 +83,10 @@ fi
 
 if [ -z "$ONLY_SKILL" ] || [ "$ONLY_SKILL" = "gzh-design" ]; then
   install_skill "gzh-design" "gzh-design"
+fi
+
+if [ -z "$ONLY_SKILL" ] || [ "$ONLY_SKILL" = "zima-design" ]; then
+  install_skill "zima-design" "zima-design"
 fi
 
 if [ "$WANT_AGENTS" -eq 0 ]; then

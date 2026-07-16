@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curio — 反面教材（AI-slop 特征标本）</title>
+<!--
+  ⚠️ 这是 zima-design demo 的【反面教材】。
+  本页故意保留 12 处典型 AI-slop 特征，每处都有 [SLOP-N] 源码注释。
+  对照重设计版见 demo-after-redesign-hum.html；
+  逐关卡审计报告见 demo-audit-report.md。
+  不要把本页当作任何设计参考。
+-->
+<style>
+  /* [SLOP-1] 无 :root 令牌 —— 色值直接散落在各处的内联 hex，紫色渐变是最典型的 AI 默认味 */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', 'Segoe UI', sans-serif; color: #333; background: #fff; }
+
+  /* [SLOP-2] hero：紫→蓝渐变 + 居中堆叠（badge → 居中 H1 → 两行副标 → 实心+幽灵双 CTA）—— 最大的 AI 之相 */
+  .hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white; text-align: center; padding: 100px 20px;
+  }
+  /* [SLOP-3] H1 正上方的 ✨ badge-pill */
+  .badge {
+    display: inline-block; background: rgba(255,255,255,0.2); border-radius: 999px;
+    padding: 8px 20px; font-size: 14px; margin-bottom: 24px;
+  }
+  /* [SLOP-4] 标题用斜体强调 */
+  .hero h1 { font-size: 56px; font-style: italic; margin-bottom: 20px; }
+  .hero p { font-size: 20px; max-width: 600px; margin: 0 auto 40px; opacity: 0.9; }
+  .cta-group { display: flex; gap: 16px; justify-content: center; }
+  .btn-primary {
+    background: white; color: #764ba2; padding: 16px 40px; border-radius: 8px;
+    font-weight: 700; text-decoration: none; border: none; font-size: 16px; cursor: pointer;
+  }
+  .btn-ghost {
+    background: transparent; color: white; padding: 16px 40px; border-radius: 8px;
+    border: 2px solid white; font-weight: 700; text-decoration: none; font-size: 16px; cursor: pointer;
+  }
+
+  section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+  /* [SLOP-5] 每个 section 上方都是同一款全大写灰色 eyebrow —— 当壁纸用 */
+  .eyebrow { text-transform: uppercase; letter-spacing: 2px; color: #999; font-size: 13px; text-align: center; margin-bottom: 12px; }
+  h2 { text-align: center; font-size: 40px; margin-bottom: 16px; font-style: italic; }
+  .section-sub { text-align: center; color: #666; max-width: 560px; margin: 0 auto 56px; }
+
+  /* [SLOP-6] 三张等宽卡片：emoji 图标 + 标题 + 两行灰字，等间距 —— 反射级模板单元 */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .card {
+    background: #fff; border-radius: 16px; padding: 40px 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08); text-align: center;
+    border-top: 4px solid #667eea; /* [SLOP-7] 卡片顶部的 accent 条 */
+  }
+  .card .icon { font-size: 48px; margin-bottom: 20px; }
+  .card h3 { font-size: 20px; margin-bottom: 12px; }
+  .card p { color: #888; font-size: 15px; line-height: 1.6; }
+
+  /* [SLOP-8] 编造的大数字剧场 */
+  .stats { background: #f8f9fb; text-align: center; max-width: none; }
+  .stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .stat-num { font-size: 56px; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat-label { color: #888; margin-top: 8px; }
+
+  /* [SLOP-9] 三张证言卡，署名统一「姓名 · 指标」语法，全部虚构 */
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .quote-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  .quote-card p { font-style: italic; color: #555; margin-bottom: 20px; line-height: 1.7; }
+  .quote-card .who { font-weight: 700; font-size: 14px; color: #333; }
+
+  /* [SLOP-10] 巨型宣言 footer + auto 1fr 1fr 1fr 元信息网格 —— 千篇一律的尾巴 */
+  footer { background: #1a1a2e; color: #aaa; padding: 80px 20px 40px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; }
+  .footer-statement { font-size: 48px; color: #fff; font-weight: 800; margin-bottom: 56px; font-style: italic; }
+  .footer-grid { display: grid; grid-template-columns: auto 1fr 1fr 1fr; gap: 48px; }
+  .footer-grid h4 { color: #fff; margin-bottom: 16px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+  .footer-grid a { display: block; color: #aaa; text-decoration: none; margin-bottom: 10px; font-size: 14px; }
+
+  /* [SLOP-11] 没有任何响应式断点治理：320px 下三卡硬挤、大数字溢出（overflow 藏起来假装没事） */
+  body { overflow-x: hidden; }
+
+  .demo-banner { background: #b91c1c; color: #fff; text-align: center; padding: 10px 16px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">⚠️ zima-design demo · 反面教材 —— 本页故意保留 12 处 AI-slop 特征（见源码 [SLOP-N] 注释），对照版见 demo-after-redesign-hum.html</div>
+
+<div class="hero">
+  <div class="badge">✨ 全新 AI 驱动 · 现已上线</div>
+  <h1>革命性地解锁你的每日好奇心</h1>
+  <!-- [SLOP-12] 文案堆满 revolutionize / unlock / supercharge / 生态 一类的空话 -->
+  <p>Curio 用 AI 赋能你的学习旅程，打造一站式知识生态，全方位超充你的心智带宽。</p>
+  <div class="cta-group">
+    <button class="btn-primary">免费开始 →</button>
+    <button class="btn-ghost">了解更多</button>
+  </div>
+</div>
+
+<section>
+  <div class="eyebrow">核心功能</div>
+  <h2>为什么选择 Curio？</h2>
+  <p class="section-sub">三大核心能力，助力你的成长飞轮。</p>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🚀</div>
+      <h3>极速学习</h3>
+      <p>每天 30 秒，AI 为你精选一条最值得知道的冷知识，效率提升立竿见影。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🧠</div>
+      <h3>智能推荐</h3>
+      <p>先进算法深度理解你的兴趣图谱，推送内容千人千面，越用越懂你。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔥</div>
+      <h3>连击打卡</h3>
+      <p>游戏化连击机制让坚持不再痛苦，习惯养成从未如此简单。</p>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="eyebrow">数据说话</div>
+  <h2>被全球用户信赖</h2>
+  <p class="section-sub">数字不会说谎。</p>
+  <div class="stats-inner">
+    <div><div class="stat-num">50,000+</div><div class="stat-label">团队正在使用</div></div>
+    <div><div class="stat-num">+47%</div><div class="stat-label">留存率提升</div></div>
+    <div><div class="stat-num">4.9/5</div><div class="stat-label">用户评分</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">用户之声</div>
+  <h2>他们都在用 Curio</h2>
+  <p class="section-sub">听听真实用户怎么说。</p>
+  <div class="quotes">
+    <div class="quote-card">
+      <p>"Curio 彻底改变了我的学习方式，现在我每天都离不开它，强烈推荐给所有人！"</p>
+      <div class="who">张伟 · 连续打卡 365 天</div>
+    </div>
+    <div class="quote-card">
+      <p>"作为一个终身学习者，Curio 是我用过最好的工具，没有之一。"</p>
+      <div class="who">李娜 · 学到 2,000+ 条知识</div>
+    </div>
+    <div class="quote-card">
+      <p>"团队引入 Curio 后，大家的知识面明显拓宽，会议讨论质量都变高了。"</p>
+      <div class="who">王强 · 团队效率 +32%</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-statement">让好奇心改变世界。</div>
+    <div class="footer-grid">
+      <div><h4>Curio</h4><a href="#">© 2026 Curio Inc.</a></div>
+      <div><h4>产品</h4><a href="#">功能</a><a href="#">定价</a><a href="#">更新日志</a></div>
+      <div><h4>公司</h4><a href="#">关于</a><a href="#">博客</a><a href="#">招聘</a></div>
+      <div><h4>支持</h4><a href="#">帮助中心</a><a href="#">联系我们</a><a href="#">状态页</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

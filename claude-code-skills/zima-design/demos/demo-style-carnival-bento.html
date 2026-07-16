@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="carnival" data-drop="studio-night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夜航站 NIGHTDOCK — 深夜播客厂牌</title>
+<!--
+  zima-design demo · 风格样片 4/4（虚构厂牌 NIGHTDOCK，节目与档期均为示例数据）
+  zima-design signature: 宏结构=bento-grid(loud变体) 主题=carnival·studio-night 动效=playful-bouncy 物理=厚边硬影(4px4px0) 密度=杂志式混排
+  zima-design pre-emit critique: P4 H4 E4 S5 R4 V5
+  协议出处：engines/anti-slop/references/themes/carnival.md（Drop 04 · Studio Night）
+  硬规则自查：双色对撞(青/梅,一格只用一色,永不混合) · 装饰符✱❋◆(排印符非emoji) · 硬偏移阴影(无软阴影) ·
+  Big Shoulders wdth110 全大写标题≤6词 · 半调网点占位(纯CSS) · 跑马灯(内容重复2遍,reduced-motion冻结) ·
+  出血色块 · 2px梅色规则线 · 正文全墨短句 · 320px无横滚
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Archivo:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --color-paper: oklch(88% 0.05 25);          /* warm dusk pink */
+    --color-paper-2: oklch(84% 0.055 22);
+    --color-ink: oklch(20% 0.05 270);           /* deep navy-black */
+    --color-ink-2: oklch(32% 0.045 265);
+    --color-rule: oklch(24% 0.18 320);          /* deep plum rules, 2px */
+    --color-accent: oklch(78% 0.18 220);        /* cyan */
+    --color-accent-2: oklch(24% 0.18 320);      /* deep plum */
+    --color-accent-ink: oklch(20% 0.05 270);
+    --color-focus: oklch(24% 0.18 320);
+    --font-display: "Big Shoulders Display", "Archivo", sans-serif;
+    --font-body: "Archivo", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --shell: 1080px;
+    --page-gutter: clamp(18px, 4vw, 44px);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { overflow-x: clip; }
+  body { background: var(--color-paper); color: var(--color-ink);
+         font-family: var(--font-body); line-height: 1.6; overflow-wrap: anywhere; }
+  :focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 800; font-style: normal;
+               font-variation-settings: "wdth" 110; text-transform: uppercase;
+               letter-spacing: 0.02em; line-height: 0.92; }
+  .shell { max-width: var(--shell); margin-inline: auto; padding-inline: var(--page-gutter); }
+  .ornament { color: var(--color-accent-2); }
+  .divider { text-align: center; letter-spacing: 0.6em; padding-block: 8px; color: var(--color-accent-2); }
+  .halftone { background-image: radial-gradient(var(--color-ink) 1.5px, transparent 1.5px);
+              background-size: 12px 12px; background-color: var(--color-paper-2); }
+
+  /* ── header + marquee banner ── */
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+         padding-block: 14px; border-bottom: 2px solid var(--color-rule); }
+  .brand { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 110;
+           font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.02em; }
+  .brand i { font-style: normal; color: var(--color-accent-2); }
+  .top-tag { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .marquee { overflow: hidden; border-bottom: 2px solid var(--color-rule);
+             background: var(--color-accent-2); color: var(--color-paper); }
+  .marquee-track { display: flex; width: max-content; animation: marquee 26s linear infinite; }
+  .marquee-track > span { white-space: nowrap; padding-block: 8px;
+    font-family: var(--font-display); font-weight: 700; font-variation-settings: "wdth" 110;
+    font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* ── hero: giant word, left-flush, plum block bleeding off-edge ── */
+  .hero { padding-block: clamp(36px, 6vw, 72px); }
+  .hero h1 { font-size: clamp(3.2rem, 12vw, 9rem); letter-spacing: -0.005em; line-height: 0.82;
+             max-width: 10ch; }
+  .hero h1 .cy { color: var(--color-accent-2); }
+  .hero-sub { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; margin-top: 18px; }
+  .hero-sub p { font-size: 1rem; max-width: 34ch; }
+  .hero-stamp { display: inline-block; background: var(--color-accent); color: var(--color-accent-ink);
+                border: 2px solid var(--color-ink); box-shadow: 4px 4px 0 var(--color-ink);
+                font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+                padding: 6px 12px; rotate: -2deg; }
+
+  /* ── loud bento: alternating accents, one accent per tile, hard-offset shadows ── */
+  .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px;
+           padding-block: clamp(10px, 2vw, 24px) clamp(40px, 6vw, 72px);
+           padding-right: max(var(--page-gutter), 8px); }   /* shadow never clips at the edge */
+  .tile { display: flex; flex-direction: column; gap: 10px;
+          border: 2px solid var(--color-ink); box-shadow: 4px 4px 0 var(--color-ink);
+          padding: 20px; transition: transform 180ms var(--ease-spring), box-shadow 180ms var(--ease-spring); }
+  .tile:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--color-ink); }
+  .tile--cyan { background: var(--color-accent); color: var(--color-accent-ink); grid-column: span 2; }
+  .tile--plum { background: var(--color-accent-2); color: var(--color-paper); grid-column: span 2; }
+  .tile--paper { background: var(--color-paper-2); grid-column: span 2; }
+  .tile--wide { grid-column: span 4; }
+  .tile h3 { font-size: clamp(1.3rem, 2vw + 0.4rem, 1.9rem); }
+  .tile .meta { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .tile p { font-size: 0.92rem; }
+  .tile .portrait { width: 4.5rem; height: 4.5rem; border: 2px solid currentColor; flex: none; }
+  .tile ul { list-style: none; padding: 0; font-size: 0.92rem; }
+  .tile ul li::before { content: "❋ "; }
+  @media (max-width: 860px) { .tile--cyan, .tile--plum, .tile--paper { grid-column: span 3; } .tile--wide { grid-column: span 6; } }
+  @media (max-width: 560px) { .tile { grid-column: span 6 !important; } }
+
+  /* ── manifesto strip: short loud lines, ornament-divided ── */
+  .creed { background: var(--color-accent-2); color: var(--color-paper);
+           border-block: 2px solid var(--color-ink); }
+  .creed-inner { padding-block: clamp(32px, 5vw, 56px); }
+  .creed h2 { font-size: clamp(1.8rem, 4.5vw, 3.4rem); max-width: 22ch; }
+  .creed .divider { color: var(--color-accent); }
+  .creed p { font-size: 1rem; max-width: 40ch; }
+
+  /* ── newsletter: input + button share height, centred on the control ── */
+  .signup { padding-block: clamp(36px, 6vw, 64px); }
+  .signup h2 { font-size: clamp(1.6rem, 3.4vw, 2.6rem); margin-bottom: 8px; }
+  .signup-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 18px; }
+  .signup input { height: 48px; min-width: min(280px, 100%); flex: 1 1 200px;
+                  border: 2px solid var(--color-ink); background: var(--color-paper-2);
+                  color: var(--color-ink); font-family: var(--font-body); font-size: 15px;
+                  padding-inline: 14px; }
+  .signup button { height: 48px; cursor: pointer; border: 2px solid var(--color-ink);
+                   box-shadow: 4px 4px 0 var(--color-ink); background: var(--color-accent);
+                   color: var(--color-accent-ink); font-family: var(--font-body); font-weight: 600;
+                   font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; padding-inline: 20px;
+                   transition: transform 120ms var(--ease-spring), box-shadow 120ms var(--ease-spring); }
+  .signup button:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--color-ink); }
+  .signup button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--color-ink); }
+  .signup small { display: block; margin-top: 10px; font-size: 12px; color: var(--color-ink-2); }
+
+  .footer { border-top: 2px solid var(--color-rule); }
+  .footer-row { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+                flex-wrap: wrap; padding-block: 18px; font-size: 13px; font-weight: 600;
+                letter-spacing: 0.06em; text-transform: uppercase; }
+  .footer a { color: var(--color-ink); text-decoration: none; border-bottom: 2px solid var(--color-rule); }
+  .footer a:hover { color: var(--color-accent-2); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; }
+    .tile, .signup button { transition: none; }
+    .tile:hover { transform: none; box-shadow: 4px 4px 0 var(--color-ink); }
+  }
+</style>
+</head>
+<body>
+
+<header class="shell top">
+  <span class="brand">NIGHT<i>DOCK</i></span>
+  <span class="top-tag">深夜播客厂牌 ✱ demo by zima-design</span>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>NEW SEASON ◆ FOUR SHOWS ◆ ALL AFTER DARK ◆ EVERY THURSDAY ◆ ON ALL PLATFORMS ◆&nbsp;</span>
+    <span>NEW SEASON ◆ FOUR SHOWS ◆ ALL AFTER DARK ◆ EVERY THURSDAY ◆ ON ALL PLATFORMS ◆&nbsp;</span>
+  </div>
+</div>
+
+<main>
+  <section class="shell hero">
+    <h1>AFTER<br><span class="cy">DARK.</span></h1>
+    <div class="hero-sub">
+      <span class="hero-stamp">S03 · 10月开播</span>
+      <p>四档节目，全部在午夜后录制。聊科学、聊城市、聊没人聊的事。短的 20 分钟，长的聊到天亮。</p>
+    </div>
+  </section>
+
+  <p class="divider shell" aria-hidden="true">✱ ✱ ✱ ✱</p>
+
+  <section class="shell bento" aria-label="节目一览（示例数据）">
+    <article class="tile tile--cyan">
+      <span class="portrait halftone" aria-hidden="true"></span>
+      <p class="meta">◆ EP.42 · 每周四</p>
+      <h3>失眠电波</h3>
+      <p>凌晨三点的科学问答。为什么睡不着？正好，聊聊睡眠科学。</p>
+    </article>
+    <article class="tile tile--plum">
+      <span class="portrait halftone" aria-hidden="true"></span>
+      <p class="meta">◆ EP.17 · 双周更</p>
+      <h3>末班车观察</h3>
+      <p>每期跟一条深夜公交线。司机、乘客、终点站的便利店。</p>
+    </article>
+    <article class="tile tile--paper">
+      <span class="portrait halftone" aria-hidden="true"></span>
+      <p class="meta">◆ EP.08 · 月更</p>
+      <h3>厨房打烊后</h3>
+      <p>后厨熄火，主厨坐下来。聊聊菜单上没有的那些事。</p>
+    </article>
+    <article class="tile tile--plum tile--wide">
+      <p class="meta">◆ 本季主打</p>
+      <h3>守夜人档案</h3>
+      <p>八集纪实：急诊夜班护士、天文台值守员、24 小时书店店长。夜里醒着的人，替我们看着这座城。</p>
+      <ul>
+        <li>第 1 集 · 急诊室的第 400 个夜班</li>
+        <li>第 2 集 · 望远镜与泡面</li>
+      </ul>
+    </article>
+    <article class="tile tile--cyan tile--wide" style="rotate: -1deg;">
+      <p class="meta">◆ 现场</p>
+      <h3>12 月 · 线下守夜场</h3>
+      <p>一年一次，四档节目同台连录到日出。地点保密，票在秋天开卖。仅此一场。</p>
+    </article>
+    <article class="tile tile--paper">
+      <p class="meta">◆ 关于我们</p>
+      <h3>五个人</h3>
+      <p>两支录音笔起家。没有赞助排期表，想做什么做什么。</p>
+    </article>
+  </section>
+
+  <section class="creed">
+    <div class="shell creed-inner">
+      <h2>WE RECORD AT MIDNIGHT.</h2>
+      <p class="divider" style="text-align: left; padding-block: 12px;" aria-hidden="true">✱ ✱ ✱ ✱</p>
+      <p>白天的话题轮不到我们。夜里的话题，只有我们。</p>
+    </div>
+  </section>
+
+  <section class="shell signup">
+    <h2>EVERY THURSDAY. YOUR INBOX.</h2>
+    <p>每周一封：新节目上线 + 一条深夜冷知识。不推销，随时退订。</p>
+    <form class="signup-row" onsubmit="return false;">
+      <label for="mail" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);">邮箱地址</label>
+      <input id="mail" type="email" placeholder="you@night.fm" />
+      <button type="submit">订阅 ❋</button>
+    </form>
+    <small>示例表单——demo 页面不会真的收集邮箱。</small>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="shell footer-row">
+    <span>NIGHTDOCK ◆ 2026</span>
+    <nav style="display: flex; gap: 16px;" aria-label="页脚">
+      <a href="#">节目</a><a href="#">现场</a><a href="#">联系</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

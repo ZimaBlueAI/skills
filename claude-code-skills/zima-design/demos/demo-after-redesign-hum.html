@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="hum">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curio — 每天早上 8 点，一条 30 秒的小知识</title>
+<!--
+  zima-design demo · 重设计版（redesign 动词示范）
+  上游协议（engines/anti-slop/references/）：themes/hum.md + macrostructures/14-narrative-workflow.md
+  对照反面教材：demo-before-ai-slop.html · 审计报告：demo-audit-report.md
+
+  遵循的 Hum 硬规则：
+  - 色值/字体全部经由 :root 令牌，正文墨色用 opacity 调档而非新 hex
+  - 奶油纸底（非纯白）、近黑墨（非纯黑）、多重点缀色各占其面
+  - .btn push 按钮系统逐字复制自 themes/hum.md（实色厚边 + 软投影，按下即反馈）
+  - 非居中 hero（文左图右分栏）、禁 badge-pill、禁三等卡、禁斜体标题
+  - 编号叙事工作流（1.0→3.0）替代三等卡；每阶段一条 accent 带
+  - 一处出格时刻（放大编号溢出边缘）+ 一处角色时刻（梨黄圆点 + 星爆）
+  - 文案诚实：不编造用户数/留存率/证言；示例数据明确标注
+  - 320px 无横滚（overflow-x: clip + minmax(0,1fr)）、prefers-reduced-motion 全降级
+-->
+<!-- zima-design pre-emit critique: P4 H5 E4 S4 R5 V4 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* palette — themes/hum.md */
+    --color-paper: oklch(97% 0.012 95);
+    --color-paper-2: oklch(94% 0.016 95);
+    --color-paper-3: oklch(91% 0.020 95);
+    --color-ink: oklch(20% 0.012 250);
+    --color-accent: oklch(86% 0.18 95);        /* pear — primary action */
+    --color-accent-deep: oklch(72% 0.16 95);
+    --color-accent-2: oklch(66% 0.18 235);     /* sky-cyan — links / community */
+    --color-accent-3: oklch(68% 0.24 18);      /* coral — the ONE high-energy moment */
+    --color-mint: oklch(80% 0.16 150);
+    --color-focus: oklch(60% 0.20 250);
+    /* type */
+    --font-body: "Plus Jakarta Sans", "Geist", ui-rounded, system-ui, sans-serif;
+    --font-label: "JetBrains Mono", ui-monospace, monospace;
+    /* shape */
+    --radius-card: 20px;
+    --radius-pill: 999px;
+    --radius-input: 12px;
+    /* layout — one shell, every section obeys it */
+    --shell: 1080px;
+    --page-gutter: clamp(20px, 4vw, 48px);
+    --section-gap: clamp(56px, 9vw, 120px);
+    /* motion */
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { margin: 0; box-sizing: border-box; }
+  html { overflow-x: clip; }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-feature-settings: "ss01" on, "cv11" on;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.6;
+    overflow-x: clip;
+    overflow-wrap: anywhere;
+  }
+  h1, h2, h3 { font-style: normal; font-weight: 600; letter-spacing: -0.025em; line-height: 1.12; }
+  p { color: color-mix(in oklch, var(--color-ink) 88%, transparent); }
+  a { color: color-mix(in oklch, var(--color-ink) 95%, transparent); }
+  a:hover { color: var(--color-ink); }
+
+  .mono-label {
+    font-family: var(--font-label); font-size: 11px; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--color-ink); opacity: 0.62;
+  }
+
+  /* highlighter — clipped background, tracks wrapped lines (themes/hum.md emphasis rule) */
+  .hl {
+    color: inherit;
+    background-image: linear-gradient(var(--hl, oklch(86% 0.18 95 / 0.55)) 0 0);
+    background-repeat: no-repeat;
+    background-size: 100% 0.32em;
+    background-position: 0 82%;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    padding-bottom: 0.02em;
+  }
+
+  /* one shell width model everywhere — band carries only background + block padding */
+  .section { max-width: var(--shell); margin-inline: auto; padding: var(--section-gap) var(--page-gutter); }
+  .section--band { max-width: none; padding-inline: 0; }
+  .section--band > * { max-width: var(--shell); margin-inline: auto; padding-inline: var(--page-gutter); }
+
+  /* ── .btn push system — copied verbatim from themes/hum.md ── */
+  .btn {
+    --btn-face: var(--color-accent); --btn-ink: var(--color-ink);
+    --btn-edge: var(--color-accent-deep); --btn-cast: oklch(76% 0.20 95 / 0.45);
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+    padding: 0.8rem 1.4rem; font-weight: 600; border: 0; border-radius: var(--radius-pill);
+    color: var(--btn-ink); background: var(--btn-face); cursor: pointer; position: relative; isolation: isolate;
+    font-family: inherit; font-size: 1rem;
+    box-shadow: 0 4px 0 0 var(--btn-edge), 0 6px 12px -3px var(--btn-cast);
+    transform: translateY(0);
+    transition: transform 140ms cubic-bezier(0.2,0.7,0.3,1), box-shadow 140ms cubic-bezier(0.2,0.7,0.3,1), background-color 160ms;
+  }
+  .btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 0 0 var(--btn-edge), 0 12px 22px -4px var(--btn-cast); }
+  .btn:active { transform: translateY(3px);  box-shadow: 0 1px 0 0 var(--btn-edge), 0 2px 6px -2px var(--btn-cast); transition-duration: 70ms; }
+  .btn:focus-visible { outline: 3px solid color-mix(in oklch, var(--btn-edge) 70%, var(--color-focus)); outline-offset: 3px; }
+
+  /* ── hero: text-left / art-right, off-centre (never the centred stack) ── */
+  .hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+  .hero h1 { font-size: clamp(2rem, 4.6vw + 0.5rem, 3.6rem); margin: 14px 0 18px; }
+  .hero .lede { font-size: clamp(1rem, 1.2vw + 0.6rem, 1.2rem); max-width: 46ch; margin-bottom: 28px; }
+  .hero .fineprint { font-size: 0.9rem; opacity: 0.72; margin-top: 14px; }
+
+  /* today-card — the product demonstrates itself */
+  .today-card {
+    background: var(--color-paper); border-radius: var(--radius-card);
+    padding: 26px 26px 22px; position: relative; rotate: 1.5deg;   /* the designed exception: one tilted card */
+    box-shadow: 0 3px 0 0 color-mix(in oklch, var(--color-ink) 14%, transparent),
+                0 18px 40px -20px color-mix(in oklch, var(--color-ink) 22%, transparent);
+    transition: transform 220ms var(--ease-spring), box-shadow 220ms;
+  }
+  .today-card:hover { transform: translateY(-4px); }
+  .today-card h3 { font-size: 1.15rem; margin: 12px 0 8px; }
+  .today-card p { font-size: 0.95rem; }
+
+  /* character moment — pear dot, pulses at rest, bursts a star on CTA click */
+  .curio-dot {
+    position: absolute; top: -14px; right: 22px; width: 28px; height: 28px;
+    background: var(--color-accent); border-radius: 50%;
+    box-shadow: 0 2px 0 0 var(--color-accent-deep);
+    animation: dot-pulse 4s ease-in-out infinite;
+  }
+  @keyframes dot-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+
+  .star-burst {
+    position: absolute; width: 24px; height: 24px; z-index: 5;
+    background:
+      linear-gradient(90deg, transparent 47%, var(--color-accent-3) 47% 53%, transparent 53%),
+      linear-gradient(0deg,  transparent 47%, var(--color-accent-3) 47% 53%, transparent 53%);
+    animation: star-burst 420ms ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes star-burst {
+    0%   { transform: scale(0) rotate(0deg);   opacity: 1; }
+    60%  { transform: scale(1.2) rotate(35deg); opacity: 0.9; }
+    100% { transform: scale(1.4) rotate(45deg); opacity: 0; }
+  }
+
+  /* ── narrative workflow: 1.0 → 3.0, each stage owns its accent band ── */
+  .stage { position: relative; }
+  .stage-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(18px, 4vw, 56px); align-items: start; }
+  .stage-num {
+    font-family: var(--font-label); font-weight: 500;
+    font-size: clamp(4rem, 10vw + 1rem, 8.5rem); line-height: 0.9;
+    letter-spacing: -0.04em; opacity: 0.92;
+    margin-left: calc(var(--page-gutter) * -0.55);   /* the off-grid moment: numeral bleeds toward the page edge */
+  }
+  .stage h2 { font-size: clamp(1.5rem, 2.4vw + 0.5rem, 2.2rem); margin-bottom: 12px; }
+  .stage p { max-width: 52ch; }
+  .stage--pear  { background: color-mix(in oklch, var(--color-accent) 14%, var(--color-paper)); }
+  .stage--cyan  { background: color-mix(in oklch, var(--color-accent-2) 9%, var(--color-paper)); }
+  .stage--coral { background: color-mix(in oklch, var(--color-accent-3) 9%, var(--color-paper)); }
+  .stage--pear .stage-num  { color: var(--color-accent-deep); }
+  .stage--cyan .stage-num  { color: var(--color-accent-2); }
+  .stage--coral .stage-num { color: var(--color-accent-3); }
+
+  /* the ONE coral high-energy moment: streak counter, honest sample data */
+  .streak { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-top: 18px; }
+  .streak-num {
+    font-size: clamp(3rem, 5vw + 1rem, 5rem); font-weight: 600; letter-spacing: -0.03em;
+    color: var(--color-accent-3); font-variant-numeric: tabular-nums;
+  }
+  .streak.is-done .streak-num { animation: streak-pop 320ms var(--ease-spring); }
+  @keyframes streak-pop { 0% { transform: scale(1); } 50% { transform: scale(1.06); } 100% { transform: scale(1); } }
+
+  /* honest voice strip instead of testimonial cards */
+  .made-by { border-top: 1.5px dashed color-mix(in oklch, var(--color-ink) 28%, transparent); }
+  .made-by p { max-width: 58ch; }
+
+  /* compact single-row footer — not the giant-statement grid */
+  .footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+            padding-block: 28px; border-top: 1.5px dashed color-mix(in oklch, var(--color-ink) 28%, transparent); }
+  .footer a { text-decoration: none; font-size: 0.9rem; }
+  .footer .mono-label { font-size: 10px; }
+
+  @media (max-width: 720px) {
+    .hero, .stage-grid { grid-template-columns: minmax(0, 1fr); }
+    .today-card { rotate: 0deg; margin-top: 8px; }
+    .stage-num { margin-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .curio-dot { animation: none; }
+    .star-burst { display: none; }
+    .today-card, .btn { transition: background-color 160ms, color 160ms, box-shadow 0ms; }
+    .today-card:hover, .btn:hover, .btn:active { transform: none; }
+    .streak.is-done .streak-num { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="section" style="padding-block: 22px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+    <strong style="font-size:1.15rem; letter-spacing:-0.02em;">curio<span style="color: var(--color-accent-deep);">.</span></strong>
+    <span class="mono-label">DEMO · HALLMARK / HUM</span>
+  </div>
+</header>
+
+<main>
+  <section class="section hero">
+    <div>
+      <span class="mono-label">01 · TODAY</span>
+      <h1>每天早上 8 点，<br>一条 <span class="hl">30 秒</span>的小知识。</h1>
+      <p class="lede">Curio 每天只给你一条：短到通勤电梯里就能读完，有趣到你想转给朋友。不推送信息流，不做知识焦虑生意。</p>
+      <button class="btn" id="cta">试读今天这条</button>
+      <p class="fineprint">免费试用 7 天，之后每月 ¥15，或每年 ¥120。随时退。</p>
+    </div>
+    <div class="today-card" id="todayCard">
+      <span class="curio-dot" aria-hidden="true"></span>
+      <span class="mono-label">CURIO · 07-16</span>
+      <h3>章鱼有三颗心脏，游泳时会停跳一颗</h3>
+      <p>所以章鱼更喜欢爬行——游泳对它来说字面意义上"心累"。这也是它们伏击型捕食风格的由来。</p>
+    </div>
+  </section>
+
+  <section class="section--band stage stage--pear">
+    <div class="section stage-grid">
+      <div class="stage-num" aria-hidden="true">1.0</div>
+      <div>
+        <span class="mono-label">每天一条</span>
+        <h2>先到的不是 app，是一条知识</h2>
+        <p>每天早上 8 点，Curio 出现在你的通知里。全文就在通知里读完，不用打开 app，不用登录，没有小红点。读完这一条，今天就结束了。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--band stage stage--cyan">
+    <div class="section stage-grid">
+      <div class="stage-num" aria-hidden="true">2.0</div>
+      <div>
+        <span class="mono-label">留下来的</span>
+        <h2>读过的每一条，都在你的书架上</h2>
+        <p>喜欢的条目一键收进书架，按主题自动归档。想深挖时，每条底部都有一条"再往下 5 分钟"的延伸链接——去处是维基百科和原始论文，不是我们的付费墙。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--band stage stage--coral">
+    <div class="section stage-grid">
+      <div class="stage-num" aria-hidden="true">3.0</div>
+      <div>
+        <span class="mono-label">坚持这件事</span>
+        <h2>连击只对你自己可见</h2>
+        <p>没有排行榜，没有好友对比，断签不会挨骂。连击数只是你和自己的一个小约定。</p>
+        <div class="streak" id="streak">
+          <span class="streak-num" data-target="47">0</span>
+          <span class="mono-label">STREAK · DAYS（示例数据）</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section made-by">
+    <span class="mono-label">关于我们</span>
+    <h2 style="font-size: clamp(1.4rem, 2vw + 0.6rem, 1.9rem); margin: 10px 0 12px;">三个人做的小产品</h2>
+    <p>Curio 由三个人做：一位写作者负责每天那一条，两位工程师负责让它准时到。我们不融资、不卖数据、不做广告，收入只来自订阅。有问题发邮件，我们都会回。</p>
+  </section>
+</main>
+
+<footer class="section footer">
+  <span class="mono-label">CURIO · 2026</span>
+  <nav style="display:flex; gap:20px; flex-wrap:wrap;">
+    <a href="#">定价</a><a href="#">书架</a><a href="#">写邮件给我们</a>
+  </nav>
+</footer>
+
+<script>
+  // counter tick-up on view-enter (1200ms, snappy arrival) — themes/hum.md signature #4
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const num = document.querySelector('.streak-num');
+  const target = +num.dataset.target;
+  if (reduced) { num.textContent = target; }
+  else {
+    new IntersectionObserver((entries, obs) => {
+      if (!entries[0].isIntersecting) return;
+      obs.disconnect();
+      const t0 = performance.now(), D = 1200;
+      const ease = x => 1 - Math.pow(1 - x, 4);
+      (function tick(now) {
+        const p = Math.min((now - t0) / D, 1);
+        num.textContent = Math.round(ease(p) * target);
+        if (p < 1) requestAnimationFrame(tick);
+        else document.getElementById('streak').classList.add('is-done');
+      })(t0);
+    }, { threshold: 0.4 }).observe(num);
+  }
+
+  // star-burst on primary CTA — fires once per click, never auto-loops
+  document.getElementById('cta').addEventListener('click', e => {
+    if (reduced) return;
+    const star = document.createElement('span');
+    star.className = 'star-burst';
+    star.style.left = (e.offsetX - 12) + 'px';
+    star.style.top = (e.offsetY - 12) + 'px';
+    e.currentTarget.appendChild(star);
+    star.addEventListener('animationend', () => star.remove());
+  });
+</script>
+
+</body>
+</html>
