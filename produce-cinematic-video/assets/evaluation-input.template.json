@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "project_id": "",
+  "video": "",
+  "weights": {
+    "audience_fit": 1,
+    "promise_clarity": 1,
+    "story_argument": 1,
+    "proof_trust": 1,
+    "payoff": 1,
+    "visual_continuity": 1,
+    "sound_intelligibility": 1,
+    "rhythm_attention": 1,
+    "originality_rights": 1,
+    "packaging_action": 1
+  },
+  "dimensions": {
+    "audience_fit": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "promise_clarity": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "story_argument": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "proof_trust": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "payoff": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "visual_continuity": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "sound_intelligibility": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "rhythm_attention": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "originality_rights": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""},
+    "packaging_action": {"score": null, "evidence": [], "confidence": "low", "impact": "", "recommended_change": ""}
+  },
+  "benchmark_filter": {
+    "platform": "",
+    "format": "",
+    "topic_tags": []
+  }
+}

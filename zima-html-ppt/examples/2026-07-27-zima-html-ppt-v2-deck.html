@@ -1,0 +1,1240 @@
+<!doctype html>
+<!--
+  ZimaBlueAI · HTML-PPT 构建外壳（ZimaBlue Editorial · 暖纸编辑风 + 演讲者模式）
+  ============================================================================
+  这是 scripts/zima_deck.py build 使用的固定 shell，**不要手改内容**——它只负责
+  样式、舞台引擎、计时、图表装载和演讲者模式。所有页面内容来自 deck.json，
+  由构建脚本注入到下面的 ZIMA_SLIDES 标记处，并把 deck.json 原文回写到
+  文档末尾的 <script id="zima-doc"> 块，使产物可被 extract 反解、重新编辑。
+  （本注释刻意不写出完整的双百分号 token，否则会被字符串替换命中。）
+
+  手写 deck 请改用 templates/zima-ppt-starter.html（同一套样式，含示例页）。
+
+  现场快捷键
+    ← → / 空格 / PageUp·PageDown  翻页      Home / End  首页 / 末页
+    F  全屏                                   S  演讲者模式（弹出逐字稿窗口）
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>做完的 deck 改不动，等于没做完 · zima-html-ppt v2</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  /* —— ZimaBlue Editorial 令牌（勿改，保证跨 deck 一致）—— */
+  --ink:#15211f;        /* 标题/正文，近黑带青 */
+  --muted:#5e6b64;      /* 次要文字 */
+  --faint:#758078;      /* 脚注/来源/页脚 */
+  --bg:#f7f4ee;         /* 页面底，暖纸 */
+  --paper:#fffdf8;      /* 卡片底，更亮的纸 */
+  --line:#d9ded6;       /* 发丝描边 */
+  --teal:#1b5e5a;       /* 主强调（深青） */
+  --green:#2c7a66;      /* 正向/增长 */
+  --gold:#d59a3a;       /* 高亮/关注 */
+  --red:#a24e3e;        /* 风险/下降（赭红，非刺眼红） */
+  --cream:#efe8da;      /* hover/底纹 */
+  --soft-teal:#eef7f4;--soft-gold:#fbf3e2;--soft-red:#fdf0ea;
+  --term-bg:#15211f;--term-fg:#d6e6e1;--term-accent:#f1c977; /* 终端/代码块 */
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",Arial,sans-serif}
+/* html 也要收口：待入场的幻灯片带 translateX(36px)，只锁 body 仍能横拖 25px */
+html,body{overflow:hidden}
+
+/* —— 舞台骨架 —— */
+.deck{height:100vh;width:100vw;position:relative}
+.slide{position:absolute;inset:0;padding:3.6vh 4.4vw 4.6vh;display:grid;
+  grid-template-rows:auto 1fr auto;opacity:0;transform:translateX(36px) scale(.985);
+  pointer-events:none;transition:opacity .42s ease,transform .42s ease;
+  background:linear-gradient(90deg,rgba(27,94,90,.10),transparent 30%,rgba(213,154,58,.10)),
+    radial-gradient(circle at 14% 84%,rgba(44,122,102,.10),transparent 22%),var(--bg)}
+.slide.active{opacity:1;transform:translateX(0) scale(1);pointer-events:auto}
+.slide::before{content:"";position:absolute;inset:0 0 auto;height:7px;        /* 签名：顶部三色条 */
+  background:linear-gradient(90deg,var(--teal),var(--gold),var(--red))}
+
+/* —— 文字层级 —— */
+header{max-width:1240px}
+.kicker{color:var(--teal);font-weight:700;font-size:clamp(12px,1.05vw,15px);
+  margin-bottom:6px;letter-spacing:.05em}
+h1{margin:0;max-width:1120px;font-size:clamp(32px,4.4vw,64px);line-height:1.05;font-weight:800}
+h2{margin:0;font-size:clamp(26px,3.4vw,46px);line-height:1.1;font-weight:800}
+.sub{margin-top:8px;color:var(--muted);font-size:clamp(14px,1.3vw,19px);line-height:1.45;max-width:1080px}
+.stage{align-self:center;width:min(1280px,100%);margin:0 auto}
+.bigline{font-size:clamp(26px,3.4vw,50px);line-height:1.14;font-weight:800;max-width:1080px}
+.quote{font-size:clamp(16px,1.6vw,22px);line-height:1.4;color:var(--ink);font-weight:600;
+  border-left:4px solid var(--gold);padding-left:14px;margin:0}
+.quote cite{display:block;margin-top:6px;font-size:12px;font-style:normal;color:var(--faint);font-weight:500}
+
+/* —— 栅格 —— */
+.grid{display:grid;gap:14px}
+.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.split{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:stretch}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.stack{display:grid;gap:14px}
+
+/* —— 组件 —— */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;
+  box-shadow:0 14px 38px rgba(39,45,42,.06)}
+.card h3{margin:0 0 8px;font-size:clamp(14px,1.3vw,18px);font-weight:700;line-height:1.3}
+.card p{margin:0 0 6px;color:var(--muted);font-size:clamp(13px,1.15vw,16px);line-height:1.5}
+.metric{min-height:120px;display:flex;flex-direction:column;justify-content:center}
+.metric strong{color:var(--teal);font-size:clamp(30px,3.4vw,48px);line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.metric span{margin-top:8px;color:var(--muted);font-size:clamp(13px,1.15vw,16px);line-height:1.4}
+.metric.red strong{color:var(--red)}.metric.gold strong{color:var(--gold)}.metric.green strong{color:var(--green)}
+.pill{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;
+  background:#e7f0ec;color:var(--teal);font-weight:700;font-size:12px;margin:0 6px 6px 0}
+.pill.gold{background:#f6ecd5;color:#8a6212}.pill.red{background:#f4e0d8;color:#7a2e2e}
+.pill.dark{background:var(--term-bg);color:var(--term-accent)}
+.bar{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;margin:10px 0}
+.bar b{font-weight:700;color:var(--ink);font-size:13px}
+.track{height:11px;background:#e3e8e1;border-radius:99px;overflow:hidden}
+/* display:block 不能省——<i> 默认 inline，宽高不生效，条形会整根不显示 */
+.fill{display:block;height:100%;width:0;border-radius:99px;background:var(--teal);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.active .fill{width:var(--w)}                                /* 进入当前页才填充 */
+.list{margin:0;padding:0;list-style:none}
+.list li{padding:7px 0;border-bottom:1px solid var(--line);color:var(--muted);
+  font-size:clamp(13px,1.2vw,16px);line-height:1.5}
+.list li:last-child{border-bottom:none}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.tbl th,table.tbl td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.tbl th{color:var(--teal);font-weight:700;background:rgba(231,240,236,.4)}
+table.tbl td.num{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700}
+pre.term{margin:12px 0;background:var(--term-bg);color:var(--term-fg);border-radius:10px;padding:14px 16px;
+  font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:12.5px;line-height:1.55;white-space:pre-wrap;overflow:auto}
+.chart-wrap{position:relative;height:100%;min-height:280px}
+.chart-wrap canvas{max-width:100%}
+.source{font-size:11px;color:var(--faint);margin-top:8px}
+/* padding-right 给右下角固定的 .nav（计时 + 页码 + 翻页钮）让位，否则页脚右侧文字会被压住 */
+.footer{display:flex;justify-content:space-between;align-items:center;color:var(--faint);font-size:11px;padding-right:200px}
+
+/* —— 演讲者逐字稿：舞台上隐藏，仅在演讲者窗口可见 —— */
+.notes{display:none}
+
+/* —— 固定 UI —— */
+.progress{position:fixed;left:0;right:0;bottom:0;height:5px;background:rgba(0,0,0,.08);z-index:20}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .25s ease}
+.timer-bar{position:fixed;left:0;right:0;bottom:5px;height:2px;background:transparent;z-index:19}
+.timer-bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s linear}
+.timer-bar.over i{background:var(--red)}                     /* 超时变赭红 */
+.nav{position:fixed;right:18px;bottom:14px;z-index:30;display:flex;gap:8px;align-items:center}
+.nav .idx,.nav .timer{color:var(--muted);font-size:12px;margin-right:4px;font-variant-numeric:tabular-nums}
+button.nav-btn{width:38px;height:34px;border:1px solid var(--line);background:rgba(255,253,248,.92);
+  color:var(--ink);border-radius:8px;font-size:16px;cursor:pointer}
+button.nav-btn:hover{background:var(--cream)}
+.hint{position:fixed;right:18px;top:18px;z-index:30;background:rgba(255,253,248,.92);border:1px solid var(--line);
+  border-radius:6px;padding:4px 9px;font-size:11px;color:var(--muted)}
+.hint b{color:var(--teal);font-weight:700}                  /* 高亮按键字母，一眼可辨 */
+.brand-mark{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;display:flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--faint);text-decoration:none;opacity:.78;z-index:25}
+.brand-mark:hover{opacity:1}
+.brand-mark img{height:16px;width:auto;display:block}
+
+/* —— 窄屏：纵向滚动降级 —— */
+@media (max-width:900px){
+  html,body{overflow:auto}.deck{height:auto}
+  .slide{position:relative;min-height:100vh;display:none;padding:30px 16px}
+  .slide.active{display:grid}
+  .cols-2,.cols-3,.cols-4,.split,.compare{grid-template-columns:1fr}
+  .footer{padding-right:0;flex-direction:column;align-items:flex-start;gap:4px;padding-bottom:56px}
+}
+@media (prefers-reduced-motion:reduce){
+  .slide{transition:none}.fill{transition:none}.progress i,.timer-bar i{transition:none}
+}
+</style>
+</head>
+<body>
+<main class="deck" id="deck">
+  <section class="slide active" data-min="2" data-id="cover">
+    <header><div class="kicker">ZIMA-HTML-PPT v2 · 升级复盘</div><h1>做完的 deck 改不动，等于没做完</h1><p class="sub">把一个「拷模板填内容」的技能，改成有事实源、有闸门、有证据纪律的交付链路 · 按 F 全屏 · 按 S 演讲者模式 · ← → 翻页</p></header>
+    <div class="stage"><div class="stack"><div class="grid cols-4"><div class="card metric"><strong data-count="12">0</strong><span>种内容块，覆盖讲演页的常见形态</span></div><div class="card metric"><strong data-count="7">0</strong><span>道闸门，从路由一直卡到回滚边界</span></div><div class="card metric gold"><strong data-count="31">0</strong><span>项回归，每次改动都要重新跑通</span></div><div class="card metric gold"><strong data-count="3">0</strong><span>个真实渲染缺陷，是复核纪律逼出来的</span></div></div></div></div>
+    <div class="footer"><span class="source">来源：本次改动的代码计数与 evals 实际输出，四个数字各自的出处见对应页</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 自我介绍 20 秒 → 主标题停一拍 → 四个数字各 15 秒。前两个讲能力，后两个讲纪律，语气要能听出转折。</p><p><b class="tag-say">【话术】</b> 我们这套现场讲演 deck 的技能，一直有个不好意思说的毛病——它只管把片子做出来，做完之后就死了。今天讲我们怎么让它活过来。</p><p><b class="tag-data">【数据】</b> 先看最后一个数：三个渲染缺陷。这三个不是这次改坏的，是从母版起就一直在的，没人发现。</p><p><b class="tag-bridge">【过渡】</b> 先说毛病出在哪。</p></div>
+  <section class="slide" data-min="2" data-id="conflict">
+    <header><div class="kicker">冲突</div><h2>v1 能出片，出片之后就没有下一步了</h2></header>
+    <div class="stage"><div class="stack"><div class="grid cols-3"><div class="card"><h3>改稿只能重读 HTML</h3><span class="pill gold">最贵的一条</span><p>客户说「第 7 页数字换一下、顺序调一调」，接手的人得先把 800 行单文件读懂。改第二版的成本接近重做。</p></div><div class="card"><h3>没有事实源</h3><p>内容、样式、演讲逐字稿全都压在同一份 HTML 里。想拿去做别的用途，只能人肉抠。</p></div><div class="card"><h3>对不对只能靠人眼</h3><p>漏一页 data-min、漏一段逐字稿、留一个未替换占位——全靠交付前自己扫一遍清单。扫漏了就带到台上。</p></div></div></div></div>
+    <div class="footer"><span class="source">来源：v1 技能目录（SKILL.md + 2 份 references + 1 个 starter 模板）</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 三张卡从左到右念，第一张停久一点，那是听众最有共鸣的。</p><p><b class="tag-say">【话术】</b> 第一条最贵。客户说「第七页数字换一下」，接手的人得先把八百行单文件读懂——改第二版的成本，接近重做一遍。</p><p><b class="tag-do">【动作】</b> 说到第三张卡时,指一下自己的眼睛,再摇摇头。</p><p><b class="tag-bridge">【过渡】</b> 这三条不是我们独有的病，别人也踩过，而且踩完写了答案。</p></div>
+  <section class="slide" data-min="1" data-id="borrow">
+    <header><div class="kicker">来源</div><h2>借纪律，不借壳</h2></header>
+    <div class="stage"><div class="stack"><p class="quote">「用户明确说直接生成时可以继续，但方案稿照写。」<cite>—— 上游 workflow.md 的第一条纪律，我们逐字照搬了这个态度</cite></p><div class="card"><ul class="list"><li>借了：方案先行的工作流骨架、闸门阶梯的分层方式、文档内嵌事实源的思路、身份保持与回滚边界</li><li>没借：它内置的 nyblnet/bento 官方外壳（600 KB）、bento 文档格式、上游锁定与同步机制</li><li>为什么不借壳：我们的视觉是 ZimaBlue Editorial，演讲者模式是自己的招牌，换壳等于换技能</li></ul></div></div></div>
+    <div class="footer"><span class="source">来源：NOTICE.md · 上游 joeseesun/qiaomu-bento-ppt commit 55c63c8（MIT · 向阳乔木）</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="1"><p><b class="tag-say">【话术】</b> 这次升级的方法论，来自向阳乔木的 qiaomu-bento-ppt。我们借的是纪律，不是代码——它内置的那个六百 KB 外壳，一行都没拿。</p><p><b class="tag-do">【动作】</b> 点一下屏幕上「没借」那一行，停两秒。</p><p><b class="tag-bridge">【过渡】</b> 那借来的纪律，落到我们这儿长什么样？先看最根本的那一条：事实源。</p></div>
+  <section class="slide" data-min="2" data-id="source-of-truth">
+    <header><div class="kicker">机制 · 其一</div><h2>产物自己带着源文件，改稿不用重读 HTML</h2></header>
+    <div class="stage"><div class="split"><div class="stack"><pre class="term">&lt;!-- 每份产物末尾都有这一块 --&gt;
+&lt;script type=&quot;application/zima+json&quot; id=&quot;zima-doc&quot;&gt;
+{
+  &quot;zima&quot;: &quot;1.0&quot;,
+  &quot;deckId&quot;: &quot;6f1c0f3e-9a2b-4d5c-8e77-0b1a2c3d4e5f&quot;,
+  &quot;title&quot;: &quot;…&quot;,
+  &quot;slides&quot;: [ … ]
+}
+&lt;/script&gt;
+
+# 改稿三步，不碰 HTML
+$ zima_deck.py extract deck.html --output deck.json
+$ vim deck.json
+$ zima_deck.py build deck.json --identity-source deck.html \
+    --output deck.updated.html</pre><p class="sub">所有 &lt; 转义成 \u003c 写入，杜绝内容把脚本标签断出去。</p></div><div class="stack"><div class="card"><ul class="list"><li>deck.json 是唯一事实源，HTML 只是产物</li><li>extract(build(x)) == x 逐字节相等，有回归用例守着</li><li>deckId 全程不变——改稿改的是同一份文档，不是新文档</li><li>默认写 sibling 文件，源 HTML 一个字节都不动</li></ul></div><div><span class="pill">locate</span><span class="pill">build</span><span class="pill">extract</span><span class="pill">validate</span></div></div></div></div>
+    <div class="footer"><span class="source">来源：scripts/zima_deck.py · serialize_doc / extract_doc</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 先念左边的代码块前六行，再翻到右边四条。命令那段不用逐字念，说「三步」就够。</p><p><b class="tag-data">【数据】</b> 关键是这一行：extract 出来的 JSON 和当初 build 进去的，逐字节相等。这不是我说的，是回归用例每次都在验。</p><p><b class="tag-do">【动作】</b> 指向 deckId 那一行——「改稿改的是同一份文档，不是新文档」。</p><p><b class="tag-bridge">【过渡】</b> 有了事实源，才谈得上机器校验。</p></div>
+  <section class="slide" data-min="2" data-id="gates">
+    <header><div class="kicker">机制 · 其二</div><h2>七道闸门，最后一道是人</h2></header>
+    <div class="stage"><div class="stack"><div class="card"><ul class="list"><li>Route 路由 —— 这活该不该进这个技能，还是让给 biz-html-viz / viz-deck / viz-charts</li><li>Structure 结构 —— 缺配额、缺逐字稿、未知块型、图表数据非数字、占位符残留，零 error 才准产出</li><li>Identity 身份 —— 新建只铸一次 deckId，改稿对不上身份来源直接拒绝构建</li><li>Shell 外壳 —— 暖纸底、三色条、S 键、reduced-motion、品牌签名，八条签名少一条就是壳被改坏了</li><li>Quality 质量 —— 名词式标题、逐字稿过短、一页超两种强调色，不阻断，但每条都要交代</li><li>Browser 浏览器 —— 封面、最密的一页、带图表的一页，加按 S 的演讲者窗口，人亲眼看</li><li>Rollback 回滚 —— 默认写新文件，要覆盖必须显式开口</li></ul></div></div></div>
+    <div class="footer"><span class="source">来源：references/gates.md</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 七条不要逐条念完，念一、二、四、六即可，其余一句带过。重音落在最后一条之前的 Browser。</p><p><b class="tag-say">【话术】</b> 前六道机器判，第六道是人判。这个顺序是故意的——机器能证明结构对，证明不了「看起来对」。</p><p><b class="tag-data">【数据】</b> Shell 闸门八条签名里有一条很新，是这次复核之后加的，等下第十页会讲它为什么被加进来。</p><p><b class="tag-bridge">【过渡】</b> 结构闸门具体拦什么，看下一页。</p></div>
+  <section class="slide" data-min="2" data-id="structure-gate">
+    <header><div class="kicker">机制 · 其三</div><h2>结构闸门 38 项硬拦截，条条都是上过台才知道疼的</h2></header>
+    <div class="stage"><div class="stack"><div class="card"><table class="tbl"><thead><tr><th>拦什么</th><th>为什么是 error 不是 warning</th><th>上台会怎样</th></tr></thead><tbody><tr><td>某页没写逐字稿</td><td>演讲者模式是这个技能的招牌，不是可选项</td><td>按 S 弹出空白，台上现编</td></tr><tr><td>某页缺 min 配额</td><td>计时条、进度条、演讲者窗口议程全靠它</td><td>计时失准，最后一段被砍</td></tr><tr><td>图表数据写成字符串</td><td>Chart.js 会画出来，但坐标轴是错的</td><td>投影上数字对不上口播</td></tr><tr><td>表格列数与表头不齐</td><td>浏览器会自己补格，补的位置不一定是你想的</td><td>客户盯着错位的那一格</td></tr><tr><td>split 版式没给右栏</td><td>左栏会被拉满，版式塌成 full</td><td>整页构图垮掉</td></tr><tr><td>留了未替换的占位符</td><td>花括号在投影上极其显眼</td><td>台下先笑，你才发现</td></tr></tbody></table></div></div></div>
+    <div class="footer"><span class="source">来源：scripts/zima_deck.py 计数（38 处 add_error / 14 处 add_warning）</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 表格不要逐行念。念第一行和最后一行，中间四行让听众自己扫，留 15 秒。</p><p><b class="tag-say">【话术】</b> 这张表右边一列，是我们真正的判断依据——不是「这条重要」，是「这条漏了，台上会发生什么」。</p><p><b class="tag-data">【数据】</b> 三十八项 error，十四项 warning。分界线就一条：会不会在台上出事。</p><p><b class="tag-do">【动作】</b> 念最后一行时笑一下，这条大家都中过。</p><p><b class="tag-bridge">【过渡】</b> 有了校验，是不是就必须走脚本？不是。</p></div>
+  <section class="slide" data-min="2" data-id="two-routes">
+    <header><div class="kicker">选择</div><h2>两条路线都保留，按「这份稿子要不要改第二版」来选</h2></header>
+    <div class="stage"><div class="compare"><div class="stack"><div class="grid cols-1"><div class="card"><h3>手写 starter</h3><span class="pill gold">一次性场合</span><p>复制 templates/zima-ppt-starter.html，直接改 HTML。版式自由度最高，想加什么加什么。</p><ul class="list"><li>适合：只讲一次、版式要高度定制的场合</li><li>代价：改稿要人重读；只能跑 HTML 层闸门</li></ul></div></div></div><div class="stack"><div class="grid cols-1"><div class="card"><h3>脚本构建（默认）</h3><span class="pill gold">会改第二版</span><p>写 deck.json，交给 build。版式收敛到 5 种 × 12 块，换来可反解、可校验、可留档。</p><ul class="list"><li>适合：要改稿、要机器校验、要交给别人接手</li><li>代价：超出块型的特殊版式要用 html 逃生口，且会记一条警告</li></ul></div></div><div class="card"><table class="tbl"><thead><tr><th>能力</th><th>手写</th><th>脚本</th></tr></thead><tbody><tr><td>反解重编辑</td><td>否</td><td>是</td></tr><tr><td>身份保持</td><td>无</td><td>deckId</td></tr><tr><td>闸门报告</td><td>无</td><td>JSON</td></tr></tbody></table></div></div></div></div>
+    <div class="footer"><span class="source">来源：references/workflow.md 第 6 节</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 左右各 30 秒，最后 30 秒讲选择依据。</p><p><b class="tag-say">【话术】</b> 选哪条路只看一个问题：这份稿子会不会改第二版。会，就走脚本；不会，手写反而快。</p><p><b class="tag-do">【动作】</b> 讲完后停一拍，等大家看完右下角那张小表。</p><p><b class="tag-bridge">【过渡】</b> 闸门全绿，是不是就能说「做完了」？这是今天最想说的一条。</p></div>
+  <section class="slide" data-min="1" data-id="evidence">
+    <header><div class="kicker">纪律</div><h2>脚本过了不等于验收过了</h2></header>
+    <div class="stage"><div class="stack"><p class="quote">「缺少浏览器复核时，写 missing evidence，不要写『已验证』。」<cite>—— references/gates.md 第 2 节</cite></p><p class="sub">每份校验报告默认就带着 browser visual review 这一项，得人真的打开看过，才有资格在交付说明里划掉它。下面这三项，交付时必须按名字写清楚，不许含糊成一句「已验证」。</p><div><span class="pill">browser visual review</span><span class="pill">presenter window check</span><span class="pill">offline rendering (Chart.js CDN)</span><span class="pill gold">projector resolution check</span></div></div></div>
+    <div class="footer"><span>ZimaBlueAI · 技能组</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="1"><p><b class="tag-cue">1 分钟 · 节奏</b> 这页只有一句话要念，念完停三秒，让它落地。</p><p><b class="tag-say">【话术】</b> 报告里默认就写着「浏览器复核缺失」——是故意的。你不去看，它就一直在那儿挂着。</p><p><b class="tag-do">【动作】</b> 扫一遍全场再翻页。</p><p><b class="tag-bridge">【过渡】</b> 这条纪律不是喊口号，这次就把它自己的三个 bug 揪出来了。</p></div>
+  <section class="slide" data-min="2" data-id="defects">
+    <header><div class="kicker">兑现</div><h2>按新清单实跑一遍，查出三个从母版起就在的缺陷</h2></header>
+    <div class="stage"><div class="stack"><div class="grid cols-3"><div class="card"><h3>对比条从来没显示过</h3><span class="pill gold">最狠的一个</span><p>填充元素是 &lt;i&gt;，默认 display:inline，宽高不生效——整根条形是 0×0。D1/D2/D3 母版全都带着这个 bug 上过台。</p></div><div class="card"><h3>页脚右侧被翻页控件压住</h3><p>右下角的计时 + 页码 + 翻页钮是固定定位，正好盖在页脚文字上。每一页都在发生，没人报过。</p></div><div class="card"><h3>桌面端仍能横拖 25px</h3><p>待入场的幻灯片带 translateX(36px)，只锁 body 的溢出收不住，html 还能拖。投影时表现为画面能被蹭歪。</p></div></div></div></div>
+    <div class="footer"><span class="source">来源：headless Chromium 实测，1440×810 + 320/375/414/768 四档</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 三张卡各 25 秒，第一张要有情绪。</p><p><b class="tag-say">【话术】</b> 第一个最难堪：我们那个对比条组件，从写出来到现在，一次都没显示过。三份母版都带着它上过台。</p><p><b class="tag-data">【数据】</b> 第三个是 25 像素——听起来很小，但投影的时候表现为画面能被蹭歪。</p><p><b class="tag-do">【动作】</b> 讲第一张卡时摊手，别掩饰。</p><p><b class="tag-bridge">【过渡】</b> 挑第一个展开讲，因为它教了我们一件事。</p></div>
+  <section class="slide" data-min="2" data-id="the-bar">
+    <header><div class="kicker">细看</div><h2>一个 display 少写了，一个组件白做了</h2></header>
+    <div class="stage"><div class="split"><div class="stack"><pre class="term">/* 修复前——&lt;i&gt; 默认 inline，width/height 全部失效 */
+.fill{height:100%;width:0;background:var(--teal);
+      transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+
+/* 修复后——补一个 display，条形才有盒子 */
+.fill{display:block;height:100%;width:0;
+      background:var(--teal);transition:width 1.2s …}
+
+# 顺手把它写进 shell 闸门签名，防止再漏
+(&quot;条形填充可见&quot;, &quot;display:block;height:100%;width:0&quot;)</pre></div><div class="stack"><div class="bar"><b>修复前 · 条形高度</b><div class="track"><i class="fill" style="--w:0%;background:var(--gold)"></i></div><span>0 px</span></div><div class="bar"><b>修复后 · 条形高度</b><div class="track"><i class="fill" style="--w:100%"></i></div><span>11 px</span></div><div class="card"><ul class="list"><li>同一份 CSS 里，进度条和计时条都写了 display:block，唯独这里漏了</li><li>眼睛看不出来——空的轨道和「还没填充」长得一模一样</li><li>所以修完不算完：把这条加进 shell 签名，让机器替人记住</li></ul></div></div></div></div>
+    <div class="footer"><span class="source">来源：templates/zima-ppt-starter.html diff · 浏览器实测 getBoundingClientRect</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 先让右边那两根条填完（约 1.2 秒），再开口。上面那根本来就该是空的。</p><p><b class="tag-data">【数据】</b> 右边这两根条，就是本次修好的那个组件。上面那根是修复前——它不是没填充，它是根本没有盒子，高度零像素。</p><p><b class="tag-do">【动作】</b> 指着上面那根空条，停两秒，再指下面那根。</p><p><b class="tag-say">【话术】</b> 这件事给我的教训不是「以后要细心」——是「细心不可靠，得让机器替人记住」。所以我们把它写进了闸门签名。</p><p><b class="tag-bridge">【过渡】</b> 机器替人记住多少，就看回归覆盖了多少。</p></div>
+  <section class="slide" data-min="2" data-id="coverage" data-chart="coverage">
+    <header><div class="kicker">覆盖</div><h2>31 项回归守着边界，改一行就得重新跑通</h2></header>
+    <div class="stage"><div class="split"><div class="stack"><div class="card"><div class="chart-wrap" style="min-height:300px"><canvas id="ch_coverage"></canvas></div></div></div><div class="stack"><div class="card"><ul class="list"><li>闸门回归 15 项：好稿必须放行、坏稿必须被逐类点名、反解必须逐字节一致</li><li>路由回归 16 项：包含 6 条该进来的，和 10 条该让给姊妹技能的</li><li>坏稿 fixture 是故意写坏的——缺配额、缺逐字稿、图表数据写成字符串、表格列数不齐，一次全犯</li><li>跑法：python evals/run_fixtures.py &amp;&amp; python scripts/trigger_eval.py</li></ul></div></div></div></div>
+    <div class="footer"><span class="source">来源：evals/run_fixtures.py 与 scripts/trigger_eval.py 实际输出（31/31 通过）</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="2"><p><b class="tag-cue">2 分钟 · 节奏</b> 先念图表结论再翻右栏。第三条是重点，留时间。</p><p><b class="tag-data">【数据】</b> 最高那根是结构 error，三十八项；金色那根是质量 warning，十四项。绿色两根是回归用例本身。</p><p><b class="tag-say">【话术】</b> 路由回归里有十条是「该让给别人」的用例——一个技能知道自己不该做什么，比知道自己能做什么更重要。</p><p><b class="tag-do">【动作】</b> 指向绿色的两根条。</p><p><b class="tag-bridge">【过渡】</b> 最后讲一条不用工具、只靠脑子的规矩。</p></div>
+  <section class="slide" data-min="1" data-id="visual-owner">
+    <header><div class="kicker">方法</div><h2>一条信息只由一个层级负责</h2></header>
+    <div class="stage"><div class="stack"><p class="quote">「屏幕上的字和嘴里念的话，不许是同一句。」<cite>—— 视觉所有者规则，deck-plan 逐页计划表里专门有一列</cite></p><div class="card"><ul class="list"><li>标题、图表、卡片、正文、逐字稿——每条信息四选一，写进计划表就不许再改</li><li>它同时治两个病：页面话太多，和演讲者只会念屏幕</li><li>这是整套规矩里最省力的一条：不用工具，只要在做方案时多填一列</li></ul></div></div></div>
+    <div class="footer"><span class="source">来源：references/workflow.md 第 3 节</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="1"><p><b class="tag-say">【话术】</b> 这条最省力，也最救场。屏幕上的字和嘴里念的话不许是同一句——就这一句，能同时治好「页面话太多」和「演讲者只会念屏幕」。</p><p><b class="tag-do">【动作】</b> 指一下这一页本身：标题说结论，列表说方法，我嘴里说的是为什么。三层没有一句重复。</p><p><b class="tag-bridge">【过渡】</b> 最后说交付。</p></div>
+  <section class="slide" data-min="1" data-id="contract">
+    <header><div class="kicker">交付</div><h2>五件套交齐，缺哪件说明缺在哪</h2></header>
+    <div class="stage"><div class="stack"><div class="card"><ul class="list"><li>deck-plan.md —— 受众、目标、叙事弧、逐页结构（含视觉所有者）、素材来源、风险</li><li>deck.json —— 文档源；走手写路线就注明「无，改稿需人重读 HTML」</li><li>{日期}-{slug}-deck.html —— 单文件产物，双击可开、可投影、可演讲者模式</li><li>reports/deck-validation.json —— errors / warnings / gates / stats 全量报告</li><li>一段交付说明 —— 路径、页数与总配额、离线边界、已验证项、仍属 missing evidence 的项</li></ul></div></div></div>
+    <div class="footer"><span class="source">来源：references/gates.md 第 3 节</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="1"><p><b class="tag-cue">1 分钟 · 节奏</b> 五条快念，重点在最后一条的后半句。</p><p><b class="tag-say">【话术】</b> 最后一件最容易糊弄：交付说明里那句「仍属 missing evidence 的项」。写得出来，才说明你知道自己没验什么。</p><p><b class="tag-bridge">【过渡】</b> 一句话收。</p></div>
+  <section class="slide" data-min="1" data-id="closing">
+    <header><div class="kicker">收束</div><h1>工具管「过没过」，人管「对不对」</h1></header>
+    <div class="stage"><div class="stack"><p class="bigline">脚本过了不等于验收过了；但没有脚本，连「过没过」都无从谈起。</p><p class="quote">「这份 deck 自己就是走这条链路做出来的——plan 先行、JSON 事实源、闸门全绿、浏览器复核，连它自己的 missing evidence 都写在 plan 第 8 节里。」<cite>—— examples/zima-html-ppt-v2-deck-plan.md</cite></p><pre class="term">$ python scripts/zima_deck.py locate
+$ python scripts/zima_deck.py build deck.json --output deck.html --new-document --report r.json
+$ python scripts/zima_deck.py extract deck.html --output deck.json     # 改稿
+$ python evals/run_fixtures.py &amp;&amp; python scripts/trigger_eval.py       # 31/31</pre></div></div>
+    <div class="footer"><span>技能路径：claude-code-skills/zima-html-ppt/</span><span>内部技术分享 · 2026-07-27</span></div>
+  </section>
+  <div class="notes" data-min="1"><p><b class="tag-say">【话术】</b> 一句话带走：脚本过了不等于验收过了；但没有脚本，连「过没过」都无从谈起。</p><p><b class="tag-do">【动作】</b> 停三秒，扫全场，再说最后一句。</p><p><b class="tag-say">【话术】</b> 顺便说一句——今天这份 deck，自己就是走这条链路做出来的，连它没验到的东西都写在方案第八节里。谢谢。</p></div>
+</main>
+
+<!-- 现场操作提示：常驻右上角，让演讲者/接手的人一眼知道有全屏和演讲者模式 -->
+<div class="hint">按 <b>F</b> 全屏 · 按 <b>S</b> 演讲者模式 · <b>← →</b> 翻页 · <b>空格</b> 下一页</div>
+<div class="nav">
+  <span class="timer" id="timer">00:00 / 00:00</span>
+  <span class="idx" id="idx">01 / 01</span>
+  <button class="nav-btn" id="prev" aria-label="上一页">‹</button>
+  <button class="nav-btn" id="next" aria-label="下一页">›</button>
+</div>
+<div class="progress"><i id="progress"></i></div>
+<div class="timer-bar" id="timerbar"><i></i></div>
+<a class="brand-mark" href="https://www.zimablueai.com" target="_blank" rel="noopener">
+  <span>✦ ZimaBlueAI</span>
+</a>
+
+<script>
+/* ========== Chart.js 统一调性 ========== */
+Chart.defaults.font.family='"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",Arial,sans-serif';
+Chart.defaults.color='#5e6b64';
+
+/* 图表规格由 deck.json 编译而来，纯 JSON，无 function formatter */
+const CHART_SPECS={"coverage": {"type": "bar", "data": {"labels": ["结构 error", "质量 warning", "shell 签名", "路由用例", "闸门用例"], "datasets": [{"label": "项数", "data": [38, 14, 8, 16, 15], "backgroundColor": ["#1b5e5a", "#d59a3a", "#cfd6cd", "#2c7a66", "#2c7a66"], "borderRadius": 6}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false, "position": "bottom", "labels": {"boxWidth": 12, "font": {"size": 11}}}, "title": {"display": true, "text": "五类检查项的数量", "font": {"size": 13, "weight": "700"}, "color": "#15211f"}}, "scales": {"x": {"grid": {"display": false}}, "y": {"grid": {"color": "rgba(0,0,0,.06)"}, "beginAtZero": true}}}}};
+
+/* ========== 舞台引擎 ========== */
+const slides=[...document.querySelectorAll('.slide')];
+const progress=document.getElementById('progress');
+const timerBar=document.getElementById('timerbar');
+const timerBarFill=timerBar.querySelector('i');
+const idxEl=document.getElementById('idx');
+const timerEl=document.getElementById('timer');
+let index=0, slideStartTs=Date.now();
+const charts={};
+const totalMinutes=slides.reduce((s,el)=>s+Number(el.dataset.min||5),0);
+timerEl.textContent='00:00 / '+String(Math.floor(totalMinutes/60)).padStart(2,'0')+':'+String(totalMinutes%60).padStart(2,'0');
+
+function show(i){
+  index=(i+slides.length)%slides.length;
+  slides.forEach((s,n)=>s.classList.toggle('active',n===index));
+  progress.style.width=((index+1)/slides.length*100)+'%';
+  idxEl.textContent=String(index+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  history.replaceState(null,'','#'+(index+1));
+  slideStartTs=Date.now(); timerBar.classList.remove('over');
+  const slide=slides[index];
+  if(slide.dataset.chart) requestAnimationFrame(()=>buildCharts(slide.dataset.chart));
+  animateCounters(slide);
+  if(presenterWin && !presenterWin.closed){ try{presenterWin.postMessage({type:'slide',i:index},'*');}catch(e){} }
+}
+
+/* —— 数字滚动（带 data-count / data-suffix / data-dec）—— */
+function animateCounters(slide){
+  slide.querySelectorAll('[data-count]').forEach(el=>{
+    const target=parseFloat(el.dataset.count), dec=Number(el.dataset.dec||0), suf=el.dataset.suffix||'', pre=el.dataset.prefix||'';
+    const t0=performance.now(), dur=900;
+    function step(t){
+      const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);   // easeOutCubic
+      el.textContent=pre+(target*e).toFixed(dec)+suf;
+      if(k<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+/* —— 计时（当前页配额 + 总累计；超时变红）—— */
+function totalElapsedSec(){
+  let past=0; for(let i=0;i<index;i++) past+=Number(slides[i].dataset.min||5);
+  return past*60+(Date.now()-slideStartTs)/1000;
+}
+function tick(){
+  const allotted=Number(slides[index].dataset.min||5)*60;
+  const elapsed=(Date.now()-slideStartTs)/1000;
+  timerBarFill.style.width=Math.min(1,elapsed/allotted)*100+'%';
+  if(elapsed>allotted) timerBar.classList.add('over');
+  const te=totalElapsedSec(), m=Math.floor(te/60), s=Math.floor(te%60);
+  const tm=Math.floor(totalMinutes/60), ts=totalMinutes%60;
+  timerEl.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+' / '+String(tm).padStart(2,'0')+':'+String(ts).padStart(2,'0');
+}
+setInterval(tick,500);
+
+/* ========== 图表（按 data-chart 名懒建一次，支持逗号分隔多图）========== */
+function buildCharts(names){
+  String(names).split(',').forEach(raw=>{
+    const name=raw.trim();
+    if(!name || charts[name]) return;
+    const spec=CHART_SPECS[name]; if(!spec) return;
+    const el=document.getElementById('ch_'+name); if(!el) return;
+    charts[name]=new Chart(el,JSON.parse(JSON.stringify(spec)));
+  });
+}
+
+/* ========== 演讲者模式（S）：弹窗显示逐字稿 + 计时 + 议程 ========== */
+let presenterWin=null;
+function togglePresenter(){
+  if(presenterWin && !presenterWin.closed){ presenterWin.close(); presenterWin=null; return; }
+  presenterWin=window.open('','presenter','width=720,height=920');
+  if(!presenterWin) return;
+  const decks=slides.map(s=>({
+    kicker:s.querySelector('.kicker')?.textContent||'',
+    title:s.querySelector('h1, h2')?.textContent||'',
+    min:Number(s.dataset.min||5),
+    notes:s.nextElementSibling?.classList.contains('notes')
+      ? s.nextElementSibling.innerHTML
+      : '<p style="color:#9aa39d;">（本页未撰写逐字稿）</p>'
+  }));
+  presenterWin.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>演讲者模式 · 逐字稿</title>
+<style>
+ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#f7f4ee;color:#15211f;margin:0;padding:16px}
+ .head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:14px}
+ .head-left{min-width:0;flex:1}
+ .kicker{font-size:11px;color:#1b5e5a;letter-spacing:.08em;margin-bottom:4px;text-transform:uppercase;font-weight:700}
+ h2{font-size:20px;margin:0;line-height:1.25}
+ .head-right{text-align:right;flex-shrink:0}
+ .big{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;color:#a24e3e;line-height:1}
+ .small{font-size:11px;color:#5e6b64;margin-top:4px}
+ .next{background:#fffdf8;border:1px solid #d9ded6;border-radius:8px;padding:10px 12px;margin-bottom:14px}
+ .next .label{font-size:11px;color:#8a6212;letter-spacing:.08em;margin-bottom:3px;font-weight:700}
+ .next h3{font-size:14px;margin:0;color:#15211f;font-weight:600}
+ .notes-panel{background:#fffdf8;border:1px solid #c3cdd6;border-radius:8px;padding:14px 16px;max-height:380px;overflow:auto;font-size:14px;line-height:1.65}
+ .notes-panel p{margin:6px 0;color:#5e6b64}
+ .notes-panel p:has(b.tag-say),.notes-panel p:has(b.tag-data){color:#c8731e;font-weight:500}    /* 可直接念=橙字 */
+ .notes-panel b{color:#15211f}
+ .notes-panel p:has(b.tag-say)>b:not(.tag-say):not(.tag-data),
+ .notes-panel p:has(b.tag-data)>b:not(.tag-say):not(.tag-data){color:#c8731e}
+ .notes-panel b.tag-cue{color:#fff;background:#5e6b64;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .notes-panel b.tag-say{color:#fff;background:#1b5e5a;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .notes-panel b.tag-do{color:#fff;background:#a24e3e;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .notes-panel b.tag-data{color:#fff;background:#1b5e5a;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .notes-panel b.tag-bridge{color:#fff;background:#2c7a66;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:700}
+ .all{margin-top:14px;max-height:220px;overflow:auto;border-top:1px solid #d9ded6;padding-top:10px}
+ .item{padding:6px 8px;border-radius:4px;font-size:12px;display:grid;grid-template-columns:26px 1fr 40px;gap:6px;color:#5e6b64}
+ .item:hover{background:rgba(27,94,90,.06)}
+ .item.active{background:rgba(27,94,90,.18);color:#15211f;font-weight:600}
+ .item .n{color:#9aa39d;font-variant-numeric:tabular-nums}
+ .item .m{color:#8a6212;text-align:right}
+ .legend{font-size:10px;color:#5e6b64;margin-top:8px;display:flex;gap:14px;flex-wrap:wrap}
+</style></head><body>
+<div class="head">
+  <div class="head-left"><div class="kicker" id="pkicker">—</div><h2 id="ph2">—</h2></div>
+  <div class="head-right"><div class="big" id="ptime">00:00</div>
+    <div class="small">总配额 ${String(Math.floor(totalMinutes/60)).padStart(2,'0')}:${String(totalMinutes%60).padStart(2,'0')}</div></div>
+</div>
+<div class="next"><div class="label">下一页</div><h3 id="ph3">—</h3></div>
+<div class="notes-panel" id="pnotes">—</div>
+<div class="legend">
+  <span><b style="color:#fff;background:#5e6b64;padding:1px 6px;border-radius:3px;">节奏</b> 灰底·不念</span>
+  <span><b style="color:#fff;background:#1b5e5a;padding:1px 6px;border-radius:3px;">话术/数据</b> 青底·后面<b style="color:#c8731e;">橙字</b>直接念</span>
+  <span><b style="color:#fff;background:#a24e3e;padding:1px 6px;border-radius:3px;">动作</b> 红底·不念</span>
+  <span><b style="color:#fff;background:#2c7a66;padding:1px 6px;border-radius:3px;">过渡</b> 翠底·不念</span>
+</div>
+<div class="all" id="plist"></div>
+<script>
+  const decks=${JSON.stringify(decks)};
+  const list=document.getElementById('plist');
+  decks.forEach((t,i)=>{const el=document.createElement('div');el.className='item';el.dataset.i=i;
+    el.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span><span>'+(t.title||'')+'</span><span class="m">'+t.min+' min</span>';list.appendChild(el);});
+  let start=Date.now(),cur=0;
+  function render(){const t=decks[cur]||{};
+    document.getElementById('pkicker').textContent=t.kicker||'';
+    document.getElementById('ph2').textContent=t.title||'';
+    document.getElementById('ph3').textContent=(decks[cur+1]||{}).title||'— 收束 —';
+    const np=document.getElementById('pnotes');np.innerHTML=t.notes||'';np.scrollTop=0;
+    document.querySelectorAll('.item').forEach(el=>el.classList.toggle('active',Number(el.dataset.i)===cur));
+    const a=document.querySelector('.item.active'); if(a) a.scrollIntoView({block:'nearest'});}
+  function tickT(){const s=Math.floor((Date.now()-start)/1000);
+    document.getElementById('ptime').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+  window.addEventListener('message',e=>{if(e.data&&e.data.type==='slide'){cur=e.data.i;start=Date.now();render();}});
+  render();setInterval(tickT,500);
+<\/script></body></html>`);
+  presenterWin.document.close();
+  setTimeout(()=>{try{presenterWin.postMessage({type:'slide',i:index},'*');}catch(e){}},200);
+}
+
+/* ========== 导航 ========== */
+document.getElementById('prev').onclick=()=>show(index-1);
+document.getElementById('next').onclick=()=>show(index+1);
+window.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(index+1);}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(index-1);}
+  else if(e.key==='Home') show(0);
+  else if(e.key==='End') show(slides.length-1);
+  else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  else if(e.key==='s'||e.key==='S') togglePresenter();
+});
+show(Math.max(0,Math.min(slides.length-1,Number(location.hash.slice(1))-1||0)));
+</script>
+
+<!-- 文档源：deck.json 原文。extract 从这里反解，不要手改；改内容请改 deck.json 后重新 build。 -->
+<script type="application/zima+json" id="zima-doc">
+{
+  "zima": "1.0",
+  "deckId": "137d1c5d-87b9-491a-a4ea-8f5bde1e76e7",
+  "title": "做完的 deck 改不动，等于没做完 · zima-html-ppt v2",
+  "meta": {
+    "speaker": "ZimaBlueAI · 技能组",
+    "footer": "内部技术分享 · 2026-07-27",
+    "brand": "✦ ZimaBlueAI",
+    "brandUrl": "https://www.zimablueai.com"
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "cover",
+      "min": 2,
+      "kicker": "ZIMA-HTML-PPT v2 · 升级复盘",
+      "title": "做完的 deck 改不动，等于没做完",
+      "sub": "把一个「拷模板填内容」的技能，改成有事实源、有闸门、有证据纪律的交付链路 · 按 F 全屏 · 按 S 演讲者模式 · ← → 翻页",
+      "source": "来源：本次改动的代码计数与 evals 实际输出，四个数字各自的出处见对应页",
+      "blocks": [
+        {
+          "type": "metrics",
+          "cols": 4,
+          "items": [
+            {
+              "value": 12,
+              "label": "种内容块，覆盖讲演页的常见形态",
+              "tone": "teal"
+            },
+            {
+              "value": 7,
+              "label": "道闸门，从路由一直卡到回滚边界",
+              "tone": "teal"
+            },
+            {
+              "value": 31,
+              "label": "项回归，每次改动都要重新跑通",
+              "tone": "gold"
+            },
+            {
+              "value": 3,
+              "label": "个真实渲染缺陷，是复核纪律逼出来的",
+              "tone": "gold"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "自我介绍 20 秒 → 主标题停一拍 → 四个数字各 15 秒。前两个讲能力，后两个讲纪律，语气要能听出转折。"
+        },
+        {
+          "tag": "say",
+          "text": "我们这套现场讲演 deck 的技能，一直有个不好意思说的毛病——它只管把片子做出来，做完之后就死了。今天讲我们怎么让它活过来。"
+        },
+        {
+          "tag": "data",
+          "text": "先看最后一个数：三个渲染缺陷。这三个不是这次改坏的，是从母版起就一直在的，没人发现。"
+        },
+        {
+          "tag": "bridge",
+          "text": "先说毛病出在哪。"
+        }
+      ]
+    },
+    {
+      "id": "conflict",
+      "layout": "full",
+      "min": 2,
+      "kicker": "冲突",
+      "title": "v1 能出片，出片之后就没有下一步了",
+      "source": "来源：v1 技能目录（SKILL.md + 2 份 references + 1 个 starter 模板）",
+      "blocks": [
+        {
+          "type": "cards",
+          "cols": 3,
+          "items": [
+            {
+              "title": "改稿只能重读 HTML",
+              "pills": [
+                {
+                  "text": "最贵的一条",
+                  "tone": "gold"
+                }
+              ],
+              "body": "客户说「第 7 页数字换一下、顺序调一调」，接手的人得先把 800 行单文件读懂。改第二版的成本接近重做。"
+            },
+            {
+              "title": "没有事实源",
+              "body": "内容、样式、演讲逐字稿全都压在同一份 HTML 里。想拿去做别的用途，只能人肉抠。"
+            },
+            {
+              "title": "对不对只能靠人眼",
+              "body": "漏一页 data-min、漏一段逐字稿、留一个未替换占位——全靠交付前自己扫一遍清单。扫漏了就带到台上。"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "三张卡从左到右念，第一张停久一点，那是听众最有共鸣的。"
+        },
+        {
+          "tag": "say",
+          "text": "第一条最贵。客户说「第七页数字换一下」，接手的人得先把八百行单文件读懂——改第二版的成本，接近重做一遍。"
+        },
+        {
+          "tag": "do",
+          "text": "说到第三张卡时,指一下自己的眼睛,再摇摇头。"
+        },
+        {
+          "tag": "bridge",
+          "text": "这三条不是我们独有的病，别人也踩过，而且踩完写了答案。"
+        }
+      ]
+    },
+    {
+      "id": "borrow",
+      "layout": "full",
+      "min": 1,
+      "kicker": "来源",
+      "title": "借纪律，不借壳",
+      "source": "来源：NOTICE.md · 上游 joeseesun/qiaomu-bento-ppt commit 55c63c8（MIT · 向阳乔木）",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "「用户明确说直接生成时可以继续，但方案稿照写。」",
+          "cite": "—— 上游 workflow.md 的第一条纪律，我们逐字照搬了这个态度"
+        },
+        {
+          "type": "list",
+          "items": [
+            "借了：方案先行的工作流骨架、闸门阶梯的分层方式、文档内嵌事实源的思路、身份保持与回滚边界",
+            "没借：它内置的 nyblnet/bento 官方外壳（600 KB）、bento 文档格式、上游锁定与同步机制",
+            "为什么不借壳：我们的视觉是 ZimaBlue Editorial，演讲者模式是自己的招牌，换壳等于换技能"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "say",
+          "text": "这次升级的方法论，来自向阳乔木的 qiaomu-bento-ppt。我们借的是纪律，不是代码——它内置的那个六百 KB 外壳，一行都没拿。"
+        },
+        {
+          "tag": "do",
+          "text": "点一下屏幕上「没借」那一行，停两秒。"
+        },
+        {
+          "tag": "bridge",
+          "text": "那借来的纪律，落到我们这儿长什么样？先看最根本的那一条：事实源。"
+        }
+      ]
+    },
+    {
+      "id": "source-of-truth",
+      "layout": "split",
+      "min": 2,
+      "kicker": "机制 · 其一",
+      "title": "产物自己带着源文件，改稿不用重读 HTML",
+      "source": "来源：scripts/zima_deck.py · serialize_doc / extract_doc",
+      "blocks": [
+        {
+          "type": "term",
+          "text": "\u003c!-- 每份产物末尾都有这一块 -->\n\u003cscript type=\"application/zima+json\" id=\"zima-doc\">\n{\n  \"zima\": \"1.0\",\n  \"deckId\": \"6f1c0f3e-9a2b-4d5c-8e77-0b1a2c3d4e5f\",\n  \"title\": \"…\",\n  \"slides\": [ … ]\n}\n\u003c/script>\n\n# 改稿三步，不碰 HTML\n$ zima_deck.py extract deck.html --output deck.json\n$ vim deck.json\n$ zima_deck.py build deck.json --identity-source deck.html \\\n    --output deck.updated.html"
+        },
+        {
+          "type": "text",
+          "text": "所有 \u003c 转义成 \\u003c 写入，杜绝内容把脚本标签断出去。"
+        }
+      ],
+      "right": [
+        {
+          "type": "list",
+          "items": [
+            "deck.json 是唯一事实源，HTML 只是产物",
+            "extract(build(x)) == x 逐字节相等，有回归用例守着",
+            "deckId 全程不变——改稿改的是同一份文档，不是新文档",
+            "默认写 sibling 文件，源 HTML 一个字节都不动"
+          ]
+        },
+        {
+          "type": "pills",
+          "items": [
+            {
+              "text": "locate"
+            },
+            {
+              "text": "build"
+            },
+            {
+              "text": "extract"
+            },
+            {
+              "text": "validate"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "先念左边的代码块前六行，再翻到右边四条。命令那段不用逐字念，说「三步」就够。"
+        },
+        {
+          "tag": "data",
+          "text": "关键是这一行：extract 出来的 JSON 和当初 build 进去的，逐字节相等。这不是我说的，是回归用例每次都在验。"
+        },
+        {
+          "tag": "do",
+          "text": "指向 deckId 那一行——「改稿改的是同一份文档，不是新文档」。"
+        },
+        {
+          "tag": "bridge",
+          "text": "有了事实源，才谈得上机器校验。"
+        }
+      ]
+    },
+    {
+      "id": "gates",
+      "layout": "full",
+      "min": 2,
+      "kicker": "机制 · 其二",
+      "title": "七道闸门，最后一道是人",
+      "source": "来源：references/gates.md",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Route 路由 —— 这活该不该进这个技能，还是让给 biz-html-viz / viz-deck / viz-charts",
+            "Structure 结构 —— 缺配额、缺逐字稿、未知块型、图表数据非数字、占位符残留，零 error 才准产出",
+            "Identity 身份 —— 新建只铸一次 deckId，改稿对不上身份来源直接拒绝构建",
+            "Shell 外壳 —— 暖纸底、三色条、S 键、reduced-motion、品牌签名，八条签名少一条就是壳被改坏了",
+            "Quality 质量 —— 名词式标题、逐字稿过短、一页超两种强调色，不阻断，但每条都要交代",
+            "Browser 浏览器 —— 封面、最密的一页、带图表的一页，加按 S 的演讲者窗口，人亲眼看",
+            "Rollback 回滚 —— 默认写新文件，要覆盖必须显式开口"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "七条不要逐条念完，念一、二、四、六即可，其余一句带过。重音落在最后一条之前的 Browser。"
+        },
+        {
+          "tag": "say",
+          "text": "前六道机器判，第六道是人判。这个顺序是故意的——机器能证明结构对，证明不了「看起来对」。"
+        },
+        {
+          "tag": "data",
+          "text": "Shell 闸门八条签名里有一条很新，是这次复核之后加的，等下第十页会讲它为什么被加进来。"
+        },
+        {
+          "tag": "bridge",
+          "text": "结构闸门具体拦什么，看下一页。"
+        }
+      ]
+    },
+    {
+      "id": "structure-gate",
+      "layout": "full",
+      "min": 2,
+      "kicker": "机制 · 其三",
+      "title": "结构闸门 38 项硬拦截，条条都是上过台才知道疼的",
+      "source": "来源：scripts/zima_deck.py 计数（38 处 add_error / 14 处 add_warning）",
+      "blocks": [
+        {
+          "type": "table",
+          "head": [
+            "拦什么",
+            "为什么是 error 不是 warning",
+            "上台会怎样"
+          ],
+          "numCols": [],
+          "rows": [
+            [
+              "某页没写逐字稿",
+              "演讲者模式是这个技能的招牌，不是可选项",
+              "按 S 弹出空白，台上现编"
+            ],
+            [
+              "某页缺 min 配额",
+              "计时条、进度条、演讲者窗口议程全靠它",
+              "计时失准，最后一段被砍"
+            ],
+            [
+              "图表数据写成字符串",
+              "Chart.js 会画出来，但坐标轴是错的",
+              "投影上数字对不上口播"
+            ],
+            [
+              "表格列数与表头不齐",
+              "浏览器会自己补格，补的位置不一定是你想的",
+              "客户盯着错位的那一格"
+            ],
+            [
+              "split 版式没给右栏",
+              "左栏会被拉满，版式塌成 full",
+              "整页构图垮掉"
+            ],
+            [
+              "留了未替换的占位符",
+              "花括号在投影上极其显眼",
+              "台下先笑，你才发现"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "表格不要逐行念。念第一行和最后一行，中间四行让听众自己扫，留 15 秒。"
+        },
+        {
+          "tag": "say",
+          "text": "这张表右边一列，是我们真正的判断依据——不是「这条重要」，是「这条漏了，台上会发生什么」。"
+        },
+        {
+          "tag": "data",
+          "text": "三十八项 error，十四项 warning。分界线就一条：会不会在台上出事。"
+        },
+        {
+          "tag": "do",
+          "text": "念最后一行时笑一下，这条大家都中过。"
+        },
+        {
+          "tag": "bridge",
+          "text": "有了校验，是不是就必须走脚本？不是。"
+        }
+      ]
+    },
+    {
+      "id": "two-routes",
+      "layout": "compare",
+      "min": 2,
+      "kicker": "选择",
+      "title": "两条路线都保留，按「这份稿子要不要改第二版」来选",
+      "source": "来源：references/workflow.md 第 6 节",
+      "blocks": [
+        {
+          "type": "cards",
+          "cols": 1,
+          "items": [
+            {
+              "title": "手写 starter",
+              "pills": [
+                {
+                  "text": "一次性场合",
+                  "tone": "gold"
+                }
+              ],
+              "body": "复制 templates/zima-ppt-starter.html，直接改 HTML。版式自由度最高，想加什么加什么。",
+              "list": [
+                "适合：只讲一次、版式要高度定制的场合",
+                "代价：改稿要人重读；只能跑 HTML 层闸门"
+              ]
+            }
+          ]
+        }
+      ],
+      "right": [
+        {
+          "type": "cards",
+          "cols": 1,
+          "items": [
+            {
+              "title": "脚本构建（默认）",
+              "pills": [
+                {
+                  "text": "会改第二版",
+                  "tone": "gold"
+                }
+              ],
+              "body": "写 deck.json，交给 build。版式收敛到 5 种 × 12 块，换来可反解、可校验、可留档。",
+              "list": [
+                "适合：要改稿、要机器校验、要交给别人接手",
+                "代价：超出块型的特殊版式要用 html 逃生口，且会记一条警告"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "head": [
+            "能力",
+            "手写",
+            "脚本"
+          ],
+          "numCols": [],
+          "rows": [
+            [
+              "反解重编辑",
+              "否",
+              "是"
+            ],
+            [
+              "身份保持",
+              "无",
+              "deckId"
+            ],
+            [
+              "闸门报告",
+              "无",
+              "JSON"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "左右各 30 秒，最后 30 秒讲选择依据。"
+        },
+        {
+          "tag": "say",
+          "text": "选哪条路只看一个问题：这份稿子会不会改第二版。会，就走脚本；不会，手写反而快。"
+        },
+        {
+          "tag": "do",
+          "text": "讲完后停一拍，等大家看完右下角那张小表。"
+        },
+        {
+          "tag": "bridge",
+          "text": "闸门全绿，是不是就能说「做完了」？这是今天最想说的一条。"
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "layout": "full",
+      "min": 1,
+      "kicker": "纪律",
+      "title": "脚本过了不等于验收过了",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "「缺少浏览器复核时，写 missing evidence，不要写『已验证』。」",
+          "cite": "—— references/gates.md 第 2 节"
+        },
+        {
+          "type": "text",
+          "text": "每份校验报告默认就带着 browser visual review 这一项，得人真的打开看过，才有资格在交付说明里划掉它。下面这三项，交付时必须按名字写清楚，不许含糊成一句「已验证」。"
+        },
+        {
+          "type": "pills",
+          "items": [
+            {
+              "text": "browser visual review"
+            },
+            {
+              "text": "presenter window check"
+            },
+            {
+              "text": "offline rendering (Chart.js CDN)"
+            },
+            {
+              "text": "projector resolution check",
+              "tone": "gold"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "这页只有一句话要念，念完停三秒，让它落地。"
+        },
+        {
+          "tag": "say",
+          "text": "报告里默认就写着「浏览器复核缺失」——是故意的。你不去看，它就一直在那儿挂着。"
+        },
+        {
+          "tag": "do",
+          "text": "扫一遍全场再翻页。"
+        },
+        {
+          "tag": "bridge",
+          "text": "这条纪律不是喊口号，这次就把它自己的三个 bug 揪出来了。"
+        }
+      ]
+    },
+    {
+      "id": "defects",
+      "layout": "full",
+      "min": 2,
+      "kicker": "兑现",
+      "title": "按新清单实跑一遍，查出三个从母版起就在的缺陷",
+      "source": "来源：headless Chromium 实测，1440×810 + 320/375/414/768 四档",
+      "blocks": [
+        {
+          "type": "cards",
+          "cols": 3,
+          "items": [
+            {
+              "title": "对比条从来没显示过",
+              "pills": [
+                {
+                  "text": "最狠的一个",
+                  "tone": "gold"
+                }
+              ],
+              "body": "填充元素是 \u003ci>，默认 display:inline，宽高不生效——整根条形是 0×0。D1/D2/D3 母版全都带着这个 bug 上过台。"
+            },
+            {
+              "title": "页脚右侧被翻页控件压住",
+              "body": "右下角的计时 + 页码 + 翻页钮是固定定位，正好盖在页脚文字上。每一页都在发生，没人报过。"
+            },
+            {
+              "title": "桌面端仍能横拖 25px",
+              "body": "待入场的幻灯片带 translateX(36px)，只锁 body 的溢出收不住，html 还能拖。投影时表现为画面能被蹭歪。"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "三张卡各 25 秒，第一张要有情绪。"
+        },
+        {
+          "tag": "say",
+          "text": "第一个最难堪：我们那个对比条组件，从写出来到现在，一次都没显示过。三份母版都带着它上过台。"
+        },
+        {
+          "tag": "data",
+          "text": "第三个是 25 像素——听起来很小，但投影的时候表现为画面能被蹭歪。"
+        },
+        {
+          "tag": "do",
+          "text": "讲第一张卡时摊手，别掩饰。"
+        },
+        {
+          "tag": "bridge",
+          "text": "挑第一个展开讲，因为它教了我们一件事。"
+        }
+      ]
+    },
+    {
+      "id": "the-bar",
+      "layout": "split",
+      "min": 2,
+      "kicker": "细看",
+      "title": "一个 display 少写了，一个组件白做了",
+      "source": "来源：templates/zima-ppt-starter.html diff · 浏览器实测 getBoundingClientRect",
+      "blocks": [
+        {
+          "type": "term",
+          "text": "/* 修复前——\u003ci> 默认 inline，width/height 全部失效 */\n.fill{height:100%;width:0;background:var(--teal);\n      transition:width 1.2s cubic-bezier(.2,.8,.2,1)}\n\n/* 修复后——补一个 display，条形才有盒子 */\n.fill{display:block;height:100%;width:0;\n      background:var(--teal);transition:width 1.2s …}\n\n# 顺手把它写进 shell 闸门签名，防止再漏\n(\"条形填充可见\", \"display:block;height:100%;width:0\")"
+        }
+      ],
+      "right": [
+        {
+          "type": "bars",
+          "bare": true,
+          "items": [
+            {
+              "label": "修复前 · 条形高度",
+              "pct": 0,
+              "value": "0 px",
+              "tone": "gold"
+            },
+            {
+              "label": "修复后 · 条形高度",
+              "pct": 100,
+              "value": "11 px",
+              "tone": "teal"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "items": [
+            "同一份 CSS 里，进度条和计时条都写了 display:block，唯独这里漏了",
+            "眼睛看不出来——空的轨道和「还没填充」长得一模一样",
+            "所以修完不算完：把这条加进 shell 签名，让机器替人记住"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "先让右边那两根条填完（约 1.2 秒），再开口。上面那根本来就该是空的。"
+        },
+        {
+          "tag": "data",
+          "text": "右边这两根条，就是本次修好的那个组件。上面那根是修复前——它不是没填充，它是根本没有盒子，高度零像素。"
+        },
+        {
+          "tag": "do",
+          "text": "指着上面那根空条，停两秒，再指下面那根。"
+        },
+        {
+          "tag": "say",
+          "text": "这件事给我的教训不是「以后要细心」——是「细心不可靠，得让机器替人记住」。所以我们把它写进了闸门签名。"
+        },
+        {
+          "tag": "bridge",
+          "text": "机器替人记住多少，就看回归覆盖了多少。"
+        }
+      ]
+    },
+    {
+      "id": "coverage",
+      "layout": "split",
+      "min": 2,
+      "kicker": "覆盖",
+      "title": "31 项回归守着边界，改一行就得重新跑通",
+      "source": "来源：evals/run_fixtures.py 与 scripts/trigger_eval.py 实际输出（31/31 通过）",
+      "blocks": [
+        {
+          "type": "chart",
+          "name": "coverage",
+          "kind": "bar",
+          "title": "五类检查项的数量",
+          "height": 300,
+          "labels": [
+            "结构 error",
+            "质量 warning",
+            "shell 签名",
+            "路由用例",
+            "闸门用例"
+          ],
+          "datasets": [
+            {
+              "label": "项数",
+              "data": [
+                38,
+                14,
+                8,
+                16,
+                15
+              ],
+              "tones": [
+                "teal",
+                "gold",
+                "muted",
+                "green",
+                "green"
+              ]
+            }
+          ]
+        }
+      ],
+      "right": [
+        {
+          "type": "list",
+          "items": [
+            "闸门回归 15 项：好稿必须放行、坏稿必须被逐类点名、反解必须逐字节一致",
+            "路由回归 16 项：包含 6 条该进来的，和 10 条该让给姊妹技能的",
+            "坏稿 fixture 是故意写坏的——缺配额、缺逐字稿、图表数据写成字符串、表格列数不齐，一次全犯",
+            "跑法：python evals/run_fixtures.py && python scripts/trigger_eval.py"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "先念图表结论再翻右栏。第三条是重点，留时间。"
+        },
+        {
+          "tag": "data",
+          "text": "最高那根是结构 error，三十八项；金色那根是质量 warning，十四项。绿色两根是回归用例本身。"
+        },
+        {
+          "tag": "say",
+          "text": "路由回归里有十条是「该让给别人」的用例——一个技能知道自己不该做什么，比知道自己能做什么更重要。"
+        },
+        {
+          "tag": "do",
+          "text": "指向绿色的两根条。"
+        },
+        {
+          "tag": "bridge",
+          "text": "最后讲一条不用工具、只靠脑子的规矩。"
+        }
+      ]
+    },
+    {
+      "id": "visual-owner",
+      "layout": "full",
+      "min": 1,
+      "kicker": "方法",
+      "title": "一条信息只由一个层级负责",
+      "source": "来源：references/workflow.md 第 3 节",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "「屏幕上的字和嘴里念的话，不许是同一句。」",
+          "cite": "—— 视觉所有者规则，deck-plan 逐页计划表里专门有一列"
+        },
+        {
+          "type": "list",
+          "items": [
+            "标题、图表、卡片、正文、逐字稿——每条信息四选一，写进计划表就不许再改",
+            "它同时治两个病：页面话太多，和演讲者只会念屏幕",
+            "这是整套规矩里最省力的一条：不用工具，只要在做方案时多填一列"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "say",
+          "text": "这条最省力，也最救场。屏幕上的字和嘴里念的话不许是同一句——就这一句，能同时治好「页面话太多」和「演讲者只会念屏幕」。"
+        },
+        {
+          "tag": "do",
+          "text": "指一下这一页本身：标题说结论，列表说方法，我嘴里说的是为什么。三层没有一句重复。"
+        },
+        {
+          "tag": "bridge",
+          "text": "最后说交付。"
+        }
+      ]
+    },
+    {
+      "id": "contract",
+      "layout": "full",
+      "min": 1,
+      "kicker": "交付",
+      "title": "五件套交齐，缺哪件说明缺在哪",
+      "source": "来源：references/gates.md 第 3 节",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "deck-plan.md —— 受众、目标、叙事弧、逐页结构（含视觉所有者）、素材来源、风险",
+            "deck.json —— 文档源；走手写路线就注明「无，改稿需人重读 HTML」",
+            "{日期}-{slug}-deck.html —— 单文件产物，双击可开、可投影、可演讲者模式",
+            "reports/deck-validation.json —— errors / warnings / gates / stats 全量报告",
+            "一段交付说明 —— 路径、页数与总配额、离线边界、已验证项、仍属 missing evidence 的项"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "五条快念，重点在最后一条的后半句。"
+        },
+        {
+          "tag": "say",
+          "text": "最后一件最容易糊弄：交付说明里那句「仍属 missing evidence 的项」。写得出来，才说明你知道自己没验什么。"
+        },
+        {
+          "tag": "bridge",
+          "text": "一句话收。"
+        }
+      ]
+    },
+    {
+      "id": "closing",
+      "layout": "closing",
+      "min": 1,
+      "kicker": "收束",
+      "title": "工具管「过没过」，人管「对不对」",
+      "footerLeft": "技能路径：claude-code-skills/zima-html-ppt/",
+      "blocks": [
+        {
+          "type": "bigline",
+          "text": "脚本过了不等于验收过了；但没有脚本，连「过没过」都无从谈起。"
+        },
+        {
+          "type": "quote",
+          "text": "「这份 deck 自己就是走这条链路做出来的——plan 先行、JSON 事实源、闸门全绿、浏览器复核，连它自己的 missing evidence 都写在 plan 第 8 节里。」",
+          "cite": "—— examples/zima-html-ppt-v2-deck-plan.md"
+        },
+        {
+          "type": "term",
+          "text": "$ python scripts/zima_deck.py locate\n$ python scripts/zima_deck.py build deck.json --output deck.html --new-document --report r.json\n$ python scripts/zima_deck.py extract deck.html --output deck.json     # 改稿\n$ python evals/run_fixtures.py && python scripts/trigger_eval.py       # 31/31"
+        }
+      ],
+      "notes": [
+        {
+          "tag": "say",
+          "text": "一句话带走：脚本过了不等于验收过了；但没有脚本，连「过没过」都无从谈起。"
+        },
+        {
+          "tag": "do",
+          "text": "停三秒，扫全场，再说最后一句。"
+        },
+        {
+          "tag": "say",
+          "text": "顺便说一句——今天这份 deck，自己就是走这条链路做出来的，连它没验到的东西都写在方案第八节里。谢谢。"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</body>
+</html>

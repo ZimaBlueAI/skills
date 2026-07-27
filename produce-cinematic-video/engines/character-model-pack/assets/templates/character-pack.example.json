@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "character_name": "角色名",
+  "character_slug": "character-alias",
+  "creator_alias": "作者代号",
+  "identity_anchors": [
+    "轮廓锚点",
+    "脸或身体锚点",
+    "颜色、材质或配件锚点"
+  ],
+  "proportions": "例如：约 2.5 头身，短腿，大手",
+  "palette_or_materials": [
+    "主色",
+    "辅色",
+    "点缀色或材质"
+  ],
+  "asymmetry_notes": [
+    "例如：蓝色口袋只在角色左侧"
+  ],
+  "neutral_pose_family": "站立或坐姿",
+  "style_language": {
+    "line": "",
+    "shape": "",
+    "color": "",
+    "material": "",
+    "space": ""
+  },
+  "provenance": [
+    {
+      "asset": "source/original.png",
+      "source_type": "child_drawing",
+      "tool_or_model": "",
+      "prompt_or_edit_note": "保留原稿；未覆盖"
+    }
+  ],
+  "author_review": {
+    "status": "yellow",
+    "notes": [
+      "等待作者确认"
+    ]
+  }
+}

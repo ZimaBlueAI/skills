@@ -140,7 +140,7 @@ ZimaBlueAI 目前**不要求** Contributor License Agreement。Apache-2.0 + DCO 
 
 ## 6. 行为准则
 
-参与本项目即同意遵守 [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md)。简而言之：尊重彼此，对事不对人，反对一切骚扰行为。
+参与本项目请尊重彼此，对事不对人，反对一切骚扰行为。
 
 ---
 

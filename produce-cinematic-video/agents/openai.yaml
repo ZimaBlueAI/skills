@@ -1,0 +1,4 @@
+interface:
+  display_name: "ZimaBlueAI · Cinematic Video Producer"
+  short_description: "Plan, produce, mix, validate, and evaluate cinematic video"
+  default_prompt: "Use $produce-cinematic-video to plan an original, auditable production; produce, edit, and mix it professionally; then validate and evaluate it with evidence."

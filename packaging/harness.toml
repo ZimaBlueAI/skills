@@ -1,0 +1,80 @@
+# harness.toml —— 打包时的 harness 差异声明。
+#
+# skills/ 下是唯一权威源，两个 harness 的产物 99% 相同。真正不同的只有两处：
+#   1. 安装根目录：Claude Code 用 .claude/，Codex CLI 用 .codex/
+#   2. 三个老 skill 的 frontmatter —— Codex 侧用改写过的短 description
+#      （去掉 markdown 粗体与中文触发词长串，适配 Codex 的 description 解析）
+# 除此之外不要在这里堆特例：脚本里的 ppt-master 路径探测已经同时覆盖
+# .codex / .agents / .claude 三个位置，无需按 harness 改写。
+
+[harness.claude]
+name = "Claude Code"
+skills_root = ".claude/skills"
+agents_root = ".claude/agents"
+agents_source = "packaging/agents/claude-md"
+
+[harness.codex]
+name = "OpenAI Codex CLI"
+skills_root = ".codex/skills"
+agents_root = ".codex/agents"
+agents_source = "packaging/agents/codex-toml"
+
+# —— 打包单元：一个 zip 交付一个或多个 skill（外加可选 subagent / samples）—— #
+
+[[package]]
+archive = "biz-decision-stack"
+skills = ["biz-html-viz"]
+include_agents = true
+
+[[package]]
+archive = "viz-deck"
+skills = ["viz-deck"]
+
+[[package]]
+archive = "viz-charts"
+skills = ["viz-charts"]
+
+[[package]]
+archive = "zima-html-ppt"
+skills = ["zima-html-ppt"]
+
+[[package]]
+archive = "zima-design"
+skills = ["zima-design"]
+
+[[package]]
+archive = "gzh-design"
+skills = ["gzh-design"]
+
+[[package]]
+archive = "produce-cinematic-video"
+skills = ["produce-cinematic-video"]
+
+[[package]]
+archive = "web-shader-extractor"
+skills = ["web-shader-extractor"]
+
+# —— Codex 侧的 frontmatter 变体（仅这三个，其余 skill 两侧同文）—— #
+
+[frontmatter_override.codex."biz-html-viz"]
+text = """
+name: biz-html-viz
+description: >-
+  Generate terminal-style HTML reports for business decision workflows including board briefs, CEO strategy canvas, tech roadmaps, MRD and market analysis, project status boards, dev and QA reports, acceptance retrospectives, and 5-dimension design critiques. Use when the user asks for HTML business reports, decision briefs, roadmaps, MRD, project boards, retrospectives, acceptance reports, board decks, design critiques, 5D reviews, decision PPT, editable PPTX, or help choosing a business report template. Do not use for marketing landing pages, narrated slide decks, or playful UI. Use viz-deck for animated or keynote-style decks.
+license: MIT
+"""
+
+[frontmatter_override.codex."viz-deck"]
+text = """
+name: viz-deck
+description: >-
+  Generate keynote-grade HTML deliverables and editable decks in five modes including keynote report, hi-fi prototype, slide deck, motion-stage video, and native editable PPTX. Use for stage reports, architecture deep-dives, competitive landscapes, mobile or desktop prototypes, presentation decks with speaker mode, hero or explainer videos, PPTX with narration or animations, academic talks, doc-to-deck conversion, bento layouts, show-dont-tell previews, and design critique. Use biz-html-viz for dense engineering scan-reads or printable sign-off reports.
+license: MIT
+"""
+
+[frontmatter_override.codex."viz-charts"]
+text = """
+name: viz-charts
+description: Render charts, diagrams, knowledge graphs, motion charts, and native PPTX charts for HTML reports or decks. Supports Mermaid, ECharts, SVG KPI and sparkline and gauge and progress and tag-cloud components, 3D knowledge graphs, MP4 or GIF motion chart export, and editable PowerPoint chart output. Use when the user asks for architecture diagrams, bar charts, data visualization, 3D knowledge graphs, animated charts, MP4 export, chart, mermaid, echarts, KG, knowledge graph, motion chart, native chart pptx, or editable PPTX chart, including needs from biz-html-viz or viz-deck.
+license: MIT
+"""

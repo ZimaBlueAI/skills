@@ -6,79 +6,100 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![Release](https://img.shields.io/badge/release-v0.7.0-2b6cb0.svg)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-public_preview-orange.svg)](#9-roadmap)
-[![Harness](https://img.shields.io/badge/harness-Claude_Code_·_Codex-7c3aed.svg)](./claude-code-skills/)
-[![Channel](https://img.shields.io/badge/channel-OpenClaw_·_Hermes-0E7C66.svg)](./openclaw-skills/)
+[![Harness](https://img.shields.io/badge/harness-Claude_Code_·_Codex-7c3aed.svg)](./packaging/build.py)
+[![Source](https://img.shields.io/badge/source-single_tree-0E7C66.svg)](./packaging/build.py)
 [![Maintainer](https://img.shields.io/badge/maintainer-ZimaBlueAI-111.svg)](https://github.com/ZimaBlueAI)
 
-[中文版](./README.md) · [Install guide](./claude-code-skills/skills-install-guide.md) · [Channel delivery · OpenClaw](./openclaw-skills/USAGE.md) / [Hermes](./hermes-skills/USAGE.md) · [Changelog](./CHANGELOG.md) · [Contributing](./CONTRIBUTING.md)
+[中文版](./README.md) · [Install guide](./docs/install-guide.md) · [Changelog](./CHANGELOG.md) · [Contributing](./CONTRIBUTING.md)
 
 ---
 
 ## 1. What is this
 
-**ZimaBlueAI Agent Skills** is a curated set of **declarative capability packs** for modern AI agents — launching with **Claude Code + OpenAI Codex CLI dual-harness** support, and **as of v0.5 a "channel delivery layer" on OpenClaw / Hermes** that lets the same generation power **converse, generate, and deliver the artifact back into an IM channel** (Feishu and friends). Octarus is still on the roadmap.
+**ZimaBlueAI Agent Skills** is a curated set of **declarative capability packs** for modern AI
+agents, installable on both **Claude Code** and **OpenAI Codex CLI**. An agent loads a skill when
+the user expresses the matching intent and produces a structured deliverable. This is **not a
+library** and **not an npm package** — it's a capability declaration consumed by the agent.
 
-> Three ways to use it, one sentence: in **Claude Code / Codex** it's a capability pack for your coding agent; in **OpenClaw / Hermes** it's the Feishu-group bot that, when you @-mention it, builds an animated report / PPT / chart and sends it right back. Same generators, two delivery surfaces.
-
-Each skill ships as a self-contained `.zip` archive. **The same content** is installed into each harness's expected directory:
+**One source, two harnesses.** Each skill sits directly at the repository root;
+`packaging/build.py` produces the installable archives for both:
 
 ```
-Claude Code:                          Codex CLI:
-.claude/                              .agents/
-├── agents/         subagents (.md)   └── skills/<name>/   # skill body (identical to Claude)
-└── skills/<name>/  skill body        .codex/
-    ├── SKILL.md    trigger + workflow └── agents/        subagents (.toml)
-    ├── references/ workflow refs
-    ├── templates/  deliverable templates
-    └── scripts/    optional scripts
+<skill-name>/           ★ the only source — edit here
+├── SKILL.md            trigger + workflow
+├── references/         workflow references
+├── templates/          deliverable templates
+├── scripts/            optional tooling
+└── samples/            openable sample output
+        │
+        │  python packaging/build.py
+        ▼
+dist/claude/*.zip  →  unzip into ~/  →  .claude/skills/<name>/ + .claude/agents/*.md
+dist/codex/*.zip   →  unzip into ~/  →  .codex/skills/<name>/  + .codex/agents/*.toml
 ```
 
-Skill content (SKILL.md / references / templates / scripts) is **byte-for-byte identical** between the two harnesses. Only the install path and subagent serialization format differ.
-
-The agent loads a skill when a user expresses the matching intent, and produces a structured deliverable. This is **not a library** and **not an npm package** — it's a capability declaration consumed by the agent.
+The two harnesses differ in exactly two ways, both declared in `packaging/harness.toml`: the
+**install root** (`.claude/` vs `.codex/`) and a **shorter `description`** for three older skills
+on the Codex side (Codex's frontmatter parsing prefers short prose, so the markdown bold and the
+long Chinese trigger list are stripped). Skill bodies, references, templates, scripts and samples
+are byte-for-byte identical — two trees can no longer drift apart.
 
 ---
 
-## 2. What ships in v0.4.0
+## 2. Current release
 
-Three skills cover the full chain from **board brief to outbound keynote video to truly editable PPT**; **launches simultaneously on Claude Code and OpenAI Codex CLI**. **v0.7 adds the in-house design ensemble engine `zima-design`** (three engines under one original routing protocol + a five-axis diversity protocol + a four-style demo gallery) and inlines a hard anti-slop gate across every generating skill. All skills are independent — pick what you need.
+From v0.4.0 onward, the suite covers the full chain from **board brief to outbound keynote video to truly editable PPT** and ships for both **Claude Code and OpenAI Codex CLI**. **v0.7 adds the in-house design ensemble engine `zima-design`**. The latest pass gives `zima-html-ppt` a governance layer and turns `produce-cinematic-video` into a release-hardened ZimaBlueAI production skill with recoverable projects and explicit privacy, rights, cost, and publication gates. All skills are independent — pick what you need.
 
 | Skill | One line | Output | Zip size |
 |---|---|---|---|
-| **biz-decision-stack** | 8 subagents · investor → CEO → architect → MRD → delivery → retro → critique + **template router** (v4) | 8 terminal-grade HTML reports + editable PPTX (black + acid-yellow + mono + zero-motion) | 83 KB |
-| **viz-deck** | 5 production modes + 6 v4 enhancements (Speaker Mode / 3-variant preview / Doc→Deck / academic talk / bento grid / reflective loop) | HTML / editable PPTX (every element clickable) / MP4 / GIF / PDF (deep-space cyan/blue/gold) | 130 KB |
-| **viz-charts** | 7 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · **interactive SVG ring/Circos KG** · motion video · native PPTX charts | Inline HTML / offline SVG / interactive SVG KG / MP4 / data-bound PPTX charts | 157 KB |
-| **zima-html-ppt** | ZimaBlueAI live-talk deck · warm-paper editorial + **Speaker Mode** (S key → teleprompter / script / timer / agenda) · masters D1/D2/D3 | single-file HTML slides (warm paper + deep teal + gold + tri-color bar), fork the starter template | 23 KB |
-| **taste-engine** 🆕 | shared taste layer · three dials (DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY) + anti-slop preflight + material/copy rules | design tokens + preflight checklist + two demos (dark-cinematic web · warm-paper deck) | docs + demos |
-| **web-shader-extractor** 🆕 (ported · not ZimaBlue suite) | **Extract & evidence-matched local replay** of webpage WebGL/WebGPU/Canvas shader effects (Recon Kernel state machine + 6 core rules) · ported from [lixiaolin94/skills](https://github.com/lixiaolin94/skills) (MIT) | extraction/replay project + 4 self-contained demos (incl. a logo-vectorized generative-fold 3D use case) | folder · zero hard deps |
-| **gzh-design** 🆕 (ported · not ZimaBlue suite) | **WeChat Official Account article typesetting**: Markdown/docx/PDF/plain text → paste-safe WeChat-editor HTML (6 themes + theme generator + dual-gate validation + one-click copy preview) · ported from [isjiamu/gzh-design-skill](https://github.com/isjiamu/gzh-design-skill) (AGPL-3.0) | clean body HTML + a preview page with a "copy to WeChat" button | folder · zero hard deps |
-| **zima-design** 🆕 | **Design ensemble engine**: an original routing protocol conducting three built-in engines — anti-slop (21 macrostructures × 20 themes × **57 slop-test gates**, from [nutlope/hallmark](https://github.com/nutlope/hallmark)) + motion (animation decision framework / spring physics / performance rules, from [emilkowalski/skills](https://github.com/emilkowalski/skills)) + database (**84 styles / 192 palettes / 74 font pairings / 98 UX guidelines / 22 stacks** searchable, from [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)) — bridging impeccable / huashu-design / taste-engine · **a five-axis diversity protocol guarantees no two deliveries share a skeleton** | pages double-stamped with a design signature + six-axis self-critique / audit reports / stack-aware style picks + a 3-piece demo set | folder · Python 3 for database search |
+| **biz-decision-stack** | 8 subagents · investor → CEO → architect → MRD → delivery → retro → critique + **template router** (v4) | 8 terminal-grade HTML reports + editable PPTX (black + acid-yellow + mono + zero-motion) | ≈226 KB |
+| **viz-deck** | 5 production modes + 6 v4 enhancements (Speaker Mode / 3-variant preview / Doc→Deck / academic talk / bento grid / reflective loop) | HTML / editable PPTX (every element clickable) / MP4 / GIF / PDF (deep-space cyan/blue/gold) | ≈432 KB |
+| **viz-charts** | 7 visual layers · Mermaid · ECharts · SVG widgets · 3D KG · **interactive SVG ring/Circos KG** · motion video · native PPTX charts | Inline HTML / offline SVG / interactive SVG KG / MP4 / data-bound PPTX charts | ≈453 KB |
+| **zima-html-ppt** | ZimaBlueAI live-talk deck · warm-paper editorial + **Speaker Mode** (S key → teleprompter / script / timer / agenda) · masters D1/D2/D3 · **v2 governance layer**: proposal-first deck-plan + `deck.json ↔ HTML` build/extract round-trip + **seven gates** + missing-evidence discipline | single-file HTML slides (warm paper + deep teal + gold + tri-color bar) · deck.json source of truth · JSON gate report | ≈101 KB · Python 3 for build/validate |
+| **produce-cinematic-video** | Recoverable ZimaBlueAI media-production skill: research and planning → 7 specialist stations → generation/edit/sound → QC and performance diagnosis, with separate gates for upload, spend, and voice cloning | plans, scripts, storyboards, character packs, project dashboard, masters/stems, QC and evaluation reports | ≈330 KB · Python 3 + full FFmpeg; models optional |
+| **web-shader-extractor** 🆕 (ported · not ZimaBlue suite) | **Extract & evidence-matched local replay** of webpage WebGL/WebGPU/Canvas shader effects (Recon Kernel state machine + 6 core rules) · ported from [lixiaolin94/skills](https://github.com/lixiaolin94/skills) (MIT) | extraction/replay project + 4 self-contained demos (incl. a logo-vectorized generative-fold 3D use case) | ≈603 KB · zero hard deps |
+| **gzh-design** 🆕 (ported · not ZimaBlue suite) | **WeChat Official Account article typesetting**: Markdown/docx/PDF/plain text → paste-safe WeChat-editor HTML (6 themes + theme generator + dual-gate validation + one-click copy preview) · ported from [isjiamu/gzh-design-skill](https://github.com/isjiamu/gzh-design-skill) (AGPL-3.0) | clean body HTML + a preview page with a "copy to WeChat" button | ≈221 KB · zero hard deps |
+| **zima-design** 🆕 | **Design ensemble engine**: an original routing protocol conducting three built-in engines — anti-slop (21 macrostructures × 20 themes × **57 slop-test gates**, from [nutlope/hallmark](https://github.com/nutlope/hallmark)) + motion (animation decision framework / spring physics / performance rules, from [emilkowalski/skills](https://github.com/emilkowalski/skills)) + database (**84 styles / 192 palettes / 74 font pairings / 98 UX guidelines / 22 stacks** searchable, from [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)) — bridging impeccable / huashu-design / taste-engine · **a five-axis diversity protocol guarantees no two deliveries share a skeleton** | pages double-stamped with a design signature + six-axis self-critique / audit reports / stack-aware style picks + a 3-piece demo set | ≈3.6 MB · Python 3 for database search |
+
+### 🆕 zima-html-ppt v2: from "fork the template" to a governed delivery chain
+
+A deck you can't edit isn't finished. v1 only produced the file — revising it meant re-reading
+eight hundred lines of single-file HTML, there was no source of truth, and correctness rested on
+one human scanning a checklist before delivery. v2 borrows the workflow skeleton and gate ladder
+from [joeseesun/qiaomu-bento-ppt](https://github.com/joeseesun/qiaomu-bento-ppt) (MIT · 向阳乔木) —
+**the discipline only, not its bundled 600 KB bento shell**. The visual system and Speaker Mode
+remain ZimaBlue Editorial's own (attribution in `zima-html-ppt/NOTICE.md`).
+
+| Capability | What it means |
+|---|---|
+| **Source of truth + round-trip** | Every output embeds its own `deck.json` in a trailing `<script id="zima-doc">`. Revising is `extract` → edit JSON → `build` — **no re-reading HTML**; `extract(build(x)) == x` byte-for-byte, guarded by a regression case |
+| **Identity preservation** | `deckId` is minted once at creation; on revision a mismatched `--identity-source` refuses the build outright. Output defaults to a sibling file — the source HTML is never touched |
+| **Seven gates** | Route / Structure / Identity / Shell / Quality / Browser / Rollback. The structure gate carries 38 errors + 14 warnings, split by one test: not "is this important" but "if this is missing, what happens on stage" |
+| **Evidence discipline** | Every report ships carrying `missing evidence: browser visual review` — until a human actually opens the browser, you may not write "verified" |
+| **Proposal first** | Intent card → three directions (`1a` persuade / `2b` decide / `3c` train) → a per-slide plan table with a **visual owner** column: each fact is owned by exactly one layer (title / chart / card / body / script), and what's on screen may never be what's in your mouth |
+| **31 regressions** | 15 gate cases (good deck passes, bad deck caught by category, round-trip identical) + 16 routing-boundary cases (10 of which must be handed off to sibling skills) |
+
+**The new discipline paid for itself immediately**: running the fresh browser-review checklist
+surfaced three rendering defects that had been in the D1/D2/D3 masters all along — the comparison-bar
+component **had never rendered at all** (an `<i>` defaults to `display:inline`, so the bar was 0×0),
+the footer's right side sat under the fixed pager control, and the desktop view could still be
+dragged 25px sideways. All three are fixed; the first is now a shell-gate signature so it can't regress.
+
+The skill ships an `examples/` folder with one delivery that walked the whole chain (plan +
+`deck.json` + a 14-slide deck + gate report). Its subject is this very upgrade, and every number
+traces back to a code count or test output.
 
 ### 🆕 zima-design: the design ensemble engine + anti-AI-slop upgrade across the line
 
 New in-house skill **`zima-design`** — three complementary design intelligences conducted by one original routing protocol: **structural & thematic variety** (anti-slop engine: 21 rotating macrostructures + 57 slop-test gates + audit/redesign verbs), **motion & feel** (motion engine: the frequency → purpose → easing → duration decision framework; "should it animate" comes before "how"), and **data-backed selection** (database engine: 84 styles / 192 palettes / 98 UX guidelines searched locally). A **five-axis diversity protocol** (macrostructure × theme × motion personality × card physics × density rhythm) forces consecutive deliveries to never share a template skeleton — the ensemble answer to AI-template sameness. All three engines are byte-for-byte MIT imports (provenance in `zima-design/NOTICE.md`), with external bridges to impeccable / huashu-design / taste-engine. Ships a 3-piece demo: a deliberately sloppy specimen page (12 tagged slop tells) → an audit report (17/24 gates FAIL) → the redesigned counterpart. In the same pass, every generating skill in this repo — `viz-deck` / `viz-charts` / `biz-html-viz` (biz-decision-stack) / `zima-html-ppt` / `viz-channel` — now inlines a **hard anti-slop gate** in its SKILL.md: six disciplines (pre-emit six-axis self-critique / no invented metrics / locked color+font tokens / no re-drawn fake chrome / 320–768 px responsive floor / no italic headers), auto-bridging to the full 57 gates when zima-design is installed. `taste-engine`'s preflight absorbs the same distillation.
 
-### 🆕 Channel delivery layer · OpenClaw / Hermes (new in v0.5)
+### Channel delivery layer · retired
 
-The three skills above only **generate**. v0.5 adds a **conversation + delivery** layer on the **OpenClaw** and **Hermes** IM-gateway agents via the new **`viz-channel`** skill: a user says one line in a Feishu channel, and the agent **clarifies the request → generates with viz-deck/viz-charts → sends the file back into the same chat**.
-
-```
-User @-mentions the bot in Feishu: "make me an animated Q2 deck"
-   → clarify in-channel (≤2 questions, sensible defaults)
-   → viz-deck builds animated HTML (charts / 3D KG from viz-charts)
-   → deliver deck.html back to the current chat ("download & open in a browser")
-```
-
-| | Details |
-|---|---|
-| **Default style** | **ZimaBlue Editorial** — warm paper background + deep-teal primary + gold/terracotta accents + hairline cards + a teal→gold→red top rule; clean, professional, presentation-ready (switchable in one sentence); see `viz-channel/references/default-style.md` |
-| **Form** | Default animated HTML; "make it editable" → PPTX; "play it in the group" → MP4; "draw a chart / knowledge graph" → chart / 3D KG |
-| **Transport** | Channel adapter, **current impl = Feishu / Lark** (prefers a lark-cli token, falls back to REST); seam left for WeCom / Slack / Telegram |
-| **Packaging** | Thin bridge + installer: viz-deck/viz-charts bodies are vendored from `claude-code-skills/` into the target platform — no duplication |
-| **Hermes-only** | The same chain can run as a **cron / webhook** routine (scheduled weekly deck to a group, event-triggered chart push) |
-| **WeChat typesetting** 🆕 | New **`gzh-channel`** skill: user drops an article in the channel → the Markdown draft comes back as a Feishu **interactive card (code block)** for confirmation → on approval, `gzh-design` typesets it → a preview HTML with a "copy to WeChat" button is sent back; open locally, one click copies paste-safe rich text into the WeChat Official Account editor |
-
-📦 [`openclaw-skills/`](./openclaw-skills/) · [`hermes-skills/`](./hermes-skills/) — each ships the `viz-channel` + `gzh-channel` skills, one-command installers (`.sh`/`.ps1`), and a **[USAGE.md](./openclaw-skills/USAGE.md) case library** (quarterly deck / editable PPT / 3D knowledge graph / launch hero video / competitive landscape / in-group revisions / custom brand style / WeChat typesetting; Hermes adds 2 automation cases).
+v0.5 shipped a channel-delivery layer on the OpenClaw / Hermes IM gateways (`viz-channel` /
+`gzh-channel` — converse in a Feishu group, generate, and get the artifact back in-thread).
+It has been removed: **both of those harnesses can install this repo's Claude / Codex packages
+directly**, so maintaining a thin bridge on top was duplicated work. The implementation lives on
+in git history.
 
 ### What's new in v0.4 (vs v0.3 — 26-skill cross-pollination)
 
@@ -151,33 +172,36 @@ Both bridges are **soft dependencies**: without them, v1 / v2 capabilities (HTML
 
 ## 4. Five-minute quickstart
 
-### 4.1 Install skills into your harness of choice
+### 4.1 Build and install
 
 ```bash
 git clone --depth=1 https://github.com/ZimaBlueAI/skills.git
 cd skills
+
+python packaging/build.py            # single source skills/ -> dist/claude/ and dist/codex/
+bash packaging/install.sh            # auto-detects ~/.claude / ~/.codex and installs
 ```
 
-**A · Claude Code** (recommended for first validation, single project):
+Common installer flags:
 
 ```bash
-cd claude-code-skills
-# Unzip into the root of your project (next to .git)
-unzip -o biz-decision-stack/biz-decision-stack.zip -d /path/to/your-project/
-unzip -o viz-deck/viz-deck.zip                       -d /path/to/your-project/
-unzip -o viz-charts/viz-charts.zip                   -d /path/to/your-project/
-# Or globally: unzip -o ... -d ~/
+bash packaging/install.sh --harness claude          # Claude Code only
+bash packaging/install.sh --harness both            # both harnesses
+bash packaging/install.sh --skill viz-deck          # a single package
+bash packaging/install.sh --project /path/to/repo   # install into a project, not $HOME
+bash packaging/install.sh --dry-run                 # print only
 ```
 
-**B · OpenAI Codex CLI** (one-shot script):
+On Windows use `.\packaging\install.ps1` with the same switches (`-Harness` / `-Skill` /
+`-Project` / `-DryRun`). Prefer doing it by hand? `unzip -o dist/claude/viz-deck.zip -d ~/`
+(or into a project root, next to `.git`).
 
-```bash
-cd codex-skills
-bash install.sh                    # Linux/macOS — installs to ~/.agents/skills/ + ~/.codex/agents/
-# Windows: .\install.ps1
-```
+> `dist/` holds **build output** generated from `skills/`. To change anything, edit
+> `skills/<name>/` and re-run the build — edits inside `dist/` are overwritten next time.
 
-For project-level vs global installs, optional bridge setup, etc. see [`claude-code-skills/skills-install-guide.md`](./claude-code-skills/skills-install-guide.md) and [`codex-skills/INSTALL.md`](./codex-skills/INSTALL.md).
+For project-vs-global installs and the optional bridges, see
+[`docs/install-guide.md`](./docs/install-guide.md); Codex-specific notes are in
+[`docs/install-guide-codex.md`](./docs/install-guide-codex.md).
 
 ### 4.2 Optional · install huashu-design to unlock v2 (motion / video / philosophies / critique)
 
@@ -261,20 +285,32 @@ Every skill ships a `samples/` directory with **real rendered deliverables** you
 
 | Group | Files | One-liner |
 |---|---|---|
-| **biz-decision-stack · 4 decision PPTX** | [`decision-board-brief-sample.pptx`](./claude-code-skills/biz-decision-stack/samples/decision-board-brief-sample.pptx) · [`decision-retro-report-sample.pptx`](./claude-code-skills/biz-decision-stack/samples/decision-retro-report-sample.pptx) · [`decision-tech-roadmap-sample.pptx`](./claude-code-skills/biz-decision-stack/samples/decision-tech-roadmap-sample.pptx) · [`decision-sprint-dev-sample.pptx`](./claude-code-skills/biz-decision-stack/samples/decision-sprint-dev-sample.pptx) | Terminal-themed editable: board brief · quarterly retro · 4-quarter tech roadmap · weekly sprint. 15–55 independent clickable shapes per slide. See [SAMPLES.md](./claude-code-skills/biz-decision-stack/samples/SAMPLES.md) |
-| **viz-deck · 3 decks** (mode 5) | [`editable-deck-sample.pptx`](./claude-code-skills/viz-deck/samples/editable-deck-sample.pptx) · [`product-launch-deck-sample.pptx`](./claude-code-skills/viz-deck/samples/product-launch-deck-sample.pptx) · [`all-layouts-showcase-sample.pptx`](./claude-code-skills/viz-deck/samples/all-layouts-showcase-sample.pptx) | Deep-space board update (9 slides) · deck-light product launch (10 slides) · 8-layout reference (8 slides). See [SAMPLES.md](./claude-code-skills/viz-deck/samples/SAMPLES.md) |
-| **viz-charts · 4 native data-bound charts** | [`native-chart-sample.pptx`](./claude-code-skills/viz-charts/samples/native-chart-sample.pptx) · [`chart-trend-line-sample.pptx`](./claude-code-skills/viz-charts/samples/chart-trend-line-sample.pptx) · [`chart-market-share-doughnut-sample.pptx`](./claude-code-skills/viz-charts/samples/chart-market-share-doughnut-sample.pptx) · [`chart-critique-radar-sample.pptx`](./claude-code-skills/viz-charts/samples/chart-critique-radar-sample.pptx) | column · line · doughnut · radar — four chart types. Right-click → "Edit Data" in PowerPoint opens the underlying spreadsheet. See [SAMPLES.md](./claude-code-skills/viz-charts/samples/SAMPLES.md) |
+| **biz-decision-stack · 4 decision PPTX** | [`decision-board-brief-sample.pptx`](./biz-html-viz/samples/decision-board-brief-sample.pptx) · [`decision-retro-report-sample.pptx`](./biz-html-viz/samples/decision-retro-report-sample.pptx) · [`decision-tech-roadmap-sample.pptx`](./biz-html-viz/samples/decision-tech-roadmap-sample.pptx) · [`decision-sprint-dev-sample.pptx`](./biz-html-viz/samples/decision-sprint-dev-sample.pptx) | Terminal-themed editable: board brief · quarterly retro · 4-quarter tech roadmap · weekly sprint. 15–55 independent clickable shapes per slide. See [SAMPLES.md](./biz-html-viz/samples/SAMPLES.md) |
+| **viz-deck · 3 decks** (mode 5) | [`editable-deck-sample.pptx`](./viz-deck/samples/editable-deck-sample.pptx) · [`product-launch-deck-sample.pptx`](./viz-deck/samples/product-launch-deck-sample.pptx) · [`all-layouts-showcase-sample.pptx`](./viz-deck/samples/all-layouts-showcase-sample.pptx) | Deep-space board update (9 slides) · deck-light product launch (10 slides) · 8-layout reference (8 slides). See [SAMPLES.md](./viz-deck/samples/SAMPLES.md) |
+| **viz-charts · 4 native data-bound charts** | [`native-chart-sample.pptx`](./viz-charts/samples/native-chart-sample.pptx) · [`chart-trend-line-sample.pptx`](./viz-charts/samples/chart-trend-line-sample.pptx) · [`chart-market-share-doughnut-sample.pptx`](./viz-charts/samples/chart-market-share-doughnut-sample.pptx) · [`chart-critique-radar-sample.pptx`](./viz-charts/samples/chart-critique-radar-sample.pptx) | column · line · doughnut · radar — four chart types. Right-click → "Edit Data" in PowerPoint opens the underlying spreadsheet. See [SAMPLES.md](./viz-charts/samples/SAMPLES.md) |
 
 ### v2 · HTML / video / critique samples
 
 | Skill | Sample | What you see |
 |---|---|---|
-| biz-decision-stack | [`design-critique-sample.html`](./claude-code-skills/biz-decision-stack/samples/design-critique-sample.html) | Terminal-style 5-dim critique with ECharts radar and a Keep / Fix / Quick-Wins list |
-| viz-deck | [`motion-stage-sample.html`](./claude-code-skills/viz-deck/samples/motion-stage-sample.html) + [`.mp4`](./claude-code-skills/viz-deck/samples/motion-stage-sample.mp4) | Keynote-grade motion stage source HTML plus a recorded 1920×1080 MP4 |
-| viz-deck | [`design-critique-sample.html`](./claude-code-skills/viz-deck/samples/design-critique-sample.html) | Keynote-style 5-dim critique (deep-space palette) |
-| viz-charts | [`trend-motion-sample.html`](./claude-code-skills/viz-charts/samples/trend-motion-sample.html) + [`.mp4`](./claude-code-skills/viz-charts/samples/trend-motion-sample.mp4) | ECharts multi-series reveal animation with recorded MP4 |
-| viz-charts | [`demo-3d-code-kg.html`](./claude-code-skills/viz-charts/demo-3d-code-kg.html) · [`demo-3d-doc-kg.html`](./claude-code-skills/viz-charts/demo-3d-doc-kg.html) | 3D code/doc knowledge graphs (80 / 92 nodes, interactive) |
-| viz-charts | [`demo-terminal.html`](./claude-code-skills/viz-charts/demo-terminal.html) · [`demo-deck.html`](./claude-code-skills/viz-charts/demo-deck.html) | Full component showcase in both themes |
+| biz-decision-stack | [`design-critique-sample.html`](./biz-html-viz/samples/design-critique-sample.html) | Terminal-style 5-dim critique with ECharts radar and a Keep / Fix / Quick-Wins list |
+| viz-deck | [`motion-stage-sample.html`](./viz-deck/samples/motion-stage-sample.html) + [`.mp4`](./viz-deck/samples/motion-stage-sample.mp4) | Keynote-grade motion stage source HTML plus a recorded 1920×1080 MP4 |
+| viz-deck | [`design-critique-sample.html`](./viz-deck/samples/design-critique-sample.html) | Keynote-style 5-dim critique (deep-space palette) |
+| viz-charts | [`trend-motion-sample.html`](./viz-charts/samples/trend-motion-sample.html) + [`.mp4`](./viz-charts/samples/trend-motion-sample.mp4) | ECharts multi-series reveal animation with recorded MP4 |
+| viz-charts | [`demo-3d-code-kg.html`](./viz-charts/demo-3d-code-kg.html) · [`demo-3d-doc-kg.html`](./viz-charts/demo-3d-doc-kg.html) | 3D code/doc knowledge graphs (80 / 92 nodes, interactive) |
+| viz-charts | [`demo-terminal.html`](./viz-charts/demo-terminal.html) · [`demo-deck.html`](./viz-charts/demo-deck.html) | Full component showcase in both themes |
+
+### 🆕 zima-html-ppt · one delivery that walked the whole chain
+
+Not a single HTML file but **four artifacts that instantiate the output contract** — read them to
+see what a complete delivery looks like:
+
+| File | What you see |
+|---|---|
+| [`2026-07-27-zima-html-ppt-v2-deck.html`](./zima-html-ppt/examples/2026-07-27-zima-html-ppt-v2-deck.html) | A 14-slide warm-paper editorial deck you can **open and present** (23-minute budget). **S** opens the speaker teleprompter, **F** goes fullscreen. All 5 layouts, 11 of 12 block types (the `html` escape hatch deliberately unused). On slide 10, two bars — one stuck at 0, one filled — are the very bug this release fixed: **the motion is the argument** |
+| [`zima-html-ppt-v2-deck-plan.md`](./zima-html-ppt/examples/zima-html-ppt-v2-deck-plan.md) | The proposal: intent card · three directions · per-slide plan (with the visual-owner column) · source inventory · **three items still marked missing evidence** |
+| [`zima-html-ppt-v2.deck.json`](./zima-html-ppt/examples/zima-html-ppt-v2.deck.json) | The document source. Edit here and `build` — never touch the HTML |
+| [`reports/deck-validation.json`](./zima-html-ppt/examples/reports/deck-validation.json) | The gate report: zero errors, zero warnings, all five machine gates passing |
 
 ---
 
@@ -300,66 +336,38 @@ Every skill ships a `samples/` directory with **real rendered deliverables** you
 ## 7. Repository layout
 
 ```
-skills/
-├── LICENSE                        Apache 2.0 full text
-├── NOTICE                         Copyright / trademark / third-party
-├── README.md                      Chinese landing page
-├── README_en.md                   English landing page (this file)
-├── CHANGELOG.md                   Version history
-├── CONTRIBUTING.md                Contribution guidelines
-├── CODE_OF_CONDUCT.md             Community code of conduct
+skills/                            ← repository root
+├── biz-html-viz/                  ★ 8 decision templates + decision PPTX (ships 9 subagents)
+├── viz-deck/                      ★ 5 output modes + design-system-deck.md + research-playbook.md
+├── viz-charts/                    ★ 7 visual layers + 4 demo-*.html showcases
+├── zima-html-ppt/                 ★ live-talk deck + seven gates + examples/ reference delivery
+├── zima-design/                   ★ design ensemble engine (3 engines + five-axis diversity)
+├── gzh-design/                    ★ WeChat Official Account typesetting
+├── produce-cinematic-video/       ★ recoverable media production (7 stations + safety gates)
+├── web-shader-extractor/          ★ webpage shader-effect extraction and replay
+│      inside each: SKILL.md · references/ · templates/ · scripts/ · samples/
+│      a root directory with a top-level SKILL.md *is* a skill — the build discovers it
 │
-├── claude-code-skills/            ★ Claude Code harness (published)
-│   ├── skills-install-guide.md    End-to-end install/config/usage covering all three
-│   ├── skills-install-guide.html
-│   │
-│   ├── biz-decision-stack/
-│   │   ├── biz-decision-stack.zip Installable archive
-│   │   ├── README.md              Per-skill notes
-│   │   └── samples/               5-dim critique + decision PPTX + v0.4 template-router cases
-│   │
-│   ├── viz-deck/
-│   │   ├── viz-deck.zip
-│   │   ├── viz-deck-README.md
-│   │   ├── design-system-deck.md  Public design spec
-│   │   ├── research-playbook.md   Tier 1/2/3 competitive research protocol
-│   │   ├── sample-board-brief.html
-│   │   └── samples/               5-mode samples + v0.4 Speaker / 3-variant / Doc→Deck / Academic / Bento / Reflect
-│   │
-│   └── viz-charts/
-│       ├── viz-charts.zip
-│       ├── demo-*.html            Four interactive showcases
-│       └── samples/               motion chart (v0.2) + native PPTX chart (v0.3)
+├── packaging/                     build + install (the only place harness differences live)
+│   ├── build.py                   root skills → dist/claude/*.zip + dist/codex/*.zip
+│   ├── harness.toml               install-root mapping + Codex description variants
+│   ├── agents/claude-md/          9 subagents in Claude Code's .md format
+│   ├── agents/codex-toml/         9 subagents in Codex CLI's .toml format
+│   └── install.sh / install.ps1   dual-harness installer
 │
-├── codex-skills/                  ★ OpenAI Codex CLI harness (v0.4, same content)
-│   ├── README.md                  Codex-flavored intro
-│   ├── INSTALL.md                 Codex install guide
-│   ├── install.sh / install.ps1   One-shot install scripts
-│   ├── biz-decision-stack/        Includes .agents/skills/ + 8 TOML agents
-│   ├── viz-deck/                  Includes .agents/skills/viz-deck/
-│   └── viz-charts/                Includes .agents/skills/viz-charts/
+├── dist/                          build output — do not hand-edit
+│   ├── claude/*.zip               unzip into ~/ → .claude/skills/ + .claude/agents/
+│   └── codex/*.zip                unzip into ~/ → .codex/skills/  + .codex/agents/
 │
-├── codex-skills/                  ★ OpenAI Codex CLI harness (released v0.4, same source as Claude)
-│
-├── openclaw-skills/               ★ OpenClaw channel-delivery layer (released v0.5)
-│   ├── README.md · USAGE.md (9 cases)
-│   ├── install-openclaw-skills.sh / .ps1   one-command installer (thin bridge)
-│   └── skills/viz-channel/        conversation + channel delivery skill
-│       ├── SKILL.md               trigger + clarify→generate→deliver workflow
-│       ├── references/            channel-protocol · delivery-matrix · openclaw-channel
-│       └── scripts/               channel_deliver.py · channel_send.sh/.ps1 · resolve_chat.py
-│
-├── hermes-skills/                 ★ Hermes channel-delivery layer (released v0.5, + cron/webhook)
-│   ├── README.md · USAGE.md (11 cases)
-│   ├── install-hermes-skills.sh / .ps1
-│   └── skills/viz-channel/        same as OpenClaw; references use hermes-channel (+automation)
-│
-└── octarus-skills/                ☐ Octarus (planned)
+├── docs/                          install-guide.md · install-guide-codex.md · codex-notes.md
+├── LICENSE · NOTICE · README.md · README_en.md · CHANGELOG.md · CONTRIBUTING.md
+└── _trash/                        archive area (retired dirs are moved here, never hard-deleted)
 ```
 
-> `viz-deck` / `viz-charts` / `biz-html-viz` bodies are **not** inside the openclaw/hermes dirs — the installer vendors them from `claude-code-skills/*.zip`, so the heavy skills stay single-source.
-
----
+> **Edit once, both sides are right.** `claude-code-skills/` and `codex-skills/` used to evolve
+> separately — with the result that three skills' sources existed *only* inside the claude-side
+> zip (unreadable, undiffable), while `gzh-design` and `produce-cinematic-video` had quietly
+> drifted apart. Now each skill has exactly one source.
 
 ## 8. Who should use what
 
@@ -371,7 +379,8 @@ skills/
 | **Investor / FA** | viz-deck (competitive-landscape) + viz-charts + viz-charts (native chart pptx) | Live competitive research + animated data for roadshows + LP monthly data PPT |
 | **Design / brand lead** | viz-deck (all 5 modes) + huashu-design + ppt-master | One toolchain for prototype / slides / video / critique / shippable PPT |
 | **Engineering lead** | biz-decision-stack (dev-test) + viz-charts (3D KG) | Status reporting + project structure visualization |
-| **Anyone in a Feishu group** (ops/sales/exec) | OpenClaw / Hermes + `viz-channel` | No CLI — @-mention the bot in chat and an animated report / PPT / chart comes back |
+| **Trainer / evangelist** | zima-html-ppt + viz-charts | A single-file HTML deck you actually present, with a teleprompter and full script on **S**; when the course changes per cohort, revise via `deck.json` instead of re-reading HTML |
+| **Director / editor / content team** | produce-cinematic-video | Research, script, storyboard, generate, edit, mix, validate, and evaluate in a recoverable project with explicit upload and spend approvals |
 
 ---
 
@@ -383,17 +392,19 @@ skills/
 | v0.2 | 4 output modes · 20 philosophies · 5-dim critique · huashu-design bridge · samples | ✅ Released |
 | v0.3 | ppt-master soft bridge · viz-deck mode 5 pptx-deck · decision PPTX · data-bound native chart · TTS narration embed · codex-skills dual-harness launch | ✅ Released |
 | v0.4 | 26-skill cross-pollination · Speaker Mode · 3-variant preview · Doc→Deck · Academic Talk · Bento Grid · Reflective Loop · Template Router | ✅ Released |
-| v0.5 | OpenClaw / Hermes channel-delivery layer · `viz-channel` (in-channel conversational generation + delivery · Feishu adapter · cron/webhook automation · USAGE case library) | ✅ Released |
-| **v0.6** | **`taste-engine` shared taste layer (three dials + anti-slop + material/copy) · `viz-charts` interactive SVG ring/Circos KG · `zima-html-ppt` live-talk deck (warm-paper editorial + Speaker Mode)** | ✅ **Released (current)** |
-| v0.7 | viz-charts narrative chart explainer (TTS-narrated chart videos) + channel adapters (WeCom / Slack / Telegram) | 🟡 Planned |
-| v0.8 | `octarus-skills/` + tri-harness consistency tests | ⚪ Planned |
+| v0.5 | OpenClaw / Hermes channel-delivery layer · `viz-channel` | ⛔ Removed (both harnesses install this repo's packages directly; the bridge was duplicated maintenance) |
+| v0.6 | `taste-engine` shared taste layer (three dials + anti-slop + material/copy) · `viz-charts` interactive SVG ring/Circos KG · `zima-html-ppt` live-talk deck (warm-paper editorial + Speaker Mode) | ✅ Released |
+| **v0.7** | **`zima-design` design ensemble engine (three imported engines + five-axis diversity protocol) · hard anti-slop gate inlined across every generating skill** | ✅ **Released (current)** |
+| **Unreleased** | **release-hardened `produce-cinematic-video` with a recoverable end-to-end media workflow** (user `.env.local` + TUI · image/video/TTS/source separation · dashboard/history · rights/cost/privacy gates) · **`zima-html-ppt` v2 governance** · **single-source dual-harness build** · channel layer retired | 🟢 Merged to main, awaiting release |
+| v0.8 | viz-charts narrative chart explainer (TTS-narrated chart videos) + channel adapters (WeCom / Slack / Telegram) | 🟡 Planned |
+| v0.9 | `octarus-skills/` + tri-harness consistency tests | ⚪ Planned |
 | v1.0 | All 5 harnesses + skill registry (`skills.json` index) | ⚪ Planned |
 
 ---
 
 ## 10. Contributing
 
-Issues and PRs are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) first.
+Issues and PRs are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) first.
 
 We especially welcome:
 

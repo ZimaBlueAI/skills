@@ -1,0 +1,54 @@
+{
+  "skill": "zima-html-ppt",
+  "description": "路由闸门：什么该进本技能，什么该让给姊妹技能。评分规则见 scripts/trigger_eval.py。",
+  "concepts": {
+    "presentation": [
+      "ppt", "deck", "幻灯片", "slides", "演示文稿", "演示稿", "投影", "片子"
+    ],
+    "live_stage": [
+      "上台", "现场", "讲演", "演讲", "路演", "内训", "训战", "课件", "培训",
+      "演讲者", "提词器", "逐字稿", "备注", "speaker notes", "presenter"
+    ],
+    "zima_marker": [
+      "zima", "暖纸", "editorial", "zima-html-ppt", "zimablue"
+    ],
+    "single_file_html": [
+      "单文件 html", "单文件html", "html ppt", "html 幻灯片", "离线可开", "一个 html"
+    ]
+  },
+  "exclusive_negatives": {
+    "biz-html-viz": [
+      "终端风", "决策报告", "董事会", "board brief", "签字", "可打印", "黑底", "酸黄",
+      "复盘报告", "验收报告", "项目看板", "mrd"
+    ],
+    "viz-deck": [
+      "深空", "keynote", "高保真原型", "hi-fi", "prototype", "ios 原型", "mp4",
+      "视频", "可编辑 pptx", "native pptx", "pptx", "旁白", "动效视频"
+    ],
+    "viz-charts": [
+      "3d 知识图谱", "knowledge graph", "单张图表", "只要一张", "mermaid"
+    ],
+    "none": [
+      "落地页", "landing page", "官网首页", "营销页", "公众号排版", "小红书"
+    ]
+  },
+  "cases": [
+    { "prompt": "帮我做一份上台讲的 HTML 幻灯片，要带演讲者模式和逐字稿", "expect": "route" },
+    { "prompt": "下周给客户路演，做个 deck，每页配时间", "expect": "route" },
+    { "prompt": "内训课件做成单文件 HTML，投影用", "expect": "route" },
+    { "prompt": "用 zima-html-ppt 把这份材料做成讲演 deck", "expect": "route" },
+    { "prompt": "做个训战材料的幻灯片，我要提词器", "expect": "route" },
+    { "prompt": "把这份报告做成现场演讲用的片子，暖纸编辑风", "expect": "route" },
+
+    { "prompt": "做一份终端风的决策报告给董事会签字", "expect": "reject", "route_to": "biz-html-viz" },
+    { "prompt": "出个项目看板 HTML，黑底酸黄那种", "expect": "reject", "route_to": "biz-html-viz" },
+    { "prompt": "做个深空风 keynote，再导出 MP4", "expect": "reject", "route_to": "viz-deck" },
+    { "prompt": "我要可编辑的 native pptx，带旁白", "expect": "reject", "route_to": "viz-deck" },
+    { "prompt": "给我做个 iOS 高保真原型", "expect": "reject", "route_to": "viz-deck" },
+    { "prompt": "只要一张柱状图，放进我现有页面", "expect": "reject", "route_to": "viz-charts" },
+    { "prompt": "做个 3D 知识图谱", "expect": "reject", "route_to": "viz-charts" },
+    { "prompt": "写个产品落地页", "expect": "reject", "route_to": "none" },
+    { "prompt": "帮我排一篇公众号文章", "expect": "reject", "route_to": "none" },
+    { "prompt": "帮我把这个 CSV 清洗一下", "expect": "reject", "route_to": "none" }
+  ]
+}

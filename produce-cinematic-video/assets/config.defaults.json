@@ -1,0 +1,704 @@
+{
+  "version": 1,
+  "tools": {
+    "ffmpeg": "ffmpeg",
+    "ffprobe": "ffprobe",
+    "imagemagick": "",
+    "python": "",
+    "scenedetect": "",
+    "transcriber": "",
+    "nle": "",
+    "blender": ""
+  },
+  "providers": {
+    "image_primary": {
+      "enabled": false,
+      "adapter": "",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "PCV_IMAGE_API_KEY",
+      "capabilities": [
+        "text_to_image",
+        "image_edit",
+        "inpaint",
+        "outpaint"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Confirm current provider terms before use.",
+        "training_note": "Confirm opt-out and training terms before use.",
+        "region": ""
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "image",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "openai_image": {
+      "enabled": false,
+      "adapter": "openai_images",
+      "tool_name": "",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-image-2",
+      "api_key_env": "PCV_OPENAI_IMAGE_API_KEY",
+      "capabilities": [
+        "text_to_image",
+        "image_edit",
+        "inpaint",
+        "outpaint"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Confirm current OpenAI API data controls and retention terms before use.",
+        "training_note": "Use only inputs the production is authorized to send to the API.",
+        "region": "provider-managed"
+      },
+      "pricing": {
+        "currency": "USD",
+        "unit": "image",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "gemini_image": {
+      "enabled": false,
+      "adapter": "gemini_images",
+      "tool_name": "",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta",
+      "endpoint": "",
+      "model": "gemini-3.1-flash-image",
+      "api_key_env": "PCV_GEMINI_IMAGE_API_KEY",
+      "capabilities": [
+        "text_to_image",
+        "image_edit"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Confirm current Gemini API data controls and retention terms before use.",
+        "training_note": "Use only inputs the production is authorized to send to the API.",
+        "region": "provider-managed"
+      },
+      "pricing": {
+        "currency": "USD",
+        "unit": "image",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "video_primary": {
+      "enabled": false,
+      "adapter": "",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "PCV_VIDEO_API_KEY",
+      "capabilities": [
+        "text_to_video",
+        "image_to_video"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Confirm current provider terms before use.",
+        "training_note": "Confirm opt-out and training terms before use.",
+        "region": ""
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "second",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "seedance_video": {
+      "enabled": false,
+      "adapter": "volcengine_ark_seedance",
+      "tool_name": "",
+      "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+      "model": "doubao-seedance-2-0-260128",
+      "api_key_env": "PCV_SEEDANCE_API_KEY",
+      "capabilities": [
+        "text_to_video",
+        "image_to_video",
+        "first_last_frame",
+        "reference_identity",
+        "synchronized_audio"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Confirm current ModelArk/Volcengine retention and output-expiry terms before use.",
+        "training_note": "Do not upload private or real-person material unless the provider permits it and authorization is recorded.",
+        "region": "cn-beijing"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "second",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "audio_primary": {
+      "enabled": false,
+      "adapter": "",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "PCV_AUDIO_API_KEY",
+      "capabilities": [
+        "tts",
+        "voice_design",
+        "sound_effects"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Confirm current provider terms before use.",
+        "training_note": "Confirm consent and voice-data terms before use.",
+        "region": ""
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "request",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "index_tts2_local": {
+      "enabled": false,
+      "adapter": "index_tts2_local",
+      "tool_name": "",
+      "base_url": "",
+      "model": "IndexTTS-2",
+      "api_key_env": "",
+      "capabilities": [
+        "tts",
+        "voice_clone",
+        "emotion_control"
+      ],
+      "runtime": {
+        "python_executable": "python",
+        "repo_dir": "",
+        "model_dir": "",
+        "device": "auto",
+        "offline": true,
+        "use_fp16": false,
+        "use_cuda_kernel": false,
+        "use_deepspeed": false,
+        "use_accel": false,
+        "use_torch_compile": false,
+        "defaults": {
+          "reference_emotion_alpha": 1.0,
+          "text_emotion_alpha": 0.6,
+          "use_random": false,
+          "interval_silence_ms": 200,
+          "max_text_tokens_per_segment": 120,
+          "verbose": false
+        }
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local inference; retain reference voices only for the consented production scope.",
+        "training_note": "Do not train, clone, or synthesize without recorded speaker consent and an allowed-use record.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "qwen3_tts_local": {
+      "enabled": false,
+      "adapter": "qwen3_tts_local",
+      "tool_name": "",
+      "base_url": "",
+      "model": "Qwen3-TTS",
+      "api_key_env": "",
+      "capabilities": [
+        "tts"
+      ],
+      "runtime": {
+        "python_executable": "python",
+        "voice_design_model": "",
+        "custom_voice_model": "",
+        "base_model": "",
+        "device": "auto",
+        "dtype": "auto",
+        "attn_implementation": "auto",
+        "offline": true,
+        "defaults": {
+          "language": "Auto",
+          "do_sample": true,
+          "max_new_tokens": 2048
+        }
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local inference; keep designed and cloned voice assets within the approved production scope.",
+        "training_note": "Do not clone, fine-tune, or synthesize an identifiable voice without recorded consent.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "pocket_tts_local": {
+      "enabled": false,
+      "adapter": "pocket_tts_local",
+      "tool_name": "",
+      "base_url": "",
+      "model": "Pocket TTS",
+      "api_key_env": "",
+      "capabilities": [
+        "tts",
+        "voice_clone"
+      ],
+      "runtime": {
+        "python_executable": "python",
+        "repo_dir": "",
+        "language": "english",
+        "threads": 2,
+        "offline": true,
+        "quantize": false
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local CPU inference; keep reference voices within the consented production scope.",
+        "training_note": "Do not clone or synthesize an identifiable voice without recorded consent; Pocket TTS currently does not support Chinese.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "lux_tts_local": {
+      "enabled": false,
+      "adapter": "lux_tts_local",
+      "tool_name": "",
+      "base_url": "",
+      "model": "YatharthS/LuxTTS",
+      "api_key_env": "",
+      "capabilities": [
+        "tts",
+        "voice_clone"
+      ],
+      "runtime": {
+        "python_executable": "python",
+        "repo_dir": "",
+        "device": "auto",
+        "threads": 2,
+        "offline": true
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local low-VRAM or CPU inference; keep reference voices within the consented production scope.",
+        "training_note": "Do not clone or synthesize without recorded consent; upstream does not publish a language matrix, so approve a language-specific audition.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "gpt_sovits_uvr5_local": {
+      "enabled": false,
+      "adapter": "gpt_sovits_uvr5_local",
+      "tool_name": "",
+      "base_url": "",
+      "model": "UVR5",
+      "api_key_env": "",
+      "capabilities": [
+        "source_separation",
+        "dereverb"
+      ],
+      "runtime": {
+        "python_executable": "",
+        "repo_dir": "",
+        "device": "auto",
+        "offline": true
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local processing; keep raw voices and derived stems within the approved production scope.",
+        "training_note": "Source separation does not grant rights to reuse a voice, performance, recording, or composition.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "ltx_video_local": {
+      "enabled": false,
+      "adapter": "ltx_video_local",
+      "tool_name": "",
+      "base_url": "http://127.0.0.1:7871",
+      "model": "LTX-Video",
+      "api_key_env": "",
+      "capabilities": [
+        "text_to_video",
+        "image_to_video"
+      ],
+      "runtime": {
+        "base_url": "http://127.0.0.1:7871",
+        "timeout_s": 900
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local loopback inference; generated clips stay on this machine.",
+        "training_note": "Local service; no provider-side training. Disclose AI-generated footage in deliverables.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "qwen3_image_local": {
+      "enabled": false,
+      "adapter": "qwen3_image_local",
+      "tool_name": "",
+      "base_url": "http://127.0.0.1:7864",
+      "model": "Tongyi-MAI/Z-Image-Turbo",
+      "api_key_env": "",
+      "capabilities": [
+        "text_to_image"
+      ],
+      "runtime": {
+        "base_url": "http://127.0.0.1:7864"
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local loopback inference; outputs stay on this machine.",
+        "training_note": "Local service; disclose AI-generated material in deliverables.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "hunyuan3d_local": {
+      "enabled": false,
+      "adapter": "hunyuan3d_local",
+      "tool_name": "",
+      "base_url": "http://127.0.0.1:8081",
+      "model": "Hunyuan3D-2",
+      "api_key_env": "",
+      "capabilities": [
+        "text_to_image"
+      ],
+      "runtime": {
+        "base_url": "http://127.0.0.1:8081"
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local loopback inference; outputs stay on this machine.",
+        "training_note": "Local service; disclose AI-generated material in deliverables.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "seedream_image": {
+      "enabled": false,
+      "adapter": "seedream_image",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "PCV_SEEDREAM_IMAGE_API_KEY",
+      "capabilities": [
+        "text_to_image",
+        "image_edit"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Ark ecosystem image generation; pairs with Seedance.",
+        "training_note": "Check provider terms before commercial release.",
+        "region": "vendor"
+      },
+      "pricing": {
+        "currency": "USD",
+        "unit": "api_call",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "voxcpm2_local": {
+      "enabled": false,
+      "adapter": "voxcpm2_local",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "",
+      "capabilities": [
+        "tts"
+      ],
+      "runtime": {
+        "python_executable": "python",
+        "model_dir": ""
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local inference; media stays on this machine.",
+        "training_note": "Disclose AI-generated audio in deliverables.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "moss_tts_local": {
+      "enabled": false,
+      "adapter": "moss_tts_local",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "",
+      "capabilities": [
+        "tts"
+      ],
+      "runtime": {
+        "python_executable": "python",
+        "model_dir": ""
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local inference; media stays on this machine.",
+        "training_note": "Disclose AI-generated audio in deliverables.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "funasr_local": {
+      "enabled": false,
+      "adapter": "funasr_local",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "",
+      "capabilities": [
+        "transcribe"
+      ],
+      "runtime": {
+        "python_executable": "python",
+        "model_dir": ""
+      },
+      "data_policy": {
+        "remote_upload": false,
+        "retention_note": "Local inference; media stays on this machine.",
+        "training_note": "Disclose AI-generated audio in deliverables.",
+        "region": "local"
+      },
+      "pricing": {
+        "currency": "CNY",
+        "unit": "local_run",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "suno_music": {
+      "enabled": false,
+      "adapter": "suno_music",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "PCV_SUNO_API_KEY",
+      "capabilities": [
+        "music"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Prompts and generated music only; no private media uploads.",
+        "training_note": "Check provider terms before commercial release.",
+        "region": "vendor"
+      },
+      "pricing": {
+        "currency": "USD",
+        "unit": "api_call",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "udio_music": {
+      "enabled": false,
+      "adapter": "udio_music",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "PCV_UDIO_API_KEY",
+      "capabilities": [
+        "music"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Prompts and generated music only; no private media uploads.",
+        "training_note": "Check provider terms before commercial release.",
+        "region": "vendor"
+      },
+      "pricing": {
+        "currency": "USD",
+        "unit": "api_call",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    },
+    "elevenlabs_audio": {
+      "enabled": false,
+      "adapter": "elevenlabs_audio",
+      "tool_name": "",
+      "base_url": "",
+      "model": "",
+      "api_key_env": "PCV_ELEVENLABS_API_KEY",
+      "capabilities": [
+        "sound_effects",
+        "tts"
+      ],
+      "data_policy": {
+        "remote_upload": true,
+        "retention_note": "Prompts only for SFX; voice features require consent records.",
+        "training_note": "Check provider terms before commercial release.",
+        "region": "vendor"
+      },
+      "pricing": {
+        "currency": "USD",
+        "unit": "api_call",
+        "estimated_unit_cost": null,
+        "checked_at": ""
+      }
+    }
+  },
+  "policy": {
+    "default_currency": "CNY",
+    "generation_soft_limit": 30,
+    "require_budget_approval": true,
+    "require_remote_upload_approval": true,
+    "require_publish_approval": true,
+    "retain_provenance": true,
+    "allow_synthetic_documentary_evidence": false
+  },
+  "delivery_profiles": {
+    "review": {
+      "container": "mp4",
+      "video": {
+        "codec": "libx264",
+        "resolution": "1920x1080",
+        "fps": "source",
+        "pixel_format": "yuv420p",
+        "color_space": "source"
+      },
+      "audio": {
+        "codec": "aac",
+        "sample_rate": 48000,
+        "channels": 2,
+        "integrated_lufs": null,
+        "true_peak_dbtp": null
+      },
+      "captions": {
+        "sidecar": [
+          "srt"
+        ],
+        "burned_in": false
+      }
+    },
+    "web-horizontal": {
+      "container": "mp4",
+      "video": {
+        "codec": "libx264",
+        "resolution": "1920x1080",
+        "fps": "source",
+        "pixel_format": "yuv420p",
+        "color_space": "bt709"
+      },
+      "audio": {
+        "codec": "aac",
+        "sample_rate": 48000,
+        "channels": 2,
+        "integrated_lufs": -14,
+        "true_peak_dbtp": -1
+      },
+      "captions": {
+        "sidecar": [
+          "srt",
+          "vtt"
+        ],
+        "burned_in": false
+      }
+    },
+    "web-vertical": {
+      "container": "mp4",
+      "video": {
+        "codec": "libx264",
+        "resolution": "1080x1920",
+        "fps": "source",
+        "pixel_format": "yuv420p",
+        "color_space": "bt709"
+      },
+      "audio": {
+        "codec": "aac",
+        "sample_rate": 48000,
+        "channels": 2,
+        "integrated_lufs": -14,
+        "true_peak_dbtp": -1
+      },
+      "captions": {
+        "sidecar": [
+          "srt"
+        ],
+        "burned_in": true
+      }
+    },
+    "mezzanine": {
+      "container": "mov",
+      "video": {
+        "codec": "prores_ks",
+        "resolution": "1920x1080",
+        "fps": "source",
+        "pixel_format": "yuv422p10le",
+        "color_space": "source"
+      },
+      "audio": {
+        "codec": "pcm_s24le",
+        "sample_rate": 48000,
+        "channels": 2,
+        "integrated_lufs": null,
+        "true_peak_dbtp": null
+      },
+      "captions": {
+        "sidecar": [
+          "srt",
+          "vtt"
+        ],
+        "burned_in": false
+      }
+    }
+  }
+}

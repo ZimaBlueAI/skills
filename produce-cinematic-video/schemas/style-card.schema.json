@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "produce-cinematic-video/style-card.schema.json",
+  "title": "EvidenceBasedVideoStyleCard",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "meta", "research_context", "features", "patterns", "samples", "risk_flags", "feedback_log"],
+  "properties": {
+    "version": { "const": 1 },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["card_id", "category", "platform", "learned_at", "confidence"],
+      "properties": {
+        "card_id": { "$ref": "#/definitions/id" },
+        "category": { "type": "string", "minLength": 1 },
+        "platform": { "type": "string", "minLength": 1 },
+        "learned_at": { "type": "string", "format": "date" },
+        "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+        "owner": { "type": "string" }
+      }
+    },
+    "research_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "date_range", "inclusion_criteria", "control_definition", "limitations"],
+      "properties": {
+        "question": { "type": "string", "minLength": 1 },
+        "date_range": { "type": "string" },
+        "inclusion_criteria": { "type": "string" },
+        "control_definition": { "type": "string" },
+        "limitations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "feature_id",
+          "dimension",
+          "observation",
+          "target_vs_control",
+          "evidence_refs",
+          "confidence",
+          "applicability",
+          "failure_condition"
+        ],
+        "properties": {
+          "feature_id": { "$ref": "#/definitions/id" },
+          "dimension": {
+            "type": "string",
+            "enum": ["opening", "structure", "pacing", "visual", "sound", "text", "packaging", "cta", "audience_response"]
+          },
+          "observation": { "type": "string", "minLength": 1 },
+          "target_vs_control": { "type": "string" },
+          "evidence_refs": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "applicability": { "type": "string" },
+          "failure_condition": { "type": "string" }
+        }
+      }
+    },
+    "patterns": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["structure", "opening", "pacing", "visual", "sound", "packaging", "cta"],
+      "properties": {
+        "structure": { "type": "array", "items": { "type": "string" } },
+        "opening": { "type": "array", "items": { "type": "string" } },
+        "pacing": { "type": "array", "items": { "type": "string" } },
+        "visual": { "type": "array", "items": { "type": "string" } },
+        "sound": { "type": "array", "items": { "type": "string" } },
+        "packaging": { "type": "array", "items": { "type": "string" } },
+        "cta": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sample_id", "group", "public_ref", "observed_at", "rights_note", "observations"],
+        "properties": {
+          "sample_id": { "$ref": "#/definitions/id" },
+          "group": { "type": "string", "enum": ["target", "control", "owned"] },
+          "public_ref": { "type": "string" },
+          "observed_at": { "type": "string", "format": "date" },
+          "rights_note": { "type": "string" },
+          "observations": { "type": "string" },
+          "metrics_note": { "type": "string" }
+        }
+      }
+    },
+    "risk_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["risk_id", "pattern", "severity", "evidence_refs", "mitigation"],
+        "properties": {
+          "risk_id": { "$ref": "#/definitions/id" },
+          "pattern": { "type": "string", "minLength": 1 },
+          "severity": { "type": "string", "enum": ["info", "warning", "critical"] },
+          "evidence_refs": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+          "mitigation": { "type": "string" }
+        }
+      }
+    },
+    "feedback_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["variant_id", "published_at", "audience_note", "distribution_note", "metrics", "learning"],
+        "properties": {
+          "variant_id": { "$ref": "#/definitions/id" },
+          "published_at": { "type": "string" },
+          "audience_note": { "type": "string" },
+          "distribution_note": { "type": "string" },
+          "metrics": { "type": "object" },
+          "learning": { "type": "string" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    }
+  }
+}

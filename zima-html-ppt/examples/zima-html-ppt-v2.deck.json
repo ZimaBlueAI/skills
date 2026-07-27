@@ -1,0 +1,788 @@
+{
+  "zima": "1.0",
+  "deckId": "137d1c5d-87b9-491a-a4ea-8f5bde1e76e7",
+  "title": "做完的 deck 改不动，等于没做完 · zima-html-ppt v2",
+  "meta": {
+    "speaker": "ZimaBlueAI · 技能组",
+    "footer": "内部技术分享 · 2026-07-27",
+    "brand": "✦ ZimaBlueAI",
+    "brandUrl": "https://www.zimablueai.com"
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "cover",
+      "min": 2,
+      "kicker": "ZIMA-HTML-PPT v2 · 升级复盘",
+      "title": "做完的 deck 改不动，等于没做完",
+      "sub": "把一个「拷模板填内容」的技能，改成有事实源、有闸门、有证据纪律的交付链路 · 按 F 全屏 · 按 S 演讲者模式 · ← → 翻页",
+      "source": "来源：本次改动的代码计数与 evals 实际输出，四个数字各自的出处见对应页",
+      "blocks": [
+        {
+          "type": "metrics",
+          "cols": 4,
+          "items": [
+            {
+              "value": 12,
+              "label": "种内容块，覆盖讲演页的常见形态",
+              "tone": "teal"
+            },
+            {
+              "value": 7,
+              "label": "道闸门，从路由一直卡到回滚边界",
+              "tone": "teal"
+            },
+            {
+              "value": 31,
+              "label": "项回归，每次改动都要重新跑通",
+              "tone": "gold"
+            },
+            {
+              "value": 3,
+              "label": "个真实渲染缺陷，是复核纪律逼出来的",
+              "tone": "gold"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "自我介绍 20 秒 → 主标题停一拍 → 四个数字各 15 秒。前两个讲能力，后两个讲纪律，语气要能听出转折。"
+        },
+        {
+          "tag": "say",
+          "text": "我们这套现场讲演 deck 的技能，一直有个不好意思说的毛病——它只管把片子做出来，做完之后就死了。今天讲我们怎么让它活过来。"
+        },
+        {
+          "tag": "data",
+          "text": "先看最后一个数：三个渲染缺陷。这三个不是这次改坏的，是从母版起就一直在的，没人发现。"
+        },
+        {
+          "tag": "bridge",
+          "text": "先说毛病出在哪。"
+        }
+      ]
+    },
+    {
+      "id": "conflict",
+      "layout": "full",
+      "min": 2,
+      "kicker": "冲突",
+      "title": "v1 能出片，出片之后就没有下一步了",
+      "source": "来源：v1 技能目录（SKILL.md + 2 份 references + 1 个 starter 模板）",
+      "blocks": [
+        {
+          "type": "cards",
+          "cols": 3,
+          "items": [
+            {
+              "title": "改稿只能重读 HTML",
+              "pills": [
+                {
+                  "text": "最贵的一条",
+                  "tone": "gold"
+                }
+              ],
+              "body": "客户说「第 7 页数字换一下、顺序调一调」，接手的人得先把 800 行单文件读懂。改第二版的成本接近重做。"
+            },
+            {
+              "title": "没有事实源",
+              "body": "内容、样式、演讲逐字稿全都压在同一份 HTML 里。想拿去做别的用途，只能人肉抠。"
+            },
+            {
+              "title": "对不对只能靠人眼",
+              "body": "漏一页 data-min、漏一段逐字稿、留一个未替换占位——全靠交付前自己扫一遍清单。扫漏了就带到台上。"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "三张卡从左到右念，第一张停久一点，那是听众最有共鸣的。"
+        },
+        {
+          "tag": "say",
+          "text": "第一条最贵。客户说「第七页数字换一下」，接手的人得先把八百行单文件读懂——改第二版的成本，接近重做一遍。"
+        },
+        {
+          "tag": "do",
+          "text": "说到第三张卡时,指一下自己的眼睛,再摇摇头。"
+        },
+        {
+          "tag": "bridge",
+          "text": "这三条不是我们独有的病，别人也踩过，而且踩完写了答案。"
+        }
+      ]
+    },
+    {
+      "id": "borrow",
+      "layout": "full",
+      "min": 1,
+      "kicker": "来源",
+      "title": "借纪律，不借壳",
+      "source": "来源：NOTICE.md · 上游 joeseesun/qiaomu-bento-ppt commit 55c63c8（MIT · 向阳乔木）",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "「用户明确说直接生成时可以继续，但方案稿照写。」",
+          "cite": "—— 上游 workflow.md 的第一条纪律，我们逐字照搬了这个态度"
+        },
+        {
+          "type": "list",
+          "items": [
+            "借了：方案先行的工作流骨架、闸门阶梯的分层方式、文档内嵌事实源的思路、身份保持与回滚边界",
+            "没借：它内置的 nyblnet/bento 官方外壳（600 KB）、bento 文档格式、上游锁定与同步机制",
+            "为什么不借壳：我们的视觉是 ZimaBlue Editorial，演讲者模式是自己的招牌，换壳等于换技能"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "say",
+          "text": "这次升级的方法论，来自向阳乔木的 qiaomu-bento-ppt。我们借的是纪律，不是代码——它内置的那个六百 KB 外壳，一行都没拿。"
+        },
+        {
+          "tag": "do",
+          "text": "点一下屏幕上「没借」那一行，停两秒。"
+        },
+        {
+          "tag": "bridge",
+          "text": "那借来的纪律，落到我们这儿长什么样？先看最根本的那一条：事实源。"
+        }
+      ]
+    },
+    {
+      "id": "source-of-truth",
+      "layout": "split",
+      "min": 2,
+      "kicker": "机制 · 其一",
+      "title": "产物自己带着源文件，改稿不用重读 HTML",
+      "source": "来源：scripts/zima_deck.py · serialize_doc / extract_doc",
+      "blocks": [
+        {
+          "type": "term",
+          "text": "<!-- 每份产物末尾都有这一块 -->\n<script type=\"application/zima+json\" id=\"zima-doc\">\n{\n  \"zima\": \"1.0\",\n  \"deckId\": \"6f1c0f3e-9a2b-4d5c-8e77-0b1a2c3d4e5f\",\n  \"title\": \"…\",\n  \"slides\": [ … ]\n}\n</script>\n\n# 改稿三步，不碰 HTML\n$ zima_deck.py extract deck.html --output deck.json\n$ vim deck.json\n$ zima_deck.py build deck.json --identity-source deck.html \\\n    --output deck.updated.html"
+        },
+        {
+          "type": "text",
+          "text": "所有 < 转义成 \\u003c 写入，杜绝内容把脚本标签断出去。"
+        }
+      ],
+      "right": [
+        {
+          "type": "list",
+          "items": [
+            "deck.json 是唯一事实源，HTML 只是产物",
+            "extract(build(x)) == x 逐字节相等，有回归用例守着",
+            "deckId 全程不变——改稿改的是同一份文档，不是新文档",
+            "默认写 sibling 文件，源 HTML 一个字节都不动"
+          ]
+        },
+        {
+          "type": "pills",
+          "items": [
+            {
+              "text": "locate"
+            },
+            {
+              "text": "build"
+            },
+            {
+              "text": "extract"
+            },
+            {
+              "text": "validate"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "先念左边的代码块前六行，再翻到右边四条。命令那段不用逐字念，说「三步」就够。"
+        },
+        {
+          "tag": "data",
+          "text": "关键是这一行：extract 出来的 JSON 和当初 build 进去的，逐字节相等。这不是我说的，是回归用例每次都在验。"
+        },
+        {
+          "tag": "do",
+          "text": "指向 deckId 那一行——「改稿改的是同一份文档，不是新文档」。"
+        },
+        {
+          "tag": "bridge",
+          "text": "有了事实源，才谈得上机器校验。"
+        }
+      ]
+    },
+    {
+      "id": "gates",
+      "layout": "full",
+      "min": 2,
+      "kicker": "机制 · 其二",
+      "title": "七道闸门，最后一道是人",
+      "source": "来源：references/gates.md",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Route 路由 —— 这活该不该进这个技能，还是让给 biz-html-viz / viz-deck / viz-charts",
+            "Structure 结构 —— 缺配额、缺逐字稿、未知块型、图表数据非数字、占位符残留，零 error 才准产出",
+            "Identity 身份 —— 新建只铸一次 deckId，改稿对不上身份来源直接拒绝构建",
+            "Shell 外壳 —— 暖纸底、三色条、S 键、reduced-motion、品牌签名，八条签名少一条就是壳被改坏了",
+            "Quality 质量 —— 名词式标题、逐字稿过短、一页超两种强调色，不阻断，但每条都要交代",
+            "Browser 浏览器 —— 封面、最密的一页、带图表的一页，加按 S 的演讲者窗口，人亲眼看",
+            "Rollback 回滚 —— 默认写新文件，要覆盖必须显式开口"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "七条不要逐条念完，念一、二、四、六即可，其余一句带过。重音落在最后一条之前的 Browser。"
+        },
+        {
+          "tag": "say",
+          "text": "前六道机器判，第六道是人判。这个顺序是故意的——机器能证明结构对，证明不了「看起来对」。"
+        },
+        {
+          "tag": "data",
+          "text": "Shell 闸门八条签名里有一条很新，是这次复核之后加的，等下第十页会讲它为什么被加进来。"
+        },
+        {
+          "tag": "bridge",
+          "text": "结构闸门具体拦什么，看下一页。"
+        }
+      ]
+    },
+    {
+      "id": "structure-gate",
+      "layout": "full",
+      "min": 2,
+      "kicker": "机制 · 其三",
+      "title": "结构闸门 38 项硬拦截，条条都是上过台才知道疼的",
+      "source": "来源：scripts/zima_deck.py 计数（38 处 add_error / 14 处 add_warning）",
+      "blocks": [
+        {
+          "type": "table",
+          "head": [
+            "拦什么",
+            "为什么是 error 不是 warning",
+            "上台会怎样"
+          ],
+          "numCols": [],
+          "rows": [
+            [
+              "某页没写逐字稿",
+              "演讲者模式是这个技能的招牌，不是可选项",
+              "按 S 弹出空白，台上现编"
+            ],
+            [
+              "某页缺 min 配额",
+              "计时条、进度条、演讲者窗口议程全靠它",
+              "计时失准，最后一段被砍"
+            ],
+            [
+              "图表数据写成字符串",
+              "Chart.js 会画出来，但坐标轴是错的",
+              "投影上数字对不上口播"
+            ],
+            [
+              "表格列数与表头不齐",
+              "浏览器会自己补格，补的位置不一定是你想的",
+              "客户盯着错位的那一格"
+            ],
+            [
+              "split 版式没给右栏",
+              "左栏会被拉满，版式塌成 full",
+              "整页构图垮掉"
+            ],
+            [
+              "留了未替换的占位符",
+              "花括号在投影上极其显眼",
+              "台下先笑，你才发现"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "表格不要逐行念。念第一行和最后一行，中间四行让听众自己扫，留 15 秒。"
+        },
+        {
+          "tag": "say",
+          "text": "这张表右边一列，是我们真正的判断依据——不是「这条重要」，是「这条漏了，台上会发生什么」。"
+        },
+        {
+          "tag": "data",
+          "text": "三十八项 error，十四项 warning。分界线就一条：会不会在台上出事。"
+        },
+        {
+          "tag": "do",
+          "text": "念最后一行时笑一下，这条大家都中过。"
+        },
+        {
+          "tag": "bridge",
+          "text": "有了校验，是不是就必须走脚本？不是。"
+        }
+      ]
+    },
+    {
+      "id": "two-routes",
+      "layout": "compare",
+      "min": 2,
+      "kicker": "选择",
+      "title": "两条路线都保留，按「这份稿子要不要改第二版」来选",
+      "source": "来源：references/workflow.md 第 6 节",
+      "blocks": [
+        {
+          "type": "cards",
+          "cols": 1,
+          "items": [
+            {
+              "title": "手写 starter",
+              "pills": [
+                {
+                  "text": "一次性场合",
+                  "tone": "gold"
+                }
+              ],
+              "body": "复制 templates/zima-ppt-starter.html，直接改 HTML。版式自由度最高，想加什么加什么。",
+              "list": [
+                "适合：只讲一次、版式要高度定制的场合",
+                "代价：改稿要人重读；只能跑 HTML 层闸门"
+              ]
+            }
+          ]
+        }
+      ],
+      "right": [
+        {
+          "type": "cards",
+          "cols": 1,
+          "items": [
+            {
+              "title": "脚本构建（默认）",
+              "pills": [
+                {
+                  "text": "会改第二版",
+                  "tone": "gold"
+                }
+              ],
+              "body": "写 deck.json，交给 build。版式收敛到 5 种 × 12 块，换来可反解、可校验、可留档。",
+              "list": [
+                "适合：要改稿、要机器校验、要交给别人接手",
+                "代价：超出块型的特殊版式要用 html 逃生口，且会记一条警告"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "head": [
+            "能力",
+            "手写",
+            "脚本"
+          ],
+          "numCols": [],
+          "rows": [
+            [
+              "反解重编辑",
+              "否",
+              "是"
+            ],
+            [
+              "身份保持",
+              "无",
+              "deckId"
+            ],
+            [
+              "闸门报告",
+              "无",
+              "JSON"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "左右各 30 秒，最后 30 秒讲选择依据。"
+        },
+        {
+          "tag": "say",
+          "text": "选哪条路只看一个问题：这份稿子会不会改第二版。会，就走脚本；不会，手写反而快。"
+        },
+        {
+          "tag": "do",
+          "text": "讲完后停一拍，等大家看完右下角那张小表。"
+        },
+        {
+          "tag": "bridge",
+          "text": "闸门全绿，是不是就能说「做完了」？这是今天最想说的一条。"
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "layout": "full",
+      "min": 1,
+      "kicker": "纪律",
+      "title": "脚本过了不等于验收过了",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "「缺少浏览器复核时，写 missing evidence，不要写『已验证』。」",
+          "cite": "—— references/gates.md 第 2 节"
+        },
+        {
+          "type": "text",
+          "text": "每份校验报告默认就带着 browser visual review 这一项，得人真的打开看过，才有资格在交付说明里划掉它。下面这三项，交付时必须按名字写清楚，不许含糊成一句「已验证」。"
+        },
+        {
+          "type": "pills",
+          "items": [
+            {
+              "text": "browser visual review"
+            },
+            {
+              "text": "presenter window check"
+            },
+            {
+              "text": "offline rendering (Chart.js CDN)"
+            },
+            {
+              "text": "projector resolution check",
+              "tone": "gold"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "这页只有一句话要念，念完停三秒，让它落地。"
+        },
+        {
+          "tag": "say",
+          "text": "报告里默认就写着「浏览器复核缺失」——是故意的。你不去看，它就一直在那儿挂着。"
+        },
+        {
+          "tag": "do",
+          "text": "扫一遍全场再翻页。"
+        },
+        {
+          "tag": "bridge",
+          "text": "这条纪律不是喊口号，这次就把它自己的三个 bug 揪出来了。"
+        }
+      ]
+    },
+    {
+      "id": "defects",
+      "layout": "full",
+      "min": 2,
+      "kicker": "兑现",
+      "title": "按新清单实跑一遍，查出三个从母版起就在的缺陷",
+      "source": "来源：headless Chromium 实测，1440×810 + 320/375/414/768 四档",
+      "blocks": [
+        {
+          "type": "cards",
+          "cols": 3,
+          "items": [
+            {
+              "title": "对比条从来没显示过",
+              "pills": [
+                {
+                  "text": "最狠的一个",
+                  "tone": "gold"
+                }
+              ],
+              "body": "填充元素是 <i>，默认 display:inline，宽高不生效——整根条形是 0×0。D1/D2/D3 母版全都带着这个 bug 上过台。"
+            },
+            {
+              "title": "页脚右侧被翻页控件压住",
+              "body": "右下角的计时 + 页码 + 翻页钮是固定定位，正好盖在页脚文字上。每一页都在发生，没人报过。"
+            },
+            {
+              "title": "桌面端仍能横拖 25px",
+              "body": "待入场的幻灯片带 translateX(36px)，只锁 body 的溢出收不住，html 还能拖。投影时表现为画面能被蹭歪。"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "三张卡各 25 秒，第一张要有情绪。"
+        },
+        {
+          "tag": "say",
+          "text": "第一个最难堪：我们那个对比条组件，从写出来到现在，一次都没显示过。三份母版都带着它上过台。"
+        },
+        {
+          "tag": "data",
+          "text": "第三个是 25 像素——听起来很小，但投影的时候表现为画面能被蹭歪。"
+        },
+        {
+          "tag": "do",
+          "text": "讲第一张卡时摊手，别掩饰。"
+        },
+        {
+          "tag": "bridge",
+          "text": "挑第一个展开讲，因为它教了我们一件事。"
+        }
+      ]
+    },
+    {
+      "id": "the-bar",
+      "layout": "split",
+      "min": 2,
+      "kicker": "细看",
+      "title": "一个 display 少写了，一个组件白做了",
+      "source": "来源：templates/zima-ppt-starter.html diff · 浏览器实测 getBoundingClientRect",
+      "blocks": [
+        {
+          "type": "term",
+          "text": "/* 修复前——<i> 默认 inline，width/height 全部失效 */\n.fill{height:100%;width:0;background:var(--teal);\n      transition:width 1.2s cubic-bezier(.2,.8,.2,1)}\n\n/* 修复后——补一个 display，条形才有盒子 */\n.fill{display:block;height:100%;width:0;\n      background:var(--teal);transition:width 1.2s …}\n\n# 顺手把它写进 shell 闸门签名，防止再漏\n(\"条形填充可见\", \"display:block;height:100%;width:0\")"
+        }
+      ],
+      "right": [
+        {
+          "type": "bars",
+          "bare": true,
+          "items": [
+            {
+              "label": "修复前 · 条形高度",
+              "pct": 0,
+              "value": "0 px",
+              "tone": "gold"
+            },
+            {
+              "label": "修复后 · 条形高度",
+              "pct": 100,
+              "value": "11 px",
+              "tone": "teal"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "items": [
+            "同一份 CSS 里，进度条和计时条都写了 display:block，唯独这里漏了",
+            "眼睛看不出来——空的轨道和「还没填充」长得一模一样",
+            "所以修完不算完：把这条加进 shell 签名，让机器替人记住"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "先让右边那两根条填完（约 1.2 秒），再开口。上面那根本来就该是空的。"
+        },
+        {
+          "tag": "data",
+          "text": "右边这两根条，就是本次修好的那个组件。上面那根是修复前——它不是没填充，它是根本没有盒子，高度零像素。"
+        },
+        {
+          "tag": "do",
+          "text": "指着上面那根空条，停两秒，再指下面那根。"
+        },
+        {
+          "tag": "say",
+          "text": "这件事给我的教训不是「以后要细心」——是「细心不可靠，得让机器替人记住」。所以我们把它写进了闸门签名。"
+        },
+        {
+          "tag": "bridge",
+          "text": "机器替人记住多少，就看回归覆盖了多少。"
+        }
+      ]
+    },
+    {
+      "id": "coverage",
+      "layout": "split",
+      "min": 2,
+      "kicker": "覆盖",
+      "title": "31 项回归守着边界，改一行就得重新跑通",
+      "source": "来源：evals/run_fixtures.py 与 scripts/trigger_eval.py 实际输出（31/31 通过）",
+      "blocks": [
+        {
+          "type": "chart",
+          "name": "coverage",
+          "kind": "bar",
+          "title": "五类检查项的数量",
+          "height": 300,
+          "labels": [
+            "结构 error",
+            "质量 warning",
+            "shell 签名",
+            "路由用例",
+            "闸门用例"
+          ],
+          "datasets": [
+            {
+              "label": "项数",
+              "data": [
+                38,
+                14,
+                8,
+                16,
+                15
+              ],
+              "tones": [
+                "teal",
+                "gold",
+                "muted",
+                "green",
+                "green"
+              ]
+            }
+          ]
+        }
+      ],
+      "right": [
+        {
+          "type": "list",
+          "items": [
+            "闸门回归 15 项：好稿必须放行、坏稿必须被逐类点名、反解必须逐字节一致",
+            "路由回归 16 项：包含 6 条该进来的，和 10 条该让给姊妹技能的",
+            "坏稿 fixture 是故意写坏的——缺配额、缺逐字稿、图表数据写成字符串、表格列数不齐，一次全犯",
+            "跑法：python evals/run_fixtures.py && python scripts/trigger_eval.py"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "先念图表结论再翻右栏。第三条是重点，留时间。"
+        },
+        {
+          "tag": "data",
+          "text": "最高那根是结构 error，三十八项；金色那根是质量 warning，十四项。绿色两根是回归用例本身。"
+        },
+        {
+          "tag": "say",
+          "text": "路由回归里有十条是「该让给别人」的用例——一个技能知道自己不该做什么，比知道自己能做什么更重要。"
+        },
+        {
+          "tag": "do",
+          "text": "指向绿色的两根条。"
+        },
+        {
+          "tag": "bridge",
+          "text": "最后讲一条不用工具、只靠脑子的规矩。"
+        }
+      ]
+    },
+    {
+      "id": "visual-owner",
+      "layout": "full",
+      "min": 1,
+      "kicker": "方法",
+      "title": "一条信息只由一个层级负责",
+      "source": "来源：references/workflow.md 第 3 节",
+      "blocks": [
+        {
+          "type": "quote",
+          "text": "「屏幕上的字和嘴里念的话，不许是同一句。」",
+          "cite": "—— 视觉所有者规则，deck-plan 逐页计划表里专门有一列"
+        },
+        {
+          "type": "list",
+          "items": [
+            "标题、图表、卡片、正文、逐字稿——每条信息四选一，写进计划表就不许再改",
+            "它同时治两个病：页面话太多，和演讲者只会念屏幕",
+            "这是整套规矩里最省力的一条：不用工具，只要在做方案时多填一列"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "say",
+          "text": "这条最省力，也最救场。屏幕上的字和嘴里念的话不许是同一句——就这一句，能同时治好「页面话太多」和「演讲者只会念屏幕」。"
+        },
+        {
+          "tag": "do",
+          "text": "指一下这一页本身：标题说结论，列表说方法，我嘴里说的是为什么。三层没有一句重复。"
+        },
+        {
+          "tag": "bridge",
+          "text": "最后说交付。"
+        }
+      ]
+    },
+    {
+      "id": "contract",
+      "layout": "full",
+      "min": 1,
+      "kicker": "交付",
+      "title": "五件套交齐，缺哪件说明缺在哪",
+      "source": "来源：references/gates.md 第 3 节",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "deck-plan.md —— 受众、目标、叙事弧、逐页结构（含视觉所有者）、素材来源、风险",
+            "deck.json —— 文档源；走手写路线就注明「无，改稿需人重读 HTML」",
+            "{日期}-{slug}-deck.html —— 单文件产物，双击可开、可投影、可演讲者模式",
+            "reports/deck-validation.json —— errors / warnings / gates / stats 全量报告",
+            "一段交付说明 —— 路径、页数与总配额、离线边界、已验证项、仍属 missing evidence 的项"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "tag": "cue",
+          "text": "五条快念，重点在最后一条的后半句。"
+        },
+        {
+          "tag": "say",
+          "text": "最后一件最容易糊弄：交付说明里那句「仍属 missing evidence 的项」。写得出来，才说明你知道自己没验什么。"
+        },
+        {
+          "tag": "bridge",
+          "text": "一句话收。"
+        }
+      ]
+    },
+    {
+      "id": "closing",
+      "layout": "closing",
+      "min": 1,
+      "kicker": "收束",
+      "title": "工具管「过没过」，人管「对不对」",
+      "footerLeft": "技能路径：claude-code-skills/zima-html-ppt/",
+      "blocks": [
+        {
+          "type": "bigline",
+          "text": "脚本过了不等于验收过了；但没有脚本，连「过没过」都无从谈起。"
+        },
+        {
+          "type": "quote",
+          "text": "「这份 deck 自己就是走这条链路做出来的——plan 先行、JSON 事实源、闸门全绿、浏览器复核，连它自己的 missing evidence 都写在 plan 第 8 节里。」",
+          "cite": "—— examples/zima-html-ppt-v2-deck-plan.md"
+        },
+        {
+          "type": "term",
+          "text": "$ python scripts/zima_deck.py locate\n$ python scripts/zima_deck.py build deck.json --output deck.html --new-document --report r.json\n$ python scripts/zima_deck.py extract deck.html --output deck.json     # 改稿\n$ python evals/run_fixtures.py && python scripts/trigger_eval.py       # 31/31"
+        }
+      ],
+      "notes": [
+        {
+          "tag": "say",
+          "text": "一句话带走：脚本过了不等于验收过了；但没有脚本，连「过没过」都无从谈起。"
+        },
+        {
+          "tag": "do",
+          "text": "停三秒，扫全场，再说最后一句。"
+        },
+        {
+          "tag": "say",
+          "text": "顺便说一句——今天这份 deck，自己就是走这条链路做出来的，连它没验到的东西都写在方案第八节里。谢谢。"
+        }
+      ]
+    }
+  ]
+}

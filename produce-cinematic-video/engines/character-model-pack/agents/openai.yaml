@@ -1,0 +1,4 @@
+interface:
+  display_name: "角色模型包工坊"
+  short_description: "把角色原稿变成一致三视图、表情动作表、透明切片包并完成质检"
+  default_prompt: "Use $build-character-model-pack to turn this character drawing into a validated turnaround, expression and pose sheet, and transparent cutout pack."

@@ -1,0 +1,2 @@
+asset_id,shot_id,source_path,source_in,source_out,duration,kind,truth_status,scene,function,description,performance_value,evidence_value,sound_value,continuity_notes,rights_status,provenance_status,recommended_use,status
+AS001,SH001,,00:00:00:00,00:00:05:00,5,live_action,captured_fact,SC01,establish geography,,,,,,,unknown,recorded,review

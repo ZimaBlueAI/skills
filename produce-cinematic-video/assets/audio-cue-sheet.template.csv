@@ -1,0 +1,4 @@
+cue_id,scene_id,shot_id,timeline_tc,trigger,function,source,on_off_screen,subjective_objective,distance_space,duration,voice_text,prompt_or_recording,asset_path,format,rights,provider_model,task_id,stem,sync_status,mix_status,notes
+MUS_SC01_001,SC01,,00:00:00:00,sequence start,establish tone,licensed,off_screen,objective,wide room,,,,music_sc01_v001.wav,wav,cleared,,,music,planned,planned,
+SFX_SC01_001,SC01,SH010,00:00:03:12,visible contact,confirm material weight,foley,on_screen,objective,close,,,,sfx_sc01_contact_v001.wav,wav,owned,,,effects,planned,planned,
+VO_SC01_001,SC01,,00:00:05:00,narrative reveal,deliver context,recorded,off_screen,objective,studio,,Script text,,vo_sc01_v001.wav,wav,owned,,,dialogue,planned,planned,

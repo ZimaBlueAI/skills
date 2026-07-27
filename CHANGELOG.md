@@ -9,13 +9,118 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 ## [Unreleased]
 
+### Added — `produce-cinematic-video`：ZimaBlueAI 可恢复影视生产技能
+
+- 将同题研究、策划、剧本、角色/场景/道具设计、分镜、生成式视频、专业剪辑、声音后期、
+  技术 QC、创意评分、营销诊断和发布复盘组织为可暂停、可重做、可恢复的工程图。
+- 提供 7 张动画专业工位协议卡、离线 SVG 流程看板、项目历史版本、节点重做与结构化
+  `project.json` 契约；单 Agent 和具备子任务能力的宿主共享同一产物协议。
+- 接入安全闸门明确的图像/视频适配器、本地 GPU 优先的 Qwen3-TTS 与 IndexTTS2、
+  低配 Pocket TTS/LuxTTS，以及 GPT-SoVITS UVR5 音源分离、混音和口型/对白定位工具。
+- 用户配置统一为跨平台用户目录中的 `.env.local`；TUI 只询问实际启用能力所需字段，
+  密钥隐藏输入，大模型与隔离运行时不进入 skill 或漫游配置目录。
+- Codex 与 Claude Code 两个安装包均由同一份 99 文件 UTF-8 源生成，逐文件哈希一致；
+  包内只含 `.env.local.example`，不含用户配置、模型、媒体、缓存或凭据。
+
+### Security — `produce-cinematic-video` 发布净化
+
+- 移除私人项目名称、内部绝对路径、个人角色示例及其图片；修复一份非 UTF-8 元数据文件。
+- 顶层加入 Apache-2.0 `LICENSE` 与 ZimaBlueAI `NOTICE`；第三方名称仅用于说明可选互操作，
+  不表示赞助、背书、合作或参与本 skill 创作。
+- 远程上传、付费调用、声音克隆和外部发布分别设独立批准闸门；“已填写 API key”
+  不再被视为调用授权，未知价格也不再被视为免费。
+- 移除固定供应商优劣排序、历史价格、版权安全保证和平台流量操纵话术；改为能力匹配、
+  当前条款核对、权利记录和一方数据驱动的可审计决策。
+
+### Changed — 双 harness 目录合并为单一源（skill 直接放仓库根）
+
+`claude-code-skills/` 与 `codex-skills/` 两套目录合并——8 个 skill 直接落在仓库根，
+由 `packaging/build.py` 生成两个 harness 的安装包（判定规则：根下带顶层 `SKILL.md`
+的目录就是一个 skill）。合并前做了全量比对，结论是：
+**两侧本就同源**，差异只有可自动生成的适配（Codex 侧的短 description、脚本里的
+ppt-master 路径探测），没有需要人工取舍的功能分叉。
+
+合并同时暴露并解决了四个真问题：
+
+- **三个 skill 的源码只存在于 zip 里** —— `biz-html-viz` / `viz-deck` / `viz-charts`
+  在 claude 侧只有 `.zip`，仓库里没有铺开的 `SKILL.md`：读不到、diff 不了、review 不了。
+  唯一可读的源反而在 codex 侧。现在全部铺开在仓库根。
+- **两处已经悄悄分叉** —— `gzh-design` 的两个主题文件（引用框 `solid` vs `dashed`）与
+  `produce-cinematic-video` 的 `SKILL.md` + 旧 `config.example.json`（现为内部
+  `assets/config.defaults.json`），都是改动只落了一侧。
+  按较新的 codex 侧收敛。
+- **skill 列表不对称** —— `web-shader-extractor` 只在 claude 侧。
+- **`cinematic_config.py` 硬编码 `.codex/`** —— 装在 Claude Code 下会指错自己的安装位置；
+  改为按 `.codex` → `.agents` → `.claude` 顺序探测。同类的 ppt-master 探测本就三路径全覆盖，
+  合并后 claude 侧顺带补齐（过去缺 `.codex/`）。
+
+新增：
+
+- `packaging/build.py` —— `--verify` 可与旧 zip 逐字节核对，`--check` 只验源不产出。
+- `packaging/harness.toml` —— harness 差异的唯一声明处：安装根目录 + 三个 Codex description 变体。
+- `packaging/install.sh` / `install.ps1` —— 双 harness 通用安装器（原来只有 Codex 版），
+  支持 `--harness claude|codex|both`、`--skill`、`--project`、`--dry-run`。
+- `packaging/agents/{claude-md,codex-toml}/` —— 9 个 subagent 的两种序列化格式并列存放。
+- `dist/claude/` + `dist/codex/` —— 16 个包（8 skill × 2 harness）。
+- `docs/` —— 安装手册从两个 harness 目录里挪出来集中放置。
+
+旧目录已归档到 `_trash/legacy-harness-dirs-20260727/`，未硬删。
+
+### Removed — 频道交付层（OpenClaw / Hermes）
+
+`openclaw-skills/` 与 `hermes-skills/`（`viz-channel` / `gzh-channel`）下线。
+理由：这两个 harness 可以直接安装本仓库的 Claude / Codex 包，再维护一层薄桥接属于重复。
+v0.5 的实现保留在 git 历史里。同时 `taste-engine/` 独立目录移除——它已在 v0.7
+整目录收编为 `zima-design` 的 taste 引擎（见 `zima-design/NOTICE.md`）。
+
+### Added — `zima-html-ppt` v2：工程治理层（借鉴 qiaomu-bento-ppt 的纪律，不引入 bento）
+
+原本这个技能只有「拷模板填内容 + 设计规范」，做完的 deck 想改一版只能让人重读 HTML。
+参考 [joeseesun/qiaomu-bento-ppt](https://github.com/joeseesun/qiaomu-bento-ppt)（MIT，向阳乔木）
+的工作流骨架与闸门思路，把它升级成**有事实源、有机器闸门、有证据纪律**的交付链路。
+只借方法论，没有移植其内置的 `nyblnet/bento` shell——视觉与演讲者模式仍是 ZimaBlue Editorial 自有。
+署名见 `zima-html-ppt/NOTICE.md`。
+
+- **`deck.json` 文档契约 v1.0**（`references/deck-json.md`）：5 种版式 × 12 种内容块 × 5 类逐字稿标签。
+  产物末尾内嵌 `<script id="zima-doc">` 存原始 JSON，`extract(build(x)) == x` 有回归用例保证——
+  **改稿从"重读 HTML"变成"改 JSON 再 build"**。
+- **`scripts/zima_deck.py`**（locate / build / extract / validate，纯标准库、不联网）：
+  结构校验 18 项 error + 11 项 warning；图表配置编译成纯 JSON（禁 function formatter）；
+  `--legacy` 可把手写 deck 兜底反解成 JSON。
+- **七道闸门**（`references/gates.md`）：Route / Structure / Identity / Shell / Quality / Browser /
+  Rollback。身份闸门用 `deckId` 锚定，改稿 `--identity-source` 对不上直接拒绝构建；
+  回滚边界默认写新文件，源文件不动。
+- **`missing evidence` 证据纪律**：报告默认携带 `browser visual review`，人没真在浏览器里看过
+  就不许写「已验证」。
+- **方案先行**（`references/workflow.md` + `templates/deck-plan-template.md`）：意图卡 →
+  `1a` 说服 / `2b` 决策 / `3c` 训战三方向选择卡 → 逐页计划表（含**视觉所有者**：一条信息只由
+  标题/图表/卡片/正文/逐字稿其中一层负责，屏幕上的字和嘴里念的话不许是同一句）。
+- **`evals/`**：`run_fixtures.py`（15 项，好稿放行 + 坏稿逐类拦截 + 反解一致）、
+  `trigger_cases.json` + `scripts/trigger_eval.py`（16 项路由边界，含让给
+  biz-html-viz / viz-deck / viz-charts 的用例）。
+- **`templates/zima-ppt-shell.html`**：build 用的数据驱动 shell（图表规格由 JSON 装载）。
+- **`examples/`**：一份完整走过全链路的示范交付——`deck-plan.md`（含视觉所有者列与三项
+  missing evidence）+ `deck.json` + 14 页产物 + 闸门报告。题材就是这次升级本身，
+  **每个数字都可回溯到代码计数或测试输出**；用到 11/12 种块型（`html` 逃生口刻意不用），
+  结构闸门零 error、质量闸门零 warning。
+
+### Fixed — `zima-html-ppt` 母版三个真实渲染缺陷（浏览器复核查出）
+
+按新写的浏览器验收清单实跑，查出的都是 starter 模板（以及沿用它的 D1/D2/D3 母版）里的老问题：
+
+- **对比条从来没显示过**：`.fill` 是 `<i>`，默认 `display:inline`，宽高不生效，整根条形是 0×0。
+  补 `display:block`，并把这条加进 shell 闸门签名，防止再漏。
+- **页脚右侧文字被右下角固定的 `.nav` 压住**：`.footer` 补 `padding-right:200px`，窄屏还原为纵向排列。
+- **桌面端仍能横拖 25px**：待入场幻灯片带 `translateX(36px)`，只锁 `body{overflow:hidden}` 收不住，
+  改为 `html,body`。
+
 ## [0.7.0] — 2026-07-16
 
 ### Added — `zima-design`（自有设计合奏引擎，三引擎收编 + 原创路由协议）
 
 **设计合奏引擎**——一次好的设计交付需要三种互补智能：结构与主题的多样性、动效与手感、
 数据化的选型依据；没有单一体系同时做好三件事，zima-design 把它们编排成合奏。
-落位 `claude-code-skills/zima-design/`，同步 `.claude/skills/`，镜像 `codex-skills/zima-design/`
+落位 `claude-code-zima-design/`，同步 `.claude/skills/`，镜像 `codex-zima-design/`
 并接线 `build-packages.ps1` 产出 `zima-design.zip`（354 文件）。
 
 - **原创 SKILL.md 路由协议**：三条铁律（多样性优先 / 诚实 / 验收前置）+ 任务路由表
@@ -77,7 +182,7 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 **微信公众号文章排版** skill——Markdown / Word(.docx) / PDF / 纯文本 → 可直接粘贴进公众号
 编辑器、粘贴后样式不丢失的 HTML。**逐字节原样移植**上游 skill 本体 20 文件（`SKILL.md` +
 `LICENSE` + 11 references + 4 scripts + 3 assets，上游 commit `67c079e`，甲木 × 摸鱼小李联名），
-未移植上游 `archive/` 旧版归档与 `docs/` 展示图库。落位 `claude-code-skills/gzh-design/`
+未移植上游 `archive/` 旧版归档与 `docs/` 展示图库。落位 `claude-code-gzh-design/`
 并同步进 `.claude/skills/`。
 
 - 6 套内置主题（摸鱼绿 / 红白 / 石墨极简 / 留白禅意 / 摸鱼票据 / 橄榄手记）+ **主题生成器**
@@ -110,7 +215,7 @@ and the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
 网页 **WebGL / WebGPU / Canvas 着色器动效抠取与本地证据匹配复现** skill，**逐字节原样移植**
 上游 22 文件（`SKILL.md` + 13 references + 2 scripts + 6 templates），未改动上游内容。
-落位 `claude-code-skills/web-shader-extractor/` 并同步进 `.claude/skills/`。
+落位 `claude-code-web-shader-extractor/` 并同步进 `.claude/skills/`。
 
 - `NOTICE.md` — 来源/作者（@lixiaolin94，2D Canvas 路线鸣谢 @HeyHuazi）/License/升级方式。
 - `web-shader-extractor-README.md` — 中文使用说明（何时用/触发词/Recon Kernel 状态机/能力清单/边界）。

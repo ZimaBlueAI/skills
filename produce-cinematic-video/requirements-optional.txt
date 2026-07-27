@@ -1,0 +1,16 @@
+# Optional production helpers. The core audit/configuration scripts use only
+# Python 3.10+ standard library modules.
+jsonschema>=4.21
+Pillow>=10.0
+opencv-python>=4.9
+numpy>=1.26
+scenedetect[opencv]>=0.6.4
+# shot_detect.py neural refinement layer (strongly recommended for production):
+# transnetv2-pytorch + torch
+# moment_ground.py (Qwen3-VL temporal grounding via DashScope OpenAI-compatible API):
+# openai
+# beat detection for beat-sync edits: librosa
+# source separation fallback for music/sfx stem recovery: demucs
+# GPT-SoVITS UVR5 uses its own bundled runtime. Do not install its pinned
+# dependencies into this control environment; configure the repository with:
+#   configure.py setup-local gpt-sovits --repo-dir <path>

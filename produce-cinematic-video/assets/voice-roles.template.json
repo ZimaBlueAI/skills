@@ -1,0 +1,28 @@
+{
+  "$comment": "多角色配音角色表。复制到 <project>/work/tts/voice-roles.json 使用；工序见 references/index-tts2.md 的 voice bank 一节。",
+  "consent_record": "consent-record.md",
+  "disclosure_note": "成片中的角色语音为 AI 合成配音",
+  "roles": {
+    "role_a": {
+      "ref": "refs/role_a.wav",
+      "ref_source": "来源素材路径与 in/out 时间码",
+      "lines": [
+        { "text": "第一句台词", "at_s": 0.0, "emotion_text": null },
+        { "text": "第二句台词", "at_s": 5.2, "emotion_text": "开心、兴奋" }
+      ]
+    },
+    "role_b": {
+      "ref": "refs/role_b.wav",
+      "ref_source": "",
+      "lines": []
+    }
+  },
+  "ensemble": [
+    {
+      "text": "齐声喊的那句话",
+      "at_s": 28.6,
+      "voices": ["role_a", "role_b"],
+      "per_voice_gain_db": -5.5
+    }
+  ]
+}

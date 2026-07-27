@@ -1,0 +1,31 @@
+{
+  "tool": "zima_deck",
+  "version": "1.0",
+  "command": "build",
+  "target": "examples\\zima-html-ppt-v2.deck.json",
+  "generatedAt": "2026-07-27T04:10:00Z",
+  "errors": [],
+  "warnings": [],
+  "stats": {
+    "slides": 14,
+    "totalMinutes": 23,
+    "charts": 1,
+    "htmlEscapeHatch": false,
+    "htmlSlides": 14,
+    "htmlNotes": 14,
+    "bytes": 74436
+  },
+  "gates": {
+    "identity": "reused",
+    "structure": "pass",
+    "shell": "pass",
+    "rollback": "source-preserved",
+    "quality": "pass"
+  },
+  "missingEvidence": [
+    "browser visual review"
+  ],
+  "output": "examples\\2026-07-27-zima-html-ppt-v2-deck.html",
+  "ok": true,
+  "deckJsonWrittenBack": "examples\\zima-html-ppt-v2.deck.json"
+}

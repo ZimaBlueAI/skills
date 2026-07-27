@@ -1,0 +1,52 @@
+{
+  "zima": "1.0",
+  "deckId": "0a1b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c5d",
+  "title": "闸门回归 · 这份 deck 故意是坏的",
+  "meta": { "speaker": "ZimaBlueAI", "footer": "gate regression" },
+  "slides": [
+    {
+      "id": "no-notes",
+      "layout": "full",
+      "title": "第三季度业务分析",
+      "blocks": [
+        { "type": "text", "text": "本页故意：缺 min、缺 notes、名词式标题、留了 {{未替换占位}}。" }
+      ],
+      "notes": []
+    },
+    {
+      "id": "bad-chart",
+      "layout": "split",
+      "min": 4,
+      "title": "图表数据故意写成字符串",
+      "blocks": [
+        {
+          "type": "chart",
+          "name": "dup",
+          "kind": "bar",
+          "labels": ["A", "B"],
+          "datasets": [{ "label": "错的", "data": ["1", "2"] }]
+        }
+      ],
+      "notes": [{ "tag": "say", "text": "本页故意：chart 数据是字符串、layout=split 却没有 right 栏。" }]
+    },
+    {
+      "id": "bad-table",
+      "layout": "full",
+      "min": 3,
+      "title": "表格列数对不齐，条形超界，图表重名",
+      "blocks": [
+        { "type": "table", "head": ["A", "B", "C"], "rows": [["1", "2"]] },
+        { "type": "bars", "items": [{ "label": "越界", "pct": 140 }] },
+        {
+          "type": "chart",
+          "name": "dup",
+          "kind": "bar",
+          "labels": ["X"],
+          "datasets": [{ "label": "重名", "data": [1] }]
+        },
+        { "type": "carousel", "items": [] }
+      ],
+      "notes": [{ "tag": "shout", "text": "本页故意：未知 note tag、未知块类型 carousel。" }]
+    }
+  ]
+}

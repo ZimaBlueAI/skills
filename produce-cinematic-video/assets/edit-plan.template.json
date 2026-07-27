@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "meta": {
+    "plan_id": "project-slug-edit-v001",
+    "project_id": "project-slug",
+    "revision": 1,
+    "revision_note": "Initial paper edit",
+    "title": "Untitled project",
+    "form": "hybrid",
+    "structure": "custom",
+    "target_duration": 2,
+    "aspect_ratio": "16:9",
+    "resolution": "1920x1080",
+    "fps": 24,
+    "delivery_profile": "review",
+    "approval": {
+      "status": "pending",
+      "approved_by": "",
+      "approved_at": "",
+      "scope": ""
+    },
+    "budget": {
+      "currency": "CNY",
+      "soft_limit": 30,
+      "approved_limit": 0
+    }
+  },
+  "timeline": [
+    {
+      "clip_id": "C001",
+      "source": {
+        "kind": "title",
+        "asset_id": "",
+        "gap_id": "",
+        "source_in": null,
+        "source_out": null,
+        "speed": 1,
+        "truth_status": "illustrative"
+      },
+      "timeline_in": 0,
+      "duration": 2,
+      "function": "Establish the project title",
+      "audio_intent": "Begin with room tone or deliberate silence",
+      "transition": {
+        "type": "cut",
+        "duration": 0,
+        "reason": ""
+      },
+      "text_overlay": {
+        "content": "Title",
+        "role": "title",
+        "position": "center",
+        "language": "zh-CN"
+      },
+      "decision_note": "Temporary title card for the paper edit"
+    }
+  ],
+  "audio": {
+    "expected": true,
+    "loudness_profile": "review",
+    "tracks": [],
+    "silence_moments": []
+  },
+  "gaps": [],
+  "qc_targets": {
+    "duration_tolerance_seconds": 0.5,
+    "black_min_duration_seconds": 0.08,
+    "max_unexpected_black_seconds": 0,
+    "freeze_min_duration_seconds": 1,
+    "silence_min_duration_seconds": 2
+  }
+}

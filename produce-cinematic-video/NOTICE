@@ -1,0 +1,14 @@
+ZimaBlueAI Produce Cinematic Video
+Copyright 2026 ZimaBlueAI (https://github.com/ZimaBlueAI)
+
+This skill's production workflow, orchestration, safety gates, adapters,
+scripts, references, schemas, and templates are developed and maintained by
+ZimaBlueAI and contributors.
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+Third-party product, model, and project names appear only to describe optional
+interoperability or official documentation. Their mention does not imply
+sponsorship, endorsement, partnership, or authorship of this skill. No
+third-party model weights or executable packages are bundled. Each owner retains
+its trademarks and licenses; users must verify current terms.

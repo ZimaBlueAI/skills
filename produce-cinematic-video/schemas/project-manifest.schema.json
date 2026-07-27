@@ -1,0 +1,210 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "produce-cinematic-video/project-manifest.schema.json",
+  "title": "CinematicProjectManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "project", "assets", "claims", "approvals", "deliverables"],
+  "properties": {
+    "version": { "const": 1 },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "title",
+        "form",
+        "editorial_thesis",
+        "audience",
+        "status",
+        "created_at",
+        "delivery_profiles"
+      ],
+      "properties": {
+        "project_id": { "$ref": "#/definitions/id" },
+        "title": { "type": "string", "minLength": 1 },
+        "form": {
+          "type": "string",
+          "enum": [
+            "narrative",
+            "documentary",
+            "animation",
+            "educational",
+            "trailer",
+            "brand",
+            "social",
+            "hybrid"
+          ]
+        },
+        "editorial_thesis": { "type": "string", "minLength": 1 },
+        "audience": { "type": "string", "minLength": 1 },
+        "status": {
+          "type": "string",
+          "enum": ["brief", "ingest", "paper_edit", "edit", "finishing", "qc", "delivered", "archived"]
+        },
+        "created_at": { "type": "string", "format": "date-time" },
+        "delivery_profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        },
+        "truth_priority": {
+          "type": "string",
+          "enum": ["factual", "performance", "instructional", "marketing", "formal"]
+        },
+        "review_owner": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/asset" }
+    },
+    "claims": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/claim" }
+    },
+    "approvals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edit_plan", "generation_budget", "disclosures", "publish"],
+      "properties": {
+        "edit_plan": { "$ref": "#/definitions/approval" },
+        "generation_budget": { "$ref": "#/definitions/approval" },
+        "disclosures": { "$ref": "#/definitions/approval" },
+        "publish": { "$ref": "#/definitions/approval" }
+      }
+    },
+    "deliverables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["deliverable_id", "kind", "profile", "path", "status"],
+        "properties": {
+          "deliverable_id": { "$ref": "#/definitions/id" },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "review",
+              "clean_master",
+              "captioned_master",
+              "mezzanine",
+              "platform_variant",
+              "captions",
+              "transcript",
+              "audio_stem",
+              "timeline_exchange",
+              "project_archive",
+              "qc_report"
+            ]
+          },
+          "profile": { "type": "string" },
+          "path": { "type": "string" },
+          "checksum_sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$|^$" },
+          "status": { "type": "string", "enum": ["planned", "rendered", "qc", "approved", "delivered"] },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "path",
+        "kind",
+        "truth_status",
+        "rights",
+        "provenance",
+        "status"
+      ],
+      "properties": {
+        "asset_id": { "$ref": "#/definitions/id" },
+        "path": { "type": "string" },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "live_action",
+            "archival",
+            "animation",
+            "simulation",
+            "generated",
+            "reenactment",
+            "still",
+            "audio",
+            "graphic",
+            "project_file"
+          ]
+        },
+        "truth_status": {
+          "type": "string",
+          "enum": ["captured_fact", "reported_claim", "contextual", "illustrative", "simulated", "reenacted", "synthetic"]
+        },
+        "checksum_sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$|^$" },
+        "source_timecode": { "type": "string" },
+        "duration": { "type": ["number", "null"], "minimum": 0 },
+        "rights": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "owner", "scope", "expires_at"],
+          "properties": {
+            "status": { "type": "string", "enum": ["unknown", "restricted", "cleared", "public_domain", "owned"] },
+            "owner": { "type": "string" },
+            "scope": { "type": "string" },
+            "expires_at": { "type": "string" }
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source", "provider", "model", "task_id", "prompt_record", "disclosure"],
+          "properties": {
+            "source": { "type": "string" },
+            "provider": { "type": "string" },
+            "model": { "type": "string" },
+            "task_id": { "type": "string" },
+            "prompt_record": { "type": "string" },
+            "disclosure": { "type": "string" },
+            "created_at": { "type": "string" }
+          }
+        },
+        "status": { "type": "string", "enum": ["original", "proxy", "select", "rejected", "generated", "accepted", "superseded", "delivered"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "text", "type", "evidence_asset_ids", "limitations", "status"],
+      "properties": {
+        "claim_id": { "$ref": "#/definitions/id" },
+        "text": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "enum": ["fact", "quote", "inference", "performance", "comparison", "price", "testimonial", "opinion"] },
+        "evidence_asset_ids": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "limitations": { "type": "string" },
+        "status": { "type": "string", "enum": ["unverified", "verified", "qualified", "rejected", "waived"] },
+        "reviewed_by": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "approved_by", "approved_at", "scope"],
+      "properties": {
+        "status": { "type": "string", "enum": ["not_required", "pending", "approved", "rejected", "revoked"] },
+        "approved_by": { "type": "string" },
+        "approved_at": { "type": "string" },
+        "scope": { "type": "string" }
+      }
+    }
+  }
+}

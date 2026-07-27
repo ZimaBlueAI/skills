@@ -1,0 +1,4 @@
+item_id,version,timecode,dimension,criterion,observed_result,severity,evidence_path,next_single_change,reviewer,status,cost,notes
+SH010,v001,00:00:00:00,physics,object count is conserved,,blocker,,,,review,,,
+SH010,v001,00:00:00:00,continuity,screen direction and prop hand match references,,major,,,,review,,,
+SH010,v001,00:00:00:00,sound,visible contact and impact sound align,,major,,,,review,,,

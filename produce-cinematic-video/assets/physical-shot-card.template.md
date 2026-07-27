@@ -1,0 +1,24 @@
+# Physical shot card
+
+- Scene / shot / gap IDs:
+- Observable audience question:
+- Evidence the shot must provide:
+- Objects, count and scale reference:
+- Fixed parts:
+- Moving parts:
+- Initial positions, velocities and states:
+- Force, energy or drive source:
+- Contacts, supports and constraints:
+- Required continuous paths:
+- Friction, damping, loss or deformation:
+- Collisions and transfer:
+- Final state and measurable result:
+- Camera position, lens and why it proves the process:
+- First-frame duty:
+- Last-frame duty:
+- Synchronized sounds and visible triggers:
+- One-object acceptance:
+- Group-process acceptance:
+- Deterministic fallback:
+- Disclosure / source label:
+- Reviewer, version and status:

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "meta": {
+    "card_id": "platform-category-v001",
+    "category": "Describe the content category",
+    "platform": "current-platform",
+    "learned_at": "2026-01-01",
+    "confidence": "low",
+    "owner": ""
+  },
+  "research_context": {
+    "question": "Which observable editorial and packaging patterns distinguish the target group from a comparable control group?",
+    "date_range": "",
+    "inclusion_criteria": "",
+    "control_definition": "",
+    "limitations": []
+  },
+  "features": [],
+  "patterns": {
+    "structure": [],
+    "opening": [],
+    "pacing": [],
+    "visual": [],
+    "sound": [],
+    "packaging": [],
+    "cta": []
+  },
+  "samples": [],
+  "risk_flags": [],
+  "feedback_log": []
+}

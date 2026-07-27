@@ -1,0 +1,234 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "produce-cinematic-video/edit-plan.schema.json",
+  "title": "CinematicEditPlan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "meta", "timeline", "audio", "gaps", "qc_targets"],
+  "properties": {
+    "version": { "const": 1 },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "project_id",
+        "revision",
+        "title",
+        "form",
+        "target_duration",
+        "aspect_ratio",
+        "resolution",
+        "fps",
+        "delivery_profile",
+        "approval",
+        "budget"
+      ],
+      "properties": {
+        "plan_id": { "$ref": "#/definitions/id" },
+        "project_id": { "$ref": "#/definitions/id" },
+        "revision": { "type": "integer", "minimum": 1 },
+        "revision_note": { "type": "string" },
+        "title": { "type": "string", "minLength": 1 },
+        "form": {
+          "type": "string",
+          "enum": ["narrative", "documentary", "animation", "educational", "trailer", "brand", "social", "hybrid"]
+        },
+        "structure": { "type": "string" },
+        "target_duration": { "type": "number", "exclusiveMinimum": 0 },
+        "aspect_ratio": { "type": "string" },
+        "resolution": { "type": "string", "pattern": "^[0-9]+x[0-9]+$" },
+        "fps": { "type": "number", "exclusiveMinimum": 0 },
+        "delivery_profile": { "type": "string", "minLength": 1 },
+        "approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "approved_by", "approved_at", "scope"],
+          "properties": {
+            "status": { "type": "string", "enum": ["pending", "approved", "rejected", "revoked"] },
+            "approved_by": { "type": "string" },
+            "approved_at": { "type": "string" },
+            "scope": { "type": "string" }
+          }
+        },
+        "budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["currency", "soft_limit", "approved_limit"],
+          "properties": {
+            "currency": { "type": "string", "minLength": 3, "maxLength": 3 },
+            "soft_limit": { "type": "number", "minimum": 0 },
+            "approved_limit": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "timeline": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/timelineItem" }
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected", "loudness_profile", "tracks", "silence_moments"],
+      "properties": {
+        "expected": { "type": "boolean" },
+        "loudness_profile": { "type": "string" },
+        "tracks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["track_id", "type", "asset_id", "timeline_in", "duration", "gain_db"],
+            "properties": {
+              "track_id": { "$ref": "#/definitions/id" },
+              "type": { "type": "string", "enum": ["dialogue", "interview", "vo", "bgm", "foley", "sfx", "ambience"] },
+              "asset_id": { "type": "string" },
+              "timeline_in": { "type": "number", "minimum": 0 },
+              "duration": { "type": "number", "exclusiveMinimum": 0 },
+              "gain_db": { "type": "number" },
+              "j_l_offset": { "type": "number" },
+              "intent": { "type": "string" }
+            }
+          }
+        },
+        "silence_moments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["start", "duration", "purpose"],
+            "properties": {
+              "start": { "type": "number", "minimum": 0 },
+              "duration": { "type": "number", "exclusiveMinimum": 0 },
+              "purpose": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/gap" }
+    },
+    "qc_targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "duration_tolerance_seconds",
+        "black_min_duration_seconds",
+        "max_unexpected_black_seconds",
+        "freeze_min_duration_seconds",
+        "silence_min_duration_seconds"
+      ],
+      "properties": {
+        "duration_tolerance_seconds": { "type": "number", "minimum": 0 },
+        "black_min_duration_seconds": { "type": "number", "exclusiveMinimum": 0 },
+        "max_unexpected_black_seconds": { "type": "number", "minimum": 0 },
+        "freeze_min_duration_seconds": { "type": "number", "exclusiveMinimum": 0 },
+        "silence_min_duration_seconds": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "timelineItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clip_id", "source", "timeline_in", "duration", "function", "audio_intent", "decision_note"],
+      "properties": {
+        "clip_id": { "$ref": "#/definitions/id" },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "asset_id", "gap_id", "source_in", "source_out", "speed", "truth_status"],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": ["live_action", "archival", "animation", "simulation", "generated", "reenactment", "still", "title", "black"]
+            },
+            "asset_id": { "type": "string" },
+            "gap_id": { "type": "string" },
+            "source_in": { "type": ["number", "null"], "minimum": 0 },
+            "source_out": { "type": ["number", "null"], "minimum": 0 },
+            "speed": { "type": "number", "exclusiveMinimum": 0 },
+            "truth_status": {
+              "type": "string",
+              "enum": ["captured_fact", "reported_claim", "contextual", "illustrative", "simulated", "reenacted", "synthetic"]
+            }
+          }
+        },
+        "timeline_in": { "type": "number", "minimum": 0 },
+        "duration": { "type": "number", "exclusiveMinimum": 0 },
+        "function": { "type": "string", "minLength": 1 },
+        "audio_intent": { "type": "string" },
+        "transition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "duration", "reason"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["cut", "j_cut", "l_cut", "dissolve", "fade", "dip", "match_cut", "mask_wipe", "whip", "graphic", "generative", "custom"]
+            },
+            "duration": { "type": "number", "minimum": 0 },
+            "reason": { "type": "string" }
+          }
+        },
+        "text_overlay": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["content", "role", "position", "language"],
+          "properties": {
+            "content": { "type": "string" },
+            "role": { "type": "string", "enum": ["caption", "title", "lower_third", "label", "disclosure", "cta", "graphic"] },
+            "position": { "type": "string" },
+            "language": { "type": "string" }
+          }
+        },
+        "decision_note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gap_id",
+        "need",
+        "acceptance",
+        "alternatives_considered",
+        "proposed_medium",
+        "required_capability",
+        "factual_risk",
+        "disclosure",
+        "estimated_cost",
+        "actual_cost",
+        "approval_status",
+        "status"
+      ],
+      "properties": {
+        "gap_id": { "$ref": "#/definitions/id" },
+        "need": { "type": "string", "minLength": 1 },
+        "acceptance": { "type": "string", "minLength": 1 },
+        "alternatives_considered": { "type": "array", "items": { "type": "string" } },
+        "proposed_medium": {
+          "type": "string",
+          "enum": ["re_edit", "pickup", "adr_foley", "deterministic_animation", "vfx", "generated_still", "generated_video", "generated_audio"]
+        },
+        "required_capability": { "type": "string" },
+        "factual_risk": { "type": "string", "enum": ["none", "low", "medium", "high", "prohibited"] },
+        "disclosure": { "type": "string" },
+        "estimated_cost": { "type": ["number", "null"], "minimum": 0 },
+        "actual_cost": { "type": ["number", "null"], "minimum": 0 },
+        "approval_status": { "type": "string", "enum": ["not_required", "pending", "approved", "rejected"] },
+        "status": { "type": "string", "enum": ["open", "in_progress", "accepted", "rejected", "switched_medium"] },
+        "output_asset_id": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "animation-project",
+  "type": "object",
+  "required": ["version", "title", "target_duration_s", "stations", "history"],
+  "properties": {
+    "version": { "const": 1 },
+    "title": { "type": "string" },
+    "brief": { "type": "string" },
+    "target_duration_s": { "type": "number" },
+    "director_mode": { "type": "string" },
+    "budget_cny": { "type": "number", "default": 30 },
+    "world_fingerprint": { "type": "string" },
+    "stations": {
+      "type": "object",
+      "description": "七工位状态机。key: screenwriter/character_designer/scene_designer/prop_designer/storyboard_director/sound_director/chief_director",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "enum": ["pending", "running", "review", "approved", "rework", "stale"] },
+          "depends_on": { "type": "array", "items": { "type": "string" } },
+          "outputs": { "type": "array", "items": { "type": "string" } },
+          "note": { "type": "string" },
+          "updated_at": { "type": "string" }
+        }
+      }
+    },
+    "screenplay": {
+      "type": "object",
+      "properties": {
+        "logline": { "type": "string" },
+        "structure": { "type": "string" },
+        "scenes": { "type": "array", "items": { "type": "object",
+          "required": ["id", "duration_s", "action"],
+          "properties": {
+            "id": { "type": "string" }, "duration_s": { "type": "number" },
+            "location": { "type": "string" }, "time_of_day": { "type": "string" },
+            "characters": { "type": "array", "items": { "type": "string" } },
+            "action": { "type": "string", "description": "状态A→状态B 写法" },
+            "dialogue": { "type": "array", "items": { "type": "object",
+              "properties": { "who": { "type": "string" }, "text": { "type": "string" } } } },
+            "shot_hint": { "type": "string" }, "emotion": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "transition_out": { "type": "string" }
+          } } }
+      }
+    },
+    "characters": { "type": "array", "items": { "type": "object",
+      "required": ["alias"],
+      "properties": {
+        "alias": { "type": "string" }, "fingerprint": { "type": "string" },
+        "model_pack_dir": { "type": "string" }, "portrait": { "type": "string" },
+        "voice": { "type": "object", "properties": {
+          "provider": { "type": "string" }, "reference": { "type": "string" },
+          "design_instruction": { "type": "string" }, "sample": { "type": "string" } } },
+        "status": { "type": "string" }
+      } } },
+    "scenes": { "type": "array", "items": { "type": "object", "properties": {
+      "id": { "type": "string" }, "master": { "type": "string" },
+      "variants": { "type": "array", "items": { "type": "string" } },
+      "notes": { "type": "string" }, "status": { "type": "string" } } } },
+    "props": { "type": "array", "items": { "type": "object", "properties": {
+      "id": { "type": "string" }, "fingerprint": { "type": "string" },
+      "images": { "type": "array", "items": { "type": "string" } },
+      "state_machine": { "type": "array", "items": { "type": "object", "properties": {
+        "state": { "type": "string" }, "since_scene": { "type": "string" } } } },
+      "status": { "type": "string" } } } },
+    "shots": { "type": "array", "items": { "type": "object", "properties": {
+      "id": { "type": "string" }, "scene_id": { "type": "string" },
+      "first_frame": { "type": "string" }, "video": { "type": "string" },
+      "duration_s": { "type": "number" },
+      "dialogue_audio": { "type": "array", "items": { "type": "string" } },
+      "narration": { "type": "string" }, "camera": { "type": "string" },
+      "status": { "type": "string" }, "defects": { "type": "array", "items": { "type": "string" } } } } },
+    "audio": { "type": "object", "properties": {
+      "cues": { "type": "array", "items": { "type": "object", "properties": {
+        "cue_id": { "type": "string" }, "kind": { "enum": ["music", "sfx", "ambience"] },
+        "start_s": { "type": "number" }, "end_s": { "type": "number" },
+        "prompt": { "type": "string" }, "file": { "type": "string" },
+        "provider": { "type": "string" },
+        "status": { "enum": ["planned", "generated", "prompt_delivered", "user_pending", "placed"] } } } } } },
+    "final": { "type": "object", "properties": {
+      "video": { "type": "string" }, "notes": { "type": "string" },
+      "director_review": { "type": "string" }, "qc_report": { "type": "string" } } },
+    "cost_log": { "type": "array", "items": { "type": "object", "properties": {
+      "station": { "type": "string" }, "provider": { "type": "string" },
+      "amount_cny": { "type": "number" }, "detail": { "type": "string" } } } },
+    "history": { "type": "array", "items": { "type": "object", "properties": {
+      "at": { "type": "string" }, "who": { "type": "string" },
+      "change": { "type": "string" },
+      "invalidated": { "type": "array", "items": { "type": "string" } } } } }
+  }
+}

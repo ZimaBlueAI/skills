@@ -1,0 +1,138 @@
+{
+  "zima": "1.0",
+  "deckId": "6f1c0f3e-9a2b-4d5c-8e77-0b1a2c3d4e5f",
+  "title": "回归测试 deck · zima-html-ppt",
+  "meta": {
+    "speaker": "ZimaBlueAI",
+    "footer": "内部测试",
+    "brand": "✦ ZimaBlueAI",
+    "brandUrl": "https://www.zimablueai.com"
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "cover",
+      "min": 2,
+      "kicker": "REGRESSION FIXTURE · 全块型覆盖",
+      "title": "四种版式、十一种块，一次跑通",
+      "sub": "这份 fixture 用来验证 build / extract / validate 三条链路 · 按 F 全屏 · 按 S 演讲者模式",
+      "source": "zima-html-ppt evals",
+      "blocks": [
+        {
+          "type": "metrics",
+          "cols": 4,
+          "items": [
+            { "value": 12, "label": "块类型数", "tone": "teal" },
+            { "value": 5, "label": "版式数", "tone": "teal" },
+            { "value": 4, "label": "子命令数", "tone": "gold" },
+            { "value": 0, "label": "允许的结构错误", "tone": "gold" }
+          ]
+        }
+      ],
+      "notes": [
+        { "tag": "cue", "text": "开场 30 秒交代这是回归 fixture，不是真讲稿；剩下时间逐页确认渲染。" },
+        { "tag": "say", "text": "这一页验证的是 cover 版式加 metrics 块——四个数字应该从 0 滚上去。" },
+        { "tag": "bridge", "text": "接下来看图表页。" }
+      ]
+    },
+    {
+      "id": "chart-split",
+      "layout": "split",
+      "min": 4,
+      "kicker": "SPLIT 版式",
+      "title": "图表占左栏，要点和对比条占右栏",
+      "source": "来源：构建脚本自测数据 [估]",
+      "blocks": [
+        {
+          "type": "chart",
+          "name": "coverage",
+          "kind": "bar",
+          "title": "各闸门覆盖的检查项数",
+          "height": 300,
+          "labels": ["结构", "身份", "质量", "Shell"],
+          "datasets": [
+            { "label": "检查项", "data": [18, 3, 9, 7], "tones": ["muted", "gold", "green", "teal"] }
+          ]
+        }
+      ],
+      "right": [
+        {
+          "type": "list",
+          "items": [
+            "结构闸门拦的是硬错：缺 notes、缺 data-min、图表数据非数字",
+            "质量闸门只发警告：名词式标题、逐字稿过短、一页三种强调色",
+            "Shell 闸门确认三色条、S 键、reduced-motion 都还在"
+          ]
+        },
+        {
+          "type": "bars",
+          "bare": true,
+          "items": [
+            { "label": "结构错误拦截", "pct": 100, "value": "100%", "tone": "teal" },
+            { "label": "质量问题提示", "pct": 72, "value": "72%", "tone": "gold" }
+          ]
+        }
+      ],
+      "notes": [
+        { "tag": "cue", "text": "先念图表结论，再点右栏三条，最后落到对比条。" },
+        { "tag": "data", "text": "结构闸门有十八项检查，是拦得最狠的一道。" },
+        { "tag": "do", "text": "指向金色那根条，停顿两秒。" }
+      ]
+    },
+    {
+      "id": "compare",
+      "layout": "compare",
+      "min": 3,
+      "kicker": "COMPARE 版式",
+      "title": "手写起步模板与脚本构建各有各的场合",
+      "source": "来源：references/workflow.md",
+      "blocks": [
+        {
+          "type": "cards",
+          "cols": 1,
+          "items": [
+            {
+              "title": "starter 手写",
+              "pills": [{ "text": "一次性", "tone": "gold" }],
+              "list": ["版式自由度最高", "改稿只能靠人重读 HTML", "无机器校验"]
+            }
+          ]
+        }
+      ],
+      "right": [
+        {
+          "type": "table",
+          "head": ["能力", "手写", "脚本构建"],
+          "numCols": [],
+          "rows": [
+            ["反解重编辑", "否", "是"],
+            ["身份保持", "无", "deckId"],
+            ["闸门报告", "无", "JSON"]
+          ],
+          "source": "来源：本技能 README"
+        }
+      ],
+      "notes": [
+        { "tag": "say", "text": "两条路不是替代关系——一次性的高定页面照样手写，要反复改的稿子走脚本。" },
+        { "tag": "data", "text": "唯一的硬差别是反解：手写 deck 改一版就得人重读一遍 HTML。" }
+      ]
+    },
+    {
+      "id": "closing",
+      "layout": "closing",
+      "min": 1,
+      "kicker": "收束",
+      "title": "跑通即交付，跑不通就别交付",
+      "blocks": [
+        { "type": "bigline", "text": "结构闸门零错误，Shell 闸门通过，浏览器复核仍需人来做。" },
+        { "type": "quote", "text": "缺少浏览器复核时，写 missing evidence，不要写「已验证」。", "cite": "references/gates.md" },
+        { "type": "pills", "items": [{ "text": "structure" }, { "text": "identity" }, { "text": "shell", "tone": "gold" }] },
+        { "type": "term", "text": "python scripts/zima_deck.py validate output/deck.html --report reports/deck-validation.json" }
+      ],
+      "notes": [
+        { "tag": "say", "text": "最后一句话带走：脚本过了不等于验收过了，浏览器那一关得人自己开——封面、最密的一页、带图表的一页，三处都亲眼看过再签字。" },
+        { "tag": "do", "text": "停顿三秒，扫一遍全场，再关掉演讲者窗口。" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "project": {
+    "project_id": "project-slug",
+    "title": "Untitled project",
+    "form": "hybrid",
+    "editorial_thesis": "The viewer should understand, feel, or do ...",
+    "audience": "Primary audience and viewing context",
+    "status": "brief",
+    "created_at": "2026-01-01T00:00:00Z",
+    "delivery_profiles": ["review"],
+    "truth_priority": "factual",
+    "review_owner": "",
+    "notes": ""
+  },
+  "assets": [],
+  "claims": [],
+  "approvals": {
+    "edit_plan": {
+      "status": "pending",
+      "approved_by": "",
+      "approved_at": "",
+      "scope": ""
+    },
+    "generation_budget": {
+      "status": "pending",
+      "approved_by": "",
+      "approved_at": "",
+      "scope": ""
+    },
+    "disclosures": {
+      "status": "pending",
+      "approved_by": "",
+      "approved_at": "",
+      "scope": ""
+    },
+    "publish": {
+      "status": "pending",
+      "approved_by": "",
+      "approved_at": "",
+      "scope": ""
+    }
+  },
+  "deliverables": []
+}

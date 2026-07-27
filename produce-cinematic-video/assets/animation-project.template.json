@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "title": "<项目名>",
+  "brief": "<用户一句话故事>",
+  "target_duration_s": 60,
+  "director_mode": "narrative",
+  "budget_cny": 30,
+  "world_fingerprint": "",
+  "stations": {
+    "screenwriter":        { "status": "pending", "depends_on": [], "outputs": [] },
+    "character_designer":  { "status": "pending", "depends_on": ["screenwriter"], "outputs": [] },
+    "scene_designer":      { "status": "pending", "depends_on": ["screenwriter", "character_designer"], "outputs": [] },
+    "prop_designer":       { "status": "pending", "depends_on": ["screenwriter", "character_designer"], "outputs": [] },
+    "storyboard_director": { "status": "pending", "depends_on": ["character_designer", "scene_designer", "prop_designer"], "outputs": [] },
+    "sound_director":      { "status": "pending", "depends_on": ["storyboard_director"], "outputs": [] },
+    "chief_director":      { "status": "pending", "depends_on": ["storyboard_director", "sound_director"], "outputs": [] }
+  },
+  "screenplay": { "logline": "", "structure": "", "scenes": [] },
+  "characters": [],
+  "scenes": [],
+  "props": [],
+  "shots": [],
+  "audio": { "cues": [] },
+  "final": {},
+  "cost_log": [],
+  "history": []
+}

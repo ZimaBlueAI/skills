@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "nodes": [
+    {"id": "brief", "label": "需求·权利·预算", "status": "planned", "depends_on": [], "outputs": []},
+    {"id": "research", "label": "同题研究", "status": "planned", "depends_on": ["brief"], "outputs": []},
+    {"id": "planning", "label": "创作策划", "status": "planned", "depends_on": ["research"], "outputs": []},
+    {"id": "script", "label": "剧本·证据图", "status": "planned", "depends_on": ["planning"], "outputs": []},
+    {"id": "design", "label": "角色·场景·声音圣经", "status": "planned", "depends_on": ["script"], "outputs": []},
+    {"id": "storyboard", "label": "分镜·Animatic", "status": "planned", "depends_on": ["design"], "outputs": []},
+    {"id": "acquisition", "label": "拍摄·获取·生成", "status": "planned", "depends_on": ["storyboard"], "outputs": []},
+    {"id": "picture_edit", "label": "画面剪辑", "status": "planned", "depends_on": ["acquisition"], "outputs": []},
+    {"id": "separation", "label": "音源分离·清理", "status": "planned", "depends_on": ["picture_edit"], "outputs": []},
+    {"id": "av_sync", "label": "口型·对白定位", "status": "planned", "depends_on": ["separation"], "outputs": []},
+    {"id": "sound_mix", "label": "声音设计·混音", "status": "planned", "depends_on": ["av_sync"], "outputs": []},
+    {"id": "finishing", "label": "调色·字幕·母版", "status": "planned", "depends_on": ["sound_mix"], "outputs": []},
+    {"id": "qc", "label": "技术·创意·权利验收", "status": "planned", "depends_on": ["finishing"], "outputs": []},
+    {"id": "evaluation", "label": "评分·发布前预测", "status": "planned", "depends_on": ["qc"], "outputs": []},
+    {"id": "release", "label": "发布·A/B", "status": "planned", "depends_on": ["evaluation"], "outputs": []},
+    {"id": "learning", "label": "真实数据·复盘校准", "status": "planned", "depends_on": ["release"], "outputs": []}
+  ],
+  "feedback_edges": [
+    {"from": "qc", "to": "picture_edit", "reason": "结构/连续性返工"},
+    {"from": "qc", "to": "sound_mix", "reason": "声音返工"},
+    {"from": "learning", "to": "research", "reason": "用真实数据更新下一轮假设"}
+  ]
+}

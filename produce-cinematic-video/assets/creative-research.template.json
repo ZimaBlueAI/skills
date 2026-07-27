@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "research_question": "",
+  "topic": "",
+  "audience": "",
+  "platform": "",
+  "region": "",
+  "date_range": {
+    "from": "",
+    "to": ""
+  },
+  "samples": [
+    {
+      "id": "ref-001",
+      "group": "target|control|far-neighbor",
+      "url": "",
+      "title": "",
+      "creator": "",
+      "published_at": "",
+      "accessed_at": "",
+      "duration_s": null,
+      "visible_metrics": {
+        "impressions": null,
+        "views": null,
+        "likes": null,
+        "comments": null,
+        "shares": null,
+        "saves": null
+      },
+      "observations": {
+        "opening": "",
+        "promise_at_s": null,
+        "first_payoff_at_s": null,
+        "main_payoff_at_s": null,
+        "beats": [],
+        "picture_pattern": "",
+        "sound_pattern": "",
+        "packaging": "",
+        "negative_feedback": ""
+      },
+      "transferable_mechanisms": [],
+      "do_not_copy": [],
+      "rights_note": "",
+      "confidence": "low|medium|high"
+    }
+  ],
+  "findings": [],
+  "creative_hypotheses": [],
+  "limitations": []
+}

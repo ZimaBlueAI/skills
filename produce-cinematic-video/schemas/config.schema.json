@@ -1,0 +1,428 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "produce-cinematic-video/config.schema.json",
+  "title": "CinematicVideoConfig",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "tools", "providers", "policy", "delivery_profiles"],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "tools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ffmpeg", "ffprobe"],
+      "properties": {
+        "ffmpeg": { "type": "string" },
+        "ffprobe": { "type": "string" },
+        "imagemagick": { "type": "string" },
+        "python": { "type": "string" },
+        "scenedetect": { "type": "string" },
+        "transcriber": { "type": "string" },
+        "nle": { "type": "string" },
+        "blender": { "type": "string" }
+      }
+    },
+    "providers": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/provider" }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_currency",
+        "generation_soft_limit",
+        "require_budget_approval",
+        "require_remote_upload_approval",
+        "require_publish_approval",
+        "retain_provenance",
+        "allow_synthetic_documentary_evidence"
+      ],
+      "properties": {
+        "default_currency": { "type": "string", "minLength": 3, "maxLength": 3 },
+        "generation_soft_limit": { "type": "number", "minimum": 0 },
+        "require_budget_approval": { "type": "boolean" },
+        "require_remote_upload_approval": { "type": "boolean" },
+        "require_publish_approval": { "type": "boolean" },
+        "retain_provenance": { "type": "boolean" },
+        "allow_synthetic_documentary_evidence": { "const": false }
+      }
+    },
+    "delivery_profiles": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/definitions/deliveryProfile" }
+    }
+  },
+  "definitions": {
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "adapter",
+        "tool_name",
+        "base_url",
+        "model",
+        "api_key_env",
+        "capabilities",
+        "data_policy",
+        "pricing"
+      ],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "adapter": { "type": "string" },
+        "tool_name": { "type": "string" },
+        "base_url": { "type": "string" },
+        "endpoint": { "type": "string" },
+        "model": { "type": "string" },
+        "api_key_env": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$|^$" },
+        "capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "text_to_image",
+              "image_edit",
+              "inpaint",
+              "outpaint",
+              "text_to_video",
+              "image_to_video",
+              "first_last_frame",
+              "video_extend",
+              "reference_identity",
+              "synchronized_audio",
+              "tts",
+              "voice_clone",
+              "emotion_control",
+              "voice_design",
+              "sound_effects",
+              "music",
+              "transcribe",
+              "source_separation",
+              "dereverb",
+              "audio_mix",
+              "av_sync"
+            ]
+          }
+        },
+        "data_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["remote_upload", "retention_note", "training_note", "region"],
+          "properties": {
+            "remote_upload": { "type": "boolean" },
+            "retention_note": { "type": "string" },
+            "training_note": { "type": "string" },
+            "region": { "type": "string" }
+          }
+        },
+        "pricing": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["currency", "unit", "estimated_unit_cost", "checked_at"],
+          "properties": {
+            "currency": { "type": "string" },
+            "unit": { "type": "string" },
+            "estimated_unit_cost": { "type": ["number", "null"], "minimum": 0 },
+            "checked_at": { "type": "string" }
+          }
+        },
+        "runtime": { "type": "object" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "adapter": { "const": "index_tts2_local" } },
+            "required": ["adapter"]
+          },
+          "then": {
+            "required": ["runtime"],
+            "properties": {
+              "runtime": { "$ref": "#/definitions/indexTts2Runtime" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "adapter": { "const": "qwen3_tts_local" } },
+            "required": ["adapter"]
+          },
+          "then": {
+            "required": ["runtime"],
+            "properties": {
+              "runtime": { "$ref": "#/definitions/qwen3TtsRuntime" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "adapter": { "const": "gpt_sovits_uvr5_local" } },
+            "required": ["adapter"]
+          },
+          "then": {
+            "required": ["runtime"],
+            "properties": {
+              "runtime": { "$ref": "#/definitions/gptSovitsUvr5Runtime" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "adapter": { "const": "pocket_tts_local" } },
+            "required": ["adapter"]
+          },
+          "then": {
+            "required": ["runtime"],
+            "properties": {
+              "runtime": { "$ref": "#/definitions/pocketTtsRuntime" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "adapter": { "const": "lux_tts_local" } },
+            "required": ["adapter"]
+          },
+          "then": {
+            "required": ["runtime"],
+            "properties": {
+              "runtime": { "$ref": "#/definitions/luxTtsRuntime" }
+            }
+          }
+        }
+      ]
+    },
+    "indexTts2Runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "python_executable",
+        "repo_dir",
+        "model_dir",
+        "device",
+        "offline",
+        "use_fp16",
+        "use_cuda_kernel",
+        "use_deepspeed",
+        "use_accel",
+        "use_torch_compile",
+        "defaults"
+      ],
+      "properties": {
+        "python_executable": { "type": "string", "minLength": 1 },
+        "repo_dir": { "type": "string" },
+        "model_dir": { "type": "string" },
+        "device": {
+          "type": "string",
+          "pattern": "^(auto|cpu|mps|xpu|cuda(:[0-9]+)?)$"
+        },
+        "offline": { "type": "boolean" },
+        "use_fp16": { "type": "boolean" },
+        "use_cuda_kernel": { "type": "boolean" },
+        "use_deepspeed": { "type": "boolean" },
+        "use_accel": { "type": "boolean" },
+        "use_torch_compile": { "type": "boolean" },
+        "hf_cache_dir": { "type": "string" },
+        "numba_cpu_name": { "type": "string" },
+        "aux_paths": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "w2v_bert": { "type": "string" },
+            "semantic_codec": { "type": "string" },
+            "campplus": { "type": "string" },
+            "bigvgan": { "type": "string" }
+          }
+        },
+        "defaults": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reference_emotion_alpha",
+            "text_emotion_alpha",
+            "use_random",
+            "interval_silence_ms",
+            "max_text_tokens_per_segment",
+            "verbose"
+          ],
+          "properties": {
+            "reference_emotion_alpha": { "type": "number", "minimum": 0, "maximum": 1 },
+            "text_emotion_alpha": { "type": "number", "minimum": 0, "maximum": 1 },
+            "use_random": { "type": "boolean" },
+            "interval_silence_ms": { "type": "integer", "minimum": 0, "maximum": 5000 },
+            "max_text_tokens_per_segment": { "type": "integer", "minimum": 1, "maximum": 1000 },
+            "verbose": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "qwen3TtsRuntime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "python_executable",
+        "voice_design_model",
+        "custom_voice_model",
+        "base_model",
+        "device",
+        "dtype",
+        "attn_implementation",
+        "offline",
+        "defaults"
+      ],
+      "properties": {
+        "python_executable": { "type": "string", "minLength": 1 },
+        "voice_design_model": { "type": "string" },
+        "custom_voice_model": { "type": "string" },
+        "base_model": { "type": "string" },
+        "device": {
+          "type": "string",
+          "pattern": "^(auto|cpu|mps|xpu|cuda(:[0-9]+)?)$"
+        },
+        "dtype": {
+          "enum": ["auto", "float32", "float16", "bfloat16"]
+        },
+        "attn_implementation": {
+          "enum": ["auto", "eager", "sdpa", "flash_attention_2"]
+        },
+        "offline": { "type": "boolean" },
+        "defaults": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["language", "do_sample", "max_new_tokens"],
+          "properties": {
+            "language": { "type": "string", "minLength": 1 },
+            "do_sample": { "type": "boolean" },
+            "max_new_tokens": { "type": "integer", "minimum": 1, "maximum": 16384 }
+          }
+        }
+      }
+    },
+    "gptSovitsUvr5Runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "python_executable",
+        "repo_dir",
+        "device",
+        "offline"
+      ],
+      "properties": {
+        "python_executable": { "type": "string" },
+        "repo_dir": { "type": "string" },
+        "device": {
+          "type": "string",
+          "pattern": "^(auto|cpu|mps|cuda(:[0-9]+)?)$"
+        },
+        "offline": { "type": "boolean" }
+      }
+    },
+    "pocketTtsRuntime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "python_executable",
+        "repo_dir",
+        "language",
+        "threads",
+        "offline",
+        "quantize"
+      ],
+      "properties": {
+        "python_executable": { "type": "string", "minLength": 1 },
+        "repo_dir": { "type": "string" },
+        "language": {
+          "enum": [
+            "english",
+            "english_2026-01",
+            "english_2026-04",
+            "french",
+            "french_24l",
+            "german",
+            "german_24l",
+            "portuguese",
+            "portuguese_24l",
+            "italian",
+            "italian_24l",
+            "spanish",
+            "spanish_24l"
+          ]
+        },
+        "threads": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "offline": { "type": "boolean" },
+        "quantize": { "type": "boolean" }
+      }
+    },
+    "luxTtsRuntime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "python_executable",
+        "repo_dir",
+        "device",
+        "threads",
+        "offline"
+      ],
+      "properties": {
+        "python_executable": { "type": "string", "minLength": 1 },
+        "repo_dir": { "type": "string" },
+        "device": {
+          "type": "string",
+          "pattern": "^(auto|cpu|mps|cuda(:[0-9]+)?)$"
+        },
+        "threads": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "offline": { "type": "boolean" }
+      }
+    },
+    "deliveryProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["container", "video", "audio", "captions"],
+      "properties": {
+        "container": { "type": "string" },
+        "video": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["codec", "resolution", "fps", "pixel_format", "color_space"],
+          "properties": {
+            "codec": { "type": "string" },
+            "resolution": { "type": "string", "pattern": "^[0-9]+x[0-9]+$" },
+            "fps": {
+              "oneOf": [
+                { "type": "number", "exclusiveMinimum": 0 },
+                { "const": "source" }
+              ]
+            },
+            "pixel_format": { "type": "string" },
+            "color_space": { "type": "string" }
+          }
+        },
+        "audio": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["codec", "sample_rate", "channels", "integrated_lufs", "true_peak_dbtp"],
+          "properties": {
+            "codec": { "type": "string" },
+            "sample_rate": { "type": "integer", "minimum": 8000 },
+            "channels": { "type": "integer", "minimum": 1 },
+            "integrated_lufs": { "type": ["number", "null"] },
+            "true_peak_dbtp": { "type": ["number", "null"] }
+          }
+        },
+        "captions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sidecar", "burned_in"],
+          "properties": {
+            "sidecar": { "type": "array", "items": { "type": "string" } },
+            "burned_in": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  }
+}

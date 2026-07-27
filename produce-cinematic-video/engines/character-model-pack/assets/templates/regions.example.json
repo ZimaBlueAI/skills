@@ -1,0 +1,29 @@
+{
+  "coordinate_space": "normalized",
+  "background": "auto",
+  "regions": [
+    {
+      "name": "idle",
+      "display_name": "待机",
+      "category": "pose",
+      "box": [0.0, 0.0, 0.333333, 0.5],
+      "isolate": "main",
+      "keep_prop_ratio": 0.15
+    },
+    {
+      "name": "repair_tool",
+      "display_name": "修理工具",
+      "category": "pose",
+      "box": [0.333333, 0.0, 0.333333, 0.5],
+      "isolate": "main+props",
+      "keep_prop_ratio": 0.12
+    },
+    {
+      "name": "sparkle_effect",
+      "display_name": "闪光效果",
+      "category": "effect",
+      "box": [0.666666, 0.0, 0.333334, 0.5],
+      "isolate": "none"
+    }
+  ]
+}
