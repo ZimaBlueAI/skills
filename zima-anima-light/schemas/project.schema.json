@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ZimaAnimaLightProject",
+  "type": "object",
+  "required": ["schema", "title", "workflow", "mode", "nodes", "materials"],
+  "properties": {
+    "schema": {"const": "zima-anima-light/project/1"},
+    "title": {"type": "string", "minLength": 1},
+    "workflow": {"enum": ["from_story", "from_image", "from_music", "from_video"]},
+    "mode": {"const": "guided"},
+    "audience": {"const": "youth"},
+    "budget": {"type": "object"},
+    "nodes": {"type": "array"},
+    "materials": {"type": "object"},
+    "continuity": {"type": "object"},
+    "canvas": {"type": "object"},
+    "style_pack": {"type": "string"},
+    "masters": {"type": "object"},
+    "created_at": {"type": "string"},
+    "updated_at": {"type": "string"}
+  }
+}

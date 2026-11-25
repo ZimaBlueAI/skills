@@ -1,0 +1,28 @@
+{
+  "id": "clay_stop_motion",
+  "title": "黏土定格",
+  "category": "craft",
+  "medium": [
+    "stopmotion",
+    "short",
+    "comedy"
+  ],
+  "prompt_prefix": "clay stop-motion youth comedy, fingerprint texture kept, bright miniature sets, rounded characters, gentle slapstick",
+  "prompt_zh": "青少年黏土定格喜剧，保留指纹质感，明亮微缩布景，圆润角色，温和闹剧",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "黏土小人把书包抛过桌子接到另一边",
+  "signature": [
+    "指纹质感",
+    "圆润角色",
+    "温和闹剧"
+  ],
+  "agent": "定格代理写清逐帧位移；喜剧靠道具失误，不靠伤害玩笑。",
+  "audience": "youth"
+}

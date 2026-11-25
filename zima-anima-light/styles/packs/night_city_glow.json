@@ -1,0 +1,28 @@
+{
+  "id": "night_city_glow",
+  "title": "夜城灯带",
+  "category": "city",
+  "medium": [
+    "live",
+    "anime",
+    "short"
+  ],
+  "prompt_prefix": "safe night city glow, distant light ribbons, teens on overpass sharing earphones, soft neon reflections, no crime tone",
+  "prompt_zh": "安全夜城灯带，远处灯带，天桥上分享耳机的同学，柔和霓虹反光，无犯罪气质",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "天桥上看远处灯带，同学分享耳机",
+  "signature": [
+    "远灯带",
+    "柔霓虹",
+    "同伴并排"
+  ],
+  "agent": "夜戏保持安全氛围：灯色服务情绪，不写危险街区与暴力暗示。",
+  "audience": "youth"
+}

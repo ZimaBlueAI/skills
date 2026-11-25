@@ -1,0 +1,28 @@
+{
+  "id": "campus_golden_hour",
+  "title": "操场黄金时刻",
+  "category": "campus",
+  "medium": [
+    "live",
+    "short",
+    "film"
+  ],
+  "prompt_prefix": "golden-hour school field, long soft shadows, teens after class, warm rim light, clear silhouettes against sky",
+  "prompt_zh": "放学后操场黄金时刻，长软阴影，暖轮廓光，人物剪影贴着天空可读",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "夕阳下跑道尽头，两人并肩走远",
+  "signature": [
+    "金时轮廓光",
+    "剪影可读",
+    "放学节奏"
+  ],
+  "agent": "你盯「放学后」的时间压力：镜头要看见太阳位置与人物走向，不堆伤感词。",
+  "audience": "youth"
+}

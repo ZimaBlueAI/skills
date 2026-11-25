@@ -1,0 +1,27 @@
+{
+  "id": "webtoon_soft",
+  "title": "柔和条漫风",
+  "category": "craft",
+  "medium": [
+    "anime",
+    "short"
+  ],
+  "prompt_prefix": "soft webtoon youth style, slender friendly proportions, gentle gradients, vertical-panel friendly framing, school romance kept wholesome",
+  "prompt_zh": "柔和条漫青年风，亲和修长比例，轻渐变，适合竖分格构图，校园情感保持清爽",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "竖构图楼梯口对视，留白给气泡",
+  "signature": [
+    "竖分格",
+    "轻渐变",
+    "清爽情感"
+  ],
+  "agent": "条漫代理：情感戏停在『关心/鼓励』，不写成人亲密。",
+  "audience": "youth"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "nature_field_notes",
+  "title": "自然田野笔记",
+  "category": "edu",
+  "medium": [
+    "live",
+    "doc",
+    "short"
+  ],
+  "prompt_prefix": "nature field-notes documentary look, sketchbook overlays, soft outdoor light, teen observer, respectful wildlife distance",
+  "prompt_zh": "自然田野笔记纪录片感，速写本叠加，柔和外光，青少年观察者，与野生动物保持尊重距离",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "草甸上摊开速写本，画下一只停在远处的鸟",
+  "signature": [
+    "速写叠加",
+    "观察距离",
+    "外光柔和"
+  ],
+  "agent": "自然代理强调尊重距离与不打扰；禁止惊扰动物镜头。",
+  "audience": "youth"
+}

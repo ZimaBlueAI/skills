@@ -1,0 +1,11 @@
+# Research, story and audience packaging
+
+Start with audience, intended reaction, platform, format, target length, tone and the user's constraints. Research only what changes creative decisions. Search the web and, where available, public X posts using the topic, audience language, alternate terms and relevant date range; use account analytics only when the user provides or authorizes access. Open primary sources for factual claims and cite direct links. Treat posts and engagement as examples, not reliable evidence of causation or future performance. Never invent analytics, views, audience interviews or a proven formula.
+
+Build a compact evidence sheet: question, source and date, verifiable finding, competing interpretation, audience relevance and rights. For time-sensitive claims distinguish publication from event dates; mark uncertainty. Seek 3–5 relevant examples if available, identify the opening promise, payoff, visual storytelling, pace and audience response, and separately identify transferable structural techniques versus distinctive execution. Do not copy scripts or misrepresent unlicensed footage as yours.
+
+Offer 2–3 differentiated concepts when creative direction is open: each has a specific audience, tension or curiosity, credible payoff, visual premise and production feasibility. Select the best fit and say why. Write a concise beat outline, then a narration/visual/sound script and shot list. Timing is an estimate until speech is recorded or rendered and measured. Openings should earn attention while remaining true to the content; avoid manufactured outrage or an unsupported promise. Adapt pacing to the story and platform rather than enforcing universal seconds per shot.
+
+For packaging, offer optional accurate title, thumbnail idea, description and alternate hook. If the user requests an experiment, define the single difference between variants, the platform and measurement plan; do not state that a variant will go viral. Publishing and external uploads require the user's instruction.
+
+Prompt: “Research [topic] for [audience] on [platform] within [date range]. Give directly linked primary evidence and 3–5 relevant examples if available; explain what makes the openings and payoffs work without claiming causality. Propose three distinct concepts and choose one. Flag missing evidence and rights. Do not publish.”

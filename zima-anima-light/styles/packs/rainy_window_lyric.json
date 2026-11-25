@@ -1,0 +1,28 @@
+{
+  "id": "rainy_window_lyric",
+  "title": "雨窗抒情",
+  "category": "lyric",
+  "medium": [
+    "live",
+    "anime",
+    "film"
+  ],
+  "prompt_prefix": "rainy window lyric mood, droplets on glass, soft interior warm light, teen looking out, gentle seasonal turn",
+  "prompt_zh": "雨窗抒情，玻璃水珠，室内暖光，青少年望向窗外，细小时令转折",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "教室窗上雨痕，一人擦雾看见操场",
+  "signature": [
+    "雨珠层",
+    "内外光差",
+    "细小转折"
+  ],
+  "agent": "抒情不等于空洞：转折必须落到一个可见动作（擦雾、推窗、收伞）。",
+  "audience": "youth"
+}

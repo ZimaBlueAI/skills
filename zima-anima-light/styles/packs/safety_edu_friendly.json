@@ -1,0 +1,28 @@
+{
+  "id": "safety_edu_friendly",
+  "title": "安全教育友好风",
+  "category": "edu",
+  "medium": [
+    "edu",
+    "anime",
+    "short"
+  ],
+  "prompt_prefix": "friendly safety education animation, calm colors, clear do-and-dont panels, empowering teens, no trauma imagery",
+  "prompt_zh": "友好安全教育动画，冷静配色，正误对照分格，赋能青少年，无创伤画面",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "过马路三步对照图：停看走",
+  "signature": [
+    "正误对照",
+    "冷静色",
+    "赋能语气"
+  ],
+  "agent": "安全片禁止恐吓；用正确示范 + 简短错误对照。",
+  "audience": "youth"
+}

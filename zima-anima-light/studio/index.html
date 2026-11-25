@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zima Anima Light · Soft Studio</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <!--BOOT-->
+  <header class="top">
+    <div class="brand">
+      <strong>Zima Anima Light</strong>
+      <span id="projectTitle">…</span>
+    </div>
+    <nav class="modes" id="modeTabs" aria-label="工作区">
+      <button type="button" class="neu-btn primary on" data-mode="create">创作流程</button>
+      <button type="button" class="neu-btn" data-mode="materials">素材库</button>
+      <button type="button" class="neu-btn" data-mode="generate">生成作品</button>
+      <button type="button" class="neu-btn" data-mode="edit">选片</button>
+      <button type="button" class="neu-btn" data-mode="cut">剪辑</button>
+      <button type="button" class="neu-btn" data-mode="agents">助手</button>
+      <button type="button" class="neu-btn" data-mode="queue">监工队列</button>
+    </nav>
+  </header>
+  <aside class="rail" id="workflowRail" aria-label="制作步骤"></aside>
+  <section class="stage-shell">
+    <div class="actions canvas-actions">
+      <button type="button" class="neu-btn" id="btnFit">适合画布</button>
+      <button type="button" class="neu-btn" id="btnSaveCanvas">保存布局</button>
+    </div>
+    <div class="canvas-scroll" id="canvasScroll">
+      <div class="canvas" id="canvas"></div>
+    </div>
+    <div class="cut-stage" id="cutStage" hidden>
+      <div class="cut-monitor" id="cutMonitor"></div>
+      <div class="cut-toolbar" id="cutToolbar"></div>
+      <div class="cut-ruler" id="cutRuler"></div>
+      <div class="cut-tracks" id="cutTracks"></div>
+    </div>
+  </section>
+  <aside class="panel" id="sidePanel">
+    <button class="neu-btn" type="button" id="focusPanel" aria-expanded="false">在中央打开</button>
+    <div id="legacyBanner" class="legacy-banner" hidden></div>
+    <h2 id="panelTitle">开工</h2>
+    <p id="panelHint" class="muted">新拟态 Soft Studio：先选界面质感、风格包与大师，再进入素材与流程。</p>
+    <div id="panelBody"></div>
+  </aside>
+  <script src="/static/screenplay.js"></script>
+  <script src="/static/creative-chat.js"></script>
+  <script src="/static/edit-monitors.js"></script>
+  <script src="/static/cut-icons.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

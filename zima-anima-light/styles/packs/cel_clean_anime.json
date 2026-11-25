@@ -1,0 +1,27 @@
+{
+  "id": "cel_clean_anime",
+  "title": "干净赛璐璐动画",
+  "category": "craft",
+  "medium": [
+    "anime",
+    "short"
+  ],
+  "prompt_prefix": "clean cel-shaded youth anime look, crisp outlines, flat fills, readable expressions, school-life friendly, original characters only",
+  "prompt_zh": "干净赛璐璐青年动画，利落描边，平涂填色，表情可读，校园友好，仅原创角色",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "走廊转身挥手，表情清楚不挤脸",
+  "signature": [
+    "利落描边",
+    "平涂",
+    "表情可读"
+  ],
+  "agent": "动画代理禁止模仿受保护角色与商标；表情优先于特效。",
+  "audience": "youth"
+}

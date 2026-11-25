@@ -1,0 +1,80 @@
+# Zima Anima Light host targets for Work-class agents.
+
+[cli.workbuddy]
+name = "腾讯 WorkBuddy"
+user_root = "~/.zima-anima-light/host-bundles/workbuddy"
+register = "manual"
+support_note = "Marketplace/手动导入；解压后按 WORKBUDDY-IMPORT.md。"
+
+[cli.doubao-work]
+name = "豆包 Work"
+user_root = "~/.zima-anima-light/host-bundles/doubao-work"
+register = "manual"
+support_note = "按宿主技能导入说明复制 SKILL.md 目录。"
+
+[cli.trae]
+name = "TRAE (Work)"
+user_root = "~/.zima-anima-light/host-bundles/trae"
+register = "pointer"
+support_note = "Rules 指针或 skills 目录，视版本而定。"
+
+[cli.qoder]
+name = "Qoder"
+user_root = "~/.qoder/skills"
+register = "none"
+
+[cli.qoderwork]
+name = "QoderWork"
+user_root = "~/.zima-anima-light/host-bundles/qoderwork"
+register = "manual"
+
+[cli.deepseek-harness]
+name = "DeepSeek Harness"
+user_root = "~/.dsh/skills"
+register = "none"
+
+[cli.kimi-work]
+name = "Kimi Work"
+user_root = "~/.zima-anima-light/host-bundles/kimi-work"
+register = "manual"
+
+[cli.baidu-dazi]
+name = "百度搭子"
+user_root = "~/.zima-anima-light/host-bundles/baidu-dazi"
+register = "manual"
+
+[cli.codebuddy]
+name = "CodeBuddy"
+user_root = "~/.zima-anima-light/host-bundles/codebuddy"
+register = "manual"
+
+[cli.zcode]
+name = "ZCode"
+user_root = "~/.zima-anima-light/host-bundles/zcode"
+register = "manual"
+
+[cli.minimax-code]
+name = "MiniMax Code"
+user_root = "~/.zima-anima-light/host-bundles/minimax-code"
+register = "manual"
+
+[cli.coze]
+name = "Coze（扣子）"
+user_root = "~/.zima-anima-light/host-bundles/coze"
+register = "manual"
+support_note = "可把 prompts/ 与 agents/ 配成 Bot 技能说明。"
+
+[cli.bailian]
+name = "阿里云百炼"
+user_root = "~/.zima-anima-light/host-bundles/bailian"
+register = "manual"
+
+[cli.codex]
+name = "OpenAI Codex CLI"
+user_root = "~/.codex/skills"
+register = "none"
+
+[cli.claude]
+name = "Claude Code"
+user_root = "~/.claude/skills"
+register = "none"

@@ -1,0 +1,28 @@
+{
+  "id": "map_journey_geo",
+  "title": "地图旅程地理",
+  "category": "edu",
+  "medium": [
+    "mg",
+    "edu",
+    "anime"
+  ],
+  "prompt_prefix": "animated map journey geography style, path drawing across terrain, landmark icons, clear scale cues, exploratory teen tone",
+  "prompt_zh": "动画地图旅程地理风，路线在地形上画出，地标图标，比例尺清楚，探索型青少年语气",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "地图上的虚线从海岸连到山区小镇",
+  "signature": [
+    "路线绘制",
+    "地标图标",
+    "比例尺"
+  ],
+  "agent": "地理代理每镜交代『从哪到哪、为什么走这条路』。",
+  "audience": "youth"
+}

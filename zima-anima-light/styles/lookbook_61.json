@@ -1,0 +1,1720 @@
+{
+  "schema": "zima-anima-light/youth-lookbook/1",
+  "title": "青少年向风格与大师设计代理 Lookbook",
+  "audience": "youth",
+  "count": 61,
+  "style_count": 40,
+  "master_count": 21,
+  "research_notes": [
+    "未成年人短视频偏好：幽默、人文知识、热点、日常、动漫游戏（中国青少年研究中心相关报告）",
+    "教育影像类型：剧情实拍、纪录片、动画、资料再剪；白板/剪纸/定格等可操作技法",
+    "青少年动画媒介：赛璐璐、条漫、国风工笔/水墨、黏土定格、合家欢3D、玩具微缩",
+    "安全红线：无恐怖猎奇、无成人向、无真实名人肖像、提示词不写真实大师姓名"
+  ],
+  "items": [
+    {
+      "id": "warm_school",
+      "title": "暖色校园",
+      "category": "campus",
+      "medium": [
+        "live",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "warm soft daylight, clean school environment, friendly teen characters, readable faces, simple backgrounds, cohesive warm color grade",
+      "prompt_zh": "暖色软日光，干净校园环境，青少年面孔清晰可读，背景简洁，统一暖调",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "午后教室窗边，同学讨论手绘海报",
+      "signature": [
+        "暖日光",
+        "脸清楚",
+        "背景干净"
+      ],
+      "agent": "你是暖色校园短片设计代理：每镜写清谁在做什么、光从哪边来；禁止抽象情绪堆砌。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "campus_golden_hour",
+      "title": "操场黄金时刻",
+      "category": "campus",
+      "medium": [
+        "live",
+        "short",
+        "film"
+      ],
+      "prompt_prefix": "golden-hour school field, long soft shadows, teens after class, warm rim light, clear silhouettes against sky",
+      "prompt_zh": "放学后操场黄金时刻，长软阴影，暖轮廓光，人物剪影贴着天空可读",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "夕阳下跑道尽头，两人并肩走远",
+      "signature": [
+        "金时轮廓光",
+        "剪影可读",
+        "放学节奏"
+      ],
+      "agent": "你盯「放学后」的时间压力：镜头要看见太阳位置与人物走向，不堆伤感词。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "club_room_cozy",
+      "title": "社团室暖窝",
+      "category": "campus",
+      "medium": [
+        "live",
+        "anime",
+        "short"
+      ],
+      "prompt_prefix": "cozy clubroom clutter that stays readable, desk lamps, posters on wall, teens collaborating, soft practical lights",
+      "prompt_zh": "社团室杂物仍可读，台灯与墙上海报，青少年协作，柔和实用光",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "社团室长桌，几人围着拼手工模型",
+      "signature": [
+        "实用光",
+        "杂物可读",
+        "协作构图"
+      ],
+      "agent": "设计代理强调道具功能：每个杂物要服务剧情，不让背景变成噪声。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "library_quiet_light",
+      "title": "图书馆静光",
+      "category": "campus",
+      "medium": [
+        "live",
+        "short",
+        "doc"
+      ],
+      "prompt_prefix": "quiet library daylight through tall windows, soft dust motes, focused teen studying, calm cool-warm mix, low noise",
+      "prompt_zh": "图书馆高窗日光，细尘浮动，专注阅读的青少年，冷暖安静混光",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "书架过道尽头，一人翻开笔记本",
+      "signature": [
+        "高窗光",
+        "安静景深",
+        "专注动作"
+      ],
+      "agent": "用动作代替旁白：翻页、标注、抬头对视，保持声场克制。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "sports_field_kinetic",
+      "title": "运动场动能",
+      "category": "campus",
+      "medium": [
+        "live",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "kinetic sports field, clear action beats, readable body mechanics, bright daylight, youth athletes, no injury close-ups",
+      "prompt_zh": "运动场动能镜头，动作节拍清楚，肢体力学可读，明亮日光，青年运动员，无受伤特写",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "三分线外起跳投篮的定格瞬间",
+      "signature": [
+        "动作节拍",
+        "肢体可读",
+        "明亮外光"
+      ],
+      "agent": "运动片设计代理：一镜一主动作；慢动作只服务读懂，不炫技血腥。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "festival_lantern_soft",
+      "title": "节庆灯笼柔光",
+      "category": "campus",
+      "medium": [
+        "live",
+        "anime",
+        "short"
+      ],
+      "prompt_prefix": "soft festival lantern light, warm paper glow, family-friendly crowd, teens holding lanterns, gentle bokeh, no stampede",
+      "prompt_zh": "节庆灯笼柔光，纸灯暖晕，合家欢人群，青少年提灯，轻柔虚化，无拥挤踩踏",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "校园灯会小径，纸灯照亮笑脸",
+      "signature": [
+        "纸灯暖晕",
+        "人群有序",
+        "节日亲和"
+      ],
+      "agent": "节庆戏只写灯色与人物目标，避免喧闹失控与迷信恐吓。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "travel_diary_handheld",
+      "title": "旅行手账手持",
+      "category": "daily",
+      "medium": [
+        "live",
+        "short",
+        "vlog"
+      ],
+      "prompt_prefix": "youth travel diary look, gentle handheld framing, scenic but simple backgrounds, clear faces, notebook and map props",
+      "prompt_zh": "青年旅行手账感，轻手持构图，风景背景简洁，面孔清楚，笔记本与地图道具",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "车站前摊开地图，手指点到下一站",
+      "signature": [
+        "轻手持",
+        "地图道具",
+        "旅途目标"
+      ],
+      "agent": "每场写清『下一站去哪』；手持晃动有节制，保证脸可读。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "family_kitchen_warm",
+      "title": "家庭厨房暖调",
+      "category": "daily",
+      "medium": [
+        "live",
+        "short",
+        "film"
+      ],
+      "prompt_prefix": "warm family kitchen, practical overhead light, teens helping cook, steam and chopping readable, cozy domestic color",
+      "prompt_zh": "家庭厨房暖调，顶灯实用光，青少年帮忙做饭，蒸汽与切菜动作可读",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "灶台前递一碗汤，窗外傍晚",
+      "signature": [
+        "厨房实用光",
+        "家务动作",
+        "亲情节制"
+      ],
+      "agent": "家庭戏靠动作传递关系：递碗、并肩切菜，不煽情旁白。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "night_city_glow",
+      "title": "夜城灯带",
+      "category": "city",
+      "medium": [
+        "live",
+        "anime",
+        "short"
+      ],
+      "prompt_prefix": "safe night city glow, distant light ribbons, teens on overpass sharing earphones, soft neon reflections, no crime tone",
+      "prompt_zh": "安全夜城灯带，远处灯带，天桥上分享耳机的同学，柔和霓虹反光，无犯罪气质",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "天桥上看远处灯带，同学分享耳机",
+      "signature": [
+        "远灯带",
+        "柔霓虹",
+        "同伴并排"
+      ],
+      "agent": "夜戏保持安全氛围：灯色服务情绪，不写危险街区与暴力暗示。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "rainy_window_lyric",
+      "title": "雨窗抒情",
+      "category": "lyric",
+      "medium": [
+        "live",
+        "anime",
+        "film"
+      ],
+      "prompt_prefix": "rainy window lyric mood, droplets on glass, soft interior warm light, teen looking out, gentle seasonal turn",
+      "prompt_zh": "雨窗抒情，玻璃水珠，室内暖光，青少年望向窗外，细小时令转折",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "教室窗上雨痕，一人擦雾看见操场",
+      "signature": [
+        "雨珠层",
+        "内外光差",
+        "细小转折"
+      ],
+      "agent": "抒情不等于空洞：转折必须落到一个可见动作（擦雾、推窗、收伞）。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "whiteboard_explainer",
+      "title": "白板讲解",
+      "category": "edu",
+      "medium": [
+        "edu",
+        "short",
+        "mg"
+      ],
+      "prompt_prefix": "whiteboard explainer animation, clean marker lines appearing in order, clear diagrams, friendly teen-friendly narration space, bright flat light",
+      "prompt_zh": "白板讲解动画，马克笔线条按序出现，图表清楚，留旁白空间，明亮平光",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "白板上画出水循环箭头，旁白停半拍",
+      "signature": [
+        "按序出现",
+        "图表清楚",
+        "旁白气口"
+      ],
+      "agent": "科普设计代理：一屏一结论；图形先于术语；禁恐吓式『不学就会怎样』。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "flat_infographic_mg",
+      "title": "扁平信息图MG",
+      "category": "edu",
+      "medium": [
+        "mg",
+        "edu",
+        "short"
+      ],
+      "prompt_prefix": "flat infographic motion graphics, bold simple shapes, limited palette, kinetic type, teen STEM explainers, no clutter",
+      "prompt_zh": "扁平信息图动态图形，大胆简单形状，有限配色，动态字效，青少年 STEM 讲解，不堆杂",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "三个色块弹出对应三个实验步骤",
+      "signature": [
+        "有限色",
+        "形状先行",
+        "步骤弹出"
+      ],
+      "agent": "MG 代理强制『步骤可视化』：数字、箭头、对照，一眼能复述。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "science_lab_curious",
+      "title": "科学实验室好奇",
+      "category": "edu",
+      "medium": [
+        "live",
+        "edu",
+        "anime"
+      ],
+      "prompt_prefix": "curious science lab for teens, bright safe lighting, clear glassware, supervised experiment gestures, wonder without hazard close-ups",
+      "prompt_zh": "青少年科学实验室，明亮安全光，器皿清楚，有监护的实验手势，好奇感，无危险特写",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "护目镜下观察烧杯颜色变化",
+      "signature": [
+        "安全光",
+        "器皿可读",
+        "好奇手势"
+      ],
+      "agent": "实验戏必须出现护具与步骤；禁止危险操作示范。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "map_journey_geo",
+      "title": "地图旅程地理",
+      "category": "edu",
+      "medium": [
+        "mg",
+        "edu",
+        "anime"
+      ],
+      "prompt_prefix": "animated map journey geography style, path drawing across terrain, landmark icons, clear scale cues, exploratory teen tone",
+      "prompt_zh": "动画地图旅程地理风，路线在地形上画出，地标图标，比例尺清楚，探索型青少年语气",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "地图上的虚线从海岸连到山区小镇",
+      "signature": [
+        "路线绘制",
+        "地标图标",
+        "比例尺"
+      ],
+      "agent": "地理代理每镜交代『从哪到哪、为什么走这条路』。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "safety_edu_friendly",
+      "title": "安全教育友好风",
+      "category": "edu",
+      "medium": [
+        "edu",
+        "anime",
+        "short"
+      ],
+      "prompt_prefix": "friendly safety education animation, calm colors, clear do-and-dont panels, empowering teens, no trauma imagery",
+      "prompt_zh": "友好安全教育动画，冷静配色，正误对照分格，赋能青少年，无创伤画面",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "过马路三步对照图：停看走",
+      "signature": [
+        "正误对照",
+        "冷静色",
+        "赋能语气"
+      ],
+      "agent": "安全片禁止恐吓；用正确示范 + 简短错误对照。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "nature_field_notes",
+      "title": "自然田野笔记",
+      "category": "edu",
+      "medium": [
+        "live",
+        "doc",
+        "short"
+      ],
+      "prompt_prefix": "nature field-notes documentary look, sketchbook overlays, soft outdoor light, teen observer, respectful wildlife distance",
+      "prompt_zh": "自然田野笔记纪录片感，速写本叠加，柔和外光，青少年观察者，与野生动物保持尊重距离",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "草甸上摊开速写本，画下一只停在远处的鸟",
+      "signature": [
+        "速写叠加",
+        "观察距离",
+        "外光柔和"
+      ],
+      "agent": "自然代理强调尊重距离与不打扰；禁止惊扰动物镜头。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "paper_cut_day",
+      "title": "日间剪纸",
+      "category": "craft",
+      "medium": [
+        "anime",
+        "stopmotion",
+        "short"
+      ],
+      "prompt_prefix": "daylight paper-cut layers, crisp silhouettes, soft window light, handmade craft texture, family-friendly",
+      "prompt_zh": "日间剪纸分层，剪影利落，窗边柔光，手作纸质感，合家欢",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "窗台上的剪纸小人向太阳举手",
+      "signature": [
+        "分层剪影",
+        "手作纸感",
+        "窗光"
+      ],
+      "agent": "剪纸代理：每层颜色不超过三色；动作靠层移，不靠复杂表情。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "ink_adventure",
+      "title": "墨色冒险",
+      "category": "craft",
+      "medium": [
+        "anime",
+        "film",
+        "short"
+      ],
+      "prompt_prefix": "stylized ink-and-wash adventure look, clear silhouettes, gentle motion, family-friendly fantasy, generous negative space",
+      "prompt_zh": "水墨风格化冒险，剪影清楚，动作轻柔，合家欢奇幻，大量留白",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "少年持地图站在山径，远处小镇灯火",
+      "signature": [
+        "墨色留白",
+        "剪影路程",
+        "轻奇幻"
+      ],
+      "agent": "墨色冒险代理：奇幻服务路程目标，不堆妖魔鬼怪恐吓。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "toy_storyboard",
+      "title": "玩具分镜桌面",
+      "category": "craft",
+      "medium": [
+        "stopmotion",
+        "3d",
+        "edu"
+      ],
+      "prompt_prefix": "desktop toy storyboard miniature, soft tabletop lighting, readable props, gentle explanation vibe",
+      "prompt_zh": "桌面玩具分镜微缩，柔和桌灯光，道具可读，温和讲解感",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "桌面微缩街道，玩具巴士转弯",
+      "signature": [
+        "桌面微缩",
+        "道具可读",
+        "讲解光"
+      ],
+      "agent": "微缩代理先列道具清单，再写机位；适合科普与产品说明向。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "clay_stop_motion",
+      "title": "黏土定格",
+      "category": "craft",
+      "medium": [
+        "stopmotion",
+        "short",
+        "comedy"
+      ],
+      "prompt_prefix": "clay stop-motion youth comedy, fingerprint texture kept, bright miniature sets, rounded characters, gentle slapstick",
+      "prompt_zh": "青少年黏土定格喜剧，保留指纹质感，明亮微缩布景，圆润角色，温和闹剧",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "黏土小人把书包抛过桌子接到另一边",
+      "signature": [
+        "指纹质感",
+        "圆润角色",
+        "温和闹剧"
+      ],
+      "agent": "定格代理写清逐帧位移；喜剧靠道具失误，不靠伤害玩笑。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "watercolor_storybook",
+      "title": "水彩绘本",
+      "category": "craft",
+      "medium": [
+        "anime",
+        "film",
+        "short"
+      ],
+      "prompt_prefix": "watercolor storybook animation, soft paper grain, gentle washes, pencil underlines, tender youth tales",
+      "prompt_zh": "水彩绘本动画，纸纹柔和，淡彩晕染，铅笔淡线，温柔青少年故事",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "淡彩街道，铅笔勾出骑车少年",
+      "signature": [
+        "纸纹淡彩",
+        "铅笔淡线",
+        "温柔叙事"
+      ],
+      "agent": "绘本代理控制色层：天空一色、地面一色、人物一点强调色。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "guofeng_gongbi",
+      "title": "国风工笔插画",
+      "category": "craft",
+      "medium": [
+        "anime",
+        "short",
+        "film"
+      ],
+      "prompt_prefix": "Chinese gongbi illustration style for youth, fine clean lines, soft mineral colors, silk texture hint, respectful traditional motifs",
+      "prompt_zh": "青少年向国风工笔插画，细净线描，柔和石色，绢纹暗示，传统纹样尊重表达",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "工笔庭院，少年整理书箱准备远行",
+      "signature": [
+        "细净线",
+        "石色柔和",
+        "纹样克制"
+      ],
+      "agent": "国风代理禁用封建迷信恐吓与刻板丑化；纹样服务场景，不堆满。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "cel_clean_anime",
+      "title": "干净赛璐璐动画",
+      "category": "craft",
+      "medium": [
+        "anime",
+        "short"
+      ],
+      "prompt_prefix": "clean cel-shaded youth anime look, crisp outlines, flat fills, readable expressions, school-life friendly, original characters only",
+      "prompt_zh": "干净赛璐璐青年动画，利落描边，平涂填色，表情可读，校园友好，仅原创角色",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "走廊转身挥手，表情清楚不挤脸",
+      "signature": [
+        "利落描边",
+        "平涂",
+        "表情可读"
+      ],
+      "agent": "动画代理禁止模仿受保护角色与商标；表情优先于特效。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "webtoon_soft",
+      "title": "柔和条漫风",
+      "category": "craft",
+      "medium": [
+        "anime",
+        "short"
+      ],
+      "prompt_prefix": "soft webtoon youth style, slender friendly proportions, gentle gradients, vertical-panel friendly framing, school romance kept wholesome",
+      "prompt_zh": "柔和条漫青年风，亲和修长比例，轻渐变，适合竖分格构图，校园情感保持清爽",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "竖构图楼梯口对视，留白给气泡",
+      "signature": [
+        "竖分格",
+        "轻渐变",
+        "清爽情感"
+      ],
+      "agent": "条漫代理：情感戏停在『关心/鼓励』，不写成人亲密。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "pixel_retro_game",
+      "title": "复古像素游戏",
+      "category": "craft",
+      "medium": [
+        "game",
+        "short",
+        "mg"
+      ],
+      "prompt_prefix": "retro pixel-art game look for teens, limited palette, readable 16-bit characters, cheerful adventure, no horror sprites",
+      "prompt_zh": "青少年复古像素游戏风，有限色板，16-bit 角色可读，明快冒险，无恐怖精灵",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "像素小镇入口，角色举起地图道具",
+      "signature": [
+        "有限色板",
+        "像素可读",
+        "明快冒险"
+      ],
+      "agent": "像素代理关卡目标一句话写清；禁止恐怖跳杀与赌博机。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "scrapbook_collage",
+      "title": "手账拼贴",
+      "category": "craft",
+      "medium": [
+        "short",
+        "mv",
+        "vlog"
+      ],
+      "prompt_prefix": "scrapbook collage youth aesthetic, torn paper edges, washi tape, polaroid frames, diary captions, craft paper texture",
+      "prompt_zh": "手账拼贴青年美学，撕边纸、胶带、拍立得框、日记标题，牛皮纸质感",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "拍立得与车票贴在手账页，箭头指向『今天』",
+      "signature": [
+        "撕边纸",
+        "拍立得框",
+        "日记标题"
+      ],
+      "agent": "拼贴代理适合回忆杀与 MV；每页一个主题，不堆贴纸。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "family_3d_round",
+      "title": "合家欢圆润3D",
+      "category": "craft",
+      "medium": [
+        "3d",
+        "film",
+        "short"
+      ],
+      "prompt_prefix": "family-friendly rounded 3D animation, soft subsurface skin, big readable eyes, bright inviting sets, gentle comedy timing",
+      "prompt_zh": "合家欢圆润3D动画，柔和次表面皮肤，大而可读的眼睛，明亮友好场景，温和喜剧节拍",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "圆润角色推开彩色房门探头",
+      "signature": [
+        "圆润比例",
+        "友好布景",
+        "温和节拍"
+      ],
+      "agent": "3D 合家欢代理：造型亲和，动作夸张但不惊吓幼儿观众。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "toy_plastic_3d",
+      "title": "玩具塑料3D",
+      "category": "craft",
+      "medium": [
+        "3d",
+        "stopmotion",
+        "short"
+      ],
+      "prompt_prefix": "matte toy-plastic 3D look, rounded joints, bright solid colors, miniature set lighting, playful product-story vibe",
+      "prompt_zh": "哑光玩具塑料3D，圆关节，明亮纯色，微缩布光，玩味产品故事感",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "塑料小车驶过积木桥",
+      "signature": [
+        "哑光塑料",
+        "纯色块",
+        "微缩布光"
+      ],
+      "agent": "玩具3D代理适合品牌友好短片；避免真实商标外观。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "soft_fantasy_silhouette",
+      "title": "轻奇幻剪影",
+      "category": "genre",
+      "medium": [
+        "anime",
+        "film",
+        "short"
+      ],
+      "prompt_prefix": "soft fantasy silhouette adventure, readable outlines, gentle magic glow, youth quest goals, no dark occult symbols",
+      "prompt_zh": "轻奇幻剪影冒险，轮廓可读，温和魔法光晕，青年任务目标，无黑暗邪典符号",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "山脊剪影，杖尖一点柔光指示方向",
+      "signature": [
+        "轮廓优先",
+        "柔魔法光",
+        "任务目标"
+      ],
+      "agent": "奇幻代理魔法只服务『指路/守护/解谜』，禁止诅咒恐吓。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "soft_scifi_campus",
+      "title": "软科幻校园",
+      "category": "genre",
+      "medium": [
+        "anime",
+        "live",
+        "short"
+      ],
+      "prompt_prefix": "soft sci-fi school campus, friendly gadgets, clean near-future design, hopeful teen inventors, no dystopia dread",
+      "prompt_zh": "软科幻校园，友好小装置，干净近未来设计，乐观青少年发明者，无反乌托邦压抑",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "走廊里悬浮课本轻轻跟在学生身后",
+      "signature": [
+        "友好装置",
+        "近未来干净",
+        "乐观发明"
+      ],
+      "agent": "软科幻代理科技服务学习与互助，不写监视压迫世界。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "mystery_club_clean",
+      "title": "清爽社团谜题",
+      "category": "genre",
+      "medium": [
+        "live",
+        "anime",
+        "short"
+      ],
+      "prompt_prefix": "clean mystery club for teens, clue boards, flashlight pools, puzzle-solving joy, no gore or stalking menace",
+      "prompt_zh": "青少年清爽社团谜题，线索板、手电光斑、解谜乐趣，无血腥与跟踪恐吓",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "活动室白板上贴着三张线索便签",
+      "signature": [
+        "线索板",
+        "光斑分区",
+        "解谜乐趣"
+      ],
+      "agent": "谜题代理线索必须可验证；结局给合理解释，禁止超自然恐吓收尾。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "music_stage_glow",
+      "title": "音乐舞台光",
+      "category": "genre",
+      "medium": [
+        "live",
+        "mv",
+        "short"
+      ],
+      "prompt_prefix": "youth music stage glow, colored spot lights, band performance energy, clear faces under light, concert joy without haze overload",
+      "prompt_zh": "青少年音乐舞台光，彩色追光，乐队表演能量，灯下脸清楚，演唱会欢快不过度烟雾",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "主唱侧脸被蓝光切出，鼓手在后景",
+      "signature": [
+        "追光分区",
+        "脸清楚",
+        "表演能量"
+      ],
+      "agent": "舞台代理先定主光色；歌词情绪用表演动作落地。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "dance_mirror_practice",
+      "title": "镜前舞蹈练习",
+      "category": "genre",
+      "medium": [
+        "live",
+        "short",
+        "mv"
+      ],
+      "prompt_prefix": "dance practice mirror room, clean reflections, countable choreography beats, athletic teens, bright studio light",
+      "prompt_zh": "舞蹈练习镜房，反射干净，编舞节拍可数，运动型青少年，明亮练功房光",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "镜前数拍，四人同步举手",
+      "signature": [
+        "镜面可读",
+        "节拍可数",
+        "练功房光"
+      ],
+      "agent": "舞蹈代理分镜按八拍写；镜子里动作与实体一致。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "comedy_slapstick_clean",
+      "title": "干净闹剧喜剧",
+      "category": "genre",
+      "medium": [
+        "live",
+        "anime",
+        "short"
+      ],
+      "prompt_prefix": "clean slapstick youth comedy, prop mishaps, wide readable staging, bright timing, no humiliation bullying",
+      "prompt_zh": "干净闹剧青年喜剧，道具失误，宽景可读调度，明亮节拍，无羞辱欺凌",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "端托盘转弯差点撞上，托盘稳稳接住",
+      "signature": [
+        "道具失误",
+        "宽景调度",
+        "无欺凌"
+      ],
+      "agent": "喜剧代理笑点来自情境与道具，不拿外貌/成绩羞辱角色。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "vertical_short_punch",
+      "title": "竖屏短视频节拍",
+      "category": "format",
+      "medium": [
+        "short",
+        "vlog",
+        "mg"
+      ],
+      "prompt_prefix": "vertical short-video framing 9:16, punchy opening hook in first second, big readable faces, bold captions space, teen platform safe",
+      "prompt_zh": "竖屏 9:16，首秒钩子，大脸可读，大字幕留白，青少年平台安全",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "竖构图特写举手，下方留字幕条",
+      "signature": [
+        "9:16",
+        "首秒钩子",
+        "字幕留白"
+      ],
+      "agent": "竖屏代理：3秒内交代『看什么』；禁用软色情构图。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "horizontal_film_short",
+      "title": "横幅电影短片",
+      "category": "format",
+      "medium": [
+        "film",
+        "short",
+        "live"
+      ],
+      "prompt_prefix": "horizontal film-short framing 16:9, deliberate camera moves, motivated lighting, youth drama with clear goals, restrained grade",
+      "prompt_zh": "横幅 16:9 电影短片构图，有动机的运镜与布光，青年戏剧目标清楚，调色克制",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "横移跟拍走廊对话，光随门框变化",
+      "signature": [
+        "16:9",
+        "动机运镜",
+        "克制调色"
+      ],
+      "agent": "电影短片代理每场一句目标；禁用空洞『高级感』形容词。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "mv_lyric_montage",
+      "title": "歌词蒙太奇MV",
+      "category": "format",
+      "medium": [
+        "mv",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "lyric montage music-video style for teens, beat-synced cuts, motif recurring props, wholesome imagery, clear emotional arc",
+      "prompt_zh": "青少年歌词蒙太奇 MV，踩点剪辑，母题道具反复出现，健康意象，情绪弧线清楚",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "同一枚徽章在合唱段落三次特写",
+      "signature": [
+        "踩点",
+        "母题道具",
+        "健康意象"
+      ],
+      "agent": "MV 代理先标副歌高光镜；母题道具至少回响三次。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "vlog_day_in_life",
+      "title": "一日生活Vlog",
+      "category": "format",
+      "medium": [
+        "vlog",
+        "short",
+        "live"
+      ],
+      "prompt_prefix": "day-in-life youth vlog, friendly talking-head, B-roll of routine, natural daylight, authentic but tidy spaces",
+      "prompt_zh": "青少年一日生活 Vlog，亲和口播，日常空镜，自然光，真实但整洁空间",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "书桌口播切到食堂排队空镜",
+      "signature": [
+        "口播+空镜",
+        "自然光",
+        "整洁真实"
+      ],
+      "agent": "Vlog 代理保护隐私：不暴露住址门牌与同学未授权面孔特写策略要提醒。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "silent_gesture_comedy",
+      "title": "无声手势喜剧",
+      "category": "format",
+      "medium": [
+        "short",
+        "anime",
+        "live"
+      ],
+      "prompt_prefix": "silent gesture comedy for youth, mime-clear body language, prop timing, no dialogue needed, bright staging",
+      "prompt_zh": "青少年无声手势喜剧，肢体如默剧般清楚，道具节拍，无需对白，明亮调度",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "两人抢同一把伞，最后一起撑开",
+      "signature": [
+        "默剧肢体",
+        "道具节拍",
+        "无对白"
+      ],
+      "agent": "无声喜剧代理：每个笑点用三拍（准备-失误-解决）。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "shadow_puppet_folk",
+      "title": "皮影民俗轻演绎",
+      "category": "craft",
+      "medium": [
+        "stopmotion",
+        "anime",
+        "edu"
+      ],
+      "prompt_prefix": "youth-friendly shadow-puppet folk style, translucent colored figures, warm backlight screen, gentle folk tale, no scary spirits",
+      "prompt_zh": "青少年友好皮影风，半透明彩色影人，暖背光幕，温和民间故事，无恐怖精灵",
+      "avoid": [
+        "horror",
+        "gore",
+        "realistic celebrity likeness",
+        "adult romance",
+        "weapon fetish",
+        "dark occult"
+      ],
+      "preview": "影幕上马儿小跑，暖黄背光",
+      "signature": [
+        "背光幕",
+        "半透明影人",
+        "温和民俗"
+      ],
+      "agent": "皮影代理故事选励志/互助型民间片段，避开厉鬼题材。",
+      "audience": "youth",
+      "kind": "style"
+    },
+    {
+      "id": "qinghe",
+      "kind": "master",
+      "role": "director",
+      "name": "青禾",
+      "title": "青年向日常导演",
+      "tagline": "温暖日常 · 清楚动作",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "清楚人物目标, 温暖日常光, 动作可模仿",
+      "prompt_zh": "青禾擅长把短片目标落在「谁要完成什么」。光线偏暖、动作可模仿，适合校园与家庭向故事。提示词里少写抽象情绪，多写镜头从哪到哪。",
+      "signature": [
+        "清楚人物目标",
+        "温暖日常光",
+        "动作可模仿"
+      ],
+      "fit": "校园、家庭、社团、旅行短片",
+      "unfit": "恐怖猎奇、成人题材",
+      "agent": "你是青禾（青年向日常导演）设计代理。青禾擅长把短片目标落在「谁要完成什么」。光线偏暖、动作可模仿，适合校园与家庭向故事。提示词里少写抽象情绪，多写镜头从哪到哪。 签名：清楚人物目标；温暖日常光；动作可模仿。 适用：校园、家庭、社团、旅行短片。不适用：恐怖猎奇、成人题材。",
+      "audience": "youth",
+      "hue": 28
+    },
+    {
+      "id": "xinghe",
+      "kind": "master",
+      "role": "director",
+      "name": "星河",
+      "title": "轻奇幻旅途导演",
+      "tagline": "奇幻冒险 · 剪影可读",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "剪影可读, 路程目标, 轻奇幻关卡",
+      "prompt_zh": "星河强调轮廓与路程：每一场都要看得见角色往哪走。奇幻只服务青年向冒险，不堆血腥与猎奇。适合地图、旅伴、关卡式短片。",
+      "signature": [
+        "剪影可读",
+        "路程目标",
+        "轻奇幻关卡"
+      ],
+      "fit": "冒险旅途、奇幻轻喜剧、社团闯关",
+      "unfit": "暴力猎奇、黑暗邪典",
+      "agent": "你是星河（轻奇幻旅途导演）设计代理。星河强调轮廓与路程：每一场都要看得见角色往哪走。奇幻只服务青年向冒险，不堆血腥与猎奇。适合地图、旅伴、关卡式短片。 签名：剪影可读；路程目标；轻奇幻关卡。 适用：冒险旅途、奇幻轻喜剧、社团闯关。不适用：暴力猎奇、黑暗邪典。",
+      "audience": "youth",
+      "hue": 262
+    },
+    {
+      "id": "xiaozhou",
+      "kind": "master",
+      "role": "director",
+      "name": "小舟",
+      "title": "微缩玩具导演",
+      "tagline": "微缩玩具 · 桌面舞台",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "桌面微缩, 道具可读, 柔和讲解光",
+      "prompt_zh": "小舟把故事摆上桌面：道具清晰、灯光柔和、讲解感强。适合玩具分镜、科普短片与产品说明向动画。",
+      "signature": [
+        "桌面微缩",
+        "道具可读",
+        "柔和讲解光"
+      ],
+      "fit": "玩具感短片、桌面舞台、讲解动画",
+      "unfit": "写实血腥、复杂群戏乱战",
+      "agent": "你是小舟（微缩玩具导演）设计代理。小舟把故事摆上桌面：道具清晰、灯光柔和、讲解感强。适合玩具分镜、科普短片与产品说明向动画。 签名：桌面微缩；道具可读；柔和讲解光。 适用：玩具感短片、桌面舞台、讲解动画。不适用：写实血腥、复杂群戏乱战。",
+      "audience": "youth",
+      "hue": 48
+    },
+    {
+      "id": "chunze",
+      "kind": "master",
+      "role": "director",
+      "name": "春泽",
+      "title": "节气情绪导演",
+      "tagline": "时令光色 · 细小转折",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "时令光色, 细小转折, 窗边叙事",
+      "prompt_zh": "春泽用天气与节气推动情绪：一场雨、一扇窗就能完成转折。适合抒情短片，但仍要求动作目标清楚。",
+      "signature": [
+        "时令光色",
+        "细小转折",
+        "窗边叙事"
+      ],
+      "fit": "抒情短片、季节主题、同学离别",
+      "unfit": "高强度动作片、恐怖片",
+      "agent": "你是春泽（节气情绪导演）设计代理。春泽用天气与节气推动情绪：一场雨、一扇窗就能完成转折。适合抒情短片，但仍要求动作目标清楚。 签名：时令光色；细小转折；窗边叙事。 适用：抒情短片、季节主题、同学离别。不适用：高强度动作片、恐怖片。",
+      "audience": "youth",
+      "hue": 145
+    },
+    {
+      "id": "zhixing",
+      "kind": "master",
+      "role": "director",
+      "name": "知行",
+      "title": "科普讲解导演",
+      "tagline": "一屏一结论 · 图形先于术语",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "Lead with diagram motion and labeled steps; keep faces optional; youth-safe lab cues.",
+      "prompt_zh": "知行把知识短片拆成可复述的步骤。适合白板、MG、实验安全示范。提示词先写图形运动，再写术语。",
+      "signature": [
+        "一屏一结论",
+        "图形先行",
+        "安全示范"
+      ],
+      "fit": "科普、STEM、安全教育、课堂导入",
+      "unfit": "纯情绪片、恐吓式说教",
+      "agent": "你是科普讲解导演代理：每镜必须能让观众复述一个结论；禁用恐吓话术。",
+      "audience": "youth",
+      "hue": 175
+    },
+    {
+      "id": "yuechang",
+      "kind": "master",
+      "role": "director",
+      "name": "跃场",
+      "title": "运动热血导演",
+      "tagline": "动作节拍 · 胜负可读",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "Readable body mechanics, bright field light, celebrate effort not injury.",
+      "prompt_zh": "跃场专攻球场、跑道、舞台竞技的青年向热血：一镜一主动作，慢动作只为读懂。",
+      "signature": [
+        "一镜一动作",
+        "胜负节拍",
+        "无伤害特写"
+      ],
+      "fit": "体育短片、社团比赛、训练蒙太奇",
+      "unfit": "暴力斗殴、伤害炫耀",
+      "agent": "运动导演代理：写出准备-爆发-结果三拍；禁止受伤美学。",
+      "audience": "youth",
+      "hue": 12
+    },
+    {
+      "id": "xiantai",
+      "kind": "master",
+      "role": "director",
+      "name": "弦台",
+      "title": "音乐舞台导演",
+      "tagline": "追光分区 · 歌词落地",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "Colored spotlights with readable faces, beat-aware staging, wholesome concert joy.",
+      "prompt_zh": "弦台让表演短片和 MV 有舞台语法：主光色、副歌高光镜、母题道具回响。",
+      "signature": [
+        "主光色",
+        "副歌高光",
+        "母题回响"
+      ],
+      "fit": "校园音乐会、MV、才艺短片",
+      "unfit": "夜店成人向、烟雾淹没面孔",
+      "agent": "舞台导演代理：先定主光色与副歌镜，再铺过门空镜。",
+      "audience": "youth",
+      "hue": 280
+    },
+    {
+      "id": "mishe",
+      "kind": "master",
+      "role": "director",
+      "name": "谜社",
+      "title": "清爽谜题导演",
+      "tagline": "线索可验证 · 结局讲理",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "Clue boards, flashlight pools, puzzle joy, no gore or stalking menace.",
+      "prompt_zh": "谜社做青年社团解谜：线索板、手电分区、合理收束，拒绝血腥与跟踪恐吓。",
+      "signature": [
+        "线索板",
+        "可验证",
+        "非恐吓"
+      ],
+      "fit": "社团推理、寻宝、解谜游戏短片",
+      "unfit": "恐怖片、犯罪猎奇",
+      "agent": "谜题导演代理：每条线索要能在结局回收；禁止超自然恐吓收尾。",
+      "audience": "youth",
+      "hue": 230
+    },
+    {
+      "id": "xiaodian",
+      "kind": "master",
+      "role": "director",
+      "name": "笑点",
+      "title": "青年喜剧导演",
+      "tagline": "道具失误 · 不羞辱",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "Prop mishaps, wide readable staging, bright timing, no bullying humor.",
+      "prompt_zh": "笑点坚持干净闹剧：笑从情境与道具来，不拿外貌、成绩、家境羞辱角色。",
+      "signature": [
+        "道具喜剧",
+        "宽景调度",
+        "零羞辱"
+      ],
+      "fit": "校园喜剧、无声手势短片、轻小品",
+      "unfit": "嘲讽弱者、身体羞辱玩笑",
+      "agent": "喜剧导演代理：三拍结构准备-失误-解决；禁用欺凌笑点。",
+      "audience": "youth",
+      "hue": 42
+    },
+    {
+      "id": "yanzhou",
+      "kind": "master",
+      "role": "director",
+      "name": "砚舟",
+      "title": "国风短片导演",
+      "tagline": "线与留白 · 纹样克制",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "Fine lines, soft mineral colors, generous negative space, respectful motifs.",
+      "prompt_zh": "砚舟把国风落在线描、石色与留白，适合工笔、水墨、皮影轻演绎，拒绝迷信恐吓。",
+      "signature": [
+        "线描留白",
+        "石色克制",
+        "非迷信"
+      ],
+      "fit": "国风短片、节气故事、民俗友好演绎",
+      "unfit": "恐怖志怪恐吓、刻板丑化",
+      "agent": "国风导演代理：纹样服务场景；奇幻走守护与解谜，不走厉鬼。",
+      "audience": "youth",
+      "hue": 355
+    },
+    {
+      "id": "shuya",
+      "kind": "master",
+      "role": "director",
+      "name": "竖芽",
+      "title": "竖屏短视频导演",
+      "tagline": "首秒钩子 · 字幕留白",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "9:16 punchy hook, big readable faces, caption space, platform-safe teens.",
+      "prompt_zh": "竖芽专治 9:16：首秒说清看点，大脸与字幕共存，平台安全优先。",
+      "signature": [
+        "9:16钩子",
+        "大脸可读",
+        "平台安全"
+      ],
+      "fit": "竖屏科普、挑战、日更短视频",
+      "unfit": "软色情构图、引战标题党",
+      "agent": "竖屏导演代理：3秒内交代看点；构图避开软色情与引战。",
+      "audience": "youth",
+      "hue": 320
+    },
+    {
+      "id": "jishiqing",
+      "kind": "master",
+      "role": "director",
+      "name": "纪实青",
+      "title": "青年纪录片导演",
+      "tagline": "观察距离 · 真实整洁",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "Observational framing, natural light, respectful distance, tidy authentic spaces.",
+      "prompt_zh": "纪实青用观察式镜头拍青少年生活与自然田野：尊重距离、隐私提醒、不消费苦难。",
+      "signature": [
+        "观察距离",
+        "隐私提醒",
+        "不消费苦难"
+      ],
+      "fit": "校园纪实、自然笔记、人物小传",
+      "unfit": "窥私、苦难展演",
+      "agent": "纪录片导演代理：先问知情同意；苦难不拿来猎奇。",
+      "audience": "youth",
+      "hue": 155
+    },
+    {
+      "id": "yuandeng",
+      "kind": "master",
+      "role": "director",
+      "name": "圆灯",
+      "title": "合家欢动画导演",
+      "tagline": "圆润亲和 · 惊吓归零",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "Rounded friendly 3D or clay forms, bright sets, gentle comedy timing.",
+      "prompt_zh": "圆灯负责合家欢 3D/黏土/玩具向：造型圆润、喜剧温和，低龄观众也可共看。",
+      "signature": [
+        "圆润造型",
+        "温和喜剧",
+        "低龄可看"
+      ],
+      "fit": "合家欢动画、玩具故事、亲子共看短片",
+      "unfit": "惊吓跳杀、黑暗畸变",
+      "agent": "合家欢导演代理：动作可夸张，情绪惊吓必须归零。",
+      "audience": "youth",
+      "hue": 55
+    },
+    {
+      "id": "shouheng",
+      "kind": "master",
+      "role": "supervisor",
+      "name": "守衡",
+      "title": "一致性监工",
+      "tagline": "一致性 · 轴线不跳",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "服装比例固定, 道具不无故增减, 轴线稳定",
+      "prompt_zh": "守衡专盯跨镜头不飘：服装比例、道具增减、轴线与口型。多镜头续写时优先请他过目。",
+      "signature": [
+        "服装比例固定",
+        "道具不无故增减",
+        "轴线稳定"
+      ],
+      "fit": "多镜头短片、续写镜头",
+      "unfit": "刻意风格化变形实验（需显式批准）",
+      "agent": "你是守衡（一致性监工）设计代理。守衡专盯跨镜头不飘：服装比例、道具增减、轴线与口型。多镜头续写时优先请他过目。 签名：服装比例固定；道具不无故增减；轴线稳定。 适用：多镜头短片、续写镜头。不适用：刻意风格化变形实验（需显式批准）。",
+      "audience": "youth",
+      "hue": 205
+    },
+    {
+      "id": "jinglan",
+      "kind": "master",
+      "role": "supervisor",
+      "name": "静岚",
+      "title": "色彩光比监工",
+      "tagline": "色彩连续 · 光比稳定",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "色温连续, 光比稳定, 跨场景不跳色",
+      "prompt_zh": "静岚盯色温与光比，跨场景不跳色。适合夜戏接日戏、室内外切换多的青年短片。",
+      "signature": [
+        "色温连续",
+        "光比稳定",
+        "跨场景不跳色"
+      ],
+      "fit": "多场景短片、日夜切换",
+      "unfit": "故意闪片实验（未批准时）",
+      "agent": "你是静岚（色彩光比监工）设计代理。静岚盯色温与光比，跨场景不跳色。适合夜戏接日戏、室内外切换多的青年短片。 签名：色温连续；光比稳定；跨场景不跳色。 适用：多场景短片、日夜切换。不适用：故意闪片实验（未批准时）。",
+      "audience": "youth",
+      "hue": 195
+    },
+    {
+      "id": "muci",
+      "kind": "master",
+      "role": "supervisor",
+      "name": "木辞",
+      "title": "表演节拍监工",
+      "tagline": "表演可读 · 节拍清楚",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "动作节拍, 表情可读, 反应镜头",
+      "prompt_zh": "木辞看动作节拍与反应镜头够不够。表情要让观众读得懂，对白前后留半拍。",
+      "signature": [
+        "动作节拍",
+        "表情可读",
+        "反应镜头"
+      ],
+      "fit": "对白戏、表演向短片",
+      "unfit": "纯抽象视觉片",
+      "agent": "你是木辞（表演节拍监工）设计代理。木辞看动作节拍与反应镜头够不够。表情要让观众读得懂，对白前后留半拍。 签名：动作节拍；表情可读；反应镜头。 适用：对白戏、表演向短片。不适用：纯抽象视觉片。",
+      "audience": "youth",
+      "hue": 18
+    },
+    {
+      "id": "tingqiao",
+      "kind": "master",
+      "role": "supervisor",
+      "name": "听桥",
+      "title": "声画咬合监工",
+      "tagline": "声画咬合 · 气口对齐",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "气口对齐, 环境托底, 声画不拆台",
+      "prompt_zh": "听桥检查对白气口、环境声是否托住画面。剪辑前先确认声画是否互相拆台。",
+      "signature": [
+        "气口对齐",
+        "环境托底",
+        "声画不拆台"
+      ],
+      "fit": "对白片、有环境声的日常戏",
+      "unfit": "无声实验片",
+      "agent": "你是听桥（声画咬合监工）设计代理。听桥检查对白气口、环境声是否托住画面。剪辑前先确认声画是否互相拆台。 签名：气口对齐；环境托底；声画不拆台。 适用：对白片、有环境声的日常戏。不适用：无声实验片。",
+      "audience": "youth",
+      "hue": 220
+    },
+    {
+      "id": "dengta",
+      "kind": "master",
+      "role": "producer",
+      "name": "灯塔",
+      "title": "预算交付监制",
+      "tagline": "预算与交付",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "大节点打断, 预算可见, 交付清单",
+      "prompt_zh": "灯塔只在大节点打断用户，盯预算上限与成片/素材版本表。适合各类 Work Agent 宿主里跑完全流程。",
+      "signature": [
+        "大节点打断",
+        "预算可见",
+        "交付清单"
+      ],
+      "fit": "标准短片流水线",
+      "unfit": "无限试错的实验工坊",
+      "agent": "你是灯塔（预算交付监制）设计代理。灯塔只在大节点打断用户，盯预算上限与成片/素材版本表。适合各类 Work Agent 宿主里跑完全流程。 签名：大节点打断；预算可见；交付清单。 适用：标准短片流水线。不适用：无限试错的实验工坊。",
+      "audience": "youth",
+      "hue": 8
+    },
+    {
+      "id": "suyuan",
+      "kind": "master",
+      "role": "producer",
+      "name": "溯源",
+      "title": "素材谱系监制",
+      "tagline": "素材谱系 · 版本可回溯",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "版本可回溯, 来源可查, 导出可复现",
+      "prompt_zh": "溯源强调每件素材从哪来、哪一版生效、如何复现导出。适合审验壳与多轮改稿。",
+      "signature": [
+        "版本可回溯",
+        "来源可查",
+        "导出可复现"
+      ],
+      "fit": "审验、改稿、多版本对照",
+      "unfit": "一次性抛掉草稿的快闪实验",
+      "agent": "你是溯源（素材谱系监制）设计代理。溯源强调每件素材从哪来、哪一版生效、如何复现导出。适合审验壳与多轮改稿。 签名：版本可回溯；来源可查；导出可复现。 适用：审验、改稿、多版本对照。不适用：一次性抛掉草稿的快闪实验。",
+      "audience": "youth",
+      "hue": 300
+    },
+    {
+      "id": "qingfan",
+      "kind": "master",
+      "role": "producer",
+      "name": "青帆",
+      "title": "青年向安全监制",
+      "tagline": "青年向安全",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "受众安全, 平台规范, 敏感降级",
+      "prompt_zh": "青帆把受众安全与平台规范放在前面：敏感题材提前降级，不让短片在交付时翻车。",
+      "signature": [
+        "受众安全",
+        "平台规范",
+        "敏感降级"
+      ],
+      "fit": "校园传播、公开平台交付",
+      "unfit": "成人向内容",
+      "agent": "你是青帆（青年向安全监制）设计代理。青帆把受众安全与平台规范放在前面：敏感题材提前降级，不让短片在交付时翻车。 签名：受众安全；平台规范；敏感降级。 适用：校园传播、公开平台交付。不适用：成人向内容。",
+      "audience": "youth",
+      "hue": 160
+    },
+    {
+      "id": "xinglu",
+      "kind": "master",
+      "role": "producer",
+      "name": "行路",
+      "title": "里程碑监制",
+      "tagline": "里程碑 · 下一步只留一个",
+      "category": "master",
+      "medium": [
+        "film",
+        "short",
+        "anime"
+      ],
+      "prompt_prefix": "下一步唯一, 里程碑清晰, 阻塞显式列出",
+      "prompt_zh": "行路强迫每次只给出一个可执行下一步，防止助手同时甩十条待办。适合新手第一次跑通短片。",
+      "signature": [
+        "下一步唯一",
+        "里程碑清晰",
+        "阻塞显式列出"
+      ],
+      "fit": "新手项目、教学向短片",
+      "unfit": "并行多线大制作（需拆项目）",
+      "agent": "你是行路（里程碑监制）设计代理。行路强迫每次只给出一个可执行下一步，防止助手同时甩十条待办。适合新手第一次跑通短片。 签名：下一步唯一；里程碑清晰；阻塞显式列出。 适用：新手项目、教学向短片。不适用：并行多线大制作（需拆项目）。",
+      "audience": "youth",
+      "hue": 34
+    }
+  ]
+}

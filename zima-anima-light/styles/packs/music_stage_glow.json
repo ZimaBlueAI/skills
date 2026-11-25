@@ -1,0 +1,28 @@
+{
+  "id": "music_stage_glow",
+  "title": "音乐舞台光",
+  "category": "genre",
+  "medium": [
+    "live",
+    "mv",
+    "short"
+  ],
+  "prompt_prefix": "youth music stage glow, colored spot lights, band performance energy, clear faces under light, concert joy without haze overload",
+  "prompt_zh": "青少年音乐舞台光，彩色追光，乐队表演能量，灯下脸清楚，演唱会欢快不过度烟雾",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "主唱侧脸被蓝光切出，鼓手在后景",
+  "signature": [
+    "追光分区",
+    "脸清楚",
+    "表演能量"
+  ],
+  "agent": "舞台代理先定主光色；歌词情绪用表演动作落地。",
+  "audience": "youth"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "soft_scifi_campus",
+  "title": "软科幻校园",
+  "category": "genre",
+  "medium": [
+    "anime",
+    "live",
+    "short"
+  ],
+  "prompt_prefix": "soft sci-fi school campus, friendly gadgets, clean near-future design, hopeful teen inventors, no dystopia dread",
+  "prompt_zh": "软科幻校园，友好小装置，干净近未来设计，乐观青少年发明者，无反乌托邦压抑",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "走廊里悬浮课本轻轻跟在学生身后",
+  "signature": [
+    "友好装置",
+    "近未来干净",
+    "乐观发明"
+  ],
+  "agent": "软科幻代理科技服务学习与互助，不写监视压迫世界。",
+  "audience": "youth"
+}

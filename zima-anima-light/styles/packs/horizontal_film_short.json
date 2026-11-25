@@ -1,0 +1,28 @@
+{
+  "id": "horizontal_film_short",
+  "title": "横幅电影短片",
+  "category": "format",
+  "medium": [
+    "film",
+    "short",
+    "live"
+  ],
+  "prompt_prefix": "horizontal film-short framing 16:9, deliberate camera moves, motivated lighting, youth drama with clear goals, restrained grade",
+  "prompt_zh": "横幅 16:9 电影短片构图，有动机的运镜与布光，青年戏剧目标清楚，调色克制",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "横移跟拍走廊对话，光随门框变化",
+  "signature": [
+    "16:9",
+    "动机运镜",
+    "克制调色"
+  ],
+  "agent": "电影短片代理每场一句目标；禁用空洞『高级感』形容词。",
+  "audience": "youth"
+}

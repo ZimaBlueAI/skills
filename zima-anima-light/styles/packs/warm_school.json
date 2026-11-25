@@ -1,0 +1,28 @@
+{
+  "id": "warm_school",
+  "title": "暖色校园",
+  "category": "campus",
+  "medium": [
+    "live",
+    "short",
+    "anime"
+  ],
+  "prompt_prefix": "warm soft daylight, clean school environment, friendly teen characters, readable faces, simple backgrounds, cohesive warm color grade",
+  "prompt_zh": "暖色软日光，干净校园环境，青少年面孔清晰可读，背景简洁，统一暖调",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "午后教室窗边，同学讨论手绘海报",
+  "signature": [
+    "暖日光",
+    "脸清楚",
+    "背景干净"
+  ],
+  "agent": "你是暖色校园短片设计代理：每镜写清谁在做什么、光从哪边来；禁止抽象情绪堆砌。",
+  "audience": "youth"
+}

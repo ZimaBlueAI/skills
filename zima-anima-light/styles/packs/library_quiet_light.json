@@ -1,0 +1,28 @@
+{
+  "id": "library_quiet_light",
+  "title": "图书馆静光",
+  "category": "campus",
+  "medium": [
+    "live",
+    "short",
+    "doc"
+  ],
+  "prompt_prefix": "quiet library daylight through tall windows, soft dust motes, focused teen studying, calm cool-warm mix, low noise",
+  "prompt_zh": "图书馆高窗日光，细尘浮动，专注阅读的青少年，冷暖安静混光",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "书架过道尽头，一人翻开笔记本",
+  "signature": [
+    "高窗光",
+    "安静景深",
+    "专注动作"
+  ],
+  "agent": "用动作代替旁白：翻页、标注、抬头对视，保持声场克制。",
+  "audience": "youth"
+}

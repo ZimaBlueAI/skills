@@ -1,0 +1,28 @@
+{
+  "id": "comedy_slapstick_clean",
+  "title": "干净闹剧喜剧",
+  "category": "genre",
+  "medium": [
+    "live",
+    "anime",
+    "short"
+  ],
+  "prompt_prefix": "clean slapstick youth comedy, prop mishaps, wide readable staging, bright timing, no humiliation bullying",
+  "prompt_zh": "干净闹剧青年喜剧，道具失误，宽景可读调度，明亮节拍，无羞辱欺凌",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "端托盘转弯差点撞上，托盘稳稳接住",
+  "signature": [
+    "道具失误",
+    "宽景调度",
+    "无欺凌"
+  ],
+  "agent": "喜剧代理笑点来自情境与道具，不拿外貌/成绩羞辱角色。",
+  "audience": "youth"
+}

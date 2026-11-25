@@ -1,0 +1,28 @@
+{
+  "id": "travel_diary_handheld",
+  "title": "旅行手账手持",
+  "category": "daily",
+  "medium": [
+    "live",
+    "short",
+    "vlog"
+  ],
+  "prompt_prefix": "youth travel diary look, gentle handheld framing, scenic but simple backgrounds, clear faces, notebook and map props",
+  "prompt_zh": "青年旅行手账感，轻手持构图，风景背景简洁，面孔清楚，笔记本与地图道具",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "车站前摊开地图，手指点到下一站",
+  "signature": [
+    "轻手持",
+    "地图道具",
+    "旅途目标"
+  ],
+  "agent": "每场写清『下一站去哪』；手持晃动有节制，保证脸可读。",
+  "audience": "youth"
+}

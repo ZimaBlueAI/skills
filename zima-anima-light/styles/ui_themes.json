@@ -1,0 +1,28 @@
+[
+  {"id":"paper","title":"手作分镜本","blurb":"方格纸画布、硬边卡片与衬线标题","swatch":["#f6efdf","#fff9e7","#b7ac92","#934523"]},
+  {"id":"console","title":"剪辑控制台","blurb":"紧凑面板、窄边框与等宽刻度","swatch":["#dae2e6","#eff6fa","#a1b0b9","#17536b"]},
+  {
+    "id": "soft_classic",
+    "title": "经典软拟态",
+    "blurb": "浅灰蓝底 · 双边柔阴影 · 默认 Soft Studio",
+    "swatch": ["#e6ebf2", "#ffffff", "#b7c2d2", "#3a7ca5"]
+  },
+  {
+    "id": "soft_mint",
+    "title": "薄荷软拟态",
+    "blurb": "清爽薄荷底 · 适合校园日常短片",
+    "swatch": ["#e4f0ea", "#ffffff", "#b5c9bd", "#2f9e6b"]
+  },
+  {
+    "id": "soft_clay",
+    "title": "暖陶软拟态",
+    "blurb": "暖灰陶土 · 家庭向温馨叙事",
+    "swatch": ["#ebe6e0", "#fffaf5", "#c4b6a8", "#c97b3a"]
+  },
+  {
+    "id": "soft_slate",
+    "title": "岩灰软拟态",
+    "blurb": "冷岩灰 · 冒险/纪实更沉稳",
+    "swatch": ["#e2e6ec", "#f7f9fc", "#a8b2c0", "#4a5d78"]
+  }
+]

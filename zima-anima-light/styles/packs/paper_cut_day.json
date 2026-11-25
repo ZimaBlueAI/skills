@@ -1,0 +1,28 @@
+{
+  "id": "paper_cut_day",
+  "title": "日间剪纸",
+  "category": "craft",
+  "medium": [
+    "anime",
+    "stopmotion",
+    "short"
+  ],
+  "prompt_prefix": "daylight paper-cut layers, crisp silhouettes, soft window light, handmade craft texture, family-friendly",
+  "prompt_zh": "日间剪纸分层，剪影利落，窗边柔光，手作纸质感，合家欢",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "窗台上的剪纸小人向太阳举手",
+  "signature": [
+    "分层剪影",
+    "手作纸感",
+    "窗光"
+  ],
+  "agent": "剪纸代理：每层颜色不超过三色；动作靠层移，不靠复杂表情。",
+  "audience": "youth"
+}

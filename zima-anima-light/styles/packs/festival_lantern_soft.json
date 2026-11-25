@@ -1,0 +1,28 @@
+{
+  "id": "festival_lantern_soft",
+  "title": "节庆灯笼柔光",
+  "category": "campus",
+  "medium": [
+    "live",
+    "anime",
+    "short"
+  ],
+  "prompt_prefix": "soft festival lantern light, warm paper glow, family-friendly crowd, teens holding lanterns, gentle bokeh, no stampede",
+  "prompt_zh": "节庆灯笼柔光，纸灯暖晕，合家欢人群，青少年提灯，轻柔虚化，无拥挤踩踏",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "校园灯会小径，纸灯照亮笑脸",
+  "signature": [
+    "纸灯暖晕",
+    "人群有序",
+    "节日亲和"
+  ],
+  "agent": "节庆戏只写灯色与人物目标，避免喧闹失控与迷信恐吓。",
+  "audience": "youth"
+}

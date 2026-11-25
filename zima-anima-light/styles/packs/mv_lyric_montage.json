@@ -1,0 +1,28 @@
+{
+  "id": "mv_lyric_montage",
+  "title": "歌词蒙太奇MV",
+  "category": "format",
+  "medium": [
+    "mv",
+    "short",
+    "anime"
+  ],
+  "prompt_prefix": "lyric montage music-video style for teens, beat-synced cuts, motif recurring props, wholesome imagery, clear emotional arc",
+  "prompt_zh": "青少年歌词蒙太奇 MV，踩点剪辑，母题道具反复出现，健康意象，情绪弧线清楚",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "同一枚徽章在合唱段落三次特写",
+  "signature": [
+    "踩点",
+    "母题道具",
+    "健康意象"
+  ],
+  "agent": "MV 代理先标副歌高光镜；母题道具至少回响三次。",
+  "audience": "youth"
+}

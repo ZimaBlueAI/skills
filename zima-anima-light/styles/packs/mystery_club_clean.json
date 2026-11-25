@@ -1,0 +1,28 @@
+{
+  "id": "mystery_club_clean",
+  "title": "清爽社团谜题",
+  "category": "genre",
+  "medium": [
+    "live",
+    "anime",
+    "short"
+  ],
+  "prompt_prefix": "clean mystery club for teens, clue boards, flashlight pools, puzzle-solving joy, no gore or stalking menace",
+  "prompt_zh": "青少年清爽社团谜题，线索板、手电光斑、解谜乐趣，无血腥与跟踪恐吓",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "活动室白板上贴着三张线索便签",
+  "signature": [
+    "线索板",
+    "光斑分区",
+    "解谜乐趣"
+  ],
+  "agent": "谜题代理线索必须可验证；结局给合理解释，禁止超自然恐吓收尾。",
+  "audience": "youth"
+}

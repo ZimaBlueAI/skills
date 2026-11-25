@@ -46,9 +46,18 @@ are byte-for-byte identical — two trees can no longer drift apart.
 
 ---
 
-## 2. Current release
+## 2. Skills in this repository
 
 From v0.4.0 onward, the suite covers the full chain from **board brief to outbound keynote video to truly editable PPT** and ships for both **Claude Code and OpenAI Codex CLI**. **v0.7 adds the in-house design ensemble engine `zima-design`**. The latest pass gives `zima-html-ppt` a governance layer and turns `produce-cinematic-video` into a release-hardened ZimaBlueAI production skill with recoverable projects and explicit privacy, rights, cost, and publication gates. All skills are independent — pick what you need.
+
+This tree contains **10 skills**. Eight have Claude Code and Codex ZIP archives in `dist/`. The two Zima Anima skills below are available from source.
+
+| Skill | When to use it | Getting started |
+|---|---|---|
+| **zima-anima-light** | A young filmmaker or teacher wants a local browser studio for scripts, illustrated style packs, shot review and a dual-monitor editor. | Follow the [local quickstart](./zima-anima-light/README.md). Use Python 3.11+ to launch and FFmpeg/FFprobe to export MP4. |
+| **zima-anima-video-editor** | An editor wants an agent to turn a brief or supplied footage into a shot plan, edit and delivery QC report using the tools available to the agent. | Start with the [production playbook](./zima-anima-video-editor/SKILL.md). Provide the audience, target runtime, aspect ratio and available footage. |
+
+**Packaged skills**
 
 | Skill | One line | Output | Zip size |
 |---|---|---|---|
@@ -174,11 +183,12 @@ Both bridges are **soft dependencies**: without them, v1 / v2 capabilities (HTML
 
 ### 4.1 Build and install
 
+Use the source links above for the two Zima Anima skills. To install the eight existing packages, use the checked-in archives with the installer. Rebuilding all archives from this tree requires adding the two new skills to `packaging/harness.toml` first; the build checks every root skill against that manifest.
+
 ```bash
 git clone --depth=1 https://github.com/ZimaBlueAI/skills.git
 cd skills
 
-python packaging/build.py            # single source skills/ -> dist/claude/ and dist/codex/
 bash packaging/install.sh            # auto-detects ~/.claude / ~/.codex and installs
 ```
 
@@ -279,7 +289,7 @@ You should see `biz-html-viz` · `viz-deck` · `viz-charts`. With huashu install
 
 ## 5. Samples
 
-Every skill ships a `samples/` directory with **real rendered deliverables** you can open immediately. Full catalog in each skill's `samples/SAMPLES.md`. Highlights:
+Open the samples and example deliveries linked below. Skills that provide a sample catalog list it in `samples/SAMPLES.md`.
 
 ### v3 · PPTX samples (11 deliverables, each with `.spec.json` starter)
 
@@ -344,9 +354,11 @@ skills/                            ← repository root
 ├── zima-design/                   ★ design ensemble engine (3 engines + five-axis diversity)
 ├── gzh-design/                    ★ WeChat Official Account typesetting
 ├── produce-cinematic-video/       ★ recoverable media production (7 stations + safety gates)
+├── zima-anima-light/              youth filmmaking studio with a local browser interface
+├── zima-anima-video-editor/       agent-led video editing and delivery QC
 ├── web-shader-extractor/          ★ webpage shader-effect extraction and replay
 │      inside each: SKILL.md · references/ · templates/ · scripts/ · samples/
-│      a root directory with a top-level SKILL.md *is* a skill — the build discovers it
+│      root SKILL.md files identify skills; harness.toml declares ZIP contents
 │
 ├── packaging/                     build + install (the only place harness differences live)
 │   ├── build.py                   root skills → dist/claude/*.zip + dist/codex/*.zip

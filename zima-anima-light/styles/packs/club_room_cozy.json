@@ -1,0 +1,28 @@
+{
+  "id": "club_room_cozy",
+  "title": "社团室暖窝",
+  "category": "campus",
+  "medium": [
+    "live",
+    "anime",
+    "short"
+  ],
+  "prompt_prefix": "cozy clubroom clutter that stays readable, desk lamps, posters on wall, teens collaborating, soft practical lights",
+  "prompt_zh": "社团室杂物仍可读，台灯与墙上海报，青少年协作，柔和实用光",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "社团室长桌，几人围着拼手工模型",
+  "signature": [
+    "实用光",
+    "杂物可读",
+    "协作构图"
+  ],
+  "agent": "设计代理强调道具功能：每个杂物要服务剧情，不让背景变成噪声。",
+  "audience": "youth"
+}

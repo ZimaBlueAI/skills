@@ -1,0 +1,28 @@
+{
+  "id": "pixel_retro_game",
+  "title": "复古像素游戏",
+  "category": "craft",
+  "medium": [
+    "game",
+    "short",
+    "mg"
+  ],
+  "prompt_prefix": "retro pixel-art game look for teens, limited palette, readable 16-bit characters, cheerful adventure, no horror sprites",
+  "prompt_zh": "青少年复古像素游戏风，有限色板，16-bit 角色可读，明快冒险，无恐怖精灵",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "像素小镇入口，角色举起地图道具",
+  "signature": [
+    "有限色板",
+    "像素可读",
+    "明快冒险"
+  ],
+  "agent": "像素代理关卡目标一句话写清；禁止恐怖跳杀与赌博机。",
+  "audience": "youth"
+}

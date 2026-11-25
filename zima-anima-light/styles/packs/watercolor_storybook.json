@@ -1,0 +1,28 @@
+{
+  "id": "watercolor_storybook",
+  "title": "水彩绘本",
+  "category": "craft",
+  "medium": [
+    "anime",
+    "film",
+    "short"
+  ],
+  "prompt_prefix": "watercolor storybook animation, soft paper grain, gentle washes, pencil underlines, tender youth tales",
+  "prompt_zh": "水彩绘本动画，纸纹柔和，淡彩晕染，铅笔淡线，温柔青少年故事",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "淡彩街道，铅笔勾出骑车少年",
+  "signature": [
+    "纸纹淡彩",
+    "铅笔淡线",
+    "温柔叙事"
+  ],
+  "agent": "绘本代理控制色层：天空一色、地面一色、人物一点强调色。",
+  "audience": "youth"
+}

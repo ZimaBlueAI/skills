@@ -1,0 +1,28 @@
+{
+  "id": "family_kitchen_warm",
+  "title": "家庭厨房暖调",
+  "category": "daily",
+  "medium": [
+    "live",
+    "short",
+    "film"
+  ],
+  "prompt_prefix": "warm family kitchen, practical overhead light, teens helping cook, steam and chopping readable, cozy domestic color",
+  "prompt_zh": "家庭厨房暖调，顶灯实用光，青少年帮忙做饭，蒸汽与切菜动作可读",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "灶台前递一碗汤，窗外傍晚",
+  "signature": [
+    "厨房实用光",
+    "家务动作",
+    "亲情节制"
+  ],
+  "agent": "家庭戏靠动作传递关系：递碗、并肩切菜，不煽情旁白。",
+  "audience": "youth"
+}

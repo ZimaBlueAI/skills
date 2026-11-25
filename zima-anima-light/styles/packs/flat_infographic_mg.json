@@ -1,0 +1,28 @@
+{
+  "id": "flat_infographic_mg",
+  "title": "扁平信息图MG",
+  "category": "edu",
+  "medium": [
+    "mg",
+    "edu",
+    "short"
+  ],
+  "prompt_prefix": "flat infographic motion graphics, bold simple shapes, limited palette, kinetic type, teen STEM explainers, no clutter",
+  "prompt_zh": "扁平信息图动态图形，大胆简单形状，有限配色，动态字效，青少年 STEM 讲解，不堆杂",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "三个色块弹出对应三个实验步骤",
+  "signature": [
+    "有限色",
+    "形状先行",
+    "步骤弹出"
+  ],
+  "agent": "MG 代理强制『步骤可视化』：数字、箭头、对照，一眼能复述。",
+  "audience": "youth"
+}

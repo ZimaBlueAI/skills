@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" width="480" height="640" font-family="'Nunito','IBM Plex Sans SC','PingFang SC','Microsoft YaHei',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(18,22%,96%)"/><stop offset="1" stop-color="hsl(18,18%,88%)"/></linearGradient>
+  <filter id="neu" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="10" dy="10" stdDeviation="12" flood-color="hsl(18,14%,72%)" flood-opacity="0.45"/>
+    <feDropShadow dx="-8" dy="-8" stdDeviation="10" flood-color="#ffffff" flood-opacity="0.9"/>
+  </filter>
+</defs>
+<rect width="480" height="640" rx="36" fill="url(#bg)"/>
+<rect x="28" y="28" width="424" height="584" rx="28" fill="hsl(18,18%,88%)" filter="url(#neu)"/>
+<g><circle cx="314.5" cy="90.0" r="55.1" fill="hsl(18,45%,42%)" opacity="0.12"/><circle cx="258.0" cy="90.0" r="30.4" fill="hsl(18,45%,42%)" opacity="0.12"/><circle cx="330.8" cy="90.0" r="26.1" fill="hsl(18,45%,42%)" opacity="0.12"/><rect x="48.0" y="231.9" width="66.6" height="104.4" rx="14" fill="hsl(18,35%,78%)" opacity="0.55"/><rect x="176.0" y="194.8" width="66.6" height="126.2" rx="14" fill="hsl(18,35%,78%)" opacity="0.63"/><rect x="304.0" y="231.0" width="66.6" height="59.9" rx="14" fill="hsl(18,35%,78%)" opacity="0.71"/></g>
+<text x="48" y="128" font-size="64" font-weight="800" fill="hsl(18,25%,28%)" letter-spacing="2">木辞</text>
+<text x="52" y="162" font-size="16" fill="hsl(18,45%,42%)" letter-spacing="1">mù cí · 表演节拍监工</text>
+<text x="48" y="452" font-size="20" font-weight="700" fill="hsl(18,22%,30%)">表演可读 · 节拍清楚</text>
+<text x="44" y="508" font-size="17" fill="hsl(18,20%,32%)" opacity="0.88">动作节拍</text><text x="44" y="534" font-size="17" fill="hsl(18,20%,32%)" opacity="0.88">表情可读</text><text x="44" y="560" font-size="17" fill="hsl(18,20%,32%)" opacity="0.88">反应镜头</text>
+<rect x="48" y="592" width="384" height="4" rx="2" fill="hsl(18,45%,42%)" opacity="0.75"/>
+</svg>

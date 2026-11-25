@@ -1,0 +1,28 @@
+{
+  "name": "zima-anima-light",
+  "version": "0.2.0",
+  "description": "Youth studio for Work-class agents: Lookbook 61, workflows, review desk, cut timeline, project status.",
+  "tools": [
+    {
+      "name": "light_project_status",
+      "description": "Return project.json summary: workflow, node statuses, budget, style, masters.",
+      "input": { "project_dir": "string" }
+    },
+    {
+      "name": "light_next_step",
+      "description": "Suggest the single next guided step for the current workflow.",
+      "input": { "project_dir": "string" }
+    },
+    {
+      "name": "light_capabilities",
+      "description": "List configured API providers without printing secrets.",
+      "input": {}
+    },
+    {
+      "name": "light_lookbook",
+      "description": "Return youth Lookbook 61 summary (40 styles + 21 masters) or a single style/master agent brief by id.",
+      "input": { "id": "string (optional)" }
+    }
+  ],
+  "notes": "Hosts import this manifest themselves. Scripts never rewrite user MCP configs."
+}

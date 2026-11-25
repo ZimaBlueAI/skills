@@ -1,0 +1,21 @@
+# AI production without a workbench
+
+## Select an actual route
+
+Distinguish the Bot (planning, research, browser/computer and accessible integrations), an image/video model (generation or generative transformation), and a timeline editor/FFmpeg (precise assembly, titles, subtitles and mixing). A Grok Bot subscription or an available UI does not establish API access, supported model options or included credits. Before execution, inspect the active integration, current provider documentation, model, output format, duration, async behavior, cost, upload destination and authorized budget. Ask for missing credentials through the provider's secure flow, never ordinary chat. Do not upload private source media or spend beyond the user's authorization.
+
+Official xAI documentation distinguishes video creation, editing and extension by model and endpoint; verify current compatibility rather than assuming every Imagine version supports the same operations. See [video overview](https://docs.x.ai/developers/model-capabilities/video/overview), [generation](https://docs.x.ai/developers/model-capabilities/video/generation), [video editing](https://docs.x.ai/developers/model-capabilities/video/editing), [extension](https://docs.x.ai/developers/model-capabilities/video/extension), [web search](https://docs.x.ai/developers/tools/web-search) and [X search](https://docs.x.ai/developers/tools/x-search). API use and Bot interfaces can differ. Third-party services have their own terms, output rights, pricing and constraints.
+
+## Shot and prompt contract
+
+For each shot specify purpose, duration, aspect, source or approved references, subject identity and wardrobe, setting, visible action and causal sequence, starting and ending frame, camera framing/movement, lighting, sound/dialogue and continuity constraints. Separate what should remain fixed from what should change; use literal, observable motion and a manageable number of actions. Add exact dialogue only if the selected provider supports it. Describe desired change for video-to-video while identifying protected identity, camera, scene and timing. Avoid claiming precise masks or frame accuracy unless the chosen tool supports them.
+
+Example: “A ceramic cup on a wooden table by a north-facing window. A hand enters from frame right, lifts the handle and carries the cup out of view. Medium close-up; camera locked; soft morning light; realistic shadows. Keep the cup shape, table position and lighting stable. No added text.” Replace this with the project's actual constraints and reference files.
+
+## Execute and verify
+
+Create an asset/shot ledger before batch work: shot ID, role, source/reference, provider/model, prompt version, parameter values, task ID, status, cost when known, resulting file and provenance. Submit one representative shot; poll by task ID and resume after interruptions rather than blindly resubmitting. Download completed output promptly when URLs expire; verify file integrity and retain original output. Compare actual subject, action, identity, camera and sound with the brief, and check the middle of the clip, not just endpoints. Note generated content and rights. Revise the smallest failed portion; do not regenerate approved parts without need.
+
+Create subtitles, titles, labels and stable graphics in a controllable post-production step when exact wording or position matters. For a trackable overlay, use a compatible tracking/compositing tool and review occlusion, scale and drift in the actual moving shot; static overlay instructions are not evidence of successful tracking. For music videos, lock the authorized master audio and map scenes to musical phrases; preserve the master and verify final sync. Render an editorial master, then requested aspect/platform variants, measuring the actual output. Review voice, ASR, captions and lip sync as described in `voice-and-continuity.md`.
+
+For code-driven motion, prefer deterministic animation based on explicit timeline time and seeded randomness. Verify fonts, frame rate and cue timing in the actual export; use contact sheets only to find defects, not to certify motion or audio. Don't execute third-party scripts or assume they are licensed for redistribution just because they appear in a tutorial.

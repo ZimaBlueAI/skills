@@ -1,0 +1,28 @@
+{
+  "id": "guofeng_gongbi",
+  "title": "国风工笔插画",
+  "category": "craft",
+  "medium": [
+    "anime",
+    "short",
+    "film"
+  ],
+  "prompt_prefix": "Chinese gongbi illustration style for youth, fine clean lines, soft mineral colors, silk texture hint, respectful traditional motifs",
+  "prompt_zh": "青少年向国风工笔插画，细净线描，柔和石色，绢纹暗示，传统纹样尊重表达",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "工笔庭院，少年整理书箱准备远行",
+  "signature": [
+    "细净线",
+    "石色柔和",
+    "纹样克制"
+  ],
+  "agent": "国风代理禁用封建迷信恐吓与刻板丑化；纹样服务场景，不堆满。",
+  "audience": "youth"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "ink_adventure",
+  "title": "墨色冒险",
+  "category": "craft",
+  "medium": [
+    "anime",
+    "film",
+    "short"
+  ],
+  "prompt_prefix": "stylized ink-and-wash adventure look, clear silhouettes, gentle motion, family-friendly fantasy, generous negative space",
+  "prompt_zh": "水墨风格化冒险，剪影清楚，动作轻柔，合家欢奇幻，大量留白",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "少年持地图站在山径，远处小镇灯火",
+  "signature": [
+    "墨色留白",
+    "剪影路程",
+    "轻奇幻"
+  ],
+  "agent": "墨色冒险代理：奇幻服务路程目标，不堆妖魔鬼怪恐吓。",
+  "audience": "youth"
+}

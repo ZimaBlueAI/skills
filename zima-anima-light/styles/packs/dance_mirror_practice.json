@@ -1,0 +1,28 @@
+{
+  "id": "dance_mirror_practice",
+  "title": "镜前舞蹈练习",
+  "category": "genre",
+  "medium": [
+    "live",
+    "short",
+    "mv"
+  ],
+  "prompt_prefix": "dance practice mirror room, clean reflections, countable choreography beats, athletic teens, bright studio light",
+  "prompt_zh": "舞蹈练习镜房，反射干净，编舞节拍可数，运动型青少年，明亮练功房光",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "镜前数拍，四人同步举手",
+  "signature": [
+    "镜面可读",
+    "节拍可数",
+    "练功房光"
+  ],
+  "agent": "舞蹈代理分镜按八拍写；镜子里动作与实体一致。",
+  "audience": "youth"
+}

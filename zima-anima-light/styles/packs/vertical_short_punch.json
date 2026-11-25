@@ -1,0 +1,28 @@
+{
+  "id": "vertical_short_punch",
+  "title": "竖屏短视频节拍",
+  "category": "format",
+  "medium": [
+    "short",
+    "vlog",
+    "mg"
+  ],
+  "prompt_prefix": "vertical short-video framing 9:16, punchy opening hook in first second, big readable faces, bold captions space, teen platform safe",
+  "prompt_zh": "竖屏 9:16，首秒钩子，大脸可读，大字幕留白，青少年平台安全",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "竖构图特写举手，下方留字幕条",
+  "signature": [
+    "9:16",
+    "首秒钩子",
+    "字幕留白"
+  ],
+  "agent": "竖屏代理：3秒内交代『看什么』；禁用软色情构图。",
+  "audience": "youth"
+}

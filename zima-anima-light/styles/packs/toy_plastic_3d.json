@@ -1,0 +1,28 @@
+{
+  "id": "toy_plastic_3d",
+  "title": "玩具塑料3D",
+  "category": "craft",
+  "medium": [
+    "3d",
+    "stopmotion",
+    "short"
+  ],
+  "prompt_prefix": "matte toy-plastic 3D look, rounded joints, bright solid colors, miniature set lighting, playful product-story vibe",
+  "prompt_zh": "哑光玩具塑料3D，圆关节，明亮纯色，微缩布光，玩味产品故事感",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "塑料小车驶过积木桥",
+  "signature": [
+    "哑光塑料",
+    "纯色块",
+    "微缩布光"
+  ],
+  "agent": "玩具3D代理适合品牌友好短片；避免真实商标外观。",
+  "audience": "youth"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "soft_fantasy_silhouette",
+  "title": "轻奇幻剪影",
+  "category": "genre",
+  "medium": [
+    "anime",
+    "film",
+    "short"
+  ],
+  "prompt_prefix": "soft fantasy silhouette adventure, readable outlines, gentle magic glow, youth quest goals, no dark occult symbols",
+  "prompt_zh": "轻奇幻剪影冒险，轮廓可读，温和魔法光晕，青年任务目标，无黑暗邪典符号",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "山脊剪影，杖尖一点柔光指示方向",
+  "signature": [
+    "轮廓优先",
+    "柔魔法光",
+    "任务目标"
+  ],
+  "agent": "奇幻代理魔法只服务『指路/守护/解谜』，禁止诅咒恐吓。",
+  "audience": "youth"
+}

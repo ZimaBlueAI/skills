@@ -1,0 +1,28 @@
+{
+  "id": "toy_storyboard",
+  "title": "玩具分镜桌面",
+  "category": "craft",
+  "medium": [
+    "stopmotion",
+    "3d",
+    "edu"
+  ],
+  "prompt_prefix": "desktop toy storyboard miniature, soft tabletop lighting, readable props, gentle explanation vibe",
+  "prompt_zh": "桌面玩具分镜微缩，柔和桌灯光，道具可读，温和讲解感",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "桌面微缩街道，玩具巴士转弯",
+  "signature": [
+    "桌面微缩",
+    "道具可读",
+    "讲解光"
+  ],
+  "agent": "微缩代理先列道具清单，再写机位；适合科普与产品说明向。",
+  "audience": "youth"
+}

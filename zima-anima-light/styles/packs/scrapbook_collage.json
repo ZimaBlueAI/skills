@@ -1,0 +1,28 @@
+{
+  "id": "scrapbook_collage",
+  "title": "手账拼贴",
+  "category": "craft",
+  "medium": [
+    "short",
+    "mv",
+    "vlog"
+  ],
+  "prompt_prefix": "scrapbook collage youth aesthetic, torn paper edges, washi tape, polaroid frames, diary captions, craft paper texture",
+  "prompt_zh": "手账拼贴青年美学，撕边纸、胶带、拍立得框、日记标题，牛皮纸质感",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "拍立得与车票贴在手账页，箭头指向『今天』",
+  "signature": [
+    "撕边纸",
+    "拍立得框",
+    "日记标题"
+  ],
+  "agent": "拼贴代理适合回忆杀与 MV；每页一个主题，不堆贴纸。",
+  "audience": "youth"
+}

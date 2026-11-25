@@ -43,9 +43,18 @@ templates、scripts、samples 全部一字不差——不再有"两个目录各�
 
 ---
 
-## 二、当前发布
+## 二、仓库里的技能
 
 v0.4.0 起覆盖**从董事会简报到对外讲演视频再到真正可编辑 PPT**的全链路；**Claude Code 与 OpenAI Codex CLI 双 harness 并发布**。**v0.7 新增自有设计合奏引擎 `zima-design`**（三引擎收编 + 五轴多样性协议 + 四风格 demo 画廊），并为全线生成类 skills 内联反 AI slop 硬闸。**最新一版给 `zima-html-ppt` 补上了工程治理层**，并把 `produce-cinematic-video` 整理为带隐私、费用、权利和发布闸门的 ZimaBlueAI 可恢复影视生产技能。所有 skill 相互独立，按需取用。
+
+仓库现有 **10 个技能**。其中 8 个在 `dist/` 中提供 Claude Code 和 Codex ZIP 安装包，以下两个 Zima Anima 技能从源码使用。
+
+| 技能 | 适用场景 | 从哪里开始 |
+|---|---|---|
+| **zima-anima-light** | 青少年创作者或老师想在浏览器里写剧本、比较风格配图、审片，再用双屏时间线剪出成片。 | 按[本地启动指南](./zima-anima-light/README.md)打开工作台。需要 Python 3.11+，导出 MP4 时使用 FFmpeg 和 FFprobe。 |
+| **zima-anima-video-editor** | 剪辑师希望 Agent 根据创作简报或已有素材，使用手头工具完成镜头规划、剪辑和交付质检。 | 打开[制作手册](./zima-anima-video-editor/SKILL.md)，提供目标观众、片长、画幅和可用素材。 |
+
+**已有安装包的技能**
 
 | Skill | 一句话 | 输出 | 包大小 |
 |---|---|---|---|
@@ -175,11 +184,12 @@ v0.2 引入第一个软桥接 [`alchaincyf/huashu-design`](https://github.com/al
 
 ### 1. 构建并安装
 
+两个 Zima Anima 技能可从上表的源码入口开始使用。安装已有的 8 个包，可以直接用安装器读取仓库中的 ZIP。从当前源码重新构建全部包之前，需要先在 `packaging/harness.toml` 登记两个新技能，构建器会检查清单是否覆盖所有根目录技能。
+
 ```bash
 git clone --depth=1 https://github.com/ZimaBlueAI/skills.git
 cd skills
 
-python packaging/build.py            # 从 skills/ 单源生成 dist/claude/ 与 dist/codex/
 bash packaging/install.sh            # 自动探测 ~/.claude / ~/.codex 并装进去
 ```
 
@@ -278,7 +288,7 @@ python -m venv .venv
 
 ## 五、样例预览
 
-每个 skill 的 `samples/` 目录都提供了**真实可视化产出**——直接打开就能看。完整清单在每个 skill 的 `samples/SAMPLES.md`，下表是亮点：
+下面的链接可直接打开样例和示范交付。提供样例清单的技能可在其 `samples/SAMPLES.md` 中查看完整列表。
 
 ### v3 · PPTX 样例（11 个，每个都附 `.spec.json` 起点）
 
@@ -344,9 +354,11 @@ skills/                            ← 仓库根
 ├── zima-design/                   ★ 设计合奏引擎（三引擎收编 + 五轴多样性协议）
 ├── gzh-design/                    ★ 微信公众号排版
 ├── produce-cinematic-video/       ★ 可恢复影视生产技能（7 个专业工位 + 安全闸门）
+├── zima-anima-light/              青少年影视创作工作台（本地浏览器）
+├── zima-anima-video-editor/       Agent 视频剪辑与交付质检手册
 ├── web-shader-extractor/          ★ 网页着色器动效抠取与复现
 │      每个 skill 内部：SKILL.md · references/ · templates/ · scripts/ · samples/
-│      带顶层 SKILL.md 的根目录 = 一个 skill，build 时自动发现
+│      根目录的 SKILL.md 标识技能，harness.toml 声明 ZIP 的内容
 │
 ├── packaging/                     打包与安装（harness 差异只存在于此）
 │   ├── build.py                   根下 skill → dist/claude/*.zip + dist/codex/*.zip

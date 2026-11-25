@@ -1,0 +1,28 @@
+{
+  "id": "shadow_puppet_folk",
+  "title": "皮影民俗轻演绎",
+  "category": "craft",
+  "medium": [
+    "stopmotion",
+    "anime",
+    "edu"
+  ],
+  "prompt_prefix": "youth-friendly shadow-puppet folk style, translucent colored figures, warm backlight screen, gentle folk tale, no scary spirits",
+  "prompt_zh": "青少年友好皮影风，半透明彩色影人，暖背光幕，温和民间故事，无恐怖精灵",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "影幕上马儿小跑，暖黄背光",
+  "signature": [
+    "背光幕",
+    "半透明影人",
+    "温和民俗"
+  ],
+  "agent": "皮影代理故事选励志/互助型民间片段，避开厉鬼题材。",
+  "audience": "youth"
+}

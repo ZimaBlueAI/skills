@@ -1,0 +1,28 @@
+{
+  "id": "vlog_day_in_life",
+  "title": "一日生活Vlog",
+  "category": "format",
+  "medium": [
+    "vlog",
+    "short",
+    "live"
+  ],
+  "prompt_prefix": "day-in-life youth vlog, friendly talking-head, B-roll of routine, natural daylight, authentic but tidy spaces",
+  "prompt_zh": "青少年一日生活 Vlog，亲和口播，日常空镜，自然光，真实但整洁空间",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "书桌口播切到食堂排队空镜",
+  "signature": [
+    "口播+空镜",
+    "自然光",
+    "整洁真实"
+  ],
+  "agent": "Vlog 代理保护隐私：不暴露住址门牌与同学未授权面孔特写策略要提醒。",
+  "audience": "youth"
+}

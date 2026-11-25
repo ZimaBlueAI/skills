@@ -1,0 +1,28 @@
+{
+  "id": "whiteboard_explainer",
+  "title": "白板讲解",
+  "category": "edu",
+  "medium": [
+    "edu",
+    "short",
+    "mg"
+  ],
+  "prompt_prefix": "whiteboard explainer animation, clean marker lines appearing in order, clear diagrams, friendly teen-friendly narration space, bright flat light",
+  "prompt_zh": "白板讲解动画，马克笔线条按序出现，图表清楚，留旁白空间，明亮平光",
+  "avoid": [
+    "horror",
+    "gore",
+    "realistic celebrity likeness",
+    "adult romance",
+    "weapon fetish",
+    "dark occult"
+  ],
+  "preview": "白板上画出水循环箭头，旁白停半拍",
+  "signature": [
+    "按序出现",
+    "图表清楚",
+    "旁白气口"
+  ],
+  "agent": "科普设计代理：一屏一结论；图形先于术语；禁恐吓式『不学就会怎样』。",
+  "audience": "youth"
+}
